@@ -1,0 +1,71 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('mapitems.header.edit') }}</h2>
+    <form method="post">
+        <p>
+            <label>{{ _('mapitems.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ itemtype.name }}" style="width:99%"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('mapitems.filter') }}:<br/>
+                <input type="text" name="edit_filter" value="{{ itemtype.filter }}" style="width:99%"/><br/>
+                <small>{{ _('mapitems.filter.info') }}</small>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('mapitems.attributes') }}:<br/>
+                <textarea name="edit_attributes" style="width:99%;min-height:200px;">{{ itemtype.attributes|join("\r\n") }}</textarea><br/>
+                <small>{{ _('mapitems.attributes.info') }}</small>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('mapitems.keys') }}:<br/>
+                <textarea name="edit_keys" style="width:99%;min-height:200px;">{{ itemtype.key|join("\r\n") }}</textarea><br/>
+                <small>{{ _('mapitems.keys.info') }}</small>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('mapitems.parameter') }}:<br/>
+            <!--<textarea name="edit_parameters" style="width:99%;min-height:200px;">{{ itemtype.parameters }}</textarea><br/>-->
+            <select name="edit_layout">
+                <option value="">{{ _('itemtype.noparams') }}</option>
+                <option value="hydrant" {% if itemtype.parameters.layout=='hydrant' %}selected="selected"{% endif %}>{{ _('mapitems.params.hydrant') }}</option>
+                <option value="ffentry" {% if itemtype.parameters.layout=='ffentry' %}selected="selected"{% endif %}>{{ _('mapitems.params.ffentry') }}</option>
+            </select><br/>
+            <small>{{ _('mapitems.parameters.info') }}</small>
+            </label>
+        </p>
+        <p style="margin-bottom:20px">
+            <label>
+                <input type="checkbox" name="edit_tileserver" value="1" {% if itemtype.parameters.tileserver=='1' %} checked="checked"{% endif %}/>
+                {{ _('mapitems.tileserver') }}<br/>
+            </label>
+            <br/>
+            <small>{{ _('mapitems.tileserver.info') }}</small><br/>
+            <button type="button" name="action" onclick="buildTiles()"><i class="fa fa-picture-o"></i> {{ _('mapitems.tileserver.build') }}</button>
+        </p>
+
+        <p>
+            <button type="submit" name="action" value="updateitemtypes" class="save"><i class="fa fa-check"></i> {{ _('mapitems.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('mapitems.cancel') }}</button>
+        </p>
+        <input type="hidden" name="form_id" value="admin.mapitem.edit"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    function buildTiles(){
+        $.ajax({ type : "POST", url : "/admin/data/mapitems?action=buildtiles&type={{ itemtype.name }}",
+            success: function(result) {
+                console.log(result);
+            }
+        });
+    }
+{% endblock %}

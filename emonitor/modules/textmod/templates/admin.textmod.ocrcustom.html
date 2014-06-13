@@ -1,0 +1,20 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('textmod.ocrcustom.header.overview') }}</h2>
+    <p><small>{{ _('textmod.ocrcustom.info') }}</small></p>
+    <form method="post" action="">
+        <p>
+            {{ _('textmod.ocrcustom.vocabulary') }}:<br/>
+            <textarea style="width:99%;height:500px;" name="ocrcustom">{{ content }}</textarea>
+            {{ _('textmod.ocrcustom.inputformatinfo') }}
+        </p>
+        <p>
+            <button type="submit" name="action" value="savereocrcustom" class="save"><i class="fa fa-check"></i> {{ _('textmod.ocrcustom.save') }}</button>
+        </p>
+    </form> 
+{% endblock %}

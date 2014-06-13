@@ -1,0 +1,8 @@
+
+.changemap{position:absolute;right:1px;top:0px;}
+.changemap a{text-decoration:none;color:silver;}
+.changemap a:hover{color:#000;}
+
+
+textarea.navigation{font-family:Verdana, Arial, Helvetica, sans-serif;min-height:300px;}
+div.osm_div{ border:1px solid black;width:100%;float:right;min-height:400px;margin-bottom:5px;}

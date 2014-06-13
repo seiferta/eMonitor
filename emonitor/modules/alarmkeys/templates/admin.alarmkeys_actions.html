@@ -1,0 +1,119 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    {{ super() }}
+    <style>
+        .clear{clear:both;}
+        .lists {float:left;width:100%;}
+        .lists div{overflow:hidden;}
+        .lists .group{min-height:50px;border:1px solid #ddd;padding-left:5px;width:99%;}
+        .lists ul { list-style: none; float:left  }
+        .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width: 60px; height:40px; float:left; border:2px solid #333;}
+        .lists li:hover { background:#bbb; }
+        .lists li:active { background:#999; }
+        .cars0{background:#ddd !important;}
+        .cars1{background:#fff !important;}
+        .cars2{background:#f6cece !important;}
+    </style>
+{% endblock %}
+
+{% block content %}
+<div style="padding:20px;" class="content">
+    <h2>{{ _('alarmkeys.header.edit') }}</h2>
+    <p><small>{{ _('alarmkeys.info') }}</small></p>
+    <form method="post">
+        <input type="hidden" name="keyid" value="{{ alarmkey.id }}"/>
+        {% if type>0 or type==-2 %}
+        <p>
+            <label>{{ _('alarmkeys.category') }}:<br/>
+                <input type="text" name="category" value="{{ alarmkey.category }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('alarmkeys.key') }}:<br/>
+                <input type="text" name="key" value="{{ alarmkey.key }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('alarmkeys.keyinternal') }}:<br/>
+                <input type="text" name="keyinternal" value="{{ alarmkey.key_internal }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('alarmkeys.remark') }}:<br/>
+                <textarea name="remark" style="width:99%;">{{ alarmkey.remark or '' }}</textarea>
+            </label>
+        </p>
+        {% endif %}
+        <div class="lists">
+            <div>
+                <small>{{ _('alarmkeys.cars1') }}:</small><br/>
+                <ul id="cars1" class="group" style="width:99%;">
+                    {% for car in alarmkey.getCars1(depid) %}
+                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                        {{ car.dept.name }}<br/>{{ car.name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <small>{{ _('alarmkeys.cars2') }}:</small><br/>
+                <ul id="cars2" class="group" style="width:99%;">
+                    {% for car in alarmkey.getCars2(depid) %}
+                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                        {{ car.dept.name }}<br/>{{ car.name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+                <small>{{ _('alarmkeys.material') }}:</small><br/>
+                <ul id="material" class="group" style="width:99%;">
+                    {% for car in alarmkey.getMaterial(depid) %}
+                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                        {{ car.dept.name }}<br/>{{ car.name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            
+            <small>{{ _('alarmkeys.allcars') }}:</small><br/>
+            <ul id="unused" class="group" style="width:99%;">
+                {% for car in cars %}
+                    {% if car not in (alarmkey.getCars1(depid)+alarmkey.getCars2(depid)+alarmkey.getMaterial(depid)) %}
+                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                        {{ car.dept.name }}<br/>{{ car.name }}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <p>
+            {% if type in [0, -1] %}
+            <button type="submit" name="action" value="savedefault" class="save" onclick="return getCars()"><i class="fa fa-check"></i> {{ _('alarmkey.savedefault') }}</button>
+            {% else %}
+            <button type="submit" name="action" value="savekey" class="save" onclick="return getCars()"><i class="fa fa-check"></i> {{ _('alarmkey.save') }}</button>
+            {% endif %}
+            <button type="submit" class="cancel" name="action" value="cancel"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
+        </p>
+        <input type="hidden" name="deptid" value="{{ depid }}"/>
+        <input type="hidden" name="cars1" id="val_cars1"/>
+        <input type="hidden" name="cars2" id="val_cars2"/>
+        <input type="hidden" name="material" id="val_material"/>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+        $(document).ready(function() {
+            $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
+        });
+
+        function getCars(){
+            $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}));
+            $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}));
+            $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}));
+            return true;
+        }
+{% endblock %}

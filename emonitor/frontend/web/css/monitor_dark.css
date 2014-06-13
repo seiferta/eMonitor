@@ -1,0 +1,1 @@
+/* dark theme */    #area{background-color:black;color:#fff;padding:0px;margin:0px;}@media screen and (-webkit-min-device-pixel-ratio:0){    body{ -webkit-text-size-adjust:auto;}    #area{font-size:3rem;}    .versiontext small{font-size:10px!important;}    .time{font-size:14px!important;}}

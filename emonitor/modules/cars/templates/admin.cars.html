@@ -1,0 +1,64 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('cars.delquestion') }}');
+        }
+
+        function checkAdd(){
+            return ($('#add_name').value!="");
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('cars.header.overview') }}</h2>
+    <p><small>{{ _('cars.info') }}</small></p>
+    <form method="post" action="" style="padding-bottom:20px;">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:25%;">{{ _('cars.name') }}</div>
+                <div class="headcell" style="width:25%;">{{ _('cars.description') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('cars.type') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('cars.fms') }}</div>
+                <div class="headcell" style="width:25%;text-align:right;">{{ _('cars.active') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createcars" title="{{ _('cars.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        
+        {% if cars|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('cars.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for car in cars %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:25%;">{{ car.name }}</div>
+                    <div class="rowcell" style="width:25%;">{{ car.description }}</div>
+                    <div class="rowcell" style="width:15%;">{{ car.type }}</div>
+                    <div class="rowcell" style="width:10%;">{{ car.fmsid }}</div>
+                </div>
+                <button type="submit" name="action" value="deletecars_{{ car.id }}" title="{{ _('cars.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editcars_{{ car.id }}" title="{{ _('cars.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                {% if car.active==1 %}
+                <div style="float:right;margin-top:4px;margin-right:20px;">
+                    <i class="fa fa-check" title="{{ _('cars.activetitle') }}"></i>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('cars.itemscount', count=cars|count) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.cars.overview"/>
+    </form>
+{% endblock %}

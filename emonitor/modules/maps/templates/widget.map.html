@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="/streets/inc/leaflet.css" />
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
+<style>
+    .leaflet-right{display:none}
+    .leaflet-control-container{display:none}
+    .osm_div{position:absolute;top:0;left:0;bottom:0;right:0;background-color: #000000;}
+</style>
+
+<div class="osm_div" id="map"> </div>
+
+<script>
+    var map = new L.Map('map', {zoom:12, doubleClickZoom:false});
+    var startlat = {{ alarm.get('lat') }};
+    var startlng = {{ alarm.get('lng') }};
+    var startzoom = 18;
+    
+    var MyMarker = L.Icon.extend({options:{shadowUrl: '/img/marker-shadow.png', iconAnchor:[12, 41], popupAnchor:[0, -42]}});
+    var redmarker = new MyMarker({iconUrl:'/img/marker_red.png'});
+    var orangemarker = new MyMarker({iconUrl:'/img/marker_orange.png'});
+    var yellowmarker = new MyMarker({iconUrl:'/img/marker_yellow.png'});
+    var colorcode = [yellowmarker, orangemarker, redmarker];
+
+    cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
+    map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
+
+    if({{ alarm.get('marker') }}==1){
+        map.addLayer(new L.Marker(new L.LatLng(startlat, startlng), {icon:colorcode[1],draggable:false}));
+    }
+
+{% if alarm.housenumber %}
+    var polygonPoints = [];
+    {% for p in alarm.housenumber.points %}polygonPoints.push(new L.LatLng({{ p[0] }}, {{ p[1] }}));
+    {% endfor %}
+    var polygon = new L.Polygon(polygonPoints);
+    map.addLayer(polygon);
+{% endif %}
+</script>

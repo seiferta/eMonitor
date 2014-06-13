@@ -1,0 +1,221 @@
+﻿{% extends "admin.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/streets/inc/leaflet.css" />
+    <link rel="stylesheet" href="/streets/inc/streets.css" />
+    <style>
+        .leaflet-right{display:none}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+    <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('streets.header.edit') }}</h2>
+
+    <form method="post">
+        <p>
+            <label style="width:99%">{{ _('streets.text') }}:<br/>
+                <input type="text" name="edit_name" value="{{ street.name }}" style="width:99%"/>
+            </label>
+        </p>
+        <div style="width:99%;position:relative;">
+            <label style="width:50%">{{ _('streets.navigation') }}:<br/>
+                <textarea class="navigation" name="edit_navigation" style="width:99%">{{ street.navigation }}</textarea>
+            </label>
+            <div style="float:right;width:49%;padding-top:16px">
+                <div class="changemap">
+                    {% for map in maps %}
+                        <a href="#" onclick="return changeMap('{{ map.tileserver }}')" title="{{ _('streets.changemaptitle') }}">{{ _(map.name) }}</a>
+                    {% endfor %}
+                </div>
+                <div class="osm_div" id="map"> </div>
+            </div>
+
+        </div>
+        <p style="width:45%">
+            <label style="width:44%">{{ _('streets.city') }}:<br/>
+                <select name="edit_cityid" style="width:99%">
+                    {% for city in cities %}
+                        <optgroup label="{{ city.name }}">
+                            <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% for subcity in city.getSubCityList() %}
+                                <option value="{{city.id }}_{{ subcity }}"{% if street.subcity==subcity %} selected="selected"{% endif %}>{{ subcity }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </label>
+            <small>{{ _('streets.subcity.info') }}</small>
+        </p>
+        <p style="width:45%">
+            <label>
+                <input type="checkbox" name="edit_active" value="1" id="edit_active" {% if street.active==1 %}checked="checked"{% endif %}/>
+                {{ _('streets.active') }}
+            </label>
+        </p>
+        <p style="width:45%">
+            {{_('streets.housenumbers') }}:<br/>
+            <span id="housnumbers">{{ street.housenumbers|count }}</span> {{_('streets.existingnumbers') }}
+            <button type="button" onclick="loadOSMHouseNumbers()"> <i class="fa fa-download fa-hn"></i> {{ _('streets.hnumbers.update') }}</button>
+            <span id="osmhousenumbers"> </span>
+        </p>
+        <div style="width:100%;clear:both;"> </div>
+
+        <div>
+            <div class="headrow">
+                <div style="margin-right:80px;margin-left:15px;">
+                    <div class="headcell" style="width:20%;">{{ _('streets.housenumber.number') }}</div>
+                    <div class="headcell" style="width:80%;">{{ _('streets.housenumber.position') }}</div>
+                </div>
+            </div>
+            <div id="sortable" style="max-height:150px;overflow-y: auto;">
+            {% for hnumber in street.housenumbers %}
+                <div class="row" >
+                    <div style="margin-right:80px;margin-left:15px;">
+                        <div class="rowcell" style="width:20%;">{{ hnumber.number }}</div>
+                        <div class="rowcell" style="width:80%;">{{ hnumber.points }}</div>
+                    </div>
+                    <button type="button" name="action" value="deletehnumber_{{ hnumber.id }}" onclick="return questionDelHn({{ hnumber.id }})"><i class="fa fa-trash-o fa-lg"></i></button>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="headrow">
+                <div style="margin-right:80px;margin-left:15px;">
+                    <div class="headcell" style="width:20%;">
+                        <input type="text" name="housenumber_number" id="housenumber_number" style="width:99%;"/>
+                    </div>
+                    <div class="headcell" style="width:80%;">
+                        <input type="text" name="housenumber_points" id="housenumber_points" style="width:99%;"/>
+                    </div>
+                </div>
+                <button type="button" name="action" onclick="return addHousenumber()"><i class="fa fa-check fa-lg"></i></button>
+            </div>
+            <p style="padding-bottom:20px;">{{ _('streets.housenumbers.info') }}</p>
+        </div>
+        <p style="margin-top:30px;">
+            <label>
+                <input type="checkbox" name="edit_position" value="1" id="edit_position"/>
+                {{ _('streets.updateposition') }}
+            </label>
+        </p>
+        <input type="hidden" name="edit_lat" id="lat" value="{{ street.lat }}"/>
+        <input type="hidden" name="edit_lng" id="lng" value="{{ street.lng }}"/>
+        <input type="hidden" name="edit_zoom" id="zoom" value="{{ street.zoom }}"/>
+        <p>
+            <button type="submit" name="action" value="savestreet" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('streets.save') }}</button>
+            <button type="submit" name="action" value="back" class="cancel"><i class="fa fa-times"></i> {{ _('streets.cancel') }}</button>
+        </p>
+        <input type="hidden" name="street_id" value="{{ street.id }}"/>
+        <input type="hidden" name="form_id" value="admin.streets.overview"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    var hnid = '0';
+
+    ws.onmessage=function(e){
+        if (e.data==hnid){
+             loadDone();
+             showOSMHousenumbers({{ street.id }});
+         }
+    }
+
+    var maptype = '{{ tileserver.map }}';
+    var map = new L.Map('map', {zoom:12, doubleClickZoom: false});
+    function onMapClick(e){}
+    var housenumbers = L.layerGroup();
+    housenumbers.addTo(map);
+
+    var cloudmadeUrl = '{{ tileserver.map.tileserver }}',
+        cloudmade = new L.TileLayer(cloudmadeUrl, {minZoom: 12, maxZoom: 18});
+
+    if($('#lat').val()!="" && $('#lng').val()!="" && $('#zoom').val()!=""){
+        map.setView(new L.LatLng($('#lat').val(), $('#lng').val()), $('#zoom').val()).addLayer(cloudmade);
+    }else{
+        map.setView(new L.LatLng({{ tileserver.lat }}, {{ tileserver.lng }}), {{ tileserver.zoom }}).addLayer(cloudmade);
+    }
+    map.on('click', onMapClick);
+    map.on('moveend', function(e) {$('#edit_position').attr('checked', true);});
+
+    map.on('dblclick', onMapDblClick);
+    function onMapDblClick(e){
+        if ($('#housenumber_number').val()!=''){
+            $('#housenumber_points').val(e.latlng.lat + ';' + e.latlng.lng);
+        }
+    }
+
+    function setPosition(){
+        var pos = map.getCenter();
+        $('#lat').val(pos.lat);
+        $('#lng').val(pos.lng);
+        $('#zoom').val(map.getZoom());
+    }
+    
+    function changeMap(type){
+        map.removeLayer(cloudmade);
+        map.addLayer(new L.TileLayer(type), {minZoom: 12, maxZoom: 18});
+        return false;
+    }
+
+    function loadOSMHouseNumbers(){
+        $('#osmhousenumbers').html('<img class="updating" src="/admin/img/loading.gif"/>');
+        $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbersfromosm&streetid={{ street.id }}",
+            success: function(result) {
+                hnid = result;
+            }
+        });
+    }
+
+    function loadDone(){
+        $('#osmhousenumbers').html('');
+    }
+
+    function showOSMHousenumbers(streetid){
+        $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbers&streetid="+streetid+"&format=json",
+            success: function(ret) {
+                housenumbers.clearLayers();
+                $.each(ret, function(val) {
+                    var polygonPoints = [];
+                    $.each(ret[val], function(index, element) {
+                        polygonPoints.push(new L.LatLng(ret[val][index][0], ret[val][index][1]));
+                    });
+                    housenumbers.addLayer(new L.Polygon(polygonPoints));
+                });
+            }
+        });
+    }
+    showOSMHousenumbers({{ street.id }});
+
+    function questionDelHn(id){
+        if (confirm('{{ _('alarms.type.delquestion') }}')){
+            $.ajax({ type : "POST", url : "/admin/data/streets?action=delhousenumber&housenumberid="+id,
+                success: function(ret) {
+                    $('#sortable').html(ret);
+                    return false;
+                }
+            });
+        }
+    }
+
+    function addHousenumber(){
+        $.ajax({ type : "POST", url : "/admin/data/streets?action=addhousenumber&streetid={{ street.id }}&hnumber="+$('#housenumber_number').val()+"&points="+$('#housenumber_points').val(),
+            success: function(ret) {
+                $('#sortable').html(ret);
+                $('#housenumber_number').val('');
+                $('#housenumber_points').val('');
+                return false;
+            }
+        });
+        return false;
+    }
+
+{% endblock %}

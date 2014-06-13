@@ -1,0 +1,31 @@
+<fieldset>
+    <h3>{{ _('event.parameters') }}:</h3>
+    <div style="width:50%;float:left;">
+    {% for var in handler[2] %}
+        {% if var.startswith('in.') %}
+        <p>
+            {{ var[3:] }}:<br/>
+            <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+            <select name="edit_parameters" style="width:99%">
+                <option value="">{{ _('event.variable.notset') }}</option>
+                {% for inparameter in inparameters %}
+                <option value="{{ inparameter[4:] }}" {% if inparameter[4:]==eventhandler.getParameterValue(var) %}selected="selected"{% endif %}>&gt; {{ inparameter[4:] }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        {% else %}
+        <p>
+            <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+            <input type="hidden" name="edit_parameters" value="{{ var[4:] }}" style="width:99%"/>
+        </p>
+        {% endif %}
+    {% endfor %}
+    
+    {% if handler[2]|count==0 %}
+    <p>{{ _('event.noparameters') }}</p>
+    {% endif %}
+    </div>
+    {% if handler[2]|count %}
+    <div style="float:left;width:40%;padding:20px;">{{ _('event.paraminfo') }}</div>
+    {% endif %}
+</fieldset>

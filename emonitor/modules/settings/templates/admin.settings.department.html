@@ -1,0 +1,79 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script type="text/javascript" src="/settings/inc/jquery.simple-color.js"> </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .deptcolor{width:50px;height:25px;}
+        .simpleColorContainer{position:fixed;}
+        div.row:hover{cursor:pointer !important;}
+    </style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+
+    <h2>{{ _('settings.department.listtitle') }}</h2>
+    <p><small>{{ _('settings.department.info') }}</small></p>
+    <script>
+        function questionDel(){
+            return confirm('{{ _('settings.department.delquestion') }}');
+        }
+    </script>
+    <form method="post" name="departmentlist" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:50%;">{{ _('settings.department.name') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('settings.department.defaultcity') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('settings.department.color') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createdepartment" title="{{ _('settings.department.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        {% if not departments|length %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('settings.department.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for department in departments %}
+            <div class="row">
+                <div style="position:absolute;left:3px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:50%;">
+                        {{ department.name }}
+                        <small>{% if loop.index==1 %}<em>{{ _('settings.department.defaultdep') }}</em>{% endif %}</small>
+                    </div>
+                    <div class="rowcell" style="width:30%;">
+                        {{ department.defaultcityname().name or '-' }}
+                    </div>
+                    <div class="rowcell" style="width:20%;">
+                        <span class="deptcolor" style="background-color:{{ department.color}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+                <input type="hidden" name="departmentids" value="{{ department.id}}"/>
+                <button type="submit" name="action" value="deletedept_{{ department.id }}" title="{{ _('settings.department.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detaildept_{{ department.id }}" title="{{ _('settings.department.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="headrow">
+            <button type="submit" name="action" value="ordersetting" id="orderchange" style="display:none;"><i class="fa fa-check"></i> {{ _('settings.department.ordersave') }}</button>
+            <small style="float:right;margin-right:50px">{{ _('settings.department.itemscount', count=departments|length) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.settings.department.overview"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    function questionDel(){
+        return confirm($('#del_question').text());
+    }
+    $(function() {$( "#sortable" ).sortable({update: function(event, ui){$('#orderchange').show()}});});
+{% endblock %}
+

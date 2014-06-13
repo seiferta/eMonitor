@@ -1,0 +1,66 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <link rel='stylesheet' href='/settings/inc/colorPicker.css' />
+    <style>
+        div.colorPicker-picker{width:114px !important;height:20px !important;border:1px solid black !important}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/settings/inc/jquery.colorPicker.min.js"> </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('settings.cars.listtitle') }}</h2>
+    <p><small>{{ _('settings.cars.info') }}</small></p>
+    <form method="post" name="maplist" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:80%;">{{ _('settings.cars.types') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('settings.cars.typecolor') }}</div>
+            </div>
+        </div>
+        <div id="sortable">
+            {% for cartype in cartypes %}
+            <div class="row">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:80%;">
+
+                        <input type="text" name="cartype" value="{{ cartype[0] }}" style="width:99%"/>
+                    </div>
+                    <div class="rowcell" style="width:20%;">
+
+                        <input type="text" name="cartype" id="color{{ cartype[1] }}" value="{{ cartype[1] }}"/>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:80%;">
+                        <input type="text" name="cartype" style="width:99%"/>
+                    </div>
+                </div>
+                 <div class="rowcell" style="width:20%;">
+                        <input type="text" name="cartype" id="color-1" value=""/>
+                    </div>
+            </div>
+        </div>
+        <div class="headrow" style="padding-left:20px">
+            <button type="submit" name="action" value="updatetypes" class="save"><i class="fa fa-check"></i> {{ _('settings.cars.save') }}</button>
+        </div>
+        <input type="hidden" name="form_id" value="admin.settings.cars.overview"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    $(document).ready( function() {
+        $('input[id^="color"]').colorPicker();
+    });
+{% endblock %}

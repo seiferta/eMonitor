@@ -1,0 +1,126 @@
+{% from 'admin.macro.html' import subnavigation with context %}
+{% from 'admin.macro.html' import flashmessages with context %}
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="expires" content="43200"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Access-Control-Allow-Origin" content="*" />
+        <!-- 
+            This website is powered by eMonitor
+        -->
+        <title>{{ _('admin.titlemain') }}</title>
+        <meta name="generator" content="eMonitor"/>
+
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="stylesheet" href="/css/layout.css" />
+        <link rel="stylesheet" href="/admin/css/admin.css" />
+        <style>
+            .footer_functions{position:absolute;right:10px;top:2px;color:#fff;}
+            .footer_functions a{color:#fff;}
+            .footer_functions a:hover{color:#428bca;}
+            span#ws i{padding-right:4px;}
+        </style>
+        {% block style %}{% endblock %}
+        <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/jquery-ui-1.10.1.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/jquery.layout.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/bootstrap.min.js"></script>
+        <script>
+            var ws;
+        </script>
+        <script type="text/javascript" language="javascript" src="/admin/js/admin.js"> </script>
+        {% block script %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="maincontainer" id="maincontainer">
+            <div class="pane ui-layout-center" style="margin:0 !important;padding:0;" id="subcontainer">
+                <div class="content" style="margin:0 !important;padding:0 !important">
+                    {{ flashmessages(get_flashed_messages(category_filter=["admin"])) }}
+                    <div style="padding:20px;">{% block content %}{% endblock %}</div>
+                </div>
+                {% block subnavigation %}{% endblock %}
+            </div>
+            <div class="pane ui-layout-north" onmouseover="layout.allowOverflow('north')" onmouseout="layout.resetOverflow(this)">
+                <h1 style="padding-left:10px;">{{ _('admin.titlemain') }}</h1>
+                <div class="header_links"><a href="/">{{ _('admin.frontendlink') }}</a></div>
+                
+                <div class="user usermenu" style="text-align:right;z-index:30;overflow:visible;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-user fa-lg" style="color:#333" title="{{ user.username }}"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user"><i class="fa fa-pencil fa-fw"></i> {{ user.username }}</a></li>
+                        <li><a href="/logout"><i class="fa fa-ban fa-fw"></i> {{ _('admin.logout') }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pane ui-layout-south" style="overflow:visible">
+                {% block footer %}{% endblock %}
+                <div style="clear:both;position:fixed;bottom:5px;left:30px;">
+                    <small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small>
+                </div>
+                <div class="footer_functions">
+                    <span id="ws"><i class="fa fa-eye fa-lg"></i></span>
+                </div>
+            </div>
+            <div class="pane ui-layout-west">
+                <div class="navigation">
+                <ul>
+                    {% for module in modules %}
+                    <li>
+                        <a href="/admin/{{ modules[module].info['path'] }}" {% if module==current_mod.info['name'] %} class="active" {% endif %}>{{ _('module.'+module) }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </div>
+            </div><div class="version"> </div>
+        </div>
+        <div class="overlay">
+        <div class="overlay_back"> </div>
+        <div class="popup">
+            <div class="popup_close"><a href="#" onclick="return closeOverlay()"><img src="/img/close.png"/></a></div>
+            <div id="overlaycontent"> </div>
+        </div>
+        </div>
+        <script>
+            {% block script_end %}
+            var layout;
+            $(document).ready(function () {
+
+                layout = $('#maincontainer').layout({
+                    north: {closable:false, resizable:false, spacing_open: 0, spacing_closed: 0, size:54},
+                    south: {closable:false, resizable:false, spacing_open: 0, spacing_closed: 0, size:20},
+                    west:  {closable:true, resizable:true, spacing_open: 5, spacing_closed: 5, size:200},
+                    center:{paneSelector: ".ui-layout-center",
+                            childOptions: {
+                                spacing_open: 0,
+                                spacing_closed:0,
+                                north: {paneSelector: ".subnavigation"},
+                                center:{paneSelector: ".content"}
+                            }
+                    },
+                    resizerTip:'{{ _('layout.resize') }}',
+                    togglerTip_open: '{{ _('layout.open') }}',
+                    togglerTip_closed: '{{ _('layout.closed') }}'
+                });
+            });
+
+            $('.usermenu').hover(function() {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+            }, function() {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+            });
+
+            function closeOverlay(){
+                $('.overlay').toggle();return false;
+            }
+            {% endblock %}
+        </script>
+    </body>
+</html>

@@ -1,0 +1,162 @@
+import os
+import time
+from flask import send_from_directory, abort, Response, stream_with_context
+from emonitor.sockethandler import SocketHandler
+from emonitor.utils import Module
+from emonitor.widget.monitorwidget import MonitorWidget
+from emonitor.extensions import classes, db, events, scheduler, babel, signal
+from emonitor.modules.settings.settings import Settings
+from .content_admin import getAdminContent, getAdminData
+from .content_frontend import getFrontendContent, getFrontendData
+
+
+class AlarmsModule(Module):
+    
+    info = dict(area=['admin', 'frontend', 'widget'], messages=['add', 'info', 'activate', 'close'], name='alarms', path='alarms', version='0.1')
+    
+    def __repr__(self):
+        return "cars"
+
+    def __init__(self, app):
+        Module.__init__(self, app)
+        # add template path
+        app.jinja_loader.searchpath.append("%s/emonitor/modules/alarms/templates" % app.config.get('PROJECT_ROOT'))
+
+        # subnavigation
+        self.adminsubnavigation = [('/admin/alarms', 'alarms.base'), ('/admin/alarms/types', 'alarms.types'), ('/admin/alarms/test', 'alarms.test')]
+        
+        # create database tables
+        from .alarm import Alarm
+        from .alarmhistory import AlarmHistory 
+        from .alarmattribute import AlarmAttribute
+        from .alarmsection import AlarmSection
+        from .alarmtype import AlarmType
+        classes.add('alarm', Alarm)
+        classes.add('alarmattribute', AlarmAttribute)
+        classes.add('alarmhistory', AlarmHistory)
+        classes.add('alarmsection', AlarmSection)
+        classes.add('alarmtype', AlarmType)
+        db.create_all()
+
+        self.widgets = [MonitorWidget('alarms_income', size=(2, 2), template='widget.income.html'), MonitorWidget('alarms', size=(2, 1), template='widget.alarm.html'), MonitorWidget('alarms_timer', size=(1, 1), template='widget.timer.html'), MonitorWidget('alarms_remark', size=(2, 1), template="widget.alarm_comment.html")]
+        
+        # eventhandlers
+        events.addEvent('alarm_added', handlers=[], parameters=['out.alarmid'])
+        events.addEvent('alarm_changestate', handlers=[], parameters=['out.alarmid', 'out.state'])
+        
+        events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarm.Alarms', Alarm.handleEvent, ['in.text', 'out.id', 'out.fields'])
+        events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarmtype.AlarmTypes', AlarmType.handleEvent, ['in.text', 'out.type'])
+
+        # signals and handlers
+        signal.addSignal('alarm', 'changestate')
+        signal.addSignal('alarm', 'added')
+        signal.addSignal('alarm', 'updated')
+        signal.connect('alarm', 'changestate', frontendAlarmHandler.handleAlarmUpdated)
+        signal.connect('alarm', 'added', frontendAlarmHandler.handleAlarmAdded)
+        signal.connect('alarm', 'updated', frontendAlarmHandler.handleAlarmUpdated)
+
+        # static folders
+        @app.route('/alarms/inc/<path:filename>')
+        def alarms_static(filename):
+            return send_from_directory("%s/emonitor/modules/alarms/inc/" % app.config.get('PROJECT_ROOT'), filename)
+
+        @app.route('/alarms/export/<path:filename>')  # filename = alarms/pdf/[id]-[style].pdf
+        def export_static(filename):
+            filename, extension = os.path.splitext(filename)
+            id, template = filename.split('-')
+            if extension not in ['.pdf', '.html', '.png']:
+                abort(404)
+            elif extension == '.pdf':
+                return Response(Module.getPdf(Alarm.getExportData('.html', id=id, style=template)), mimetype="application/pdf")
+            elif extension == '.html':
+                return Response(Alarm.getExportData(extension, id=id, style=template), mimetype="text/html")
+            elif extension == '.png':
+                print "filename:", filename, extension
+                return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename), mimetype="image/png")
+            
+        # translations
+        babel.gettext(u'module.alarms')
+        babel.gettext(u'alarms.base')
+        babel.gettext(u'alarms.types')
+        babel.gettext(u'alarms.test')
+        babel.gettext(u'alarms_income')
+        babel.gettext(u'alarms_timer')
+        babel.gettext(u'alarms_remark')
+        babel.gettext(u'alarms')
+        babel.gettext(u'emonitor.modules.alarms.alarm.Alarms')
+        babel.gettext(u'emonitor.modules.alarms.alarmtype.AlarmTypes')
+        babel.gettext(u'alarms.test.protocol')
+        babel.gettext(u'alarms.test.result')
+        babel.gettext(u'alarmstate.active')
+        babel.gettext(u'alarmstate.created')
+        babel.gettext(u'alarmstate.done')
+        babel.gettext(u'alarmstate.archive')
+        babel.gettext(u'alarms.statechangeactivated')
+        babel.gettext(u'alarms.prioshort0')
+        babel.gettext(u'alarms.prioshort1')
+        babel.gettext(u'alarms.prioshort2')
+        babel.gettext(u'alarms.carsinuse')
+        babel.gettext(u'history.autochangeState')
+        babel.gettext(u'history.message')
+        babel.gettext(u'trigger.alarm_added')
+        babel.gettext(u'trigger.alarm_changestate')
+        
+        # init
+        # Do init script for alarms at start and add active alarms (state = 1)
+        #from modules.alarms.alarm import Alarm
+        #from core.extensions import classes, scheduler, events
+        aalarms = classes.get('alarm').getActiveAlarms()  # get last active alarm
+        
+        if aalarms:  # add active alarm and closing time
+            try:
+                for aalarm in aalarms:
+                    scheduler.add_single_job(events.raiseEvent, ['alarm_added', dict({'alarmid': aalarm.id})])
+                    closingtime = time.mktime(aalarm.timestamp.timetuple()) + float(Settings.get('alarms.autoclose', 1800))
+
+                    if closingtime > time.time():  # add close event
+                        scheduler.add_single_job(Alarm.changeState, [aalarm.id, 2])
+                    else:
+                        scheduler.add_single_job(Alarm.changeState, [aalarm.id, 2])
+            except:
+                app.logger.error('alarms.__init__.py: aalarm error')
+
+    def __repr__(self):
+        return "alarms"
+
+    def frontendContent(self):
+        return 1
+
+    def getAdminContent(self, **params):
+        return getAdminContent(self, **params)
+
+    def getAdminData(self):
+        return getAdminData(self)
+
+    def getFrontendContent(self, **params):
+        return getFrontendContent(**params)
+        
+    def getFrontendData(self):
+        return getFrontendData(self)
+
+    #def getPdf(self, **params):
+    #    return self.getPrint(getPrintData(self, **params))
+
+
+class frontendAlarmHandler(SocketHandler):
+    @staticmethod
+    def handleAlarmChangestate(sender, **extra):
+        SocketHandler.send_message('alarm.updated', **extra)
+
+    @staticmethod
+    def handleAlarmAdded(sender, **extra):
+        SocketHandler.send_message('alarm.added', **extra)
+
+    @staticmethod
+    def handleAlarmUpdated(sender, **extra):
+        SocketHandler.send_message('alarm.updated', **extra)
+
+
+class adminAlarmHandler(SocketHandler):
+    @staticmethod
+    def handleAlarmTestUpload(sender, **extra):
+        SocketHandler.send_message('alarm.testupload_start', **extra)

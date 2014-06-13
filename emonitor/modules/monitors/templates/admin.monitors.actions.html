@@ -1,0 +1,38 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('monitors.actions.header.overview') }}</h2>
+    <p><small>{{ _('monitors.actions.info') }}</small></p>
+
+    <div style="position:absolute;top:20px;right:20px;">
+        <a href="#" title="{{ _('monitors.current.refreshtitle') }}" class="icon" onclick="return refreshSchedules()"><i class="fa fa-refresh"></i></a>
+    </div>
+    <div id="loadinginfo" style="background-color:#ffffff;text-align:center;padding:20px 5px;margin:40px 5px;display:none;">
+        {{ _('monitors.actions.loadingschedules') }}
+        <br/><br/>
+        <img src="/admin/img/loading.gif"/>
+    </div>
+    <div id="schedules" style="position:relative"> </div>
+    <div style="clear:left;"> </div>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    refreshSchedules();
+    
+    function refreshSchedules(){
+        $('#loadinginfo').toggle();
+        $('#schedules').html('');
+        $.ajax({ type : "POST", url : "/admin/data/monitors?action=schedules", 
+            success: function(result){
+                $('#loadinginfo').toggle();
+                $('#schedules').html(result);
+            }
+        });
+        return false;
+    }
+{% endblock %}

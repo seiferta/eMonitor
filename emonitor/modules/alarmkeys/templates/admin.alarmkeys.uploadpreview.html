@@ -1,0 +1,91 @@
+<div>
+    <form id="importoptions" action="/admin/data/alarmkeys?action=doimport" method="post" style="position:relative">
+        {% if vals['carsnotfound'].keys()|count>0 %}
+        <div>
+            <h3>{{ _('alarmkeys.upload.step4header') }}</h3>
+            <ul>
+                {% for k in vals['carsnotfound'].keys() %}
+                {% if k!='' %}
+                <li>{{ k }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <h3>{{ _('alarmkeys.upload.step5header') }}</h3>
+        <div class="headrow">
+            <div style="margin-right:10px;margin-left:40px;">
+                <div class="headcell" style="width:15%;">{{ _('alarmkeys.upload.category') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('alarmkeys.upload.key') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('alarmkeys.upload.keyinternal') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('alarmkeys.upload.cars1') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('alarmkeys.upload.cars2') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('alarmkeys.upload.material') }}</div>
+            </div>
+        </div>
+        
+        <div id="sortable" style="max-height:400px; overflow-y:auto;">
+            {% for val in vals['keys'] %}
+            <div class="row" id="state_{{ val['state'] }}">
+                <div style="margin-right:10px;margin-left:40px;min-height:20px;">
+                    <div class="rowcell" style="width:15%;">{{ val['category']|safe }}</div>
+                    <div class="rowcell" style="width:20%;">{{ val['key']|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['keyinternal']|safe }}</div>
+                    <div class="rowcell" style="width:20%;">{{ val['cars1']|join(', ')|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['cars2']|join(', ')|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['material']|join(', ')|safe }}</div>
+                    <div style="position:absolute;left:2px;top:4px;">
+                        {% if val['state']=='0' %}
+                        <i class="fa fa-check" title="{{ _('alarmkeys.upload.existingtitle') }}"></i>
+                        {% elif val['state']=='1' %}
+                        <i class="fa fa-refresh" title="{{ _('alarmkeys.upload.changestitle') }}"></i>
+                        {% else %}
+                        <i class="fa fa-plus" title="{{ _('alarmkeys.upload.addtitle') }}"></i>
+                        {% endif %}
+                    </div>
+                    <div style="position:absolute;top:2px;left:20px;">
+                        {% if val['state']!='0' %}
+                        <input name="importindex" type="checkbox" value="{{ vals['keys'].index(val) }}" checked="checked"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('alarmkeys.upload.itemscount', count=vals['keys']|count) }}</small><br/>
+            {% for state in vals['states'].keys() %}
+                {{ vals['states'][state] }} {{ _('alarmkeys.upload.states'+state) }}, 
+            {% endfor %}
+        </div>
+        <p> </p>
+        <h3>{{ _('alarmkeys.upload.step6header') }}</h3>
+        
+        <input type="checkbox" name="add_selected"/> {{ _('alarmkeys.upload.uploadoption1') }}<br/>
+        <input type="checkbox" name="add_new" checked="checked"/> {{ _('alarmkeys.upload.uploadoption2') }}<br/>
+        <input type="checkbox" name="add_update" checked="checked"/> {{ _('alarmkeys.upload.uploadoption3') }}<br/>
+        {% if vals['carsnotfound'].keys()|count>0 %}
+        <input type="checkbox" name="add_material" value="1" checked="checked"/> {{ _('alarmkeys.upload.missingadd') }}<br/>
+        {% endif %}
+        <p> </p>
+        <button type="button" onclick="return doImport()" id="evalData2">{{ _('alarmkeys.upload.startupdate') }}</button>
+    </form>
+    
+    <script>
+        function doImport(){
+            $('#tab1').append($('#overlay_proto').html());
+            $('#myTab li:eq(1) a').tab('show');
+            $.ajax({
+                type: "POST",
+                url: '/admin/data/alarmkeys?action=doimport&filename='+$('#filename').val()+"&sheetname="+$('#sheetname').val()+'&department='+$('#department').val(),
+                data: ($('#definitionForm').formSerialize()+'&'+$('#importoptions').formSerialize()),
+                dataType: "html",
+                success: function(data) {
+                    $('#tab1 > .overlayproto').remove();
+                },
+            });
+            return false; 
+        };
+    </script>
+</div>

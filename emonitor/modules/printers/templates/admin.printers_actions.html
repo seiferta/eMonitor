@@ -1,0 +1,64 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        label{width:100%;}
+    </style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('printers.header.edit') }}</h2>
+    <form method="post" action="" name="editcity">
+        <p>
+            <label>{{ _('printers.name') }}:<br/>
+                <input type="text" name="printername" value="{{ printer.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('printers.module') }}:<br/>
+                <select name="template" style="width:20%;">
+                    {%  for k in templates %}
+                        <optgroup label="{{ _('module.'+k) }}">
+                        {%  for t in templates[k] %}
+                            <option value="{{ k+'.'+t }}"{% if printer.module+printer.layout==k+t %} selected="selected"{% endif %}>{{ _('template.'+t[6:-5]) }}</option>
+                        {% endfor %}
+                        </optgroup>
+                    {%  endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('printers.printer') }}:<br/>
+                <select name="printerprinter" style="width:99%;">
+                    {% for name in printernames %}
+                    <option value="{{ name }}"{% if printer.printer==name %} selected="selected"{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('printers.pages') }}:<br/>
+                <select name="printersettings" style="width:20%;">
+                    {% for i in range(1, 6) %}
+                    <option value="{{ i }}"{% if printer.settings[0]==i|string %} selected="selected"{% endif %}>{{ i }}</option>
+                    {%  endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('printers.settings') }}:<br/>
+                <textarea name="printersettings" style="width:99%;height:100px;">{{ printer.settings[1] }}</textarea>
+            </label>
+        </p>
+        <p>
+            <button type="submit" name="action" value="updateprinter" class="save"><i class="fa fa-check"></i> {{ _('printers.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('printers.cancel') }}</button>
+        </p>
+        <input type="hidden" name="printer_id" value="{{ printer.id }}"/>
+        <input type="hidden" name="form_id" value="printer.edit"/>
+    </form>
+{% endblock %}

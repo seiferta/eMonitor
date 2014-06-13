@@ -1,0 +1,54 @@
+{% extends "admin.html" %}
+
+{%  block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('alarmobjects.delquestion') }}');
+        }
+
+        function checkAdd(){
+            return (document.getElementById('add_name').value!="");
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('alarmobjects.header.overview') }}</h2>
+    <p><small>{{ _('alarmobjects.info') }}</small></p>
+
+    <form method="post">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:50%;">{{ _('alarmobjects.name') }}</div>
+                <div class="headcell" style="width:50%;">{{ _('alarmobjects.street') }}</div>
+            </div>
+            <button type="submit" name="action" value="createalarmobject" title="{{ _('alarmobjects.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        
+        {% if alarmobjects|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('alarmobjects.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for alarmobject in alarmobjects %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:50%;">{{ alarmobject.name }}</div>
+                    <div class="rowcell" style="width:50%;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</div>
+                </div>
+                {% if alarmobject.lat!=0.0 %}
+                <i class="fa fa-map-marker" style="color:#adadad" title="{{ _('alarmobjects.mapset') }}"> </i>
+                {% endif %}
+                <button type="submit" name="action" value="deletealarmobject_{{ alarmobject.id }}" title="{{ _('alarmobjects.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editalarmobject_{{ alarmobject.id }}" title="{{ _('alarmobjects.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('alarmobjects.itemscount', count=alarmobjects|count) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.alarmobjects.overview"/>
+    </form>
+{% endblock %}

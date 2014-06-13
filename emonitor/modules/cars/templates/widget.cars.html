@@ -1,0 +1,26 @@
+<style>
+    div#car1{border:3px solid silver; float:left;margin:5px 5px 0px 0px;text-align:center;padding:15px;width:19%;}
+    div#car2{border:3px solid silver; float:left;margin:5px 5px 0px 0px;text-align:center;padding:15px;width:19%;}
+    div#material{border:3px solid silver; float:left;margin:5px 5px 0px 0px;text-align:center;padding:15px;width:19%;}
+    
+    div#alarm_cars1{display:block;overflow:hidden;padding:5px 0px;}
+    div#alarm_cars2{display:block;overflow:hidden;padding:5px 0px;}
+    div#alarm_material{display:block;overflow:hidden;padding:5px 0px;}
+</style>
+{% if alarm %}
+<div id="alarm_cars1" style="padding-left:20px;">
+    {% for car in alarm.cars1 %}
+        <div id="car1">{{ car.dept.name }}<br/>{{ car.name }}</div>
+    {% endfor %}
+</div>
+<div id="alarm_cars2" style="padding-left:20px;">
+    {% for car in alarm.cars2 %}
+        <div id="car2">{{ car.dept.name }}<br/>{{ car.name }}</div>
+    {% endfor %}
+</div>
+<div id="alarm_material" style="padding-left:20px;">
+    {% for car in alarm.material %}
+        <div id="material">{{ car.dept.name }}<br/>{{ car.name }}</div>
+    {% endfor %}
+</div>
+{% endif %}

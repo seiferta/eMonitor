@@ -1,0 +1,18 @@
+{% for key in keys %}
+<div class="subrow">
+    <div style="margin-right:70px;margin-left:20px;">
+        <div class="subrowcell" style="width:15%;">{{ key.category }}</div>
+        <div class="subrowcell" style="width:20%;">{{ key.key }}</div>
+        <div class="subrowcell" style="width:20%;">{{ key.key_internal }}</div>
+        
+        <div class="subrowcell" style="width:25%;" title="{{ _('alarmkeys.default') }}">
+            <span {% if key.hasDefinition(department) %}class ="defaultaao"{% endif %}>{{ key.getCars1(department)|join(', ') }}</span>
+        </div>
+        <div class="subrowcell" style="width:20%;">
+            <span {% if key.hasDefinition(department) %}class="defaultaao"{% endif %}>{{ key.getCars2(department)|join(', ') }}</span>
+        </div>
+    </div>
+    <button type="submit" name="action" onclick="return questionDelCars()" value="deletecars" value="deletecars_{{ key.id }}_{{ department }}" title="{{ _('alarmkeys.deletetitle') }}"><i class="fa fa-trash-o fa-lg"></i></button>
+    <button type="submit" name="action" value="editcars_{{ key.id }}_{{ department }}" title="{{ _('alarmkeys.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+</div>
+{% endfor %}

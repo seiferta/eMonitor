@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <style>
+            @page {
+                height: 742px;
+                width: 495px;
+
+                @frame content_frame{
+                    top: 80px;
+                    left: 50px;
+                    right: 150px;
+                    height:565px;
+                    -pdf-frame-border: 1;
+                }
+
+                @frame header_frame{
+                    -pdf-frame-content: header_content;
+                    left: 50px;
+                    right: 50px;
+                    top: 50px;
+                    height:23px;
+                }
+
+                @frame cars_frame{
+                    -pdf-frame-content: cars_content;
+                    top:80px;
+                    right:50px;
+                    width:90px;
+                    height:565px;
+                    -pdf-frame-border: 1;
+                }
+
+                @frame map_frame{
+                    -pdf-frame-content: map_content;
+                    left: 50px;
+                    right: 50px;
+                    bottom: 50px;
+                    height: 418px;
+                    margin: 0;
+                    -pdf-frame-border: 1;
+                }
+            }
+
+            body{font-family: Arial, Helvetica, sans-serif}
+            #content{float:left;}
+            #cars_content{float:left;}
+
+            h1{font-size:3em;padding-bottom:10px;}
+            h2{font-size:2em;}
+            h3{font-size:1.2em;padding-bottom:2px;}
+            p{font-size:1em}
+
+            p.car{border:1px solid black; padding:5px 1px 1px 1px; text-align:center}
+        </style>
+    </head>
+    <body>
+
+        <div id="header_content">
+            <p>ALARMFAX: {{ _('template.alarm_sum') }} - {{ alarm.timestamp|datetime }}</p>
+        </div>
+
+        <div id="content">
+            <h1 style="font-size:3em;padding-top:10px;padding-bottom:0;">{{ alarm.key.category }}{% if alarm.key.category %}: {% endif %}{{  alarm.key.key }}</h1>
+            <h1 style="font-size:3em;padding:0">{{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }}</h1>
+            <h1 style="font-size:2em;padding:0">{{ alarm.street2.name }}</h1>
+            <hr style="margin: 1em 0;"/>
+
+            {% if alarm.object %}
+                <p style="font-size:1em;">Objekt:</p>
+                <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.object.name }}</h3>
+                <h3 style="font-size:1.5em;padding-bottom:10px;">Einsatzplan: {{ alarm.get('alarmplan') }}</h3>
+                <hr style="margin: 1em 0;"/>
+            {% endif %}
+
+            {% if alarm.person %}
+                <p style="font-size:1em;">Mitteiler:</p>
+                <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.person }}</h3>
+            {% endif %}
+
+            {% if alarm.remark %}
+                <hr style="margin: 1em 0;"/>
+                <p style="font-size:1em;">Bemerkung:</p>
+                <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.remark }}</h3>
+            {% endif %}
+        </div>
+
+        <div id="cars_content">
+            <p style="text-align:center;padding:5px 0 0 0">Fahrzeuge</p>
+            <div style="margin:10px">
+            {% for car in alarm.cars1 %}
+                <p class="car">
+                    {{ car.dept.name }}<br/>
+                    {{ car.name }}
+                </p>
+            {% endfor %}
+            <p>&nbsp;</p>
+            {% for car in alarm.cars2 %}
+                <p class="car">
+                    {{ car.dept.name }}<br/>
+                    {{ car.name }}
+                </p>
+            {% endfor %}
+            <p>&nbsp;</p>
+            {% for car in alarm.material %}
+                <p class="car">
+                    {{ car.dept.name }}<br/>
+                    {{ car.name }}
+                </p>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div id="map_content">
+            <img src="/alarms/export/{{ alarm.id }}-alarmmap.png" width="691"/>
+        </div>
+
+    </body>
+</html>

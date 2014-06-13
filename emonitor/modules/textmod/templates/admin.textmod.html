@@ -1,0 +1,70 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm(document.getElementById('del_question').innerHTML);
+        }
+
+        function showupload(){
+            $('#overlaycontent').html('Definition hochladen');
+            $('.overlay').toggle();
+            return false;
+        }
+
+        function showdownload(){
+            return false;
+        }
+
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <div style="position:absolute;top:20px;right:20px;">
+        <a href="#" onclick="return showupload()" title="{{ _('textmod.replace.uploadtitle') }}" class="icon"><i class="fa fa-upload"></i></a>
+        <a href="#" onclick="return showdownload()" title="{{ _('textmod.replace.downloadtitle') }}" class="icon"><i class="fa fa-download"></i></a>
+    </div>
+    <h2>{{ _('textmod.replace.header.overview') }}</h2>
+    <p><small>{{ _('textmod.replace.info') }}</small></p>
+    <div style="display:none" id="del_question">{{ _('textmod.replace.delquestion') }}</div>
+
+    <form method="post" action="">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:50%;">{{ _('textmod.replace.text') }}</div>
+                <div class="headcell" style="width:50%;">{{ _('textmod.replace.replacement') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="addreplace" title="{{ _('replace.addtitle')}}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        {% if not replacements|length %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('textmod.replace.nodata') }}</p>
+        </div>
+        {% endif %}
+        
+        <div id="sortable">
+            {% for replacement in replacements %}
+            <div class="row" tal:repeat="replacement replacements">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:50%;">{{ replacement.text }}</div>
+                    <div class="rowcell" style="width:50%;">{{ replacement.replace }}</div>
+                </div>
+                <button type="submit" name="action" value="deletereplace_{{ replacement.id }}" title="{{ _('replace.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editreplace_{{ replacement.id}}" title="{{ _('replace.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">
+            {{ _('textmod.replace.itemscount', count=replacements|length) }}
+            </small>
+        </div>
+
+        <input type="hidden" name="form_id" value="admin.replace.overview"/>
+    </form>
+{% endblock %}

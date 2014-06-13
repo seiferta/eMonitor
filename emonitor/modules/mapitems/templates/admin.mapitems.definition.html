@@ -1,0 +1,50 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('mapitems.delquestion') }}');
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('admin.mapitems.definition') }}</h2>
+    <p><small>{{ _('admin.mapitems.definitioninfo') }}</small></p>
+    <form method="post" action="">
+        <div class="headrow">
+            <div style="margin-right:75px;margin-left:15px;">
+                <div class="headcell" style="width:20%;">{{ _('mapitems.itemtypename') }}</div>
+                <div class="headcell" style="width:40%;">{{ _('mapitems.itemtypefilter') }}</div>
+                <div class="headcell" style="width:40%;">{{ _('mapitems.itemtypeattributes') }}</div>
+            </div>
+            <button name="action" value="edititemtype_" title="{{ _('mapitems.add') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        <div id="sortable">
+            {% for itemtype in itemtypes %}
+            <div class="row">
+                <div style="margin-right:75px;margin-left:15px;">
+                    <div class="rowcell" style="width:20%;">
+                        {{ itemtype.name }}
+                    </div>
+                    <div class="rowcell" style="width:40%;">
+                        {{ itemtype.filter }}
+                    </div>
+                    <div class="rowcell" style="width:40%;">
+                        {{ itemtype.attributes|join(', ') }}
+                    </div>
+                </div>
+                <button type="submit" name="action" value="deleteitemtype_{{ itemtype.name }}" title="{{ _('mapitems.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="edititemtype_{{ itemtype.name }}" title="{{ _('mapitems.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="headrow">
+            <button type="submit" name="action" value="updateitemtypes" class="save"><i class="fa fa-check"></i> {{ _('itemtype.definition.save') }}</button>
+        </div>
+    </form>
+{% endblock %}

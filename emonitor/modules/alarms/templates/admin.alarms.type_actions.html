@@ -1,0 +1,51 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarms.type.header.overview') }}</h2>
+    <p><small>{{ _('alarms.type.info') }}</small></p>
+    
+    <form method="post" style="padding-bottom:20px;">
+        <p>
+            <label style="width:99%;">{{ _('alarms.type.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ alarmtype.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label style="width:99%">{{  _('alarms.type.interpreter') }}:<br/>
+                <select name="edit_interpreter" style="width:99%;">
+                    {% for i in interpreter %}
+                    <option value="{{ i[0] }}"{% if i[0]==alarmtype.interpreter %} selected="selected"{% endif %}>{{ i[1].__name__ }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label style="width:99%;">{{ _('alarms.type.keywords') }}:<br/>
+                <textarea name="edit_keywords" style="width:99%;height:100px;">{{ alarmtype.keywords }}</textarea>
+            </label>
+        </p>
+        <p>
+            {{ _('alarms.type.variables') }}:<br/>
+            <small>{{ _('alarms.type.variableinfo') }}</small>
+            <fieldset>
+            {% for variable in alarmtype.getVariables() %}
+                <label style="width:50%">
+                    {{ _(variable) }} ({{ variable }}):<br/>
+                    <input type="text" value="{{ alarmtype.translation(variable) }}" name="alarmtypetranslation" style="width:99%"/>
+                    <input type="hidden" value="{{ variable }}" name="alarmtypevariables"/>
+                </label><br/>
+            {% endfor %}
+            </fieldset>
+        </p>
+        <p>
+            <button type="submit" name="action" value="updatetype" class="save"><i class="fa fa-check"></i> {{ _('alarms.type.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.type.cancel') }}</button>
+        </p>
+        <input type="hidden" name="type_id" value="{{ alarmtype.id }}"/>
+        <input type="hidden" name="form_id" value="admin.alarms.type.edit"/>
+    </form>
+{% endblock %}

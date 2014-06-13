@@ -1,0 +1,120 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/streets/inc/leaflet.css" />
+    <link rel="stylesheet" href="/streets/inc/streets.css" />
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        div.row:hover{cursor:pointer !important;}
+        div.leaflet-control-attribution{display:none!important;}
+    </style>
+    <h2>{{ _('settings.map.listtitle') }}</h2>
+    <p><small>{{ _('settings.map.info') }}</small></p>
+    <form method="post" name="maplist" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:50%;">{{ _('settings.map.name') }}</div>
+                <div class="headcell" style="width:50%;">{{ _('settings.map.path') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createmap" title="{{ _('settings.map.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        <div id="sortable">
+            {% if maps|count==0 %}
+            <div class="rownoentry">
+                <p style="text-align:center">{{ _('settings.maps.nodata') }}</p>
+            </div>
+            {% endif %}
+            {% for map in maps %}
+            <div class="row">
+                <div style="position:absolute;left:3px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:50%;">
+                        {{ map.name }}
+                        {% if map.default==1 %}<small><em>{{ _('settings.map.defaultmap') }}</em></small>{% endif %}
+                    </div>
+                    <div class="rowcell" style="width:50%;">{{ map.path }}</div>
+                </div>
+                <input type="hidden" name="mapids" value="{{ map.id }}"/>
+                <button type="submit" name="action" value="deletemap_{{ map.id }}" title="{{ _('settings.map.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detailmap_{{ map.id }}" title="{{ _('settings.map.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="headrow">
+            <button type="submit" name="action" value="ordersetting" id="orderchange" style="display:none;">{{ _('settings.map.ordersave') }}</button>
+            <small style="float:right;margin-right:50px"><i class="fa fa-check"></i> {{ _('settings.map.itemscount', count=maps|length) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.settings.department.overview"/>
+    </form>
+
+    <h2>{{ _('settings.map.positiontitle') }}</h2>
+    <p><small>{{ _('settings.map.positioninfo') }}</small></p>
+    {% if maps|count==0 %}
+    <p>{{ _('settings.map.positionerror') }}</p>
+    {% endif %}
+
+    <form name="mapposition" method="post" action="">
+
+        <div class="osm_div" id="map"> </div>
+
+        {{ _('settings.map.lat') }}:<input type="text" name="default_lat" id="lat" value="{{ settings.get('defaultLat', '48.115970') }}"/>
+        {{ _('settings.map.lng') }}:<input type="text" name="default_lng" id="lng" value="{{ settings.get('defaultLng', '11.727390') }}"/>
+        {{ _('settings.map.zoom') }}:<input type="text" name="default_zoom" id="zoom" value="{{ settings.get('defaultZoom', '14') }}" size="2" maxlength="2"/>
+        <p> </p>
+        <p style="text-align:center">
+            <button type="submit" name="action" value="saveposition" class="save"><i class="fa fa-check"></i> {{ _('settings.map.saveposition') }}</button>
+        </p>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
+    var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
+    var startzoom = "{{ settings.get('defaultZoom', '14') }}";
+    {% if maps|count > 0 %}
+    var maptype = "{{ maps[0].name }}";
+    {% else %}
+    var maptype = "";
+    {% endif %}
+
+    function questionDel(){
+        return confirm('{{ _('settings.map.delquestion') }}');
+    }
+
+    var map = null;
+    function onMapClick(e){
+        var obj =  $(e.originalEvent.target)
+        if (obj.hasClass('selectedtile')){
+            obj.removeClass('selectedtile');
+        }else{
+            obj.addClass('selectedtile');
+        }
+
+    }
+
+    function setPosition(){
+        var pos = map.getCenter();
+        $('#lat').val(pos.lat);
+        $('#lng').val(pos.lng);
+        $('#zoom').val(map.getZoom());
+    }
+
+    $(document).ready( function() {
+        $( "#sortable" ).sortable({update: function(event, ui){$('#orderchange').show()}});
+
+        map = new L.Map('map', {zoom:12, doubleClickZoom: false});
+
+        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 18});
+        map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
+        map.on('click', onMapClick);
+        map.on('moveend', function(e) {setPosition()});
+
+    });
+{% endblock %}

@@ -1,0 +1,62 @@
+{%  extends "admin.html" %}
+
+{% block content %}
+    <h2>{{ _('alarms.sections.header.overview') }}</h2>
+    <p><small>{{ _('alarms.sections.info') }}</small></p>
+
+    <form method="post" style="padding-bottom:20px;">
+        <p>
+            <label>{{ _('alarms.sections.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ section.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('alarms.sections.key') }}:<br/>
+                <input type="text" name="edit_key" value="{{ section.key }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('alarms.sections.method') }}:<br/>
+                <select name="edit_method" style="width:99%;" onchange="return setInfo(this)" id="methodselect">
+                    <option value="">{{ _('alarms.sections.nomethod') }}</option>
+                    {% for f in functions %}
+                        <option value="{{ f }}" {% if f==section.getSectionMethod() %}selected="selected"{% endif %}>{{ f }}</option>
+                    {% endfor %}
+                </select>
+                <br/>
+            </label>
+            <span id="info_dest"> </span>
+        </p>
+        <p>
+            {{ _('alarm.sections.type') }}:<br/>
+            <span>{{ alarmtype.name }}</span>
+        </p>
+        <p>
+            <label>{{ _('alarms.sections.active') }}:<br/>
+                <input type="checkbox" name="edit_active" value="1" id="edit_active" {% if section.active==1 %}checked="checked"{% endif %}/>
+            </label>
+        </p>
+        <p>
+            <button type="submit" name="action" value="updatesection" class="save"><i class="fa fa-check"></i> {{ _('alarms.sections.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.sections.cancel') }}</button>
+        </p>
+        <input type="hidden" name="edit_orderpos" value="{{ section.orderpos }}"/>
+        <input type="hidden" name="section_id" value="{{ section.id }}"/>
+        <input type="hidden" name="edit_tid" value="{{ alarmtype.id }}"/>
+        <input type="hidden" name="form_id" value="alarms.sections.edit"/>
+    
+    </form>
+    
+    {% for f in functions %}
+        <div id="{{ f }}" style="display:none;">{{ _('alarms.sections.'+f) }}</div>
+    {% endfor %}
+{% endblock %}
+
+{% block script_end %}
+    {{  super() }}
+    function setInfo(obj){
+        $('#info_dest').html($('#'+$(obj).val()).html());
+        return false;
+    }
+    setInfo($('#methodselect'));
+{% endblock %}

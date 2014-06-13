@@ -1,0 +1,42 @@
+{% extends "admin.html" %}
+
+{% block content %}
+    <h2>{{ _('event.edittitle') }}</h2>
+    <p><small>{{ _('events.info') }}</small></p>
+    <form method="post" action="" name="editeventhandler">
+        <p>
+            {{ _('event.event') }}:<br/>
+            <span style="font-size:12px;margin-top:3px;">trigger.{{ handler.event }}</span>
+            <input type="hidden" name="edit_event" id="edit_event" value="{{ handler.event }}" style="width:99%;"/>
+        </p>
+        <p>
+            {{ _('event.handler') }}:<br/>
+            <select name="edit_handler" id="edit_handler" onchange="getData(this.value)">
+                {% for hdl in handlers %}
+                <option value="{{ hdl[0] }}" {% if hdl[0]==handler.handler %}selected="selected"{% endif %}>{{ hdl[0] }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <div id="vars"></div>
+        <p>
+            <button type="submit" name="action" value="updateeventhandler" class="save"><i class="fa fa-check"></i> {{ _('event.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('event.cancel') }}</button>
+        </p>
+        <input type="hidden" name="edit_position" value="{{ handler.position }}"/>
+        <input type="hidden" name="handler_id" id="handler_id" value="{{ handler.id }}"/>
+        <input type="hidden" name="form_id" value="event.edit"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    getData($('#edit_handler').val());
+    
+    function getData(handler){
+        $.ajax({ type : "POST", url : "/admin/data/events?action=getparams&handler="+handler+"&event="+$('#edit_event').val()+"&id="+$('#handler_id').val()+"&format=html",
+             success: function(result) {
+                $('#vars').html(result);
+            }
+        });
+    }
+{% endblock %}

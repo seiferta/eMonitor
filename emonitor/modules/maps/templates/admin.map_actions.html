@@ -1,0 +1,188 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/streets/inc/streets.css" />
+    <link rel="stylesheet" href="/streets/inc/leaflet.css" />
+    <style>
+        .path{width:99%;border:1px solid black;}
+        .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0px transparent}
+        .pathok{background:url(/settings/inc/active.png) no-repeat right 0px transparent}
+        .patherror{background:url(/settings/inc/error.png) no-repeat right 0px transparent}
+        div.leaflet-control-attribution{display:none!important;}
+        .leaflet-control-zoom{display:none!important;}
+        .leaflet-tile{border:1px solid black!important;opacity:0.3!important;filter:alpha(opacity=30);}
+        .leaflet-tile:hover{opacity:0.6!important;cursor:pointer;}
+        .selectedtile{opacity:1.0!important;}
+        .selectedtile:hover{opacity:1.0!important;}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('settings.map.edittitle') }}</h2>
+    <p><small>{{ _('settings.map.info') }}</small></p>
+    <form method="post">
+        <p>
+            <label>{{ _('settings.map.name') }}:<br/>
+                <input type="text" name="map_name" value="{{ map.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('settings.map.path') }}:<br/>
+                {{ tilebase }}<br/>
+                <input name="map_path" id="map_path" value="{{ map.path }}" style="width:99%;" class="path pathok"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('settings.map.maptype') }}:<br/>
+                <input type="radio" name="map_type" value="0"{% if map.maptype==0 %} checked="checked"{% endif %}/> {{ _('settings.map.type0') }}<br/>
+                <input type="radio" name="map_type" value="1"{% if map.maptype==1 %} checked="checked"{% endif %}/> {{ _('settings.map.type1') }}<br/>
+                <input type="radio" name="map_type" value="2"{% if map.maptype==2 %} checked="checked"{% endif %}/> {{ _('settings.map.type2') }}<br/>
+            </label>
+        </p>
+        <p>
+            <label style="width:99%">{{ _('settings.map.tileserver') }}:<br/>
+                <textarea name="map_tileserver" style="width:99%">{{ map.tileserver }}</textarea>
+            </label>
+            <br/>
+            <small>{{ _('settings.tileserver.info') }}</small>
+        </p>
+        <p>
+            <label>{{ _('settings.map.default') }}:<br/>
+                <input type="radio" name="map_default" value="1"{% if map.default==1 %} checked="checked"{% endif %}/> {{ _('settings.map.default1') }}<br/>
+                <input type="radio" name="map_default" value="0"{% if map.default==0 %} checked="checked"{% endif %}/> {{ _('settings.map.default0') }}<br/>
+            </label>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+            <button type="submit" name="action" value="savemap" class="save"><i class="fa fa-check"></i> {{ _('settings.map.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('settings.map.cancel') }}</button>
+        </p>
+        <input type="hidden" name="map_id" value="{{ map.id }}"/>
+        <input type="hidden" name="form_id" value="settings.map.edit"/>
+
+        <script>
+            var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
+            var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
+        </script>
+    </form>
+
+    <h2>{{ _('settings.map.gettiles') }}</h2>
+    <p><small>{{ _('settings.map.gettilesinfo') }}</small></p>
+
+    <div id="carddetails">
+        {{ _('settings.map.lat') }}: <span id="min_lat"> </span> - <span id="max_lat"> </span><br/>
+        {{ _('settings.map.lng') }}: <span id="min_lng"> </span> - <span id="max_lng"> </span>
+    </div>
+
+    <form method="post" style="margin-bottom:20px;">
+        <p id="progress_state" style="display:none;">{{ _('settings.map.updateinprogress') }} (<span id="progress">{{ progress[1] }}</span> / <span id="progressof">{{ progress[0] }}</span>)</p>
+        <div class="osm_div" id="map"> </div>
+        {% if progress[0]==0 %}
+        <p> </p>
+        <p style="text-align:center"><button type="button" onclick="loadTiles()"><i class="fa fa-download"></i> {{ _('settings.map.loadtiles') }}</button></p>
+        <p id="loading_info"></p>
+        {% else %}
+            <script>
+                $(document).ready(function () {
+                    interval = setInterval(getLoadProgress, 1000);
+                    $('#progress_state').show();
+                });
+            </script>
+        {% endif %}
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    var tiles = [{{ tiles }}];
+    var map = null;
+    var interval;
+    function onMapClick(e){
+        var obj =  $(e.originalEvent.target)
+        if (obj.hasClass('selectedtile') && !obj.hasClass('noclick')){
+            obj.removeClass('selectedtile');
+        }else{
+            obj.addClass('selectedtile');
+        }
+    }
+
+    function loadTiles(){
+        var t = '';
+        interval = setInterval(getLoadProgress, 1000);
+        getLoadProgress();
+        $('#progress_state').show();
+        $('.leaflet-layer').children().children('img').each(function (index){
+            if ($(this).hasClass('selectedtile')){
+                var p = $(this).attr('src').split(/[\/]+/);
+                t += p[3]+','+p[4].split(".")[0]+'-';
+            }
+        });
+        if (t!=''){
+             $.ajax({ type : "POST", url : "/admin/data/maps?action=loadmap&tiles="+t+"&path="+$("#map_path").val(),
+                success: function(result) {
+                    $('#loading_info').html(result);
+                }
+            });
+        }
+    }
+
+    function getLoadProgress(){
+        $.ajax({ type : "POST", url : "/admin/data/maps?action=tileprogress&format=json",
+                success: function(result) {
+                    $('#progress').html(result.position);
+                    $('#progressof').html(result.of);
+                    if(result.position==result.of && result.position!=0){
+                        clearInterval(interval);
+                        console.log('interval stopped.');
+                    }
+                }
+            });
+    }
+
+    $(document).ready(function () {
+
+        $("input[name='map_path']").on('blur', function(){
+           evalPath($(this));
+        }).on('focus', function(){
+          $(this).removeClass('pathok').removeClass('patherror');
+        });
+
+        map = new L.Map('map', {zoom:12, doubleClickZoom: false});
+
+        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 12});
+        map.setView(new L.LatLng(startlat, startlng), 12).addLayer(cloudmade);
+        map.on('click', onMapClick);
+
+        $.ajax({ type : "POST", url : "/admin/data/maps?action=maptiles&format=json&id="+$("input[name='map_id']").val(),
+            success: function(data) {
+                $.each(data.mappath, function(i, item){
+                    $('img[src$="'+item+'"]').addClass('selectedtile').addClass('noclick');
+                });
+                console.log(data.min_latdeg);
+                $('#min_lat').html(data.min_latdeg);
+                $('#max_lat').html(data.max_latdeg);
+                $('#min_lng').html(data.min_lngdeg);
+                $('#max_lng').html(data.max_lngdeg);
+            }
+        });
+    });
+
+    function evalPath(obj){
+        obj.addClass('pathloading');
+        $.ajax({ type : "POST", url : "/admin/data/settings?action=checkpath&path="+obj.val(),
+            success: function(path) {
+                obj.removeClass('pathloading');
+                if (path==1){
+                    obj.addClass('pathok');
+                }else{
+                    obj.addClass('patherror');
+                }
+            }
+        });
+    }
+
+{% endblock %}

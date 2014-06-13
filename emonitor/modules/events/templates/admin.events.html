@@ -1,0 +1,86 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        div.subrow:hover{cursor:pointer !important;}
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('events.listtitle') }}</h2>
+    <p><small>{{ _('events.info') }}</small></p>
+    <form method="post" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:80%;">{{ _('events.name') }}</div>
+                <div class="headcell" style="width:20%;text-align:right;">{{ _('events.possible') }}</div>
+            </div>
+        </div>
+        <div id="sortable">
+            {% for event in events %}
+            <div class="row" style="height:26px;">
+                <a href="#" class="morelink" title="{{ _('event.detailtitle') }}" onclick="return details('{{ event.name }}', this)"> </a>
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:80%;">{{ _('trigger.' + event.name) }}</div>
+                    <div class="rowcell" style="width:20%;text-align:right;">{{ event.getHandlers()|count}} / {{ event.getHandlerList()|count }}</div>
+                </div>
+            </div>
+            <div class="details" style="display:none" id="details_{{ event.name }}">
+                <div class="subheadrow">
+                    <div style="margin-right:70px;margin-left:15px;">
+                        <div class="subheadcell" style="width:10%;">&nbsp;</div>
+                        <div class="subheadcell" style="width:40%;">{{ _('event.handler') }}</div>
+                        <div class="subheadcell" style="width:50%;">{{ _('event.parameters') }}</div>
+                    </div>
+                    {% if event.getHandlerList()|count>0 %}
+                    <button class="add" type="submit" name="action" value="createhandler_{{ event.name }}" title="{{ _('event.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+                    {% endif %}
+                </div>
+                <div id="sortable_{{ event.name }}">
+                    {% for handler in event.getHandlers() %}
+                    <div class="subrow">
+                        <div style="position:absolute;left:20px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
+                        <div style="margin-right:70px;margin-left:15px;">
+                            <div class="subrowcell" style="width:10%;"> </div>
+                            <div class="subrowcell" style="width:40%;">{{ handler.handler }}</div>
+                            <div class="subrowcell" style="width:50%;">{{ handler.parameters }}</div>
+                        </div>
+                        <button type="submit" name="action" value="deletehandler_{{ handler.id }}" title="{{ _('event.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                        <button type="submit" name="action" value="edithandler_{{ handler.id }}" title="{{ _('handler.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                        <input type="hidden" value="{{ handler.id }} " name="position_{{ event.name }}"/>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div id="sortable">
+                    {% if events|count==0 %}
+                    <div class="subrow" style="text-align:center;height:26px;">{{ _('handler.notdefined') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow" style="padding-left:20px">
+            <button type="submit" name="action" value="updateorder" id="orderchange" class="save" style="display:none"><i class="fa fa-check"></i> {{ _('events.updateorder') }}</button>
+        </div>
+        <input type="hidden" name="form_id" value="admin.events.overview"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    function questionDel(){
+        return confirm(_('events.delete'));
+    }
+    $(function() {$('div[id^="sortable_"]').sortable({update: function(event, ui){$('#orderchange').show()}});});
+    
+    function details(id, obj){
+        $('#details_'+id).toggle();
+        if ($(obj).hasClass('expanded')){
+            $(obj).removeClass('expanded');
+        }else{
+            $(obj).addClass('expanded');
+        }
+        return false;
+    }
+{% endblock %}

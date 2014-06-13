@@ -1,0 +1,92 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        .updating{padding-top:20px;padding-left:50px;}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('streets.city.delquestion') }}');
+        }
+
+        function loadCitiesFromOsm(){
+            $('#osmcities').html('<img class="updating" src="/admin/img/loading.gif"/>');
+            $.ajax({ type : "POST", url : "/admin/data/streets?action=loadcitiesfromosm",
+                success: function(result) {
+                    $('#osmcities').html(result);
+                }
+            });
+        }
+
+        function loadAllHouseNumbers(){
+            $('#osmhousenumbers').html('<img class="updating" src="/admin/img/loading.gif"/>');
+            $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbersfromosm",
+                success: function(result) {
+                    $('#osmhousenumbers').html('');
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('streets.city.listtitle') }}</h2>
+    <p><small>{{ _('streets.city.info') }}</small></p>
+
+    <form method="post" name="citylist" action="">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:30%;">{{ _('streets.city.name') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('streets.city.subname') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('streets.city.dept') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('streets.city.map') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createcity" title="{{ _('streets.city.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        
+        {% if not cities|count %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('streets.city.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for city in cities %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:30%;">{{ city.name }} {% if city.default==1 %}<small>({{ _('streets.city.default') }})</small>{% endif %}</div>
+                    <div class="rowcell" style="width:30%;">{{ city.getSubCityListLine() }}</div>
+                    <div class="rowcell" style="width:20%;">{{ city.department.name }}</div>
+                    <div class="rowcell" style="width:20%;">{{ city.mapname }}</div>
+                </div>
+                <input type="hidden" name="cityids" value="{{ city.id }}"/>
+                <button type="submit" name="action" value="deletecity_{{ city.id }}" title="{{ _('streets.city.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detailcity_{{ city.id }}" title="{{ _('streets.city.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('streets.city.itemscount', count=cities|count) }}</small><br/>
+        </div>
+        <h2>{{ _('streets.city.housnumber.header') }}</h2>
+        <p>
+            <small>{{ _('streets.city.housnumber.info') }}</small>
+        </p>
+        <p>
+            <button onclick="loadAllHouseNumbers()" name="action"><i class="fa fa-download"></i> {{ _('streets.city.loadnumbersbutton') }}</button>
+        </p>
+        <input type="hidden" name="form_id" value="admin.streets.city.overview"/>
+    </form>
+    
+    <h2>{{ _('streets.city.loadtitle') }}</h2>
+    <p><small>{{ _('streets.city.load.info') }}</small></p>
+    <button onclick="loadCitiesFromOsm()" name="action"><i class="fa fa-download"></i> {{ _('streets.city.loadbutton') }}</button>
+    <div id="osmcities" style="min-height:50px;padding-top:10px;"></div>
+{% endblock %}

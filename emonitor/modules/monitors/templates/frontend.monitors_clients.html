@@ -1,0 +1,73 @@
+<style>
+
+    div.client{background:url(/img/monitor.png) no-repeat 25px transparent;height:160px;position:relative;cursor:pointer;width:290px;float:left;}
+    div.client_inactive{background:url(/img/monitor_inactive.png) no-repeat 25px transparent;height:160px;position:relative;cursor:pointer;}
+    div.client_error{background:url(/img/monitor_error.png) no-repeat 25px transparent;height:160px;position:relative;cursor:wait}
+    .client_id{color:#ffffff;font-size:35px;position:absolute;top:50px;text-align:center;width:250px;}
+    .client_ip{color:#ffffff;font-size:11px;position:absolute;bottom:17px;text-align:center;width:250px;}
+
+    .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0px;}
+    .btn:hover {color:#428bca;}
+</style>
+<div style="padding:20px;">
+    <h4>{{ _('monitor.ping.header') }}</h4>
+    {% for id in clients.keys() %}
+    <div style="position:relative;width:270px;float:left;align:center;">
+        {% if clients[id][0] and clients[id][1] %}
+        <div class="client" onclick="getDetails({{ id }})">
+            <div class="client_id">{{ id }}</div>
+            <div class="client_ip">
+                {{ clients[id][0][0] }}<br/>{{ clients[id][0][1] }}
+            </div>
+        </div>
+        {% endif %}
+        {% if clients[id][0] and not clients[id][1] %}
+        <div class="client_error">
+            <div class="client_id">{{ id }}</div>
+            <div class="client_ip">
+                {{ clients[id][0][0] }}<br/>{{ clients[id][0][1] }}<br/><br/>
+                <span style="font-style:italic">{{ _('monitor.nodefinition') }}</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if not clients[id][0] and clients[id][1] %}
+        <div class="client_inactive"  onclick="getDetails({{ id }})">
+            <div class="client_id">{{ id }}</div>
+            <div class="client_ip" style="font-style:italic">{{ _('monitor.notconnected') }}</div>
+        </div>
+        {% endif %}
+
+        <div class="btn-group options" style="position:absolute;top:10px;right:50px;">
+            {% if layouts[id]|count %}
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-gear fa-lg"></i>
+            </a>
+            <ul class="dropdown-menu pull-right">
+
+                {% for l in layouts[id] %}
+                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {{ _('trigger.'+l.trigger) }}</a></li>
+                {% endfor %}
+                <li><a href="#" onclick="return changeLayout({{ id }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+<script>
+   function changeLayout(id, layoutid){
+        $.ajax({ type : "POST", url : "/data/monitors?action=changelayout&id="+id+"&layoutid="+layoutid,
+            success: function(result){
+                //console.log(result);
+                return false;
+            }
+        });
+        return false;
+    }
+    $('.options').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function() {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
+
+</script>

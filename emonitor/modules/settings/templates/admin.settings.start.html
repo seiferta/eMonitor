@@ -1,0 +1,73 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        .west{float:left;width:20%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
+        .center{float:left;width:50%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
+        .east{float:left;width:20%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <h2>{{ _('settings.start.title') }}</h2>
+    <p><small>{{ _('settings.start.info') }}</small></p>
+    <form method="post" style="padding-bottom:20px;">
+        <div style="width:100%;">
+
+            <div id="west" class="west">
+                <p style="text-align:center">{{ _('settings.start.west') }}</p>
+                <p>{{ _('settings.start.westcontent') }}:<br/>
+                    <select name="west.module" style="width:99%;">
+                        <option value="">{{ _('settings.start.none') }}</option>
+                        {% for mod in mods %}
+                            <option value="{{ mod.info['name'] }}" {% if west.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>{{ _('settings.start.westparams') }}:<br/>
+                    {{ _('settings.start.width') }}:
+                    <input type="text" maxlength="3" name="west.width" value="{{ (100*west.width|float)|int }}"/> %
+                    <br/><br/>
+                    <input type="checkbox" name="west.visible" value="1" {% if west.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}
+
+                </p>
+            </div>
+
+            <div id="center" class="center">
+                <p style="text-align:center">{{ _('settings.start.center') }}</p>
+                <p>{{ _('settings.start.centercontent') }}:<br/>
+                    <select name="center.module" style="width:99%;">
+                        <option value="">{{ _('settings.start.none') }}</option>
+                        {% for mod in mods %}
+                            <option value="{{ mod.info['name'] }}" {% if center.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+
+            <div id="east" class="east">
+                <p style="text-align:center">{{ _('settings.start.east') }}</p>
+                <p>{{ _('settings.start.eastcontent') }}:<br/>
+                    <select name="east.module" style="width:99%;">
+                        <option value="">{{ _('settings.start.none') }}</option>
+                        {% for mod in mods %}
+                            <option value="{{ mod.info['name'] }}" {% if east.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>{{ _('settings.start.eastparams') }}:<br/>
+                    {{ _('settings.start.width') }}:
+                    <input type="text" maxlength="3" name="east.width" value="{{ (100*east.width|float)|int }}"/> %
+                    <br/><br/>
+                    <input type="checkbox" name="east.visible" value="1" {% if east.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}
+                </p>
+            </div>
+        </div>
+
+        <div style="clear:left;"></div>
+        <p style="padding-top:20px;text-align:center">
+            <button type="submit" name="action" value="updatestart" class="save"><i class="fa fa-check"></i> {{ _('settings.start.save') }}</button>
+        </p>
+    </form>
+{% endblock %}

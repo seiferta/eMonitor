@@ -1,0 +1,110 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script  type="text/javascript">
+        $(document).ready(function(){
+          $('.simple_color_callback').simpleColor({
+            onSelect: function( hex ) {
+              $('#colorname').val('#'+hex);
+            }
+          });
+        });
+        var pid = '';
+        ws.onmessage=function(e){
+            if (e.data==pid){
+                 loadDone();
+             }
+        }
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .simpleColorChooser{background-color:#ffffff !important;overflow:auto;}
+        label{width:99%;}
+    </style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="/streets/inc/jquery.simple-color.js"> </script>
+    <h2>{{ _('streets.city.edittitle') }}</h2>
+    <p><small>{{ _('streets.city.info') }}</small></p>
+    <form method="post" action="" name="editcity">
+        <p>
+            <label>{{ _('streets.city.name') }}:<br/>
+                <input type="text" name="cityname" value="{{ city.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('streets.city.subname') }}:<br/>
+                <textarea name="subcity" style="width:99%;height:50px;">{{ city.subcity }}</textarea>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('streets.city.dept') }}:<br/>
+                <select name="department" style="width:99%">
+                    {% for department in departments %}
+                    <option value="{{ department.id }}" {% if department==city.department %}selected="selected"{% endif %}>{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('streets.city.map') }}:<br/>
+                <select name="citymap" style="width:99%;">
+                    {% for map in maps %}
+                    <option value="{{ map.name }}" {% if map.name==city.mapname %}selected="selected"{% endif %}>{{ _(map.name) }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            {{ _('streets.city.color') }}:<br/>
+            <input class='simple_color_callback' name="colorname" id="colorname" value="{{ city.color }}"/>
+        </p>
+        <p>
+            <label>{{ _('streets.city.default') }}:<br/>
+                <input type="checkbox" name="citydefault" value="1" {% if city.default==1 %}checked="checked"{% endif %}/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('streets.city.osmid') }}:<br/>
+                <input type="text" name="osmid" value="{{ city.osmid }}" style="width:150px;"/>
+            </label>
+        </p>
+        <p style="padding-bottom:20px;">
+            {{_('streets.city.housenumbers') }}:<br/>
+           
+            <button type="button" onclick="loadOSMHouseNumbers()"> <i class="fa fa-download fa-hn"></i> {{ _('streets.city.loadhnumbers') }}</button>
+            <span id="osmhousenumbers"> </span>
+        </p>
+        <p>
+            <button type="submit" name="action" value="updatecity" class="save"><i class="fa fa-check"></i> {{ _('streets.city.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('streets.city.cancel') }}</button>
+        </p>
+        <input type="hidden" name="city_id" value="{{ city.id }}"/>
+        <input type="hidden" name="form_id" value="streets.city.edit"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    function loadOSMHouseNumbers(){
+        $('#osmhousenumbers').html('<img class="updating" src="/admin/img/loading.gif"/>');
+        $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbersfromosm&cityid={{ city.id }}",
+            success: function(result) {
+                //$('#housnumbers').html(result+ '{{ _('streets.hnumbersloaded') }}');
+                pid = result;
+            }
+        });
+    }
+
+    function loadDone(){
+        $('#osmhousenumbers').html('');
+        $('#housnumbers').html('{{ _('streets.hnumbersloaded') }}');
+    }
+{% endblock %}

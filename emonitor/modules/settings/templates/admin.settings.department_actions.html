@@ -1,0 +1,61 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        .simpleColorChooser{background-color:#ffffff !important;}
+    </style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="/settings/inc/jquery.simple-color.js"> </script>
+    <h2>{{ _('settings.department.edittitle') }}</h2>
+    <p><small>{{ _('settings.department.info') }}</small></p>
+    <form method="post">
+        <p>
+            <label>
+                {{ _('settings.department.name') }}:<br/>
+                <input type="text" name="dep_name" value="{{ department.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>
+                {{ _('settings.department.defaultcity') }}:<br/>
+                <select name="dep_city">
+                    <option>{{ _('settings.department.notset') }}</option>
+                    {% for city in cities %}
+                    <option value="{{ city.id }}"{% if department.defaultcity == city.id %} selected="selected"{% endif %}>{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>
+                {{ _('settings.department.color') }}:<br/>
+                <input class='simple_color_callback' name="dep_color" id="dep_color" value="{{ department.color }}"/>
+            </label>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+            <button type="submit" name="action" value="savedept" class="save"><i class="fa fa-check"></i> {{ _('settings.department.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('settings.department.cancel') }}</button>
+        </p>
+        <input type="hidden" name="dep_pos" value="{{ department.orderpos }}"/>
+        <input type="hidden" name="dep_id" value="{{ department.id }}"/>
+        <input type="hidden" name="form_id" value="settings.department.edit"/>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    $(document).ready(function(){
+      $('.simple_color_callback').simpleColor({
+        onSelect: function( hex ) {
+          $('#dep_color').val('#'+hex);
+        }
+      });
+    });
+{% endblock %}

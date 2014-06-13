@@ -1,0 +1,20 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('printers.settings.header.overview') }}</h2>
+    <p><small>{{ _('printers.settings.info') }}</small></p>
+    <form method="post" action="">
+        <p>
+            {{ _('printers.settings.callstring') }}:<br/>
+            <textarea name="printers_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+            {{ _('printers.settings.callstringinfo') }}
+        </p>
+        <p>
+            <button type="submit" name="action" value="savereprintersparams" class="save"><i class="fa fa-check"></i> {{ _('printers.settings.save') }}</button>
+        </p>
+    </form> 
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('monitors.edit.monitor') }}</h2>
+    <form method="post">
+        <p>
+            {{ _('monitors.clientid') }}:<br/>
+            <input type="text" name="edit_clientid" value="{{ monitor.clientid }}" style="width:99%"/>
+        <p>
+        <p>
+            {{ _('monitors.name') }}:<br/>
+            <input type="text" name="edit_name" value="{{ monitor.name }}" style="width:99%"/>
+        <p>
+            {{ _('monitors.orientation') }}:<br/>
+            <select name="edit_orientation" style="width:99%">
+                {% for orientation in orientations %}
+                <option value="{{ loop.index0 }}">{{ _(orientation) }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            {{ _('monitors.resolution') }}:<br/>
+            <input type="text" name="edit_resolutionx" value="{{ monitor.resolutionx }}" style="width:200px"/> x
+            <input type="text" name="edit_resolutiony" value="{{ monitor.resolutiony }}" style="width:200px"/>
+        <p>
+        <p>
+            {{ _('monitors.format') }}:<br/>
+            <input type="text" name="edit_formatx" value="{{ monitor.formatx }}" style="width:200px"/> x
+            <input type="text" name="edit_formaty" value="{{ monitor.formaty }}" style="width:200px"/>
+            {{ _('monitors.format.info') }}
+        <p>
+        <p>
+            <button type="submit" name="action" value="updatemonitors" class="save"><i class="fa fa-check"></i> {{ _('monitors.save') }}</button>
+            <button type="submit" name="action" value="back" class="cancel"><i class="fa fa-times"></i> {{ _('monitors.cancel') }}</button>
+        </p>
+        <input type="hidden" name="edit_id" value="{{ monitor.id }}"/>
+        <input type="hidden" name="form_id" value="monitors.update"/>
+    </form>
+{% endblock %}

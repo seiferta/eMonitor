@@ -1,0 +1,34 @@
+<div style="position:absolute; bottom:15px;right:15px;">
+    <a href="#" onclick="return refreshPing()" title="{{ _('monitor.refreshtitle') }}"><i class="fa fa-refresh fa-lg"></i></a>
+</div>
+<div id="loadinginfo" style="background-color:#ffffff;text-align:center;padding:20px 5px;margin:80px 5px;display:none;">
+    {{ _('monitor.loadingclients') }}
+    <br/><br/>
+    <img src="/img/loading.gif"/>
+</div>
+<div id="monitors"> </div>
+ <script>
+    refreshPing();
+
+    function refreshPing(){
+        $('#loadinginfo').show();
+        $('#monitors').html('');
+        $.ajax({ type : "POST", url : "/data/monitors?action=ping",
+            success: function(result){
+                $('#loadinginfo').hide();
+                $('#monitors').html(result);
+            }
+        });
+        return false;
+    }
+
+    function getDetails(id){
+        $.ajax({ type : "POST", url : "/data/monitors?action=loadmonitor&id="+id,
+            success: function(result){
+                //console.log(result);
+                $('#content').html(result);
+            }
+        });
+        return false;
+    }
+</script>

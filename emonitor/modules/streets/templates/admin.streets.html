@@ -1,0 +1,99 @@
+﻿{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        .updating{padding-top:20px;padding-left:50px;}
+        .inactive{color:#848484 !important}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function loadStreetsFromOsm(){
+            $('#osmstreets').html('<img class="updating" src="/admin/img/loading.gif"/>');
+            $.ajax({ type : "POST", url : "/admin/data/streets?action=loadstreetsfromosm&cityid={{ city.id }}",
+                success: function(result) {
+                    $('#osmstreets').html(result);
+                }
+            });
+        }
+
+        function questionDel(){
+            return confirm('{{ _('streets.delquestion') }}');
+        }
+
+        function checkAdd(){
+            return (document.getElementById('add_name').value!="");
+        }
+
+        function filter(c){
+            if (c==""){
+                $('.row').show();
+                return false;
+            }
+            $('.row').hide();
+            $('div[id='+c+']').show();
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('streets.header.overview') }}</h2>
+    <p><small>{{ _('streets.info') }}</small></p>
+
+    <form method="post">
+        <div class="headrow" style="border-bottom:1px solid black;">
+            {{ _('streets.filterlabel') }}: <a href="#" onclick="return filter('')">{{ _('streets.filterall') }}</a>
+            {% for char in chars %}
+            | <a href="#" onclick="return filter('{{ char }}')">{{ char }}</a>
+            {% endfor %}
+        </div>
+        <div class="headrow">
+            <div style="margin-right:80px;margin-left:15px;">
+                <div class="headcell" style="width:33%;">{{ _('streets.name') }}</div>
+                <div class="headcell" style="width:23%;">{{ _('streets.cityid') }}</div>
+                <div class="headcell" style="width:33%;">{{ _('streets.subcity') }}</div>
+                <div class="headcell" style="width:10%;text-align:right;padding-right:10px;">{{ _('streets.housenumbers') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createstreet" title="{{ _('streets.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        
+        {% if streets|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('streets.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for street in city.getStreets() %}
+            <div class="row" id="{{ street.name[0].upper() }}" {% if street.active!=1 %}title="{{ _('streets.inactive') }}"{% endif %}>
+                <div style="margin-right:80px;margin-left:15px;" {% if street.active!=1 %}class="inactive"{% endif %}>
+                    <div class="rowcell" style="width:33%;">{{ street.name }}</div>
+                    <div class="rowcell" style="width:23%;">{{ street.city.name }}</div>
+                    <div class="rowcell" style="width:33%;">{{ street.subcity }}</div>
+                    <div class="rowcell" style="width:10%;text-align:right;padding-right:10px;">{{ street.housenumbers|count }}</div>
+                </div>
+                {% if street.lat!='' %}<i class="fa fa-map-marker" style="color:#adadad" title="{{ _('streets.mapset') }}"> </i>{% endif %}
+                
+                <button type="submit" name="action" value="deletestreets_{{ street.id }}" title="{{ _('streets.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detailstreet_{{ street.id }}" title="{{ _('streets.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('streets.itemscount', count=streets|length) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.streets.overview"/>
+    </form>
+    
+    <h2>{{ _('streets.loadtitle') }}</h2>
+    <p><small>{{ _('streets.load.info') }}</small></p>
+    <button onclick="loadStreetsFromOsm()" name="action"><i class="fa fa-download"></i> {{ _('streets.loadbutton') }}</button>
+    <div id="osmstreets" style="min-height:50px;padding-top:10px;"></div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('textmod.ocr.header.overview') }}</h2>
+    <p><small>{{ _('textmod.ocr.info') }}</small></p>
+    <form method="post" action="">
+        <p>
+            {{ _('textmod.ocr.inportformats') }}:<br/>
+            <textarea name="ocr_formats" style="width:99%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
+            {{ _('textmod.ocr.inputformatinfo') }}
+        </p>
+        <p>
+            {{ _('textmod.ocr.callstring') }}:<br/>
+            <textarea name="ocr_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+            {{ _('textmod.ocr.callstringinfo') }}
+        </p>
+        <p>
+            <button type="submit" name="action" value="savereocrparams" class="save"><i class="fa fa-check"></i> {{ _('textmod.ocr.save') }}</button>
+        </p>
+    </form> 
+{% endblock %}

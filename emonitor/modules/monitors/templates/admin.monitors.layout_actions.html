@@ -1,0 +1,180 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/monitors/inc/monitors.css" />
+    <link rel="stylesheet" href="/monitors/inc/jquery.gridster.min.css" />
+    <style>
+        .gridster li{background-color: #d4d4d4;list-style:none;border:2px solid silver;}
+        .gridster li:hover{background-color:white;cursor:pointer;}
+        .resize{position:absolute;right:0px;bottom:0;cursor:pointer;}
+        .monitor{border:10px solid #333333;padding-bottom:5px;background:url(/monitors/inc/grid.png) 1px 0px;border-radius: 10px;}
+        .content{border-width:0 !important;}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="/monitors/inc/jquery.gridster.min.js"> </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <div style="padding:20px;border-width:0 !important;" id="subcenter">
+        <h2>{{ _('monitorlayouts.edit.monitor') }}</h2>
+        <form method="post">
+            <p>
+                {{ _('monitorlayouts.monitorid') }}:<br/>
+                <select name="edit_mid" style="width:50%;">
+                    {% for monitor in monitors %}
+                        <option value="{{ monitor.id }}" {% if layout.mid==monitor.id %}selected="selected"{% endif %}>{{ monitor.name }}</option>
+                    {% endfor %}
+                </select>
+            <p>
+            <textarea name="edit_layout" class="result" style="display:none;"> </textarea>
+
+            {{ _('monitorlayouts.buildlayout') }}:<br/>
+            <div class="monitor" style="width:{{ monitor.formatx*70+2}}px !important;height:{{ monitor.formaty*55 -2}}px !important;box-sizing:content-box!important;-moz-box-sizing:content-box!important;-webkit-box-sizing:content-box!important;">
+                <div class="gridster" id="layout">
+                    <ul style="position:absolute!important;">
+                    </ul>
+                </div>
+            </div>
+            <p> </p>
+            <p>
+                {{ _('monitorlayouts.theme') }}:<br/>
+                <select name="edit_theme" style="width:50%;">
+                    {% for theme in layout.themes %}
+                        <option value="{{ theme }}" {% if theme==layout.theme %}selected="selected"{% endif %}>{{ theme }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                {{ _('monitorlayouts.trigger') }}:<br/>
+                {% for trigger in triggers %}
+                    <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}" {%if trigger.name in layout.trigger %}checked="selected"{% endif %} {% if trigger.name in usedtriggers %}disabled="disabled"{%endif %}/>
+                    <label>{{ _('trigger.'+trigger.name) }}</label>
+                    {% if trigger.name in usedtriggers %}<em>({{ _('monitorlayouts.triggerinuse') }})</em>{% endif %}
+                    <br/>
+                {% endfor %}
+            </p>
+            <p>
+                {{ _('monitorlayouts.mintime') }}:<br/>
+                <input type="text" name="edit_mintime" value="{{ layout.mintime }}"/> {{ _('monitorlayouts.mintimelabel') }}
+            </p>
+            <p>
+                {{ _('monitorlayouts.maxtime') }}:<br/>
+                <input type="text" name="edit_maxtime" value="{{ layout.maxtime }}"/> {{ _('monitorlayouts.maxtimelabel') }}
+            </p>
+            <p>
+                {{ _('monitorlayouts.nextid') }}:<br/>
+                <select name="edit_nextid">
+                    <option value="0">{{_('monitorlayouts.nonextlayout') }}</option>
+                    {% for l in layouts %}
+                        <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
+                    {% endfor %}
+                </select>
+                {{ _('monitorlayouts.nextidlabel') }}
+            </p>
+            <p>
+                <button type="submit" name="action" value="updatelayout" class="save" onclick="return getlayout()"><i class="fa fa-check"></i> {{ _('monitorlayouts.save') }}</button>
+                <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('monitorlayouts.cancel') }}</button>
+            </p>
+            <input type="hidden" name="edit_id" value="{{ layout.id }}"/>
+            <input type="hidden" name="form_id" value="monitorlayouts.update"/>
+        </form>
+    </div>
+
+    <div id="eastpane" style="border-width:0 0 0 1px !important;overflow:hidden;background-color:#dddddd">
+        <p>{{ _('monitorlayouts.modules') }}:</p>
+        <p> </p>
+        <div class="widgets">
+            {% for widgetmodule in widgets %}
+            {% for widget in widgetmodule.getMonitorWidgets() %}
+            <div class="widget" id="{{ widget.getName() }}_name" onclick="return doAdd('{{ widget.getName() }}', {{ widget.getDimension()[0] }}, {{ widget.getDimension()[1] }})">
+                <span id="name">{{ _(widget.getName()) }}</span>
+                <br/>
+                (<span id="w">{{ widget.getDimension()[0] }}</span> x <span id="h">{{ widget.getDimension()[1] }}</span>)
+            </div>
+
+            {% endfor %}
+            {% endfor %}
+        </div>
+        <small>{{ _('monitorlayouts.modulesinfo') }}</small>
+    </div>
+
+    <div id="widgetproto" style="display:none;">
+        <div onclick="return del(this)" class="del"><i class="fa fa-times" style="color:#333;"></i></div>
+    </div>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    var gridlayout;
+    $(function(){
+        gridlayout = $("#layout ul").gridster({
+            widget_margins: [3, 3],
+            max_cols: {{ monitor.formatx }},
+            extra_cols: 1,
+            extra_rows: 1,
+            max_size_x: {{ monitor.formatx }},
+            widget_base_dimensions: [64, 49],
+            resize: {
+                enabled: true,
+            },
+            serialize_params: function($w, wgd) {
+                return { id: wgd.el[0].id, col: wgd.col, row: wgd.row, size_x: wgd.size_x, size_y: wgd.size_y };
+            }
+        }).data('gridster');
+    });
+    
+    function del(obj){
+        gridlayout.remove_widget( $(obj).parent());
+        return false;
+    }
+    
+    var w_obj = null;
+
+    function doAdd(id, x, y){
+        gridlayout.add_widget('<li id="'+id+'"><p>'+$('#'+id+'_name').html()+'</p>'+$("#widgetproto").html()+'</li>', x, y);
+        $('#layout > ul > #'+id+':last-child >p > #h').html(y);
+        $('#layout > ul > #'+id+':last-child >p > #w').html(x);
+        $('#overlaycontent').children().appendTo($('#overlayproto'));
+        $('#overlaycontent').html('');
+        $(".overlay").hide();
+        return false;
+    }
+
+    function addWidget(id, x, y, col, row){ /*sizex, sizey, col, row*/
+        str = '<li class="layout_block" id="'+id+'" ondblclick="resize(this)"><p>'+$('#'+id+'_name').html()+'</p>'+$("#widgetproto").html()+'</li>'
+        if (col && row){
+            z = gridlayout.add_widget(str, x, y, col, row);
+        }else{
+            z = gridlayout.add_widget(str, x, y);
+        }
+        $('#layout > ul > #'+id+':last-child >p > #h').html(y);
+        $('#layout > ul > #'+id+':last-child >p > #w').html(x);
+        return false;
+    }
+    
+    function getlayout(){
+        $(".result").html('');
+        $.each( gridlayout.serialize(), function( key, value ) {
+             $(".result").html($(".result").html()+value.id+";"+value.size_x+";"+value.size_y+";"+value.col+";"+value.row+"\n");
+            });
+        return true;
+    }
+
+    monitorlayout = $('.content').layout({
+        center__paneSelector: "#subcenter",
+        spacing_open: 0,
+        spacing_closed:0,
+        east: {paneSelector: "#eastpane", spacing_closed: 8, spacing_open: 8, size: 120, resizable:false, closable:true},
+        resizerTip:'Verschieben',
+        togglerTip_open: 'Ausblenden',
+        togglerTip_closed:'Einblenden'
+    });
+
+    {{ layout.getHTMLLayoutScript()|safe }}
+{% endblock %}

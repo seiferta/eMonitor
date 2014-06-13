@@ -1,0 +1,47 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarms.test.header') }}</h2>
+    <p>{{ _('alarms.test.info') }}</p>
+
+    <h3>{{ _('alarms.test.step1') }}</h3>
+    <form name="form" id="requestForm" action="/admin/data/alarms?action=upload" method="post" enctype="multipart/form-data">
+        <p>
+            {{ _('alarms.test.file') }}:<br/>
+            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
+            <input type="hidden" name="filename" id="filename"/><br/>
+            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.start') }}</button>
+        </p>
+    </form>
+    <h3 id="state" style="display:none">{{ _('alarms.test.step2') }}<br/><br/><img src="/admin/img/loading.gif"/></h3>
+    <div id="result"> </div>
+{% endblock %}
+
+{% block script_end %}
+    {{  super() }}
+    $(document).ready(function(){
+        $('#requestForm').ajaxForm({
+            beforeSubmit: function() {
+                if($.inArray($('#uploadfile').val().split('.').pop(), ['pdf', 'jpg', 'tif'])>=0){
+                    $('#state').show();
+                    $('#result').html('');
+                    $('#filename').val($('#uploadfile').val().split('\\').pop());
+                }else{
+                    return false;
+                }
+            },
+            complete: function(xhr) {
+                $('#state').hide();
+                $('#result').html(xhr.responseText);
+            }
+        }); 
+    });
+{% endblock %}

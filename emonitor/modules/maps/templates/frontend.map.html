@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="/streets/inc/leaflet.css" />
+<link rel="stylesheet" href="/streets/inc/Control.MiniMap.css" />
+<script src="/streets/inc/Control.MiniMap.js" type="text/javascript"></script>
+
+<div id="map" style="height:100%;width:100%;"></div>
+<style>
+    .leaflet-control-attribution{display:none!important}
+    .footer_functions{position:absolute;right:10px;top:2px;color:#fff;}
+    .leaflet-control-layers-group-name {font-weight: bold; margin-bottom: .2em; display: block; }
+    .leaflet-control-layers-group {margin-bottom: .5em;}
+    .leaflet-control-layers-group label {padding-left:.5em;}
+</style>
+<script>
+    var startlat = '{{ defaultlat }}';
+    var startlng = '{{ defaultlng }}';
+    var startzoom = '{{ defaultzoom }}';
+    var maptype = '{{ maptype }}';
+
+    var map;
+    var cloudmade;
+    var marker = null;
+
+    var alarmMarkers = L.layerGroup();
+    var MyMarker = L.Icon.extend({options:{shadowUrl: '/img/marker-shadow.png', iconAnchor:[12, 41], popupAnchor:[0, -42]}});
+    var HydrantMarker = L.Icon.extend({options:{shadowUrl: '/img/hydrant.png', iconAnchor:[12, 41], popupAnchor:[0, -42]}});
+    var redmarker = new MyMarker({iconUrl:'/img/marker_red.png'});
+    var orangemarker = new MyMarker({iconUrl:'/img/marker_orange.png'});
+    var yellowmarker = new MyMarker({iconUrl:'/img/marker_yellow.png'});
+    var greymarker = new MyMarker({iconUrl:'/img/marker_sw.png'});
+    var hydrant = new HydrantMarker({iconUrl:'/img/hydrant.png'});
+    var colorcode = [yellowmarker, orangemarker, redmarker];
+
+    $(document).ready(function () {
+
+        {% for map in maps | reverse %}
+            {% if map.maptype in [0, 1] %}var l_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+                var ml_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            {% else %}var l_{{ map.id }} = new L.TileLayerQuad('{{ map.tileserver|safe }}');{% endif %}
+        {% endfor %}
+
+        {% for tiledef in tiledefs %}
+            var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.name|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
+        {% endfor %}
+
+        map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true,
+                  layers:[{% for map in maps | reverse %}l_{{map.id}}{% if not loop.last %}, {% endif %}{% endfor %}]
+        });
+
+        alarmMarkers.addTo(map);
+        var baseMaps = { {% for map in maps | reverse %}"{{ map.name }}" : l_{{map.id}},{% endfor %}};
+        if (startlat!="" && startlng!="" && startzoom!=""){
+            map.setView(new L.LatLng(startlat, startlng), startzoom);
+        }
+        console.log('--2');
+
+        var overlayMaps = {
+            {% for tiledef in tiledefs %}
+                "{{ tiledef.name|safe }}": l_{{ tiledef.name|safe }},
+            {% endfor %}
+        };
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        //var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: ''});
+        var miniMap = new L.Control.MiniMap(ml_1, { toggleDisplay: true }).addTo(map);
+
+
+        // select default map
+        $('.leaflet-control-layers-base').children().last().children('.leaflet-control-layers-selector').click();
+    });
+    function setPosition(lat, lng, zoom){
+        if (zoom == undefined){
+            zoom = map.getZoom();
+        }
+        if(lat!="" && lng!="" && zoom!=""){
+            map.panTo(new L.LatLng(lat, lng), zoom);
+        }
+    }
+    
+    function addMarker(lat, lng, prio, moveable){ /*updated*/
+        var m;
+        if(lat!="" && lng!=""){
+            if (prio){
+                m = new L.Marker(new L.LatLng(lat, lng), {icon:colorcode[prio],draggable:moveable});
+            }else{
+                m = new L.Marker(new L.LatLng(lat, lng), {icon:redmarker,draggable:moveable});
+            }
+            alarmMarkers.addLayer(m);
+        }
+        return m;
+    }
+</script>

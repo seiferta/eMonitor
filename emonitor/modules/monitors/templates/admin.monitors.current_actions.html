@@ -1,0 +1,26 @@
+{% for id in clients.keys() %}
+    {% if clients[id][0] and clients[id][1] %}
+    <div class="client">
+        <div class="client_id">{{ id }}</div>
+        <div class="client_ip">
+            {{ clients[id][0][0] }}<br/>{{ clients[id][0][1] }}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if clients[id][0] and not clients[id][1] %}
+    <div class="client_error">
+        <div class="client_id">{{ id }}</div>
+        <div class="client_ip">
+            {{ clients[id][0][0] }}<br/>{{ clients[id][0][1] }}<br/><br/>
+            <span style="font-style:italic">{{ _('monitors.current.nodefinition') }}</span>
+        </div>
+    </div>
+    {% endif %}
+    {% if not clients[id][0] and clients[id][1] %}
+    <div class="client_inactive">
+        <div class="client_id">{{ id }}</div>
+        <div class="client_ip" style="font-style:italic">{{ _('monitors.current.notconnected') }}</div>
+    </div>
+    {% endif %}
+{% endfor %}

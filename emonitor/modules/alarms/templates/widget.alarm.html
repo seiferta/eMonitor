@@ -1,0 +1,18 @@
+{% if alarm %}
+    {% set alarmcategory = alarm.key.category %}
+    {% set alarmkey = alarm.key.key %}
+{% else %}
+    {% set alarmcategory = '' %}
+    {% set alarmkey = '' %}
+{% endif %}
+<div id="alarm_widget">
+    <style scoped="scoped">
+        div#alarm_widget{position:relative;width:100%;top:0;margin:0;padding:0;}
+        div#alarm_widget div.monitor_alarm_key{font-size:2.5em;padding:30px 20px}
+    </style>
+    <div class="monitor_alarm_key">
+        <span id="alarm_key_category">{{ alarmcategory }}{% if alarmcategory!='' %}: {% endif %}</span>
+        <span id="alarm_key_key">{{  alarmkey }}</span>
+    </div>
+</div>
+

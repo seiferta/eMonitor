@@ -1,0 +1,10 @@
+{% for schedjob in schedjobs %}
+    <p>
+        <b>{{ schedjob.name }}</b>
+        <br/> - Next Run: <span>{{ schedjob.next_run_time }}</span>
+        <br/> - Parameter: <br/>
+        {% for key in schedjob.kwargs.keys() %}
+            &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ key }} - {{ schedjob.kwargs[key] }}</span><br/>
+        {% endfor %}
+    </p>
+{% endfor %}

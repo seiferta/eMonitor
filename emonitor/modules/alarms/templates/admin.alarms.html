@@ -1,0 +1,95 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        #subnorth{padding:0px 10px 0px 10px;border-width:0px;}
+        #subcenter{border-width:0px;padding:0px;position:relative;height:100%;}
+
+        h3{font-size: 1.1em; background:rgb(171,171,171); border: 1px solid silver; border-width:1px 0px; padding:0px; margin:0px;cursor:pointer;padding:10px 0px 10px 10px;overflow:visible;position:relative;}
+        .alarmrow{position:relative;clear:left;overflow:hidden;min-height:40px;padding:4px 2px  2px 15px;border-bottom:1px solid silver;background-color:#fff;}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
+    <script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js"> </script>
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
+{%endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <div id="subnorth">
+        <h2>{{ _('alarms.header.overview') }}</h2>
+        <div style="position:absolute;bottom:5px;right:10px;">
+            <form method="post" action="">
+                <span onclick="doArchive()">{{ _('alarms.alarmarchive') }}</span>
+            </form>
+        </div>
+    </div>
+    <form action="alarms" method="post" id="alarmform">
+    <div id="subcenter" style="padding:1px">
+            <div id="accordion">
+
+                {% for k in alarmstates.keys() %}
+                    <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
+                        {{ _('alarmstate.'+alarmstates[k]) }}
+                        <span class="badge badge-info pull-right">{{ stats[k] }}</span>
+                    </h3>
+
+                    <div style="position:relative">
+                        {% for alarm in alarms %}
+                            {% if k==alarm.state|string %}
+                            <div class="alarmrow">
+                                {{ alarm.timestamp|datetime }}:
+                                <b>{{ alarm.key.key }}</b>
+                                <br/>
+                                <span class="address">
+                                    {{ alarm.city.name }}:
+                                    {{ alarm.street.name }}
+                                    {{ alarm.streetno }}
+                                    <em style="margin-left:10px;">{{ alarm.street2.name }}</em>
+                                    {% if alarm.object %}> {{ alarm.object.name }}{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
+                    {{ _('alarmstate.archive') }}
+                    <span class="badge pull-right">{{ stats['3'] }}</span>
+                </h3>
+                <div style="position:relative">
+                    {% for alarm in alarms %}
+                        {% if alarm.state=='3' %}
+                        <div class="alarmrow">
+                            {{ alarm.timestamp }}:
+                            <b>{{ alarm.key.key }}</b>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    $(document).ready(function() {
+        alarmlayout = $('.content').layout({
+            center:{paneSelector: "#subcenter", onresize: $.layout.callbacks.resizePaneAccordions,},
+            north:{paneSelector: "#subnorth", size: 50, slidable: false, resizable: false, closable:false, spacing_open: 0},
+        });
+        $("#accordion").accordion({ heightStyle: "fill",});
+    });
+    
+    function doArchive(){
+        if(confirm('{{ _('alarms.alarmarchivequestion') }}')){
+        
+        }
+    }
+{% endblock %}

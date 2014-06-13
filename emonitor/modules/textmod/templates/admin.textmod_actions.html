@@ -1,0 +1,26 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('textmod.replace.header.edit') }}</h2>
+    
+    <form method="post" action="">
+        <p>
+            {{ _('textmod.replace.text') }}:<br/>
+            <input type="text" name="replace_text" value="{{ replacement.text }}" style="width:99%"/>
+        </p>
+        <p>
+            {{ _('textmod.replace.replacement') }}:<br/>
+            <input type="text" name="replace_repl" value="{{ replacement.replace }}" style="width:99%"/>
+        </p>
+        <p>
+            <button type="submit" name="action" value="savereplace" class="save"><i class="fa fa-check"></i> {{ _('textmod.replace.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('textmod.replace.cancel') }}</button>
+        </p>
+        <input type="hidden" name="replace_id" value="{{ replacement.id }}"/>
+        <input type="hidden" name="form_id" value="admin.replace.edit"/>
+    </form>
+{% endblock %}

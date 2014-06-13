@@ -1,0 +1,91 @@
+{% extends "admin.html" %}
+
+{% block script %}
+     <script>
+        function questionDel(){
+            return confirm('{{ _('admin.itemtypes.delquestion') }}');
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('admin.mapitems.overview') }} - {{ itemdefinition.name }}</h2>
+    <p><small>{{ _('admin.mapitems.definitioninfo') }}</small></p>
+
+    {% macro render_pagination(pagination) %}
+      <ul class="pagination">
+        <li><a href="/admin/mapitems/{{ itemdefinition.name }}/{{ pagination.page - 1 }}">&laquo;</a></li>
+          {%- for page in pagination.iter_pages() %}
+        <li {% if page == pagination.page %} class="active"{% endif %}>
+          {% if page %}
+            <a href="/admin/mapitems/{{ itemdefinition.name }}/{{ page }}">{{ page }}</a>
+        {% else %}
+          <span class=ellipsis>…</span>
+        {% endif %}
+        </li>
+      {%- endfor %}
+      {% if pagination.has_next %}
+        <li><a href="/admin/mapitems/{{ itemdefinition.name }}/{{ pagination.page + 1 }}">&raquo;</a></li>
+      {% endif %}
+      </ul>
+    {% endmacro %}
+
+    {{ render_pagination(pagination) }}
+
+    <form method="post" action="" style="padding-bottom:20px;">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:10%;">{{ _('mapitems.osmid') }}</div>
+                <div class="headcell" style="width:90%;">{{ _('mapitems.parameter') }}</div>
+            </div>
+        </div>
+
+        {% if itemtypes|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('mapitmes.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for itemtype in itemtypes %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:10%;">{{ itemtype.osmid }}</div>
+                    <div class="rowcell" style="width:90%;">
+                        {% for parameter in itemtype.parameters %}
+                        <em>{{ parameter }}:</em> {{ itemtype.parameters[parameter] }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="submit" name="action" value="deletecars_{{ itemtype.id }}" title="{{ _('itemtype.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editcars_{{ itemtype.id }}" title="{{ _('itemtype.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('itemtype.itemscount', count=pagination.total) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.itemtypes.overview"/>
+    </form>
+
+    <button type="button" onclick="loadHydrants()">{{ _('admin.itemtypes.osmload') }}</button>
+    <div id="osmstate"></div>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+
+    function loadHydrants(){
+        $('#osmstate').html('<img class="updating" src="/admin/img/loading.gif"/>');
+            $.ajax({ type : "POST", url : "/admin/data/mapitems?action=loadfromosm&type={{ itemdefinition.name }}",
+                success: function(result) {
+                    $('#osmstate').html(result);
+                }
+            });
+
+    }
+{% endblock %}

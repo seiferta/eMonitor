@@ -1,0 +1,43 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/monitors/inc/monitors.css" />
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('monitors.current.header.overview') }}</h2>
+    <p><small>{{ _('monitors.current.info') }}</small></p>
+
+    <div style="position:absolute;top:20px;right:20px;">
+        <a href="#" title="{{ _('monitors.current.refreshtitle') }}" class="icon" onclick="return refreshPing()"><i class="fa fa-refresh"></i></a>
+    </div>
+    <div id="loadinginfo" style="background-color:#ffffff;text-align:center;padding:20px 5px;margin:40px 5px;display:none;">
+        {{ _('monitors.current.loadingclients') }}
+        <br/><br/>
+        <img src="/admin/img/loading.gif"/>
+    </div>
+    <div id="monitors" style="position:relative"> </div>
+    <div style="clear:left;"> </div>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    refreshPing();
+    
+    function refreshPing(){
+        $('#loadinginfo').toggle();
+        $('#monitors').html('');
+        $.ajax({ type : "POST", url : "/admin/data/monitors?action=ping", 
+            success: function(result){
+                $('#loadinginfo').toggle();
+                $('#monitors').html(result);
+            }
+        });
+        return false;
+    }
+{% endblock %}
+

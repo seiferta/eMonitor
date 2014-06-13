@@ -1,0 +1,19 @@
+{% macro subnavigation(items) %}
+    <div class="subnavigation">
+        {% for sub in items %}
+            <a href="{{ sub[0] }}" {% if path==sub[0] or (path.split('/')|count==3 and loop.first) or (path.split('/')|count==5 and sub[0] in path) %}class="selected"{% endif %}>{{ _(sub[1]) }}</a>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro flashmessages(adminmessages) %}
+    {% if adminmessages %}
+    <div class="alert alert-info">
+      <ul>
+        {%- for msg in adminmessages %}
+        <li>{{ msg }}</li>
+        {% endfor -%}
+      </ul>
+    </div>
+    {% endif %}
+{% endmacro %}

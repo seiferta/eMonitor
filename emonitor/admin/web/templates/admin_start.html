@@ -1,0 +1,46 @@
+﻿{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {% if current_mod.getAdminSubNavigation()|count %}
+    <div class="subnavigation">
+        {% for sub in current_mod.getAdminSubNavigation() %}
+            <a href="{{ sub[0] }}" {% if path==sub[0] or (path.split('/')|count==3 and loop.first) or (path.split('/')|count==5 and sub[0] in path) %}class="selected"{% endif %}>{{ _(sub[1]) }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+{%  endblock %}
+
+{%  block content %}
+    <h2>eMonitor - Administrationsbereich</h2>
+    <p>Hier können Sie alle Einstellungen der Software konfigurieren und überwachen. Die Software gliedert sich in unterschiedliche Bereiche:</p>
+    
+    <h3>Webinterface</h3>
+    <p>Das Webinterface liefert in unterschiedlichen Bereichen die Möglichkeit der kompletten Einsatzabwicklung. Im Frontend kann über eine Kartenansicht die Einsatzstelle vorab erkundet werden. Es können für den Einsatz relevante Daten auf der Karte eingesehen und in Telegrammform ausgedruckt werden.</p>
+    
+    
+    <h3>Faxüberwachung</h3>
+    <p>Die Faxüberwachung kontrolliert in konfigurierbaren Zeitintervallen ein definierbares Verzeichnis auf neue Faxnachrichten, die in verschiedenen Dateiformaten eingeben können. Unterstützt werden grundsätzlich PDF, TIFF und JPEG (PDF und TIFF auch mehrseitig).</p>
+    
+    <h3>Monitorsteuerung</h3>
+    <p>Die Monitorsteuerung kann über einen eigenen Klient automatisch die Monitore steuern. Dabei reicht es aus, die Klient-Software zu starten und eine ID zu vergeben. Ab sofort wird die Monitorsteuerung bei Events den Monitor mit beschicken und automatisch die korrekte Anzeige liefern.</p>
+    
+    <h3>Eingesetzte Software</h3>
+    <ul>
+        <li>python</li>
+        <li>Tornado - Webserver</li>
+        <li>Flask - Microframework</li>
+        <li>jQuery</li>
+        <li>jQuery - UI</li>
+        <li>jQuery - Layout</li>
+        <li>jQuery - Accordion</li>
+        <li>Leaflet - Kartendarstellung</li>
+        <li>OpenStreetMap - Karteninformationen</li>
+    </ul>
+    <p>Sämtliche Software liegt OpenSource in verschiedenen Lizenzmodellen vor, kann aber immer kostenfrei genutzt werden. Es wurde darauf geachtet, dass die Betriebssystemunabhängigkeit gegeben ist. Wenn Python vom System unterstützt wird, kann eMonitor bertieben werden.</p>
+{% endblock %}
+
+{% block footer %}
+    <div style="clear:both;position:fixed;bottom:5px;right:30px;color:#fff">
+        hier kommt der Footer
+    </div>
+{% endblock %}

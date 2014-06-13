@@ -1,0 +1,49 @@
+{% extends "admin.html" %}
+
+{% block style %}
+<style>
+    textarea.csscontent{width:99%;height:300px;font-family:courier}
+    .tab-content{border:1px solid #ddd;border-top-width:0px;min-height:300px;padding:10px;}
+</style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('monitors.style.header.overview') }}</h2>
+    <p><small>{{ _('monitors.style.info') }}</small></p>
+    
+    <form method="post" action="/admin/monitors/style">
+    
+        <ul class="nav nav-tabs" id="myTab">
+            {% for k in themes.keys() %}
+            <li {% if loop.first %}class="active"{% endif %}><a href="#tab{{ loop.index0 }}" onclick="$('#myTab li:eq({{ loop.index0 }}) a').tab('show');return false;">{{ k }}</a></li>
+            {% endfor %}
+            <li><a href="#tab{{ themes.keys()|count }}" onclick="$('#myTab li:eq({{ themes.keys()|count }}) a').tab('show');return false;"><i class="fa fa-plus"></i> {{ _('monitors.style.addtheme') }}</a></li>
+        </ul>
+        
+        <div class="tab-content" style="position:relative;height:80%;">
+            {% for k in themes.keys() %}
+            <div class="tab-pane active" id="tab{{ loop.index0 }}">
+                <textarea class="csscontent" id="{{ k }}content" {% if loop.first %}style="display:block"{% endif %}] name="{{ k }}">{{ themes[k] or '' }}</textarea>
+            </div>
+            {% endfor %}
+            
+            <div class="tab-pane" id="tab{{ themes.keys()|count }}">
+                {{ _('monitors.style.addname') }}:<br/><input type="text" name="newname" style="width:99%;"/>
+                <br/>
+                <br/>
+                {{ _('monitors.style.newcss') }}:<br/>
+                <textarea class="csscontent" name="newcss" style="height:239px"></textarea>
+            </div>
+        </div>
+        <p> </p>
+        <p>
+            <button type="submit" name="action" value="savecss" class="save">
+                <i class="fa fa-check"></i> {{ _('monitors.style.save') }}
+            </button>
+        </p>
+    </form>
+{% endblock %}
