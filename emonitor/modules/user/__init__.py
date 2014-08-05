@@ -1,6 +1,6 @@
-from flask import render_template
 from emonitor.utils import Module
 from emonitor.extensions import babel
+from .content_admin import getAdminContent
 
 
 class UserModule(Module):
@@ -15,6 +15,9 @@ class UserModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/user/templates" % app.config.get('PROJECT_ROOT'))
         
         babel.gettext(u'module.usermodule')
+        babel.gettext(u'userlevel.notset')
+        babel.gettext(u'userlevel.admin')
+        babel.gettext(u'userlevel.user')
 
     def getAdminContent(self, **params):
-        return render_template('admin.user.html', **params)
+        return getAdminContent(self, **params)

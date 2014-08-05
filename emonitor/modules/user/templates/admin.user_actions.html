@@ -1,0 +1,39 @@
+{% extends "admin.html" %}
+
+{% block content %}
+    <h2>{{ _('users.header.edit') }}</h2>
+
+    <form method="post" action="">
+        <p>
+            <label>{{ _('users.name') }}:<br/>
+                <input type="text" name="edit_username" value="{{ actionuser.username }}" style="width:99%"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('users.email') }}:<br/>
+                <input type="text" name="edit_email" value="{{ actionuser.email }}" style="width:99%"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('users.level') }}:<br/>
+                <select name="edit_level" style="width:99%">
+                    {% for userlevel in userlevels %}
+                    <option value="{{ userlevel[0] }}" {% if userlevel[0]==actionuser.level %}selected="selected"{% endif %}>{{ _(userlevel[1]) }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('users.active') }}:<br/>
+                <input type="checkbox" name="edit_active" value="1" {% if actionuser.is_active()==True %}checked="checked"{% endif %}/>
+            </label>
+        </p>
+        <p>
+            <button type="submit" name="action" value="updateuser" class="save"><i class="fa fa-check"></i> {{ _('users.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('users.cancel') }}</button>
+        </p>
+        <input type="hidden" name="user_id" value="{{ actionuser.id }}"/>
+        <input type="hidden" name="form_id" value="admin.users.edit"/>
+    </form>
+
+{% endblock %}

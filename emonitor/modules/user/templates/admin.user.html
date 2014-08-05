@@ -3,4 +3,55 @@
 {% block content %}
     <h2>{{ _('admin.user.title') }}</h2>
     <p>{{ _('admin.user.info') }}</p>
+
+    <script>
+        function questionDel(){
+            return confirm('{{ _('users.delquestion') }}');
+        }
+    </script>
+
+    {% if user.level!=1 %}
+        <p class="error">{{ _('admin.user.admin_needed') }}</p>
+    {% else %}
+        <form method="post" action="" style="padding-bottom:20px;">
+            <div class="headrow">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="headcell" style="width:40%;">{{ _('users.name') }}</div>
+                    <div class="headcell" style="width:25%;">{{ _('users.email') }}</div>
+                    <div class="headcell" style="width:25%;">{{ _('users.level') }}</div>
+                    <div class="headcell" style="width:10%;text-align:right;">{{ _('users.active') }}</div>
+                </div>
+                <button class="add" type="submit" name="action" value="createuser" title="{{ _('users.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+            </div>
+
+            {% if users|count==0 %}
+            <div class="rownoentry">
+                <p style="text-align:center">{{ _('users.nodata') }}</p>
+            </div>
+            {% endif %}
+            <div id="sortable">
+                {% for u in users %}
+                <div class="row">
+                    <div style="margin-right:70px;margin-left:15px;">
+                        <div class="rowcell" style="width:40%;">{{ u.username }}</div>
+                        <div class="rowcell" style="width:25%;">{{ u.email }}</div>
+                        <div class="rowcell" style="width:25%;">{{ _(userlevels[u.level][1]) }}</div>
+                    </div>
+                    <button type="submit" name="action" value="deleteuser_{{ u.id }}" title="{{ _('users.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                    <button type="submit" name="action" value="edituser_{{ u.id }}" title="{{ _('users.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                    {% if u.is_active() %}
+                    <div style="float:right;margin-top:4px;margin-right:20px;">
+                        <i class="fa fa-check" title="{{ _('users.activetitle') }}"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="headrow">
+                <small style="float:right;margin-right:50px">{{ _('users.itemscount', count=users|count) }}</small><br/>
+            </div>
+            <input type="hidden" name="form_id" value="admin.users.overview"/>
+        </form>
+    {% endif %}
 {% endblock %}
