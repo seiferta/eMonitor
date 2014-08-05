@@ -4,7 +4,6 @@ import math
 import re
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
-#from ..mapitems.mapitem import MapItem
 
 LOADINPROGRESS = [0, 0]  # [_todo_, _done_]
 

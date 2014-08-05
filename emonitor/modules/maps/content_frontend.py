@@ -4,6 +4,9 @@ from emonitor.modules.maps.map import Map
 
 
 def getFrontendContent(**params):
+    if 'area' not in params.keys() and request.args.get('area', '') != '':
+        params['area'] = request.args.get('area')
+
     if 'area' in params.keys() and params['area'] in ['west', 'center', 'east']:  # select view
         tiledefs = [d for d in classes.get('settings').get('mapitemdefinition') if d['parameters']['tileserver'] == '1']
 

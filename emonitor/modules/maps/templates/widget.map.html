@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="/streets/inc/leaflet.css" />
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.emonitormarkers.js"> </script>
 <style>
     .leaflet-right{display:none}
     .leaflet-control-container{display:none}
@@ -11,8 +12,7 @@
 
 <script>
     var map = new L.Map('map', {zoom:12, doubleClickZoom:false});
-    var startlat = {{ alarm.get('lat') }};
-    var startlng = {{ alarm.get('lng') }};
+    new L.EmonitorMarkers().addTo(map); /* marker extension */
     var startzoom = 18;
     
     var MyMarker = L.Icon.extend({options:{shadowUrl: '/img/marker-shadow.png', iconAnchor:[12, 41], popupAnchor:[0, -42]}});
@@ -22,17 +22,25 @@
     var colorcode = [yellowmarker, orangemarker, redmarker];
 
     cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
-    map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
+    map.setView(new L.LatLng({{ alarm.get('lat') }}, {{ alarm.get('lng') }}), startzoom).addLayer(cloudmade);
 
-    if({{ alarm.get('marker') }}==1){
-        map.addLayer(new L.Marker(new L.LatLng(startlat, startlng), {icon:colorcode[1],draggable:false}));
-    }
+    {% for item in alarm.getAdditionalLayers() %}
+        {% if item['parameters']['tileserver']=='1' %}
+            var l_{{ item['name'] }} = new L.TileLayer('/tileserver/{{ item['name'] }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            map.addLayer(l_{{ item['name'] }});
+        {% endif %}
+    {%  endfor %}
 
 {% if alarm.housenumber %}
-    var polygonPoints = [];
-    {% for p in alarm.housenumber.points %}polygonPoints.push(new L.LatLng({{ p[0] }}, {{ p[1] }}));
+    var coord = {'lat':[], 'lng':[]};
+    {% for p in alarm.housenumber.points %}
+        coord['lat'].push({{ p[0] }});
+        coord['lng'].push({{ p[1] }});
     {% endfor %}
-    var polygon = new L.Polygon(polygonPoints);
-    map.addLayer(polygon);
+    map.addHouseNumber(coord);
+{% else %}
+    if({{ alarm.get('marker') }}==1){
+        map.addMarker({{ alarm.get('lat') }}, {{ alarm.get('lng') }}, 1, false);
+    }
 {% endif %}
 </script>
