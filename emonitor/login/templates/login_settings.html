@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="expires" content="43200"/>
+        <meta name="Access-Control-Allow-Origin" content="*" />
+        <!-- 
+            This website is powered by eMonitor
+        -->
+        <title>{{ _('login.titlemain') }}</title>
+        <meta name="generator" content="eMonitor"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/main.css" />
+    </head>
+
+    <body style="background-color:#ddd">
+        <form action="/user" method="post">
+            <div class="login">
+                <div class="container" style="padding:30px;">
+                    <div style="height:50px;">
+                    {% if get_flashed_messages()|count>0 %}
+                    <p class="error">
+                        {% for msg in get_flashed_messages() %}{{ _(msg) }}<br/>{% endfor %}
+                    </p>
+                    {% endif %}
+                    </div>
+                    <div class="loginform" style="padding:20px;">
+                        <h3>{{ _('login.user_header') }}</h3>
+                        <p>
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                              <input class="form-control" id="password" type="password" placeholder="{{ _('login.curpassword') }}" name="curpwd">
+                            </div>
+                        </p>
+                        <p>{{ _('login.newpassword') }}</p>
+                        <p>
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                              <input class="form-control" type="password" placeholder="{{ _('login.newpasswd') }}" name="newpwd">
+                            </div>
+                        </p>
+                        <p>
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                              <input class="form-control" type="password" placeholder="{{ _('login.repeat') }}" name="newpwdcheck">
+                            </div>
+                        </p>
+                        <p style="display:none;">
+                            <input type="checkbox" name="remember" value="1" checked="checked"/>
+                            {{ _('login.rememberme') }}
+                        </p>
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                        <p>
+                            <button type="submit" name="dologin" class="btn btn-default navbar-btn">{{ _('login.save') }}</button>
+                        </p>
+                        <p>&nbsp;</p>
+                        <a href="/" title="{{ _('startpage.title') }}"><div class="version"> </div></a>
+                        <div class="loginversion">
+                            <small style="color:rgb(171,171,171)">{{ app_name }} <span>{{ app_version }}</span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            document.getElementById('password').focus();
+        </script>
+    </body>
+</html>

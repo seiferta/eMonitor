@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-02-08 23:16+0100\n"
-"PO-Revision-Date: 2014-02-08 23:18+0100\n"
+"POT-Creation-Date: 2014-08-04 14:33+0200\n"
+"PO-Revision-Date: 2014-08-04 14:35+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,13 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 "Language: de\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.5\n"
 
-#: emonitor/login/login.py:11
+#: emonitor/login/login.py:10
 msgid "admin.login.needed"
 msgstr "Anmeldung für Admin-Bereich erforderlich"
 
 #: emonitor/login/templates/login.html:10
+#: emonitor/login/templates/login_settings.html:10
 msgid "login.titlemain"
 msgstr "eMonitor - Login"
 
@@ -40,6 +41,7 @@ msgid "login.password"
 msgstr "Passwort"
 
 #: emonitor/login/templates/login.html:45
+#: emonitor/login/templates/login_settings.html:51
 msgid "login.rememberme"
 msgstr "angemeldet bleiben"
 
@@ -48,5 +50,30 @@ msgid "login.loginbutton"
 msgstr "Anmelden"
 
 #: emonitor/login/templates/login.html:52
+#: emonitor/login/templates/login_settings.html:58
 msgid "startpage.title"
 msgstr "eMonitor - Startseite"
+
+#: emonitor/login/templates/login_settings.html:29
+msgid "login.user_header"
+msgstr "Passwort für aktuellen Benutzer ändern"
+
+#: emonitor/login/templates/login_settings.html:33
+msgid "login.curpassword"
+msgstr "Aktuelles Passwort"
+
+#: emonitor/login/templates/login_settings.html:36
+msgid "login.newpassword"
+msgstr "Neues Passwort eingeben"
+
+#: emonitor/login/templates/login_settings.html:40
+msgid "login.newpasswd"
+msgstr "Neues Passwort"
+
+#: emonitor/login/templates/login_settings.html:46
+msgid "login.repeat"
+msgstr "Passwort wiederholen"
+
+#: emonitor/login/templates/login_settings.html:55
+msgid "login.save"
+msgstr "Speichern"

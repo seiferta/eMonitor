@@ -13,9 +13,7 @@ gettext(u'admin.login.needed')
 @login.route("/login", methods=["GET", "POST"])
 def loginform():
     if request.method == "POST":
-        print request.form
         user = User.getUserByName(request.form.get('username'))
-        print "user", user
 
         if user and user.check_password(request.form.get('password')):
             if request.form.get('remember', '') == '1':
@@ -41,7 +39,7 @@ def logout():
 @login_required
 def usersettings():
     if request.method == "POST":
-        user = User.get(flasklogin.current_user.get_id() or 0)
+        user = User.getUsers(flasklogin.current_user.get_id() or -1)
         if not user.check_password(request.form.get('curpwd')):
             flash('login.currpwdwrong')
         elif request.form.get('newpwd') != request.form.get('newpwdcheck'):
@@ -51,4 +49,4 @@ def usersettings():
             db.session.commit()
             return redirect("/")
 
-    return render_template('login_settings.html', user=User.get(flasklogin.current_user.get_id() or 0), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+    return render_template('login_settings.html', user=User.getUsers(flasklogin.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
