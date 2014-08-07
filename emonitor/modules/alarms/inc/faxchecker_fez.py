@@ -167,7 +167,6 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
         if len(c) > 0:
             FezAlarmFaxChecker().fields[fieldname] = (','.join(c), ','.join(cl))
-        print c, cl
 
     @staticmethod
     def evalTime(fieldname, **params):
@@ -293,6 +292,9 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             FezAlarmFaxChecker().fields[fieldname] = (city.name, city.id)
             return
 
+        if _str.startswith('in'):  # remove 'in' and plz
+            _str = re.sub(r'in*|[0-9]*', '', _str[2:].strip())
+
         FezAlarmFaxChecker().fields[fieldname] = (_str, 0)  # return original if no match
         return
 
@@ -390,13 +392,17 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                     method_params = ''
 
                 # execute methods
-                #FezAlarmFaxChecker().fields = getattr(self, method)(k, alarmtype=alarmtype, options=method_params.split(';'))  # fields, fieldname, parameters
-                getattr(self, method)(k, alarmtype=alarmtype, options=method_params.split(';'))  # fieldname, parameters
+                try:
+                    getattr(self, method)(k, alarmtype=alarmtype, options=method_params.split(';'))  # fieldname, parameters
+                except:
+                    if u'error' not in values:
+                        values['error'] = ''
+                    values['error'] += 'error in method: %s\n' % method
+                    pass
 
         for k in FezAlarmFaxChecker().fields:
             try:
                 values[k] = (FezAlarmFaxChecker().fields[k][0].decode('utf-8'), FezAlarmFaxChecker().fields[k][1])
             except:
                 values[k] = (FezAlarmFaxChecker().fields[k][0], FezAlarmFaxChecker().fields[k][1])
-
         return values

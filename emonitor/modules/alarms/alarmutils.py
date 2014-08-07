@@ -1,8 +1,6 @@
-import re
 import datetime, time
 from sqlalchemy import inspect
-from emonitor.extensions import classes
-import difflib
+from emonitor.extensions import classes, events, signal
 
 __all__ = ['evalStreet', 'evalMaterial', 'evalTime', 'evalObject', 'evalAlarmplan', 'evalCity', 'evalAddressPart', 'evalKey', 'getEvalMethods', 'buildAlarmFromText']
 
@@ -21,8 +19,7 @@ def get_street(self):
 
 
 def get_housenumber(self):
-    number = self.get('streetno').split(' ')[0]
-    n = [n for n in self.street.housenumbers if str(n.number) == str(number)]
+    n = [n for n in self.street.housenumbers if str(n.number) == str(self.get('streetno').split(' ')[0])]
     if len(n) == 1:
         return n[0]
     else:
@@ -146,3 +143,32 @@ class AlarmFaxChecker:
 
     def buildAlarmFromText(self, alarmtype, rawtext):
         return dict()
+
+
+def processFile(incomepath, filename):
+    """
+    run processing in test mode
+    """
+    params = dict(dict(incomepath=incomepath, filename=filename, mode='test'))
+    handlers = events.getEvents('file_added').handlers
+    dbhandlers = classes.get('eventhandler').getEventhandlers(event='file_added')
+    for handler in dbhandlers:  # db
+        for hdl in handlers:
+            if handler.handler == hdl[0]:
+                hdl[1]('file_added', params)
+                res = []
+                for p in handler.getParameterList():
+                    try:
+                        res.append('%s:%s' % (p, params[p.split('.')[1]].decode('utf-8')))
+                    except:
+                        if p.split('.')[1] in params.keys():
+                            res = ['%s:%s' % (p, params[p.split('.')[1]])]
+                            #params['error'] = '%s:%s' % (p, params[p.split('.')[1]])
+                        else:
+                            res = ['error: key not found - %s' % p.split('.')[1]]
+                            params['error'] = 'error: key not found - %s' % p.split('.')[1]
+                if u'error' in params.keys():
+                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.replace('emonitor.modules.', ''), protocol=params['time'][-1], error=params['error'])
+                else:
+                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.replace('emonitor.modules.', ''), protocol=params['time'][-1])
+    signal.send('alarm', 'testupload_start', result='done')

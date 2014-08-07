@@ -1,6 +1,6 @@
 import os
 import time
-from flask import send_from_directory, abort, Response, stream_with_context
+from flask import send_from_directory, abort, Response
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
 from emonitor.widget.monitorwidget import MonitorWidget
@@ -15,7 +15,7 @@ class AlarmsModule(Module):
     info = dict(area=['admin', 'frontend', 'widget'], messages=['add', 'info', 'activate', 'close'], name='alarms', path='alarms', version='0.1')
     
     def __repr__(self):
-        return "cars"
+        return "alarms"
 
     def __init__(self, app):
         Module.__init__(self, app)
@@ -55,12 +55,14 @@ class AlarmsModule(Module):
         signal.connect('alarm', 'added', frontendAlarmHandler.handleAlarmAdded)
         signal.connect('alarm', 'updated', frontendAlarmHandler.handleAlarmUpdated)
 
+        signal.connect('alarm', 'testupload_start', adminAlarmHandler.handleAlarmTestUpload)
+
         # static folders
         @app.route('/alarms/inc/<path:filename>')
         def alarms_static(filename):
             return send_from_directory("%s/emonitor/modules/alarms/inc/" % app.config.get('PROJECT_ROOT'), filename)
 
-        @app.route('/alarms/export/<path:filename>')  # filename = alarms/pdf/[id]-[style].pdf
+        @app.route('/alarms/export/<path:filename>')  # filename = [id]-[style].pdf
         def export_static(filename):
             filename, extension = os.path.splitext(filename)
             id, template = filename.split('-')
@@ -71,7 +73,6 @@ class AlarmsModule(Module):
             elif extension == '.html':
                 return Response(Alarm.getExportData(extension, id=id, style=template), mimetype="text/html")
             elif extension == '.png':
-                print "filename:", filename, extension
                 return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename), mimetype="image/png")
             
         # translations
@@ -83,6 +84,9 @@ class AlarmsModule(Module):
         babel.gettext(u'alarms_timer')
         babel.gettext(u'alarms_remark')
         babel.gettext(u'alarms')
+        babel.gettext(u'alarms.prio0')
+        babel.gettext(u'alarms.prio1')
+        babel.gettext(u'alarms.prio2')
         babel.gettext(u'emonitor.modules.alarms.alarm.Alarms')
         babel.gettext(u'emonitor.modules.alarms.alarmtype.AlarmTypes')
         babel.gettext(u'alarms.test.protocol')
@@ -120,9 +124,6 @@ class AlarmsModule(Module):
             except:
                 app.logger.error('alarms.__init__.py: aalarm error')
 
-    def __repr__(self):
-        return "alarms"
-
     def frontendContent(self):
         return 1
 
@@ -159,4 +160,4 @@ class frontendAlarmHandler(SocketHandler):
 class adminAlarmHandler(SocketHandler):
     @staticmethod
     def handleAlarmTestUpload(sender, **extra):
-        SocketHandler.send_message('alarm.testupload_start', **extra)
+        SocketHandler.send_message(extra)

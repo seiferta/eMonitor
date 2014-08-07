@@ -2,8 +2,8 @@ import os
 import imp
 from flask import render_template, request, current_app
 
-from emonitor.extensions import db, classes, events
-from .alarmutils import AlarmFaxChecker
+from emonitor.extensions import db, classes, scheduler
+from .alarmutils import AlarmFaxChecker, processFile
 
 
 def getAdminContent(self, **params):
@@ -104,28 +104,5 @@ def getAdminData(self):
             fname = os.path.join(current_app.config.get('PATH_TMP'), ufile.filename)
             ufile.save(fname)
 
-        params = dict(dict(incomepath=current_app.config.get('PATH_TMP'), filename=ufile.filename, mode='test'))
-        handlers = events.getEvents('file_added').handlers
-
-        results = []
-        dbhandlers = classes.get('eventhandler').getEventhandlers(event='file_added')
-        for handler in dbhandlers:  # db
-            for hdl in handlers:
-                if handler.handler == hdl[0]:
-                    hdl[1]('file_added', params)
-                    res = []
-                    #print handler.handler
-                    for p in handler.getParameterList():
-                        try:
-                            res.append('%s:%s' % (p, params[p.split('.')[1]].decode('utf-8')))
-                        except:
-                            import pprint
-                            #pprint.pprint(p)
-                            #pprint.pprint(params)
-                            if p.split('.')[1] in params.keys():
-                                res.append('%s:%s' % (p, params[p.split('.')[1]]))
-                            else:
-                                res.append('error: key not found - %s' % p.split('.')[1])
-
-                    results.append((handler.handler, "\r\n".join(res)))
-        return render_template('admin.alarms.test.result.html', results=results, handlers=dbhandlers, protocol=params)
+            scheduler.add_single_job(processFile, [current_app.config.get('PATH_TMP'), ufile.filename])  # schedule operation
+        return ""

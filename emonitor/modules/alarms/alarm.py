@@ -29,11 +29,10 @@ class Alarm(db.Model):
     type = db.Column(db.Integer, default=0)
     state = db.Column(db.Integer, default=0)
     attributes = db.relationship("AlarmAttribute", collection_class=attribute_mapped_collection('name'), cascade="all, delete-orphan")
-    history = db.relationship(AlarmHistory.__name__, backref="alarms", lazy='joined')
+    history = db.relationship(AlarmHistory.__name__, backref="alarms", lazy='joined', cascade="all, delete-orphan")
 
     # additional properties defined in alarmutils
     endtimestamp = property(alarmutils.get_endtimestamp)
-    street = property(alarmutils.get_street)
     cars1 = property(alarmutils.get_cars1)
     cars2 = property(alarmutils.get_cars2)
     material = property(alarmutils.get_material)
@@ -74,6 +73,16 @@ class Alarm(db.Model):
     def addHistory(self, name, value, dtime=datetime.datetime.now()):
         self.history.append(AlarmHistory(name, value, dtime))
 
+    def getAdditionalLayers(self):
+        cat = self.key.category
+        items = []
+        for itemtype in self.getMap().getMapItemDefinitions():
+            for r in itemtype['key']:
+                regex = re.compile(r)
+                if regex.search(cat):
+                    items.append(itemtype)
+        return items
+
     @staticmethod
     def getMap():
         return classes.get('map').getDefaultMap()
@@ -90,11 +99,19 @@ class Alarm(db.Model):
         return db.session.query(Alarm).filter_by(state=1).order_by('alarms.timestamp desc').all()
 
     @staticmethod
+    def changeStates(state):
+        for alarm in classes.get('alarm').getAlarms(0):
+            Alarm.changeState(alarm.id, state)
+
+    @staticmethod
     def changeState(id, state):
         global LASTALARM
         alarm = classes.get('alarm').getAlarms(id)
         alarm.state = state
-        alarm.addHistory('autochangeState', Alarm.ALARMSTATES[str(state)])
+        try:
+            alarm.addHistory('autochangeState', Alarm.ALARMSTATES[str(state)])
+        except KeyError:
+            alarm.addHistory('autochangeState', 'archived')
         db.session.commit()
 
         if state == 1:  # activate alarm
@@ -122,7 +139,7 @@ class Alarm(db.Model):
 
             # close alarm after alarms.autoclose, default 30 minutes
             if alarm.state == 1:  # autoclose only automatic alarms
-                j = scheduler.add_date_job(Alarm.changeState, datetime.datetime.fromtimestamp(
+                scheduler.add_date_job(Alarm.changeState, datetime.datetime.fromtimestamp(
                     LASTALARM + float(classes.get('settings').get('alarms.autoclose', 1800))), [id, 2])
 
             #flash(babel.gettext(u'alarms.statechangeactivated'), 'alarms.activate')
@@ -186,6 +203,9 @@ class Alarm(db.Model):
         for t in classes.get('alarmtype').getAlarmTypes():
             if re.match(t.keywords.replace('\r\n', '|'), kwargs[0]['text']):
                 alarm_fields = t.interpreterclass().buildAlarmFromText(t, kwargs[0]['text'])
+                if u'error' in alarm_fields.keys():
+                    kwargs[0]['error'] = alarm_fields['error']
+                    del alarm_fields['error']
                 alarmtype = t
                 break
 
@@ -207,6 +227,7 @@ class Alarm(db.Model):
 
         if not alarmtype:  # alarmtype not found
             kwargs[0]['id'] = 0
+            kwargs[0]['error'] = 'alarmtype not found'
             return kwargs
 
         # position
@@ -257,8 +278,7 @@ class Alarm(db.Model):
                 alarm.set('id.city', alarm_fields['city'][1])
             else:  # city not found -> build from fax
                 url = 'http://nominatim.openstreetmap.org/search'
-                params = 'format=json&city=%s&street=%s' % (
-                    alarm_fields['city'][0].split()[0], alarm_fields['address'][0])
+                params = 'format=json&city=%s&street=%s' % (alarm_fields['city'][0].split()[0], alarm_fields['address'][0])
                 if 'streetno' in alarm_fields:
                     params += ' %s' % alarm_fields['streetno'][0].split()[0]  # only first value
                     alarm.set('streetno', alarm_fields['streetno'][0])
