@@ -1,6 +1,7 @@
 from flask import send_from_directory
 from emonitor.modules import Module
 from emonitor.extensions import babel, classes, db, events
+from .content_frontend import getFrontendContent, getFrontendData
 from .content_admin import getAdminContent, getAdminData
 
 

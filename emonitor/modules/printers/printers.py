@@ -1,7 +1,9 @@
+import os
 import yaml
 import random
 import subprocess
 from flask import current_app
+from sqlalchemy import and_
 from emonitor.extensions import db, classes
 from emonitor.utils import Module
 
@@ -41,14 +43,31 @@ class Printers(db.Model):
             callstring = callstring.replace('-printer [printer]', '')
         else:
             callstring = callstring.replace('[printer]', '"%s"' % self.printer)
-        callstring = callstring.replace('[copies]', self.settings[0])
+        try:
+            callstring = callstring.replace('[copies]', self.settings[0])
+        except IndexError:
+            callstring = callstring.replace('[copies]', '1')
         callstring = callstring.replace('[filename]', filename)
         return callstring
 
+    def doPrint(self, **params):
+        import emonitor.webapp as wa
+        tmpfilename = random.random()
+        callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
+        if "alarmid" in params:
+            alarm = classes.get('alarm').getAlarms(params['alarmid'])
+            with wa.test_request_context('/', method='get'):
+                with open('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
+                    tmpfile.write(Module.getPdf(alarm.getExportData('.html', id=alarm.id, style=self.layout[6:-5])))
+            try:
+                subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
+                print '%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename)
+                os.remove('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
+            except WindowsError:
+                pass
+
     @staticmethod
     def handleEvent(eventname, *kwargs):
-        import emonitor.webapp as wa
-
         _printer = None
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.printers.printers.Printers'][0]
         if hdl:
@@ -57,18 +76,7 @@ class Printers(db.Model):
                     _printer = Printers.getPrinters(p[1])
                     break
         if _printer:
-            tmpfilename = random.random()
-            callstring = _printer.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
-            alarm = classes.get('alarm').getAlarms(kwargs[0]['alarmid'])
-            with wa.test_request_context('/', method='get'):
-                with open('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
-                    tmpfile.write(Module.getPdf(alarm.getExportData('.html', id=alarm.id, style=_printer.layout[6:-5])))
-            print "printers handle", callstring
-            try:
-                ret = subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=False)
-                print ret
-            except:
-                pass
+            _printer.doPrint(alarmid=kwargs[0]['id'])
 
     @staticmethod
     def getPrinters(pid=0):
@@ -76,3 +84,7 @@ class Printers(db.Model):
             return db.session.query(Printers).all()
         else:
             return db.session.query(Printers).filter_by(id=int(pid)).first()
+
+    @staticmethod
+    def getActivePrintersOfModule(module):
+        return db.session.query(Printers).filter(and_(Printers.module==module, Printers.state=='1')).all()

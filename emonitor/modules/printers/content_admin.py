@@ -70,7 +70,11 @@ def getAdminContent(self, **params):
                 p.module = request.form.get('template').split('.')[0]
                 p.layout = '.'.join(request.form.get('template').split('.')[1:])
                 p.settings = request.form.getlist('printersettings')
-                p.state = 1
+                p.state = request.form.get('printerstate')
+                db.session.commit()
+
+            elif request.form.get('action').startswith('deleteprinters_'):  # delete printer definition
+                db.session.delete(classes.get('printer').getPrinters(pid=request.form.get('action').split('_')[-1]))
                 db.session.commit()
 
     params.update({'printers': classes.get('printer').getPrinters()})
