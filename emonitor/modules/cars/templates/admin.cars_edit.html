@@ -9,36 +9,42 @@
     
     <form method="post" action="">
         <p>
-            {{ _('cars.name') }}:<br/>
-            <input type="text" name="edit_name" value="{{ car.name }}" style="width:99%"/>
+            <label>{{ _('cars.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ car.name }}" style="width:99%"/>
+            </label>
         </p>
         <p>
-            {{ _('cars.description') }}:<br/>
-            <input type="text" name="edit_description" value="{{ car.description }}" style="width:99%"/>
+            <label>{{ _('cars.description') }}:<br/>
+                <input type="text" name="edit_description" value="{{ car.description }}" style="width:99%"/>
+            </label>
         </p>
         <p>
-            {{ _('cars.dept') }}:<br/>
-            <select name="edit_department" style="width:99%">
-                {% for department in departments %}
-                <option value="{{ department.id }}" {% if department.id==car.dept %}selected="selected"{% endif %}>{{ department.name }}</option> 
-                {% endfor %}
-            </select>
+            <label>{{ _('cars.dept') }}:<br/>
+                <select name="edit_department" style="width:99%">
+                    {% for department in departments %}
+                    <option value="{{ department.id }}" {% if department.id==car.dept.id %}selected="selected"{% endif %}>{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
         </p>
         <p>
-            {{ _('cars.type') }}:<br/>
-            <select name="edit_type" style="width:99%">
-                {% for cartype in cartypes %}
-                <option value="{{ cartype[0] }}" {% if cartype[0]==car.type %}selected="selected"{% endif %}>{{ cartype[0] }}</option>
-                {% endfor %}
-            </select>
+            <label>{{ _('cars.type') }}:<br/>
+                <select name="edit_type" style="width:99%">
+                    {% for cartype in cartypes %}
+                    <option value="{{ cartype[0] }}" {% if cartype[0]==car.type %}selected="selected"{% endif %}>{{ cartype[0] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
         </p>
         <p>
-            {{ _('cars.fms') }}:<br/>
-            <input type="text" name="edit_fmsid" value="{{ car.fmsid }}" style="width:99%"/>
+            <label>{{ _('cars.fms') }}:<br/>
+                <input type="text" name="edit_fmsid" value="{{ car.fmsid }}" style="width:99%"/>
+           </label>
         </p>
         <p>
-            {{ _('cars.active') }}:<br/>
-            <input type="checkbox" name="edit_active" value="1" {% if car.active==1 %}checked="checked"{% endif %}}/>
+            <label>{{ _('cars.active') }}:<br/>
+                <input type="checkbox" name="edit_active" value="1" {% if car.active==1 %}checked="checked"{% endif %}/>
+            </label>
         </p>
         <p>
             <button type="submit" name="action" value="updatecars" class="save"><i class="fa fa-check"></i> {{ _('cars.save') }}</button>

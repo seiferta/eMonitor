@@ -2,8 +2,8 @@
 
 {% block style %}
 <style>
-    textarea.csscontent{width:99%;height:300px;font-family:courier}
-    .tab-content{border:1px solid #ddd;border-top-width:0px;min-height:300px;padding:10px;}
+    textarea.csscontent{width:99%;height:300px;font-family:courier,serif}
+    .tab-content{border:1px solid #ddd;border-top-width:0;min-height:300px;padding:10px;}
 </style>
 {% endblock %}
 
@@ -27,16 +27,17 @@
         <div class="tab-content" style="position:relative;height:80%;">
             {% for k in themes.keys() %}
             <div class="tab-pane active" id="tab{{ loop.index0 }}">
-                <textarea class="csscontent" id="{{ k }}content" {% if loop.first %}style="display:block"{% endif %}] name="{{ k }}">{{ themes[k] or '' }}</textarea>
+                <label><textarea class="csscontent" id="{{ k }}content" {% if loop.first %}style="display:block"{% endif %}] name="{{ k }}">{{ themes[k] or '' }}</textarea></label>
             </div>
             {% endfor %}
             
             <div class="tab-pane" id="tab{{ themes.keys()|count }}">
-                {{ _('monitors.style.addname') }}:<br/><input type="text" name="newname" style="width:99%;"/>
+                <label>{{ _('monitors.style.addname') }}:<br/><input type="text" name="newname" style="width:99%;"/></label>
                 <br/>
                 <br/>
-                {{ _('monitors.style.newcss') }}:<br/>
-                <textarea class="csscontent" name="newcss" style="height:239px"></textarea>
+                <label>{{ _('monitors.style.newcss') }}:<br/>
+                    <textarea class="csscontent" name="newcss" style="height:239px"></textarea>
+                </label>
             </div>
         </div>
         <p> </p>

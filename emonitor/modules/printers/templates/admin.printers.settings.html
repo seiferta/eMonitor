@@ -9,9 +9,10 @@
     <p><small>{{ _('printers.settings.info') }}</small></p>
     <form method="post" action="">
         <p>
-            {{ _('printers.settings.callstring') }}:<br/>
-            <textarea name="printers_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
-            {{ _('printers.settings.callstringinfo') }}
+            <label>{{ _('printers.settings.callstring') }}:<br/>
+                <textarea name="printers_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+                {{ _('printers.settings.callstringinfo') }}
+            </label>
         </p>
         <p>
             <button type="submit" name="action" value="savereprintersparams" class="save"><i class="fa fa-check"></i> {{ _('printers.settings.save') }}</button>

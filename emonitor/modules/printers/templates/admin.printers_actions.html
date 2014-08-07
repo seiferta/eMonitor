@@ -55,6 +55,12 @@
             </label>
         </p>
         <p>
+            <label>{{ _('printers.state') }}:<br/>
+                <input type="checkbox" name="printerstate" value="1" {% if printer.state==1 %}checked="checked"{% endif %}/>
+            </label>
+        </p>
+
+        <p>
             <button type="submit" name="action" value="updateprinter" class="save"><i class="fa fa-check"></i> {{ _('printers.save') }}</button>
             <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('printers.cancel') }}</button>
         </p>

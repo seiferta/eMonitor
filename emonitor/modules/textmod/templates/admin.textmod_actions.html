@@ -9,12 +9,14 @@
     
     <form method="post" action="">
         <p>
-            {{ _('textmod.replace.text') }}:<br/>
-            <input type="text" name="replace_text" value="{{ replacement.text }}" style="width:99%"/>
+            <label>{{ _('textmod.replace.text') }}:<br/>
+                <input type="text" name="replace_text" value="{{ replacement.text }}" style="width:99%"/>
+            </label>
         </p>
         <p>
-            {{ _('textmod.replace.replacement') }}:<br/>
-            <input type="text" name="replace_repl" value="{{ replacement.replace }}" style="width:99%"/>
+            <label>{{ _('textmod.replace.replacement') }}:<br/>
+                <input type="text" name="replace_repl" value="{{ replacement.replace }}" style="width:99%"/>
+            </label>
         </p>
         <p>
             <button type="submit" name="action" value="savereplace" class="save"><i class="fa fa-check"></i> {{ _('textmod.replace.save') }}</button>

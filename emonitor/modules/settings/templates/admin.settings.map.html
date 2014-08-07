@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/streets/inc/streets.css" />
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
 <div style="padding:20px;">
-    <style>
+    <style scoped="">
         div.row:hover{cursor:pointer !important;}
         div.leaflet-control-attribution{display:none!important;}
     </style>
@@ -24,7 +24,7 @@
             {% endif %}
             {% for map in maps %}
             <div class="row">
-                <div style="position:absolute;left:3px;top:7px;font-size:9px;color:rgb(171, 171, 171);">{{ loop.index }}</div>
+                <div style="position:absolute;left:3px;top:7px;font-size:9px;color:#ABABAB;">{{ loop.index }}</div>
                 <div style="margin-right:70px;margin-left:15px;">
                     <div class="rowcell" style="width:50%;">
                         {{ map.name }}
@@ -52,12 +52,11 @@
     {% endif %}
     
     <form name="mapposition" method="post" action="">
-        
         <div class="osm_div" id="map"> </div>
         
-        {{ _('settings.map.lat') }}:<input type="text" name="default_lat" id="lat" value="{{ settings.get('defaultLat', '48.115970') }}"/>
-        {{ _('settings.map.lng') }}:<input type="text" name="default_lng" id="lng" value="{{ settings.get('defaultLng', '11.727390') }}"/>
-        {{ _('settings.map.zoom') }}:<input type="text" name="default_zoom" id="zoom" value="{{ settings.get('defaultZoom', '14') }}" size="2" maxlength="2"/>
+        <label>{{ _('settings.map.lat') }}:<input type="text" name="default_lat" id="lat" value="{{ settings.get('defaultLat', '48.115970') }}"/></label>
+        <label>{{ _('settings.map.lng') }}:<input type="text" name="default_lng" id="lng" value="{{ settings.get('defaultLng', '11.727390') }}"/></label>
+        <label>{{ _('settings.map.zoom') }}:<input type="text" name="default_zoom" id="zoom" value="{{ settings.get('defaultZoom', '14') }}" size="2" maxlength="2"/></label>
         <p> </p>
         <p style="text-align:center">
             <button type="submit" name="action" value="saveposition" class="save"><i class="fa fa-check"></i> {{ _('settings.map.saveposition') }}</button>
@@ -68,31 +67,24 @@
     var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
     var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
     var startzoom = "{{ settings.get('defaultZoom', '14') }}";
-    {% if maps|count > 0 %}
-    var maptype = "{{ maps[0].name }}";
-    {% else %}
-    var maptype = "";
-    {% endif %}
+    var maptype = {% if maps|count > 0 %}"{{ maps[0].name }}"{% else %}""{% endif %};
 
-</script>
-<script>
     function questionDel(){
         return confirm('{{ _('settings.map.delquestion') }}');
     }
     
     var map = null;
     function onMapClick(e){
-        obj =  $(e.originalEvent.target)
+        var obj =  $(e.originalEvent.target);
         if (obj.hasClass('selectedtile')){
             obj.removeClass('selectedtile');
         }else{
             obj.addClass('selectedtile');
         }
-    
-    };
+    }
     
     function setPosition(){
-        pos = map.getCenter();
+        var pos = map.getCenter();
         $('#lat').val(pos.lat);
         $('#lng').val(pos.lng);
         $('#zoom').val(map.getZoom());
@@ -100,10 +92,8 @@
     
     $(document).ready( function() {
         $( "#sortable" ).sortable({update: function(event, ui){$('#orderchange').show()}});
-        
         map = new L.Map('map', {zoom:12, doubleClickZoom: false});
-
-        cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 18});
+        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 18});
         map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
         map.on('click', onMapClick);
         map.on('moveend', function(e) {setPosition()});

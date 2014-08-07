@@ -8,7 +8,7 @@
     <div style="border:1px solid silver;overflow:hidden;padding:5px;">
     {% for city in cities %}
         <div class="osmcity">
-            <div class="osmno">{{ loop.index }}:</div> <input type="checkbox" class="osmcheck" name="{{ city[1] }}" value="{{ city[0] }}"/> {% if city[2] %}<em style="color:#bbb;" title="{{ _('streets.city.indb') }}">{% endif %}{{ city[1] }} <small>(osmid {{ city[0] }})</small>{% if city[2] %}</em>{% endif %}
+            <div class="osmno">{{ loop.index }}:</div> <label><input type="checkbox" class="osmcheck" name="{{ city[1] }}" value="{{ city[0] }}"/> {% if city[2] %}<em style="color:#bbb;" title="{{ _('streets.city.indb') }}">{% endif %}{{ city[1] }} <small>(osmid {{ city[0] }})</small>{% if city[2] %}</em>{% endif %}</label>
         </div>
     {% endfor %}
         <div style="clear:left"> </div>

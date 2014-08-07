@@ -1,137 +1,154 @@
-<style>
+{% extends "frontend.area.html" %}
+
+{% block style %}
+    <style>
+    ::-webkit-input-placeholder {color: #636363}
+    :-ms-input-placeholder {color: #636363}
+    :-moz-placeholder {color: #636363}
     #streetssubnorth{padding:0 10px 0 10px;background-color: #dddddd;border-width:0 0 1px 0;}
     #streetssubcenter{border-width:0;padding:0;}
     #streetssubsouth{padding:0 10px 0 10px;background-color: #dddddd;border-width:0;}
     
-    h3{font-size: 1.1em; background: #ababab;border: 1px 0 solid silver;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:visible;}
+    h3{font-size: 1.1em; background: #ababab;border-bottom: 1px solid #ddd;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:visible;}
+    h3:hover{background-color:silver!important}
     span.char{margin:5px;font-size:10px;}
     div.street{float:left;width:200px;}
     div.streets{clear:left;margin:0 10px;}
-    div#accordion h3 a{color:black;display:block;background-color: #dddddd;padding:5px 10px 5px 0;cursor:pointer;}
-    div#accordion h3 a:hover{text-decoration:none;}
+    div#streetaccordion h3 a{color:black;display:block;background-color: #dddddd;padding:5px 10px 5px 0;cursor:pointer;}
+    div#streetaccordion h3 a:hover{text-decoration:none;}
     .control-button-interior{margin:0;background-color:#fff;padding:5px 5px 0 5px;cursor:pointer;}
-    div#accordion a:hover{color:#000;}
+    div#streetaccordion a:hover{color:#000;}
     .streetlist{display:none}
     .ui-layout-pane{overflow:hidden !important;}
     .searchbutton{width:16%;}
-</style>
-<script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
-<script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js"> </script>
+    </style>
+{%  endblock %}
 
-<div class="pane" id="streetssubnorth"> 
-    <!--<form>-->
+{% block headscript %}
+    <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
+    <script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js"> </script>
+{% endblock %}
+
+{% block content %}
+<div id="locationscontainer" style="width:100%;height:100%">
+    <div class="pane" id="streetssubnorth">
         {{ _('street.street') }}:<br/>
         <input type="text" name="street" id="autocomplete-street" style="width:80%;height:23px;" placeholder="{{ _('streets.search.placeholder') }}"/>
         <button type="button" class="searchbutton" title="{{ _('streets.search.button') }}"><i class="fa fa-search"></i></button>
         <input type="hidden" name="streetid" id="streetid"/>
-    <!--</form>-->
-</div>
-<div id="streetssubcenter">
-    <div id="streetaccordion">
-    {% for city in cities %}
-        <h3 c_name="{{ city.name }}_{{ city.name }}">
-            <span onclick="select('{{ city.name }}_{{ city.name }}')">{{ city.name }}</span><br/>
-            {% set subcities = city.getSubCityList() %}
-            <span><small style="padding-left:60px">
-                {% for subcity in subcities %}
-                 <span id="{{ city.name }}_{{ subcity.replace(' ','') }}" onclick="select('{{ city.name }}_{{ subcity.replace(' ','') }}')">{{ subcity }}</span>
-                    {% if not loop.last %} | {% endif %}
-                {% endfor %}
-            </small></span><br/>
-        </h3>
-        
-        <div style="position:relative">
-            <div class="streets streetlist" id="{{ city.name }}_{{ city.name}}" style="display:block;margin-bottom:20px;">
-                <div style="position:absolute;top:1px;right:10px;">{{ city.name }}</div>
-                {% for c in streets[city.id] %}
-                    <div style="border-bottom:1px solid silver;overflow:hidden;">
-                        <div name="{{ city.id }}_{{ c }}" style="clear:left;padding-top:10px;font-size:12px;font-weight:bold;">{{ c[0] }}</div>
-                        {% for street in c[1] %}
-                            <div class="street">
-                                <a href="#" onclick="return getMapPosition('{{ street.id }}')">{{ street.name }}</a>
-                                <small>{{ street.subcity}}</small>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endfor %}
-    {% if alarmobjects %}
-        <h3 c_name="alarmobjects">{{ _('frontend.alarmobject.header') }}</h3>
-        <div style="position:relative">
-            <div class="streets streetlist" id="alarmobjects" style="display:block;margin-bottom:20px;">
-                {% for alarmobject in alarmobjects %}
-                    <div class="street" style="margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid #ddd;width:99%">
-                        <a href="#"  onclick="return getMapPositionObject('{{ alarmobject.id }}')">{{ alarmobject.name }}</a><br/>
-                        <span style="padding-left:10px;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</span>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
     </div>
-    <input type="hidden" name="area" value="{{ frontendarea }}"/>
+    <div id="streetssubcenter">
+        <div id="streetaccordion">
+        {% for city in cities %}
+            <h3 c_name="{{ city.name }}_{{ city.name }}">
+                <span onclick="select('{{ city.name }}_{{ city.name }}')">{{ city.name }}</span><br/>
+                {% set subcities = city.getSubCityList() %}
+                <span><small style="padding-left:60px">
+                    {% for subcity in subcities %}
+                     <span id="{{ city.name }}_{{ subcity.replace(' ','') }}" onclick="select('{{ city.name }}_{{ subcity.replace(' ','') }}')">{{ subcity }}</span>
+                        {% if not loop.last %} | {% endif %}
+                    {% endfor %}
+                </small></span><br/>
+            </h3>
+
+            <div style="position:relative">
+                <div class="streets streetlist" id="{{ city.name }}_{{ city.name}}" style="display:block;margin-bottom:20px;">
+                    <div style="position:absolute;top:1px;right:10px;">{{ city.name }}</div>
+                    {% for c in streets[city.id] %}
+                        <div style="border-bottom:1px solid silver;overflow:hidden;">
+                            <div name="{{ city.id }}_{{ c }}" style="clear:left;padding-top:10px;font-size:12px;font-weight:bold;">{{ c[0] }}</div>
+                            {% for street in c[1] %}
+                                <div class="street">
+                                    <a href="#" onclick="return getMapPositionStreet('{{ street.id }}')">{{ street.name }}</a>
+                                    <small>{{ street.subcity}}</small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        {% if alarmobjects %}
+            <h3 c_name="alarmobjects">{{ _('frontend.alarmobject.header') }}</h3>
+            <div style="position:relative">
+                <div class="streets streetlist" id="alarmobjects" style="display:block;margin-bottom:20px;">
+                    {% for alarmobject in alarmobjects %}
+                        <div class="street" style="margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid #ddd;width:99%">
+                            <a href="#"  onclick="return getMapPositionObject('{{ alarmobject.id }}')">{{ alarmobject.name }}</a><br/>
+                            <span style="padding-left:10px;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        </div>
+        <input type="hidden" name="area" value="{{ frontendarea }}"/>
+    </div>
 </div>
-<script>
-    var streetslookup = null;
+    <script>
+        var streetslookup = null;
 
-    function select(id){
-        $(".streetlist").hide();
-        $("div#"+id).show();
-    }
-    
-    function getMapPosition(streetid){
-        $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
-             success: function(street) {
-                 map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
-            }
+        function select(id){
+            $(".streetlist").hide();
+            $("div#"+id).show();
+        }
+
+        function getMapPositionStreet(streetid){
+            $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
+                 success: function(street) {
+                     if (typeof parent.maps != "undefined") {
+                         parent.maps.map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
+                     }
+                }
+            });
+            return false;
+        }
+
+        function getMapPositionObject(aobjectid){
+            $.ajax({ type : "POST", url : "/data/alarmobjects?action=streetcoords&id="+aobjectid+"&format=json",
+                 success: function(aobject) {
+                     if (typeof parent.maps != "undefined") {
+                         parent.maps.map.setView(new L.LatLng(aobject.lat, aobject.lng), aobject.zoom);
+                     }
+                }
+            });
+            return false;
+        }
+
+        function scrollToAnchor(aid){
+            var aTag = $("div[name='"+ aid +"']");
+            $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+            return false;
+        }
+
+        $(document).ready(function() {
+            var innerLayout = $('#locationscontainer').layout({
+                center:{paneSelector: "#streetssubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
+                north: {paneSelector: "#streetssubnorth", size: 50, slidable: false, resizable: false, closable:false, spacing_open: 0},
+                resizerTip:'{{ _('layout.resize') }}',
+                togglerTip_open: '{{ _('layout.open') }}',
+                togglerTip_closed: '{{ _('layout.closed') }}'
+            });
+
+            $("#streetaccordion").accordion({ heightStyle: "fill", activate: function(event, ui){select(ui.newHeader.attr('c_name'));}});
+
+            $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
+                success: function(streets) {
+                    var alarmstreetsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
+                    alarmstreets = $.map(streets, function (value) { return value; });
+
+                    $('#autocomplete-street').autocomplete({
+                        lookup: alarmstreetsArray,
+                        onSelect: function(suggestion) {
+                             $('#streetid').val(suggestion.data); // id
+                             $('#streetid').change();
+                        }
+                    });
+
+                    $('input[name=streetid]').change(function() { getMapPositionStreet($(this).val());});
+                }
+            });
+
         });
-        return false;
-    }
-    
-    function getMapPositionObject(aobjectid){
-        $.ajax({ type : "POST", url : "/data/alarmobjects?action=streetcoords&id="+aobjectid+"&format=json",
-             success: function(aobject) {
-                map.setView(new L.LatLng(aobject.lat, aobject.lng), aobject.zoom);
-            }
-        });
-        return false;
-    }
-    
-    function scrollToAnchor(aid){
-        var aTag = $("div[name='"+ aid +"']");
-        $('html,body').animate({scrollTop: aTag.offset().top},'slow');
-        return false;
-    }
-
-    console.log('streets1');
-    $(document).ready(function() {
-        var innerLayout = $(layout.options['{{ frontendarea }}'].paneSelector).layout({
-            center:{paneSelector: "#streetssubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
-            north: {paneSelector: "#streetssubnorth", size: 50, slidable: false, resizable: false, closable:false, spacing_open: 0}
-            }
-        );
-
-        $("#streetaccordion").accordion({ heightStyle: "fill", activate: function(event, ui){select(ui.newHeader.attr('c_name'));}});
-
-        $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
-            success: function(streets) {
-                var alarmstreetsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
-                alarmstreets = $.map(streets, function (value) { return value; });
-                
-                $('#autocomplete-street').autocomplete({
-                    lookup: alarmstreetsArray,
-                    onSelect: function(suggestion) {
-                         $('#streetid').val(suggestion.data); // id
-                         $('#streetid').change();
-                    }
-                });
-                
-                $('input[name=streetid]').change(function() { getMapPosition($(this).val());});
-            }
-        });
-
-    });
-    console.log('streets2');
-</script>
+    </script>
+{% endblock %}

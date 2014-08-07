@@ -9,6 +9,15 @@
 {%  endblock %}
 
 {% block content %}
+    <style>
+        #vtab {margin: 0; width: 90%; height: 100%;padding-right:20px;}
+        #vtab > ul > li {width: 221px; background-color: #fafafa !important; list-style-type: none; display: block; font-size:12px;margin: auto; padding-bottom: 15px; border: 1px solid #fafafa; position: relative; border-right: none; padding-top:15px; padding-left:5px;cursor:pointer;}
+        #vtab > ul > li.selected {border: 1px solid #ddd; border-right: none;z-index: 10; background-color: #fff !important; position: relative;}
+        #vtab > ul {float: left; width: 110px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative; top: 0;}
+        #vtab > div {background-color: #fff; margin-left: 220px; border: 1px solid #ddd; min-height: 200px; padding-left: 12px; position: relative;z-index: 9}
+        #vtab  > ul > li.enabled{cursor:pointer; font-weight:bold;}
+    </style>
+
     <h2>{{ _('alarms.test.header') }}</h2>
     <p>{{ _('alarms.test.info') }}</p>
 
@@ -19,29 +28,52 @@
             <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
             <input type="hidden" name="filename" id="filename"/><br/>
             <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.start') }}</button>
+            <span id="state" style="display:none;margin-left:20px;"> <img src="/admin/img/loading.gif"/> {{ _('alarms.test.step2') }}</span>
         </p>
     </form>
-    <h3 id="state" style="display:none">{{ _('alarms.test.step2') }}<br/><br/><img src="/admin/img/loading.gif"/></h3>
-    <div id="result"> </div>
+    <div id="result"></div>
 {% endblock %}
 
 {% block script_end %}
     {{  super() }}
+    var testsocket = new WebSocket("ws://"+location.host+"/ws");
+
     $(document).ready(function(){
         $('#requestForm').ajaxForm({
             beforeSubmit: function() {
                 if($.inArray($('#uploadfile').val().split('.').pop(), ['pdf', 'jpg', 'tif'])>=0){
+                    testsocket.send('send.alarm.testupload_start');
                     $('#state').show();
-                    $('#result').html('');
+                    $('#result').html('<div id="vtab"><ul></ul></div>');
                     $('#filename').val($('#uploadfile').val().split('\\').pop());
                 }else{
                     return false;
                 }
-            },
-            complete: function(xhr) {
-                $('#state').hide();
-                $('#result').html(xhr.responseText);
             }
-        }); 
+        });
+
+         testsocket.onopen = function() {
+            testsocket.send("add.alarms.testupload_start");
+         };
+         testsocket.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+            if(data.handler){ $('#result > div#vtab > ul').append('<li>'+data.handler+'</li>');}
+            if(data.result){
+                if(data.result == 'done'){
+                    $('#state').hide();
+                }else{
+                    (data.error) ? err='<p class="error">'+data.error+'</p>': err='';
+                    $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'<p><pre>'+data.result+'</pre></p></div>');
+                }
+            }
+
+            var $items = $('#vtab>ul>li');
+            $items.click(function() {
+                $items.removeClass('selected');
+                $(this).addClass('selected');
+                var index = $items.index($(this));
+                $('#vtab>div').hide().eq(index).show();
+            }).eq(0).click();
+         };
     });
 {% endblock %}

@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="/streets/inc/leaflet.css" />
     <style>
         .path{width:99%;border:1px solid black;}
-        .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0px transparent}
-        .pathok{background:url(/settings/inc/active.png) no-repeat right 0px transparent}
-        .patherror{background:url(/settings/inc/error.png) no-repeat right 0px transparent}
+        .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0 transparent}
+        .pathok{background:url(/settings/inc/active.png) no-repeat right 0 transparent}
+        .patherror{background:url(/settings/inc/error.png) no-repeat right 0 transparent}
         div.leaflet-control-attribution{display:none!important;}
         .leaflet-control-zoom{display:none!important;}
         .leaflet-tile{border:1px solid black!important;opacity:0.3!important;filter:alpha(opacity=30);}
@@ -88,7 +88,7 @@
         {% else %}
             <script>
                 $(document).ready(function () {
-                    interval = setInterval(getLoadProgress, 1000);
+                    var interval = setInterval(getLoadProgress, 1000);
                     $('#progress_state').show();
                 });
             </script>

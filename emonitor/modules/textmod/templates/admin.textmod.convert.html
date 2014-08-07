@@ -9,19 +9,21 @@
     <p><small>{{ _('textmod.convert.info') }}</small></p>
     <form method="post" action="">
         <p>
-            {{ _('textmod.convert.inportformats') }}:<br/>
-            <select name="convert_format" style="width:99%;">
-                {% for imageformat in imageformats %}
-                <option value="{{ imageformat }}" {% if imageformat==params['format'] %}selected="selected"{% endif %}>{{ imageformat }}</option>
-                {% endfor %}
-            </select>
+            <label>{{ _('textmod.convert.inportformats') }}:<br/>
+                <select name="convert_format" style="width:99%;">
+                    {% for imageformat in imageformats %}
+                    <option value="{{ imageformat }}" {% if imageformat==params['format'] %}selected="selected"{% endif %}>{{ imageformat }}</option>
+                    {% endfor %}
+                </select>
+            </label>
             <br/>
             {{ _('textmod.convert.inputformatinfo') }}
         </p>
         <p>
-            {{ _('textmod.convert.callstring') }}:<br/>
-            <textarea name="convert_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
-            {{ _('textmod.convert.callstringinfo') }}
+            <label>{{ _('textmod.convert.callstring') }}:<br/>
+                <textarea name="convert_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+                {{ _('textmod.convert.callstringinfo') }}
+            </label>
         </p>
         <p>
             <button type="submit" name="action" value="savereconvertparams" class="save"><i class="fa fa-check"></i> {{ _('textmod.convert.save') }}</button>

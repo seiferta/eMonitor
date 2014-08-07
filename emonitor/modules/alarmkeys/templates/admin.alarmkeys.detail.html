@@ -12,7 +12,7 @@
             <span {% if key.hasDefinition(department) %}class="defaultaao"{% endif %}>{{ key.getCars2(department)|join(', ') }}</span>
         </div>
     </div>
-    <button type="submit" name="action" onclick="return questionDelCars()" value="deletecars" value="deletecars_{{ key.id }}_{{ department }}" title="{{ _('alarmkeys.deletetitle') }}"><i class="fa fa-trash-o fa-lg"></i></button>
+    <button type="submit" name="action" onclick="return questionDelCars()" value="deletecars_{{ key.id }}_{{ department }}" title="{{ _('alarmkeys.deletetitle') }}"><i class="fa fa-trash-o fa-lg"></i></button>
     <button type="submit" name="action" value="editcars_{{ key.id }}_{{ department }}" title="{{ _('alarmkeys.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
 </div>
 {% endfor %}

@@ -30,10 +30,10 @@
         function filter(c){
             if (c==""){
                 $('.row').show();
-                return false;
+            }else {
+                $('.row').hide();
+                $('div[id=' + c + ']').show();
             }
-            $('.row').hide();
-            $('div[id='+c+']').show();
             return false;
         }
     </script>

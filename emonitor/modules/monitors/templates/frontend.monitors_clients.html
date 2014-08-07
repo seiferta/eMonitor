@@ -6,13 +6,13 @@
     .client_id{color:#ffffff;font-size:35px;position:absolute;top:50px;text-align:center;width:250px;}
     .client_ip{color:#ffffff;font-size:11px;position:absolute;bottom:17px;text-align:center;width:250px;}
 
-    .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0px;}
+    .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0;}
     .btn:hover {color:#428bca;}
 </style>
 <div style="padding:20px;">
     <h4>{{ _('monitor.ping.header') }}</h4>
     {% for id in clients.keys() %}
-    <div style="position:relative;width:270px;float:left;align:center;">
+    <div style="position:relative;width:270px;float:left;text-align:center;">
         {% if clients[id][0] and clients[id][1] %}
         <div class="client" onclick="getDetails({{ id }})">
             <div class="client_id">{{ id }}</div>
@@ -31,7 +31,7 @@
         </div>
         {% endif %}
         {% if not clients[id][0] and clients[id][1] %}
-        <div class="client_inactive"  onclick="getDetails({{ id }})">
+        <div class="client_inactive" onclick="getDetails({{ id }})">
             <div class="client_id">{{ id }}</div>
             <div class="client_ip" style="font-style:italic">{{ _('monitor.notconnected') }}</div>
         </div>
@@ -54,11 +54,13 @@
     </div>
 {% endfor %}
 </div>
+<small style="position:absolute;bottom:1px;left:1px;">{{ _('monitor.clienttime') }}: {{ t|datetime }}</small>
+
 <script>
    function changeLayout(id, layoutid){
         $.ajax({ type : "POST", url : "/data/monitors?action=changelayout&id="+id+"&layoutid="+layoutid,
-            success: function(result){
-                //console.log(result);
+            success: function(){
+                alert('{{ _('monitor.layout.changed') }}');
                 return false;
             }
         });
@@ -69,5 +71,4 @@
         }, function() {
             $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
     });
-
 </script>

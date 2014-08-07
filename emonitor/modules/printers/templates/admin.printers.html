@@ -18,10 +18,11 @@
     <form method="post" action="" style="padding-bottom:20px;">
         <div class="headrow">
             <div style="margin-right:70px;margin-left:15px;">
-                <div class="headcell" style="width:25%;">{{ _('printers.name') }}</div>
-                <div class="headcell" style="width:35%;">{{ _('printers.layout') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('printers.name') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('printers.module') }}</div>
+                <div class="headcell" style="width:25%;">{{ _('printers.layout') }}</div>
                 <div class="headcell" style="width:30%;">{{ _('printers.printer') }}</div>
-                <div class="headcell" style="width:10%;">{{ _('printers.active') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('printers.state') }}</div>
             </div>
             <button class="add" type="submit" name="action" value="createprinter" title="{{ _('printer.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
@@ -35,8 +36,9 @@
             {% for printer in printers %}
             <div class="row">
                 <div style="margin-right:70px;margin-left:15px;">
-                    <div class="rowcell" style="width:25%;">{{ printer.name }}</div>
-                    <div class="rowcell" style="width:35%;">{{ _('template.'+printer.layout[6:-5]) }}</div>
+                    <div class="rowcell" style="width:20%;">{{ printer.name }}</div>
+                    <div class="rowcell" style="width:15%;">{{ printer.module }}</div>
+                    <div class="rowcell" style="width:25%;">{{ _('template.'+printer.layout[6:-5]) }}</div>
                     <div class="rowcell" style="width:30%;">{{ printer.printer }}</div>
                     <div class="rowcell" style="width:10%;">{%  if printer.state == 1 %}<i class="fa fa-check" title="{{ _('printers.activetitle') }}"></i>{% endif %}</div>
                 </div>

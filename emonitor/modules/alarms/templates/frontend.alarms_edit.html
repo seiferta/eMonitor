@@ -1,384 +1,397 @@
-<script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js" xmlns="http://www.w3.org/1999/html"> </script>
-<script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
+{% extends "frontend.area.html" %}
 
-<style>
-    .lists {float:left;}
-    .lists div{overflow:hidden;}
-    .lists .group{min-height:50px;border:1px solid #ddd;padding:0;width:99%;}
-    .lists ul { list-style: none; float:left}
-    .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width:60px; height:40px; float:left; border:2px solid #333;}
-    .lists li:hover { background:#bbb; }
-    .lists li:active { background:#999; }
-    .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
-    .extended{border:1px soild silver!important}
-</style>
-<!--<form id="alarm_edit_form" method="post" style="height:100%;overflow:auto">-->
-<div style="padding:5px;overflow:auto;height:100%;position:relative;">
-    <h2>{{ _('alarms.header.edit') }}</h2>
-    <div style="position:absolute;top:5px;right:5px;">
-        <a href="#" onclick="return addMessage({{ alarm.id }})">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></a>
-        <a href="#" onclick="return toggleDetails()"><i class="fa fa-indent fa-lg" id="detailswitch"></i></a>
+{% block style %}
+    <style>
+        .lists {float:left;}
+        .lists div{overflow:hidden;}
+        .lists .group{min-height:50px;border:1px solid #ddd;padding:0;width:99%;}
+        .lists ul { list-style: none; float:left}
+        .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width:60px; height:40px; float:left; border:2px solid #333;}
+        .lists li:hover { background:#bbb; }
+        .lists li:active { background:#999; }
+        .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
+        .extended{border:1px solid silver!important}
+    </style>
+{% endblock %}
 
-    </div>
-        <ul class="nav nav-tabs" id="myTab">
-            <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
-            <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="tab0">
-                <div style="width:100%;position:relative">
-                    <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
-                        <label style="width:99%">{{ _('alarms.address') }}:<br/>
-                            <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%"/>
-                        </label>
-                        <input type="hidden" name="edit_addressid" id="edit_addressid" value="{% if alarm.street %}{{  alarm.street.id }}{% endif %}"/>
-                    </p>
-                    <p style="width:25%;float:left">
-                        <label style="width:99%">{{ _('alarms.streetno') }}:<br/>
-                            <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" onchange="return setHouseMarker()" style="width:99%;"/>
-                        </label>
-                    </p>
-                </div>
-                <div style="width:100%;position:relative">
-                    <p style="width:55%;background-color:#fff;float:left;padding-right:20px;position:relative">
-                        <label style="width:99%">{{ _('alarms.crossing') }}:<br/>
-                            <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%"/>
-                        </label>
-                    </p>
-                    <p style="width:45%;float:left">
-                        <label style="width:99%">{{ _('alarms.city') }}:<br/>
-                            <select name="edit_city" style="width:100%;height:20px;">
-                                {% for city in cities %}
-                                <option value="{{ city.id }}" {% if alarm.city and city.id==alarm.city.id %}selected="selected"{% endif %}>{{ city.name }}</option>
-                                {% endfor %}
-                                {% if alarm.get('id.city')=='0' %}
-                                <option selected="selected">{{ alarm.city.name }}</option>
-                                {% endif %}
-                            </select>
-                        </label>
-                    </p>
-                </div>
+{% block headscript %}
+    <script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js" xmlns="http://www.w3.org/1999/html"> </script>
+    <script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
+{% endblock %}
+
+{% block content %}
+    <form id="editForm_{{ frontendarea }}" method="post" style="height:100%;overflow:auto">
+        <div style="padding:5px;overflow:auto;height:100%;position:relative;">
+            <h2>{{ _('alarms.header.edit') }}</h2>
+            <div style="position:absolute;top:5px;right:5px;">
+                <a href="#" onclick="return addMessage({{ alarm.id }})">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></a>
+                <a href="#" onclick="return toggleDetails()"><i class="fa fa-indent fa-lg" id="detailswitch"></i></a>
+
             </div>
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
+                    <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab0">
+                        <div style="width:100%;position:relative">
+                            <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
+                                <label style="width:99%">{{ _('alarms.address') }}:<br/>
+                                    <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%"/>
+                                </label>
+                                <input type="hidden" name="edit_addressid" id="edit_addressid" value="{% if alarm.street %}{{  alarm.street.id }}{% endif %}"/>
+                            </p>
+                            <p style="width:25%;float:left">
+                                <label style="width:99%">{{ _('alarms.streetno') }}:<br/>
+                                    <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" style="width:99%;"/>
+                                </label>
+                            </p>
+                        </div>
+                        <div style="width:100%;position:relative">
+                            <p style="width:55%;background-color:#fff;float:left;padding-right:20px;position:relative">
+                                <label style="width:99%">{{ _('alarms.crossing') }}:<br/>
+                                    <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%"/>
+                                </label>
+                            </p>
+                            <p style="width:45%;float:left">
+                                <label style="width:99%">{{ _('alarms.city') }}:<br/>
+                                    <select name="edit_city" style="width:100%;height:20px;">
+                                        {% for city in cities %}
+                                        <option value="{{ city.id }}" {% if alarm.city and city.id==alarm.city.id %}selected="selected"{% endif %}>{{ city.name }}</option>
+                                        {% endfor %}
+                                        {% if alarm.get('id.city')=='0' %}
+                                        <option selected="selected">{{ alarm.city.name }}</option>
+                                        {% endif %}
+                                    </select>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
 
-            <div class="tab-pane" id="tab1">
-                <p>
-                    <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
-                        <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
-                            <option value="0">{{ _('alarms.noobject') }}</option>
-                            {% for aobject in objects %}
-                                <option value="{{ aobject.id }}" {% if aobject==alarm.object %}selected="selected"{% endif %}>{{ aobject.name }}</option>
+                    <div class="tab-pane" id="tab1">
+                        <p>
+                            <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
+                                <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
+                                    <option value="0">{{ _('alarms.noobject') }}</option>
+                                    {% for aobject in objects %}
+                                        <option value="{{ aobject.id }}" {% if aobject==alarm.object %}selected="selected"{% endif %}>{{ aobject.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                <p style="clear:left">
+                   <label style="width:99%">{{ _('alarms.key') }}:<br/>
+                        <input type="text" name="edit_key" id="edit_key" value="{% if alarm.id!=None %}{{ alarm.key.category }}: {% endif %}{%  if alarm.key %}{{ alarm.key.key }}{% endif %}" style="width:100%;"/>
+                    </label>
+                    <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
+
+                </p>
+                <div style="width:100%;position:relative">
+                    <p style="width:50%;float:left;background-color:#fff;padding-right:20px;position:relative">
+                        <label style="width:99%;">{{ _('alarms.date') }}:<br/>
+                            <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date"/>
+                        </label>
+                    </p>
+                    <p style="width:50%;float:left;background-color:#fff;position:relative">
+                        <label style="width:99%">{{ _('alarms.time') }}:<br/>
+                            <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" class="time"/>
+                        </label>
+                    </p>
+                </div>
+                <div style="width:100%;position:relative;display:none;" class="extended">
+                    <p style="width:50%;float:left;padding-right:20px;position:relative">
+                        <label style="width:99%">{{ _('alarms.enddate') }}:<br/>
+                            <input type="text" value="{{ alarm.endtimestamp|datetime('dd.MM.yyyy') }}" name="edit_endtimestamp_date" style="width:100%" class="date"/>
+                        </label>
+                    </p>
+                    <p style="width:50%;float:left;position:relative">
+                        <label style="width:99%">{{ _('alarms.endtime') }}:<br/>
+                            <input type="text" value="{{ alarm.endtimestamp|datetime('HH:mm:ss') }}" name="edit_endtimestamp_time" style="width:100%" class="time"/>
+                        </label>
+                    </p>
+                </div>
+
+                <div style="width:100%;position:relative;clear:left;">
+                    <p style="width:100%">
+                        <label style="width:99%">{{ _('alarms.person') }}:<br/>
+                            <input type="text" name="edit_person" value="{{ alarm.person }}" style="width:100%;"/>
+                        </label>
+                    </p>
+                    <p style="min-width:80px;background-color:#fff;float:left;padding-right:20px;position:relative">
+                        {{ _('alarms.priority') }}:<br/>
+                        {% for prio in range(2,-1,-1) %}
+                            <label style="min-width:80px">
+                                <input type="radio" name="edit_priority" value="{{ prio }}" {% if prio==alarm.priority %}checked="checked"{% endif %}/> {{ _('alarms.prioshort'+prio|string) }}
+                            </label><br/>
+                        {% endfor %}
+                    </p>
+                    <p style="width:73%;float:left">
+                        <label style="width:99%">{{ _('alarms.remark') }}:<br/>
+                        <textarea name="edit_remark" style="width:99%;height:100px;">{{ alarm.remark }}</textarea>
+                        </label>
+                    </p>
+                </div>
+                {{ _('alarms.cars') }}:<br/>
+                <div class="lists" style="width:100%;position:relative;margin:0;padding:0">
+                    <div style="float:left;width:50%;padding-right:0;position:relative;">
+                        <small>{{ _('alarms.cars1') }}</small>
+                        <div style="position:absolute;right:5px;top:0;">
+                            <a href="#" onclick="return $('input[name=edit_keyid]').change();" title="{{ _('alarms.setdefaultcars') }}"><i class="fa fa-truck fa-lg"></i></a>
+                            <a href="#" onclick="return clearCars()" title="{{ _('alarms.clearcars') }}"><i class="fa fa-trash-o fa-lg"></i></a>
+                        </div>
+                        <ul id="cars1" class="group" style="min-height:100px;">
+                            {% for car in alarm.cars1 %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.name }}<br/>
+                                {{ car.name }}
+                            </li>
                             {% endfor %}
-                        </select>
+                        </ul>
+                    </div>
+                    <div style="float:left;width:50%;padding-right:0;">
+                        <small>{{ _('alarms.cars2') }}</small>
+                        <ul id="cars2" class="group" style="min-height:102px;">
+                            {% for car in alarm.cars2 %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.name }}<br/>
+                                {{ car.name }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="clear" style="clear:left;"> </div>
+
+                    <small>{{ _('alarms.material') }}</small>
+                    <ul id="material" class="group" style="width:99%;min-height:50px;">
+                        {% for car in alarm.material %}
+                        <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                            {{ car.dept.name }}<br/>
+                            {{ car.name }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="clear" style="clear:left;"> </div>
+
+                    <small>{{ _('alarms.unused') }}</small><br/>
+                    <ul id="unused" class="group" style="width:99%;">
+                        {% for car in cars %}
+                        {% if car not in alarm.cars1+alarm.cars2+alarm.material %}
+                        <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                            {{ car.dept.name }}<br/>
+                            {{ car.name }}
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div style="clear:left"></div>
+                <p>
+                    <label>
+                    <input type="checkbox" name="update_position" id="check_positionupdate" value="1"/>
+                    {{ _('alarms.storeupdatedmarker') }}
                     </label>
                 </p>
-            </div>
+                <p style="padding-bottom:10px;">
+                    <!--<button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="return getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>-->
+                    <button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+                    <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
+                </p>
+                <input type="hidden" name="alarm_id" value="{{ alarm.id }}"/>
+                <input type="hidden" name="form_id" value="frontend.alarms.edit"/>
+                <input type="hidden" name="lat" id="lat" value="{{ alarm.lat }}"/>
+                <input type="hidden" name="lng" id="lng" value="{{ alarm.lng }}"/>
+                <input type="hidden" name="zoom" id="zoom" value="{{ alarm.zoom }}"/>
+                <input type="hidden" name="marker" id="marker" value="{{ alarm.marker }}"/>
+                <input type="hidden" name="val_cars1" id="val_cars1"/>
+                <input type="hidden" name="val_cars2" id="val_cars2"/>
+                <input type="hidden" name="val_material" id="val_material"/>
+            <div id="response"></div>
         </div>
-        <p style="clear:left">
-           <label style="width:99%">{{ _('alarms.key') }}:<br/>
-                <input type="text" name="edit_key" id="edit_key" value="{% if alarm.id!=None %}{{ alarm.key.category }}: {% endif %}{%  if alarm.key %}{{ alarm.key.key }}{% endif %}" style="width:100%;"/>
-            </label>
-            <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
+    </form>
 
-        </p>
-        <div style="width:100%;position:relative">
-            <p style="width:50%;float:left;background-color:#fff;padding-right:20px;position:relative">
-                <label style="width:99%;">{{ _('alarms.date') }}:<br/>
-                    <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date"/>
-                </label>
-            </p>
-            <p style="width:50%;float:left;background-color:#fff;position:relative">
-                <label style="width:99%">{{ _('alarms.time') }}:<br/>
-                    <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" class="time"/>
-                </label>
-            </p>
-        </div>
-        <div style="width:100%;position:relative;display:none;" class="extended">
-            <p style="width:50%;float:left;padding-right:20px;position:relative">
-                <label style="width:99%">{{ _('alarms.enddate') }}:<br/>
-                    <input type="text" value="{{ alarm.endtimestamp|datetime('dd.MM.yyyy') }}" name="edit_endtimestamp_date" style="width:100%" class="date"/>
-                </label>
-            </p>
-            <p style="width:50%;float:left;position:relative">
-                <label style="width:99%">{{ _('alarms.endtime') }}:<br/>
-                    <input type="text" value="{{ alarm.endtimestamp|datetime('HH:mm:ss') }}" name="edit_endtimestamp_time" style="width:100%" class="time"/>
-                </label>
-            </p>
-        </div>
+    <script>
+        /* global template values*/
+        startlat =  parseFloat($('#lat').val());
+        startlng =  parseFloat($('#lng').val());
+        startzoom = parseInt($('#zoom').val());
 
-        <div style="width:100%;position:relative;clear:left;">
-            <p style="width:100%">
-                <label style="width:99%">{{ _('alarms.person') }}:<br/>
-                    <input type="text" name="edit_person" value="{{ alarm.person }}" style="width:100%;"/>
-                </label>
-            </p>
-            <p style="min-width:80px;background-color:#fff;float:left;padding-right:20px;position:relative">
-                {{ _('alarms.priority') }}:<br/>
-                {% for prio in range(2,-1,-1) %}
-                    <label style="min-width:80px">
-                        <input type="radio" name="edit_priority" value="{{ prio }}" {% if prio==alarm.priority %}checked="checked"{% endif %}/> {{ _('alarms.prioshort'+prio|string) }}
-                    </label><br/>
-                {% endfor %}
-            </p>
-            <p style="width:73%;float:left">
-                <label style="width:99%">{{ _('alarms.remark') }}:<br/>
-                <textarea name="edit_remark" style="width:99%;height:100px;">{{ alarm.remark }}</textarea>
-                </label>
-            </p>
-        </div>
-        {{ _('alarms.cars') }}:<br/>
-        <div class="lists" style="width:100%;position:relative;margin:0;padding:0">
-            <div style="float:left;width:50%;padding-right:0;position:relative;">
-                <small>{{ _('alarms.cars1') }}</small>
-                <div style="position:absolute;right:5px;top:0;">
-                    <a href="#" onclick="return $('input[name=edit_keyid]').change();" title="{{ _('alarms.setdefaultcars') }}"><i class="fa fa-truck fa-lg"></i></a>
-                    <a href="#" onclick="return clearCars()" title="{{ _('alarms.clearcars') }}"><i class="fa fa-trash-o fa-lg"></i></a>
-                </div>
-                <ul id="cars1" class="group" style="min-height:100px;">
-                    {% for car in alarm.cars1 %}
-                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                        {{ car.dept.name }}<br/>
-                        {{ car.name }}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div style="float:left;width:50%;padding-right:0;">
-                <small>{{ _('alarms.cars2') }}</small>
-                <ul id="cars2" class="group" style="min-height:100px;">
-                    {% for car in alarm.cars2 %}
-                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                        {{ car.dept.name }}<br/>
-                        {{ car.name }}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="clear" style="clear:left;"> </div>
+        var mymarker = null;
 
-            <small>{{ _('alarms.material') }}</small>
-            <ul id="material" class="group" style="width:99%;min-height:50px;">
-                {% for car in alarm.material %}
-                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                    {{ car.dept.name }}<br/>
-                    {{ car.name }}
-                </li>
-                {% endfor %}
-            </ul>
-            <div class="clear" style="clear:left;"> </div>
-            
-            <small>{{ _('alarms.unused') }}</small><br/>
-            <ul id="unused" class="group" style="width:99%;">
-                {% for car in cars %}
-                {% if car not in (alarm.cars1+alarm.cars2+alarm.material) or True %}
-                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                    {{ car.dept.name }}<br/>
-                    {{ car.name }}
-                </li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-        <div style="clear:left"></div>
-        <p>
-            <label>
-            <input type="checkbox" name="update_position" id="check_positionupdate" value="1"/>
-            {{ _('alarms.storeupdatedmarker') }}
-            </label>
-        </p>
-        <p style="padding-bottom:10px;">
-            <!--<button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="return getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>-->
-            <button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
-            <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
-        </p>
-        <input type="hidden" name="alarm_id" value="{{ alarm.id }}"/>
-        <input type="hidden" name="form_id" value="frontend.alarms.edit"/>
-        <input type="hidden" name="lat" id="lat" value="{{ alarm.lat }}"/>
-        <input type="hidden" name="lng" id="lng" value="{{ alarm.lng }}"/>
-        <input type="hidden" name="zoom" id="zoom" value="{{ alarm.zoom }}"/>
-        <input type="hidden" name="marker" id="marker" value="{{ alarm.marker }}"/>
-        <input type="hidden" name="val_cars1" id="val_cars1"/>
-        <input type="hidden" name="val_cars2" id="val_cars2"/>
-        <input type="hidden" name="val_material" id="val_material"/>
-    <div id="response"></div>
-</div>
-
-<script>
-    /* global template values*/
-    startlat =  parseFloat($('#lat').val());
-    startlng =  parseFloat($('#lng').val());
-    startzoom = parseInt($('#zoom').val());
-    
-    var mymarker = null;
-
-    function addMessage(alarmid){
-        $.ajax({ type : "POST", url : "/data/alarms?action=message&alarmid="+alarmid,
-            success: function(result) {
-                $('#overlaycontent').html(result);
-                $('.overlay').toggle();
-                return false;
-            }
-        });
-        return false;
-    }
-
-    function getSaveValues(){
-        $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}));
-        $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}));
-        $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}));
-        
-        if(mymarker){
-            $('#lat').val(mymarker.getLatLng().lat);
-            $('#lng').val(mymarker.getLatLng().lng);
-            $('#zoom').val(map.getZoom());
-        }
-    }
-    
-    // update map position
-    function getMapPosition(streetid){ 
-        $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
-             success: function(street) {
-
-                console.log('xx');
-                map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
-                $('#lat').val(street.lat);
-                $('#lng').val(street.lng);
-                $('#zoom').val(street.zoom);
-                $('select[name=edit_city]').val(street.cityid);
-            }
-        });
-        return false;
-    }
-
-    function setHouseMarker(){
-        $.ajax({type: "POST", url: "/data/streets?action=housecoords&streetid="+$('#edit_addressid').val()+"&housenumber="+$('#edit_streetno').val()+"&format=json",
-            success : function(ret) {
-                if(ret.lat){
-                    map.setView(new L.LatLng(ret.lat, ret.lng), map.getMaxZoom());
+        function addMessage(alarmid){
+            $.ajax({ type : "POST", url : "/data/alarms?action=message&alarmid="+alarmid,
+                success: function(result) {
+                    parent.$('#overlaycontent').html(result);
+                    parent.$('.overlay').toggle();
+                    return false;
                 }
-                return false;
-            }
-        });
-    }
-    
-    function clearCars(){
-        $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){
-            $(val).detach().appendTo('#unused');
-        });
-        return false;
-    }
-    
-    // fill in cars and material for given alarmkey and department
-    function getKeyCars(keyid){
-        $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){
-            $(val).detach().appendTo('#unused');
-        });
-
-        $.ajax({ type : "POST", url : "/data/alarmkeys?action=carslookup&keyid="+keyid+"&cityid="+$('select[name=edit_city]').val()+"&format=json",
-             success: function(cars) {
-                $.each(cars.cars1, function(key, val) {
-                    var el1 = $('li[data-post-id="'+val+'"]').detach();
-                    el1.appendTo('#cars1');
-                });
-                $.each(cars.cars2, function(key, val) {
-                    var el1 = $('li[data-post-id="'+val+'"]').detach();
-                    el1.appendTo('#cars2');
-                });
-                $.each(cars.material, function(key, val) {
-                    var el1 = $('li[data-post-id="'+val+'"]').detach();
-                    el1.appendTo('#material');
-                });
-                return false;
-            }
-        });
-    }
-
-    $(document).ready(function() {
-        $('#editForm_{{ frontendarea }}').submit(function() {
-            //$('#editForm_{{ frontendarea }}').unbind('submit');
-            var formoptions = {
-                target:        '#editForm_{{ frontendarea }}',
-                url:           '/alarms?action=updatealarm'
-            };
-            alarmHouses.clearLayers();
-            $(this).ajaxSubmit(formoptions);
-            event.preventDefault();
+            });
             return false;
-        });
-
-        $('.cancel').click( function(){
-            console.log('cancel click');
-            var formoptions = {
-                target:        '#editForm_{{ frontendarea }}',
-                url:           '/alarms?action=cancel'
-            };
-            $('#editForm_{{ frontendarea }}').ajaxSubmit(formoptions);
-            alarmHouses.clearLayers();
-            return false;
-        });
-
-        $('.date').mask("99.99.9999");
-        parent.alarmMarkers.clearLayers();
-        if($('#marker').val()=='1'){ // only add marker, if exact position is given
-            mymarker = parent.addMarker($('#lat').val(), $('#lng').val(), $('#priority').val(), true);
-            mymarker.on('moveend', function(e) {$('#check_positionupdate').attr('checked', true);});
         }
-        $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
-        $('select[name=edit_city]').change(function(){$('input[name=edit_keyid]').change()});
-        
-        // init autcomplete of streets
-        $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
-            success: function(streets) {
-                var alarmstreetsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
-                alarmstreets = $.map(streets, function (value) { return value; });
-                
-                $('#edit_address').autocomplete({
-                    lookup: alarmstreetsArray,
-                    onSelect: function(suggestion) {
-                         $(this).val(suggestion.value.split(/( \(.*\))$/)[0]);
-                         $('#edit_addressid').val(suggestion.data); // id
-                         $('#edit_addressid').change();
-                    }
-                });
-                
-                $('input[name=edit_addressid]').change(function() { getMapPosition($(this).val());});
+
+        function getSaveValues(){
+            $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}));
+            $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}));
+            $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}));
+            if(mymarker){
+                $('#lat').val(mymarker.getLatLng().lat);
+                $('#lng').val(mymarker.getLatLng().lng);
+                $('#zoom').val(parent.maps.map.getZoom());
             }
-        });
-        
-        // init autocomplete of alarmkeys
-        $.ajax({ type : "POST", url : "/data/alarmkeys?action=keyslookup&format=json",
-            success: function(keys) {
-                var alarmkeysArray = $.map(keys, function (value, key) { return { value: value, data: key }; }),
-                alarmkeys = $.map(keys, function (value) { return value; });
-                
-                $('#edit_key').autocomplete({
-                    lookup: alarmkeysArray,
-                    onSelect: function(suggestion) {
-                         $('#edit_keyid').val(suggestion.data); // id
-                         $('#edit_keyid').change();
-                    }
-                });
-                
-                $('input[name=edit_keyid]').change(function() { getKeyCars($(this).val());});
+            parent.maps.map.off('click');
+            parent.maps.map.off('dblclick');
+        }
+
+        // update map position
+        function getMapPosition(streetid){
+            $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
+                 success: function(street) {
+                    parent.maps.map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
+                    $('#lat').val(street.lat);
+                    $('#lng').val(street.lng);
+                    $('#zoom').val(street.zoom);
+                    $('select[name=edit_city]').val(street.cityid);
+                }
+            });
+            return false;
+        }
+
+        function clearCars(){
+            $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){
+                $(val).detach().appendTo('#unused');
+            });
+            return false;
+        }
+
+        // fill in cars and material for given alarmkey and department
+        function getKeyCars(keyid){
+            $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){
+                $(val).detach().appendTo('#unused');
+            });
+
+            $.ajax({ type : "POST", url : "/data/alarmkeys?action=carslookup&keyid="+keyid+"&cityid="+$('select[name=edit_city]').val()+"&format=json",
+                 success: function(cars) {
+                    $.each(cars.cars1, function(key, val) {
+                        var el1 = $('li[data-post-id="'+val+'"]').detach();
+                        el1.appendTo('#cars1');
+                    });
+                    $.each(cars.cars2, function(key, val) {
+                        var el1 = $('li[data-post-id="'+val+'"]').detach();
+                        el1.appendTo('#cars2');
+                    });
+                    $.each(cars.material, function(key, val) {
+                        var el1 = $('li[data-post-id="'+val+'"]').detach();
+                        el1.appendTo('#material');
+                    });
+                    return false;
+                }
+            });
+        }
+
+        $(document).ready(function() {
+
+            $('.date').mask("99.99.9999");
+
+            parent.maps.map.clearHouseNumbers();
+            parent.maps.map.clearMarkers();
+
+            if($('#marker').val()=='1' && $('#lat').val()!=''){ // only add marker, if exact position is given
+                mymarker = parent.maps.map.addMarker($('#lat').val(), $('#lng').val(), $('#priority').val(), true);
+                if(typeof mymarker!="undefined") {
+                    mymarker.on('moveend', function (e) {
+                        $('#check_positionupdate').attr('checked', true);
+                    });
+                }
             }
+
+            $.ajax({ type : "POST", url : "/data/alarms?action=housecoordinates&alarmid={{ alarm.id }}&format=json",
+                 success: function(ret) {
+                     if (ret.lat){
+                         parent.maps.map.addHouseNumber(ret);
+                         parent.maps.map.setView(new L.LatLng(ret.lat[0], ret.lng[0]), parent.maps.map.getZoom());
+                     }
+                     return false;
+                }
+            });
+
+            $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
+            $('select[name=edit_city]').change(function(){$('input[name=edit_keyid]').change()});
+
+            // init autcomplete of streets
+            $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
+                success: function(streets) {
+                    var alarmstreetsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
+                    alarmstreets = $.map(streets, function (value) { return value; });
+
+                    $('#edit_address').autocomplete({
+                        lookup: alarmstreetsArray,
+                        onSelect: function(suggestion) {
+                             $(this).val(suggestion.value.split(/( \(.*\))$/)[0]);
+                             $('#edit_addressid').val(suggestion.data); // id
+                             $('#edit_addressid').change();
+                        }
+                    });
+
+                    $('input[name=edit_addressid]').change(function() {getMapPosition($(this).val());});
+                }
+            });
+            getMapPosition($('input[name=edit_addressid]').val());
+
+            // init autocomplete of alarmkeys
+            $.ajax({ type : "POST", url : "/data/alarmkeys?action=keyslookup&format=json",
+                success: function(keys) {
+                    var alarmkeysArray = $.map(keys, function (value, key) { return { value: value, data: key }; }),
+                    alarmkeys = $.map(keys, function (value) { return value; });
+
+                    $('#edit_key').autocomplete({
+                        lookup: alarmkeysArray,
+                        onSelect: function(suggestion) {
+                             $('#edit_keyid').val(suggestion.data); // id
+                             $('#edit_keyid').change();
+                        }
+                    });
+                    $('input[name=edit_keyid]').change(function() { getKeyCars($(this).val());});
+                }
+            });
+
+            $('input[name=edit_streetno]').change(function(){
+                if(typeof parent.maps.map!="undefined") {
+                    parent.maps.map.clearHouseNumbers();
+                    $.ajax({ type: "POST", url: "/data/alarms?action=evalhouse&streetid=" + $('#edit_addressid').val() + "&housenumber=" + $(this).val() + "&format=json",
+                        success: function (coords) {
+                            if (coords.lat) parent.maps.map.addHouseNumber(coords);
+                        }
+                    });
+                }
+            });
+
+            $('button[value=cancel]').click(function(){
+                parent.maps.map.clearHouseNumbers();
+                parent.maps.map.setView(new L.LatLng(parent.maps.startlat, parent.maps.startlng), parent.maps.startzoom);
+                parent.maps.map.off('click');
+                parent.maps.map.off('dblclick');
+                window.location.href='/alarms?area={{ frontendarea }}';
+            });
+
+            parent.maps.map.on('click', function(e) {});
+            parent.maps.map.on('dblclick', function(e) {
+                if(mymarker==null) {
+                    mymarker = parent.maps.map.addMarker(e.latlng.lat, e.latlng.lng, $('#priority').val(), true);
+                    $('#marker').val('1');
+                    mymarker.on('dblclick', function(e){
+                        parent.maps.map.clearMarkers();
+                        mymarker = null;
+                        $('#marker').val('0');
+                    });
+                }
+            });
         });
-        
-        parent.map.on('click', function(e) {});
-        parent.map.on('dblclick', function(e) {
-            if(mymarker==null){
-                mymarker = parent.addMarker(e.latlng.lat, e.latlng.lng, $('#priority').val(), true);
-                $('#marker').val('1');
-                mymarker.on('dblclick', function(e){
-                    parent.alarmMarkers.clearLayers();
-                    mymarker = null;
-                    $('#marker').val('0');
-                });
-            }
-        });
-    });
 
 
-    function toggleDetails(){
-        $('#detailswitch').toggleClass('fa-indent fa-outdent');
-        return false;
-    }
-</script>
+        function toggleDetails(){
+            $('#detailswitch').toggleClass('fa-indent fa-outdent');
+            return false;
+        }
+    </script>
+{% endblock %}

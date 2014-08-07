@@ -1,5 +1,5 @@
 <div style="position:absolute; bottom:15px;right:15px;">
-    <a href="#" onclick="return refreshPing()" title="{{ _('monitor.refreshtitle') }}"><i class="fa fa-refresh fa-lg"></i></a>
+    <a href="#" onclick="return refreshPing('1')" title="{{ _('monitor.refreshtitle') }}"><i class="fa fa-refresh fa-lg"></i></a>
 </div>
 <div id="loadinginfo" style="background-color:#ffffff;text-align:center;padding:20px 5px;margin:80px 5px;display:none;">
     {{ _('monitor.loadingclients') }}
@@ -8,14 +8,17 @@
 </div>
 <div id="monitors"> </div>
  <script>
-    refreshPing();
+    refreshPing('0');
 
-    function refreshPing(){
+    function refreshPing(op){
         $('#loadinginfo').show();
         $('#monitors').html('');
-        $.ajax({ type : "POST", url : "/data/monitors?action=ping",
+        $.ajax({ type : "POST", url : "/data/monitors?action=ping&refresh="+op,
             success: function(result){
-                $('#loadinginfo').hide();
+                console.log('result');
+                if (result!="") {
+                    $('#loadinginfo').hide();
+                }
                 $('#monitors').html(result);
             }
         });
@@ -25,10 +28,33 @@
     function getDetails(id){
         $.ajax({ type : "POST", url : "/data/monitors?action=loadmonitor&id="+id,
             success: function(result){
-                //console.log(result);
                 $('#content').html(result);
             }
         });
         return false;
     }
+
+     var monitorsocket = new WebSocket("ws://"+location.host+"/ws");
+     monitorsocket.onopen = function() {
+        monitorsocket.send("add.monitorserver.clientsearchdone");
+     };
+
+     monitorsocket.onmessage = function (evt) {
+        $('#monitors').html('');
+         $('#loadinginfo').show();
+        var data = JSON.parse(evt.data);
+        if(data['clients']) {
+
+            $.ajax({ type: "POST", url: "/data/monitors?action=ping",
+                success: function (result) {
+                    $('#monitors').html(result);
+                    if (result!="") {
+                        $('#loadinginfo').hide();
+                    }
+                }
+            });
+        }
+        return false;
+     };
+
 </script>

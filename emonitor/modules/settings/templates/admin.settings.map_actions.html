@@ -11,36 +11,39 @@
     .leaflet-tile{border:1px solid black!important;opacity:0.3!important;filter:alpha(opacity=30);}
     .leaflet-tile:hover{opacity:0.6!important;cursor:pointer;}
     .selectedtile{opacity:1.0!important;}
-    .selectedtile:hover{opacity:1.0!important;};
+    .selectedtile:hover{opacity:1.0!important;}
 </style>
 <div style="padding:20px;">
     <h2>{{ _('settings.map.edittitle') }}</h2>
     <p><small>{{ _('settings.map.info') }}</small></p>
     <form method="post">
         <p>
-            {{ _('settings.map.name') }}:<br/>
-            <input type="text" name="map_name" value="{{ map.name }}" style="width:99%;"/>
+            <label>{{ _('settings.map.name') }}:<br/>
+                <input type="text" name="map_name" value="{{ map.name }}" style="width:99%;"/>
+            </label>
         </p>
         <p>
-            {{ _('settings.map.path') }}:<br/>
-            {{ tilebase }}<br/>
-            <input name="map_path" id="map_path" value="{{ map.path }}" style="width:99%;" class="path pathok"/>
+            <label>{{ _('settings.map.path') }}:<br/>
+                {{ tilebase }}<br/>
+                <input name="map_path" id="map_path" value="{{ map.path }}" style="width:99%;" class="path pathok"/>
+            </label>
         </p>
         <p>
             {{ _('settings.map.maptype') }}:<br/>
-            <input type="radio" name="map_type" value="0" {% if map.maptype==0 %}checked="checked"{% endif %}/> {{ _('settings.map.type0') }}<br/>
-            <input type="radio" name="map_type" value="1" {% if map.maptype==1 %}checked="checked"{% endif %}/> {{ _('settings.map.type1') }}<br/>
-            <input type="radio" name="map_type" value="2" {% if map.maptype==2 %}checked="checked"{% endif %}"/> {{ _('settings.map.type2') }}<br/>
+            <label><input type="radio" name="map_type" value="0" {% if map.maptype==0 %}checked="checked"{% endif %}/> {{ _('settings.map.type0') }}</label><br/>
+            <label><input type="radio" name="map_type" value="1" {% if map.maptype==1 %}checked="checked"{% endif %}/> {{ _('settings.map.type1') }}</label><br/>
+            <label><input type="radio" name="map_type" value="2" {% if map.maptype==2 %}checked="checked"{% endif %}/> {{ _('settings.map.type2') }}</label><br/>
         </p>
         <p>
-            {{ _('settings.map.tileserver') }}:<br/>
-            <textarea name="map_tileserver" style="width:99%">{{ map.tileserver }}</textarea><br/>
-            <small>{{ _('settings.tileserver.info') }}</small>
+            <label>{{ _('settings.map.tileserver') }}:<br/>
+                <textarea name="map_tileserver" style="width:99%">{{ map.tileserver }}</textarea><br/>
+                <small>{{ _('settings.tileserver.info') }}</small>
+            </label>
         </p>
         <p>
             {{ _('settings.map.default') }}:<br/>
-            <input type="radio" name="map_default" value="1" {% if map.type==1 %}checked="checked"{% endif %}"/> {{ _('settings.map.default1') }}<br/>
-            <input type="radio" name="map_default" value="0" {% if map.default==0 %}checked="checked"{% endif %}/> {{ _('settings.map.default0') }}<br/>
+            <label><input type="radio" name="map_default" value="1" {% if map.type==1 %}checked="checked"{% endif %}/> {{ _('settings.map.default1') }}</label><br/>
+            <label><input type="radio" name="map_default" value="0" {% if map.default==0 %}checked="checked"{% endif %}/> {{ _('settings.map.default0') }}</label><br/>
         </p>
         <p>&nbsp;</p>
         <p>
@@ -83,7 +86,7 @@
 </div>
 
 <script>
-    var tiles = new Array({{ tiles }});
+    var tiles = [{{ tiles }}];
     var map = null;
     var interval;
     function onMapClick(e){
@@ -98,12 +101,12 @@
     function loadTiles(){
         var t = '';
         interval = setInterval(getLoadProgress, 1000);
-        getLoadProgress()
+        getLoadProgress();
         $('#progress_state').show();
         $('.leaflet-layer').children().children('img').each(function (index){
             if ($(this).hasClass('selectedtile')){
-                p = $(this).attr('src').split(/[\/]+/)
-                t+= p[3]+','+p[4].split(".")[0]+'-';
+                var p = $(this).attr('src').split(/[\/]+/);
+                t += p[3]+','+p[4].split(".")[0]+'-';
             }
         });
         if (t!=''){
@@ -138,7 +141,7 @@
 
         map = new L.Map('map', {zoom:12, doubleClickZoom: false});
 
-        cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 12});
+        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 12});
         map.setView(new L.LatLng(startlat, startlng), 12).addLayer(cloudmade);
         map.on('click', onMapClick);
         
@@ -152,15 +155,10 @@
                 $('#max_lat').html(data.max_latdeg);
                 $('#min_lng').html(data.min_lngdeg);
                 $('#max_lng').html(data.max_lngdeg);
-                
-                
-
             }
         });
     });
-        
 
-    
     function evalPath(obj){
         obj.addClass('pathloading');
         $.ajax({ type : "POST", url : "/admin/data/settings?action=checkpath&path="+obj.val(),

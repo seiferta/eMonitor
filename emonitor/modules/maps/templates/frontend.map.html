@@ -9,6 +9,10 @@
         .leaflet-control-layers-group-name {font-weight: bold; margin-bottom: .2em; display: block; }
         .leaflet-control-layers-group {margin-bottom: .5em;}
         .leaflet-control-layers-group label {padding-left:.5em;}
+        .leaflet-control-zoom-home {text-indent: -999em;background: #fff url(data:image/gif;base64,R0lGODlhGAAYAOZdACIiIiMjIy8vLyoqKsPDwzMzM0xMTDQ0NGlpaUtLS+Tk5J2dnXd3d7m5ueDg4GdnZykpKSYmJkpKSre3t09PT5eXl4KCgrCwsHNzc1lZWWhoaCcnJ5ubm3R0dFJSUp+fn1RUVJqamoODg8TExD09PYqKijo6OpGRkV1dXVFRUUNDQ3FxcZmZmYCAgEVFRXV1dSgoKIaGhlxcXEdHR5SUlMvLy5iYmNXV1VNTU7GxsbOzs9ra2jExMdbW1isrKywsLFtbW6qqqnh4eGpqat3d3XBwcI2NjWRkZLi4uL+/vyUlJZycnNvb297e3r6+vvf392VlZcbGxq2trWFhYWZmZszMzE5OTsDAwG1tbZWVlZaWlqGhod/f3////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAF0ALAAAAAAYABgAQAf/gF2Cg10KLFASAgISVBWEhFkAklaPlT0Rkpk2XRCZnj4oEwQknp4Dgw0BAFqPLZ0ZFJ4BDYICpSWEURNBpZ4Cgx+qvQAmgjs4AAEflV1XBckgShkJEQeeBUmPLwAezF0jKTqDGJkdXQaZLt5dTj/DCRq9MDldHgAbw5kPhdb5AAkXBpXAd0ABMyED8g1gsE6QAwwJhw3oQMQbB1UyRlSpQeDJAiClAoQg5OCZkUrPAGzpImJIpgJNBHWKIMUbF0FMGsTIdOpBphUNb5jo9cBWJgveLOQTgM6TihOCjkgq4s9AiGEUHFyoMMUfAA5dGHjFooEHDQSkMjEUREBYPiSDHEQkI1CJQL9SM5aAkHSAbsMuCxAYUGQAwQJvgQAAOw==) no-repeat scroll center center;background-size: 12px 12px;}
+        .leaflet-control-zoom-home:focus { outline: 0;}
+        /*.leaflet-control-zoom-home.leaflet-disabled {background-image: url(data:image/gif;base64,R0lGODlhGAAYAOZGAHp6eoWFhX9/f3t7e4KCgtvb2319faSkpJSUlMTExOzs7JiYmO/v79DQ0KWlpdXV1ZeXl8LCwq2trZWVldTU1KysrJOTk8HBwbS0tLW1tZ2dnaOjo5ubm9nZ2aurq+bm5oCAgMPDw+vr6+np6ZKSkomJicXFxYuLi9zc3Lm5ub+/v+Dg4J6enszMzMDAwN3d3djY2Pr6+oODg46OjqCgoHx8fJGRkaqqqr29vaampqenp7a2to+Pj7Ozs7u7u9HR0aKioqmpqX5+fs7OzsfHx66urv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAEYALAAAAAAYABgAQAf/gEaCg0YMERskBAQkGxeEhCoAkhOPlR8GkpmOApmdICwUBSednQKDDwMALo89nBwTnQMPggSkKYQvFC2knQSDJqm8ACWCIwsAAyaVRh0ByAs1HBYGzpkBHY8VABDLRigQP4MemRVGCJk83UYwIMIWB7xCDUYQAJjCkgeF1fgW84IpMAVgsKwIJ2ECJKgTpMDDQV4CKojoFiKVBhQrVhSIkUADqQERCClw5qNSNSJGMuSwNtEIJwNDuiko9mBHJlPwJN1Y+KEErwO1MmHohgEfgXOdZuAQBERSEHwAEEQQNkFBgws0oAIIYUSCVh0HZKhwMCqTQkEFguGjMCgDsgKVFwrw62QjwTEAAeAuNJLAAQJFCBwk6BYIADs=);}*/
+
     </style>
 {% endblock %}
 
@@ -16,6 +20,7 @@
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.utils.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.emonitormarkers.js"> </script>
+    <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.button.js"> </script>
     <script src="/streets/inc/Control.MiniMap.js" type="text/javascript"></script>
     <script>
         var startlat = '{{ defaultlat }}';
@@ -41,7 +46,7 @@
                 var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.name|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
             {% endfor %}
 
-            map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true,
+            map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true,zoomControl: false,
                       layers:[{% for map in maps | reverse %}l_{{map.id}}{% if not loop.last %}, {% endif %}{% endfor %}]
             });
 
@@ -57,10 +62,14 @@
                 {% endfor %}
             };
 
+            function my_button_onClick(){
+                map.setView(new L.LatLng(startlat, startlng), startzoom);
+            }
+
             L.control.layers(baseMaps, overlayMaps).addTo(map);
-            //var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: ''});
-            var miniMap = new L.Control.MiniMap(ml_1, { toggleDisplay: true }).addTo(map); /* minimap extension*/
+            new L.Control.MiniMap(ml_1, { toggleDisplay: true }).addTo(map); /* minimap extension*/
             new L.EmonitorMarkers().addTo(map); /* marker extension */
+            new L.Control.ZoomHome().addTo(map);
 
             // select default map
             $('.leaflet-control-layers-base').children().last().children('.leaflet-control-layers-selector').click();

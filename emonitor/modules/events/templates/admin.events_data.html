@@ -4,14 +4,15 @@
     {% for var in handler[2] %}
         {% if var.startswith('in.') %}
         <p>
-            {{ var[3:] }}:<br/>
-            <input type="hidden" name="edit_parameters" value="{{ var }}"/>
-            <select name="edit_parameters" style="width:99%">
-                <option value="">{{ _('event.variable.notset') }}</option>
-                {% for inparameter in inparameters %}
-                <option value="{{ inparameter[4:] }}" {% if inparameter[4:]==eventhandler.getParameterValue(var) %}selected="selected"{% endif %}>&gt; {{ inparameter[4:] }}</option>
-                {% endfor %}
-            </select>
+            <label>{{ var[3:] }}:<br/>
+                <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+                <select name="edit_parameters" style="width:99%">
+                    <option value="">{{ _('event.variable.notset') }}</option>
+                    {% for inparameter in inparameters %}
+                    <option value="{{ inparameter[4:] }}" {% if inparameter[4:]==eventhandler.getParameterValue(var) %}selected="selected"{% endif %}>&gt; {{ inparameter[4:] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
         </p>
         {% else %}
         <p>

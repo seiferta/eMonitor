@@ -4,7 +4,7 @@
 <style>
     .leaflet-right{display:none}
     .leaflet-control-container{display:none}
-    .osm_div{position:absolute;top:0px;left:0px;bottom:0px;right:0px;background-color:black;}
+    .osm_div{position:absolute;top:0;left:0;bottom:0;right:0;background-color:black;}
 </style>
 
 <div class="osm_div" id="map"> </div>
@@ -19,13 +19,13 @@
     var redmarker = new MyMarker({iconUrl:'/img/marker_red.png'});
     var orangemarker = new MyMarker({iconUrl:'/img/marker_orange.png'});
     var yellowmarker = new MyMarker({iconUrl:'/img/marker_yellow.png'});
-    var colorcode = new Array(yellowmarker, orangemarker, redmarker);
+    var colorcode = [(yellowmarker, orangemarker, redmarker)];
 
     cloudmade = new L.TileLayer('/tileserver/osmap/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18});
     map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
 
     //map.setView(new L.LatLng(startlat, startlng), startzoom);
-    if({{ alarm.marker }}==1){
+    if ({{ alarm.marker }}==1){
         map.addLayer(new L.Marker(new L.LatLng(startlat, startlng), {icon:colorcode[1],draggable:false}));
     }
 </script>

@@ -22,36 +22,40 @@
 
     <form method="post">
         <p>
-            {{ _('admin.alarmobjects.name') }}:<br/>
-            <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
+            <label>{{ _('admin.alarmobjects.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
+            </label>
         </p>
         <div style="width:99%;position:relative;">
             <div style="float:right;width:50%;">
                 <div class="osm_div" id="map" style="min-height:450px!important;"> </div>
                 {{ _('admin.alarmobjects.mapinfo') }}
             </div>
-            <p style="width:35%;background-color:#fff;float:left;padding-right:5px;">
-                <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
-                    <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
-                    <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.streetid }}"/>
-                </label>
-            </p>
-            <p style="width:10%;float:left">
-                <br/>
-                <label>
-                    <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
-                </label>
-            </p>
-            <p style="clear:left;">
-                <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
-                    <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
-                </label>
-            </p>
-            <p>
-                <label style="width:45%;">{{ _('admin.alarmobjects.remark') }}:<br/>
-                    <textarea class="navigation" name="edit_remark" style="width:99%;height:250px;">{{ alarmobject.remark }}</textarea>
-                </label>
-            </p>
+            <div style="width:49%;">
+                <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
+                    <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
+                        <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
+                        <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.streetid }}"/>
+                    </label>
+                </p>
+                <p style="width:20%;float:left">
+                    <br/>
+                    <label>
+                        <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
+                    </label>
+                </p>
+
+                <p style="clear:left;">
+                    <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
+                        <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
+                    </label>
+                </p>
+                <p>
+                    <label style="width:99%;">{{ _('admin.alarmobjects.remark') }}:<br/>
+                        <textarea class="navigation" name="edit_remark" style="width:100%;height:250px;">{{ alarmobject.remark }}</textarea>
+                    </label>
+                </p>
+            </div>
         </div>
         <p style="margin-top:30px;">
             <label>

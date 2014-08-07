@@ -9,8 +9,8 @@
     <script type="text/javascript">
         var d = {{ alarm.timestamp.hour}}*60*60 + {{ alarm.timestamp.minute }}*60 + {{ alarm.timestamp.second }};
         function alarmtime() {
-            now = new Date();
-            n = now.getHours()*60*60+now.getMinutes()*60+now.getSeconds();
+            var now = new Date();
+            var n = now.getHours()*60*60+now.getMinutes()*60+now.getSeconds();
             if(d){
                 diff = (n-d);
                 minutes = Math.floor(diff / 60) % 60;

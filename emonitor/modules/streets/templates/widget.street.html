@@ -3,7 +3,7 @@
         div#streets_widget{position:relative;height:100%;}
         div#streets_widget #street{margin-left:20px;font-size:3em;}
         div#streets_widget #street2{margin-left:20px;font-size:2em;}
-        div#streets_widget #city{position:relative;font-size:2em;margin:40px 0px 2px 20px;}
+        div#streets_widget #city{position:relative;font-size:2em;margin:40px 0 2px 20px;}
     </style>
     <div class="street" id="street">
         {% if alarm.street %}
@@ -17,7 +17,7 @@
     {% endif %}
     <div id="city">
         {{ alarm.city.name }}
-        {% if alarm.street.subcity %}
+        {% if alarm.street.id != None and alarm.street.subcity %}
             - {{  alarm.street.subcity }}
         {% endif %}
     </div>

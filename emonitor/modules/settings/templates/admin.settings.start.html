@@ -8,6 +8,9 @@
     </style>
 {% endblock %}
 
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
 
 {% block content %}
     <h2>{{ _('settings.start.title') }}</h2>
@@ -17,50 +20,59 @@
 
             <div id="west" class="west">
                 <p style="text-align:center">{{ _('settings.start.west') }}</p>
-                <p>{{ _('settings.start.westcontent') }}:<br/>
-                    <select name="west.module" style="width:99%;">
-                        <option value="">{{ _('settings.start.none') }}</option>
-                        {% for mod in mods %}
-                            <option value="{{ mod.info['name'] }}" {% if west.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                        {% endfor %}
-                    </select>
+                <p>
+                    <label>{{ _('settings.start.westcontent') }}:<br/>
+                        <select name="west.module" style="width:99%;">
+                            <option value="none">{{ _('settings.start.none') }}</option>
+                            {% for mod in mods %}
+                                <option value="{{ mod.info['name'] }}" {% if west.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </p>
-                <p>{{ _('settings.start.westparams') }}:<br/>
-                    {{ _('settings.start.width') }}:
-                    <input type="text" maxlength="3" name="west.width" value="{{ (100*west.width|float)|int }}"/> %
+                <p>
+                    {{ _('settings.start.westparams') }}:<br/>
+                    <label>{{ _('settings.start.width') }}:
+                        <input type="text" maxlength="3" name="west.width" value="{{ (100*west.width|float)|int }}"/> %
+                    </label>
                     <br/><br/>
-                    <input type="checkbox" name="west.visible" value="1" {% if west.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}
+                    <label><input type="checkbox" name="west.visible" value="1" {% if west.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}</label>
 
                 </p>
             </div>
 
             <div id="center" class="center">
                 <p style="text-align:center">{{ _('settings.start.center') }}</p>
-                <p>{{ _('settings.start.centercontent') }}:<br/>
-                    <select name="center.module" style="width:99%;">
-                        <option value="">{{ _('settings.start.none') }}</option>
-                        {% for mod in mods %}
-                            <option value="{{ mod.info['name'] }}" {% if center.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                        {% endfor %}
-                    </select>
+                <p>
+                    <label>{{ _('settings.start.centercontent') }}:<br/>
+                        <select name="center.module" style="width:99%;">
+                            <option value="none">{{ _('settings.start.none') }}</option>
+                            {% for mod in mods %}
+                                <option value="{{ mod.info['name'] }}" {% if center.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </p>
             </div>
 
             <div id="east" class="east">
                 <p style="text-align:center">{{ _('settings.start.east') }}</p>
-                <p>{{ _('settings.start.eastcontent') }}:<br/>
-                    <select name="east.module" style="width:99%;">
-                        <option value="">{{ _('settings.start.none') }}</option>
-                        {% for mod in mods %}
-                            <option value="{{ mod.info['name'] }}" {% if east.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                        {% endfor %}
-                    </select>
+                <p>
+                    <label>{{ _('settings.start.eastcontent') }}:<br/>
+                        <select name="east.module" style="width:99%;">
+                            <option value="none">{{ _('settings.start.none') }}</option>
+                            {% for mod in mods %}
+                                <option value="{{ mod.info['name'] }}" {% if east.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </p>
                 <p>{{ _('settings.start.eastparams') }}:<br/>
-                    {{ _('settings.start.width') }}:
-                    <input type="text" maxlength="3" name="east.width" value="{{ (100*east.width|float)|int }}"/> %
+                    <label>{{ _('settings.start.width') }}:
+                        <input type="text" maxlength="3" name="east.width" value="{{ (100*east.width|float)|int }}"/> %
+                    </label>
                     <br/><br/>
-                    <input type="checkbox" name="east.visible" value="1" {% if east.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}
+                    <label><input type="checkbox" name="east.visible" value="1" {% if east.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}</label>
                 </p>
             </div>
         </div>

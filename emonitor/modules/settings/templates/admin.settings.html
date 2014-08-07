@@ -7,6 +7,7 @@
         .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0 transparent}
         .pathok{background:url(/settings/inc/active.png) no-repeat right 0 transparent}
         .patherror{background:url(/settings/inc/error.png) no-repeat right 0 transparent}
+        legend{font-size:16px;font-weight:bold;margin-top:20px;margin-bottom:10px;}
     </style>
 {% endblock %}
 
@@ -16,7 +17,7 @@
 
 {% block content %}
     <fieldset>
-        <legend><h2>{{ _('settings.listtitle') }}</h2></legend>
+        <legend>{{ _('settings.listtitle') }}</legend>
         <small>{{ _('settings.info') }}</small>
         <div class="headrow" style="margin-top:5px;">
             <div style="margin-right:15px;margin-left:15px;">
@@ -30,7 +31,7 @@
                 <div style="margin-right:15px;margin-left:15px;">
                     <div class="rowcell" style="width:30%;">{{ _('settings.pathtype.'+k) }}:</div>
                     <div class="rowcell" style="width:70%;">
-                        <input type="text" value="{{ paths[k] }}" name="{{ 'paths_'+k }}" class="path pathok"/>
+                        <label><input type="text" value="{{ paths[k] }}" name="{{ 'paths_'+k }}" class="path pathok"/></label>
                     </div>
                 </div>
                 <input type="hidden" name="mapids" value="{{ k }}" class="path"/>
@@ -41,12 +42,12 @@
     
     <form method="post" name="paths" action="">
         <fieldset>
-            <legend><h2>{{ _('settings.observerstatus') }}</h2></legend>
+            <legend>{{ _('settings.observerstatus') }}</legend>
             <small>{{ _('settings.observerstatusinfo') }}</small>
             <h4>{{ _('settings.actobserverstatus') }}</h4>
             <p>
-                <input type="radio" name="observerstate" value="1" {% if observerstate==1 %}checked="checked"{% endif %}/> {{ _('settings.observeractive') }}<br/>
-                <input type="radio" name="observerstate" value="0" {% if observerstate==0 %}checked="checked"{% endif %}/> {{ _('settings.observerinactive') }}
+                <label><input type="radio" name="observerstate" value="1" {% if observerstate==1 %}checked="checked"{% endif %}/> {{ _('settings.observeractive') }}</label><br/>
+                <label><input type="radio" name="observerstate" value="0" {% if observerstate==0 %}checked="checked"{% endif %}/> {{ _('settings.observerinactive') }}</label>
             </p>
             <button type="submit" name="action" value="observerstate"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
         </fieldset>
@@ -54,11 +55,12 @@
     
     <form method="post" name="paths" action="">
         <fieldset>
-            <legend><h2>{{ _('settings.autoclose.title') }}</h2></legend>
+            <legend>{{ _('settings.autoclose.title') }}</legend>
             <small>{{ _('settings.autoclose.info') }}</small>
             <p>
-                {{ _('settings.autoclose') }}:<br/>
-                <input type="text" name="settings.autoclose" value="{{ alarmsettings }}"/>
+                <label>{{ _('settings.autoclose') }}:<br/>
+                    <input type="text" name="settings.autoclose" value="{{ alarmsettings }}"/>
+                </label>
             </p>
         
             <button type="submit" name="action" value="alarmsettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
@@ -67,11 +69,12 @@
 
     <form method="post" name="paths" action="">
         <fieldset>
-            <legend><h2>{{ _('settings.autoarchive.title') }}</h2></legend>
+            <legend>{{ _('settings.autoarchive.title') }}</legend>
             <small>{{ _('settings.autoarchive.info') }}</small>
             <p>
-                {{ _('settings.autoarchive') }}:<br/>
-                <input type="text" name="settings.autoarchive" value="{{ archivesettings }}"/>
+                <label>{{ _('settings.autoarchive') }}:<br/>
+                    <input type="text" name="settings.autoarchive" value="{{ archivesettings }}"/>
+                </label>
             </p>
 
             <button type="submit" name="action" value="archivesettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
@@ -80,10 +83,12 @@
 
     <form method="post" name="alarmfields">
         <fieldset>
-            <legend><h2>{{ _('settings.alarmsevalfields.title') }}</h2></legend>
-            <small>{{ _('settings.alarmsevalfields.info') }}</small>
-            <textarea name="settings.alarmsevalfields" style="height:200px;width:99%">{{ alarmsevalfields }}</textarea><br/><br/>
-            <button type="submit" name="action" value="alarmsevalfields"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+            <legend>{{ _('settings.alarmsevalfields.title') }}</legend>
+            <label>
+                <small>{{ _('settings.alarmsevalfields.info') }}</small>
+                <textarea name="settings.alarmsevalfields" style="height:200px;width:99%">{{ alarmsevalfields }}</textarea><br/><br/>
+                <button type="submit" name="action" value="alarmsevalfields"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+             </label>
         </fieldset>
     </form>
 {% endblock %}

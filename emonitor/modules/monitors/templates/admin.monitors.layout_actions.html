@@ -6,8 +6,8 @@
     <style>
         .gridster li{background-color: #d4d4d4;list-style:none;border:2px solid silver;}
         .gridster li:hover{background-color:white;cursor:pointer;}
-        .resize{position:absolute;right:0px;bottom:0;cursor:pointer;}
-        .monitor{border:10px solid #333333;padding-bottom:5px;background:url(/monitors/inc/grid.png) 1px 0px;border-radius: 10px;}
+        .resize{position:absolute;right:0;bottom:0;cursor:pointer;}
+        .monitor{border:10px solid #333333;padding-bottom:5px;background:url(/monitors/inc/grid.png) 1px 0;border-radius: 10px;}
         .content{border-width:0 !important;}
     </style>
 {% endblock %}
@@ -25,17 +25,18 @@
         <h2>{{ _('monitorlayouts.edit.monitor') }}</h2>
         <form method="post">
             <p>
-                {{ _('monitorlayouts.monitorid') }}:<br/>
-                <select name="edit_mid" style="width:50%;">
-                    {% for monitor in monitors %}
-                        <option value="{{ monitor.id }}" {% if layout.mid==monitor.id %}selected="selected"{% endif %}>{{ monitor.name }}</option>
-                    {% endfor %}
-                </select>
+                <label>{{ _('monitorlayouts.monitorid') }}:<br/>
+                    <select name="edit_mid" style="width:50%;">
+                        {% for monitor in monitors %}
+                            <option value="{{ monitor.id }}" {% if layout.mid==monitor.id %}selected="selected"{% endif %}>{{ monitor.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
             <p>
-            <textarea name="edit_layout" class="result" style="display:none;"> </textarea>
+            <label><textarea name="edit_layout" class="result" style="display:none;"> </textarea></label>
 
             {{ _('monitorlayouts.buildlayout') }}:<br/>
-            <div class="monitor" style="width:{{ monitor.formatx*70+2}}px !important;height:{{ monitor.formaty*55 -2}}px !important;box-sizing:content-box!important;-moz-box-sizing:content-box!important;-webkit-box-sizing:content-box!important;">
+            <div class="monitor" style="width:{{ monitor.formatx*70 + 2 }}px !important;height:{{ monitor.formaty*55 - 2 }}px !important;box-sizing:content-box!important;-moz-box-sizing:content-box!important;-webkit-box-sizing:content-box!important;">
                 <div class="gridster" id="layout">
                     <ul style="position:absolute!important;">
                     </ul>
@@ -43,39 +44,44 @@
             </div>
             <p> </p>
             <p>
-                {{ _('monitorlayouts.theme') }}:<br/>
-                <select name="edit_theme" style="width:50%;">
-                    {% for theme in layout.themes %}
-                        <option value="{{ theme }}" {% if theme==layout.theme %}selected="selected"{% endif %}>{{ theme }}</option>
+                <label>{{ _('monitorlayouts.theme') }}:<br/>
+                    <select name="edit_theme" style="width:50%;">
+                        {% for theme in layout.themes %}
+                            <option value="{{ theme }}" {% if theme==layout.theme %}selected="selected"{% endif %}>{{ theme }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label>{{ _('monitorlayouts.trigger') }}:<br/>
+                    {% for trigger in triggers %}
+                        <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}" {%if trigger.name in layout.trigger %}checked="selected"{% endif %} {% if trigger.name in usedtriggers %}disabled="disabled"{%endif %}/>
+                        <label>{{ _('trigger.'+trigger.name) }}</label>
+                        {% if trigger.name in usedtriggers %}<em>({{ _('monitorlayouts.triggerinuse') }})</em>{% endif %}
+                        <br/>
                     {% endfor %}
-                </select>
+                </label>
             </p>
             <p>
-                {{ _('monitorlayouts.trigger') }}:<br/>
-                {% for trigger in triggers %}
-                    <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}" {%if trigger.name in layout.trigger %}checked="selected"{% endif %} {% if trigger.name in usedtriggers %}disabled="disabled"{%endif %}/>
-                    <label>{{ _('trigger.'+trigger.name) }}</label>
-                    {% if trigger.name in usedtriggers %}<em>({{ _('monitorlayouts.triggerinuse') }})</em>{% endif %}
-                    <br/>
-                {% endfor %}
+                <label>{{ _('monitorlayouts.mintime') }}:<br/>
+                    <input type="text" name="edit_mintime" value="{{ layout.mintime }}"/> {{ _('monitorlayouts.mintimelabel') }}
+                </label>
             </p>
             <p>
-                {{ _('monitorlayouts.mintime') }}:<br/>
-                <input type="text" name="edit_mintime" value="{{ layout.mintime }}"/> {{ _('monitorlayouts.mintimelabel') }}
+                <label>{{ _('monitorlayouts.maxtime') }}:<br/>
+                    <input type="text" name="edit_maxtime" value="{{ layout.maxtime }}"/> {{ _('monitorlayouts.maxtimelabel') }}
+                </label>
             </p>
             <p>
-                {{ _('monitorlayouts.maxtime') }}:<br/>
-                <input type="text" name="edit_maxtime" value="{{ layout.maxtime }}"/> {{ _('monitorlayouts.maxtimelabel') }}
-            </p>
-            <p>
-                {{ _('monitorlayouts.nextid') }}:<br/>
-                <select name="edit_nextid">
-                    <option value="0">{{_('monitorlayouts.nonextlayout') }}</option>
-                    {% for l in layouts %}
-                        <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
-                    {% endfor %}
-                </select>
-                {{ _('monitorlayouts.nextidlabel') }}
+                <label>{{ _('monitorlayouts.nextid') }}:<br/>
+                    <select name="edit_nextid">
+                        <option value="0">{{_('monitorlayouts.nonextlayout') }}</option>
+                        {% for l in layouts %}
+                            <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ _('monitorlayouts.nextidlabel') }}
+                </label>
             </p>
             <p>
                 <button type="submit" name="action" value="updatelayout" class="save" onclick="return getlayout()"><i class="fa fa-check"></i> {{ _('monitorlayouts.save') }}</button>

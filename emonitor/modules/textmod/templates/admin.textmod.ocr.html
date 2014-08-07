@@ -9,14 +9,16 @@
     <p><small>{{ _('textmod.ocr.info') }}</small></p>
     <form method="post" action="">
         <p>
-            {{ _('textmod.ocr.inportformats') }}:<br/>
-            <textarea name="ocr_formats" style="width:99%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
-            {{ _('textmod.ocr.inputformatinfo') }}
+            <label>{{ _('textmod.ocr.inportformats') }}:<br/>
+                <textarea name="ocr_formats" style="width:99%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
+                {{ _('textmod.ocr.inputformatinfo') }}
+            </label>
         </p>
         <p>
-            {{ _('textmod.ocr.callstring') }}:<br/>
-            <textarea name="ocr_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
-            {{ _('textmod.ocr.callstringinfo') }}
+            <label>{{ _('textmod.ocr.callstring') }}:<br/>
+                <textarea name="ocr_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+                {{ _('textmod.ocr.callstringinfo') }}
+            </label>
         </p>
         <p>
             <button type="submit" name="action" value="savereocrparams" class="save"><i class="fa fa-check"></i> {{ _('textmod.ocr.save') }}</button>
