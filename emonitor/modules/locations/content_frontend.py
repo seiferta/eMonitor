@@ -1,13 +1,15 @@
 from collections import OrderedDict
-from flask import render_template
+from flask import render_template, request
 from emonitor.extensions import classes, cache
 
 
 @cache.cached(timeout=5000, key_prefix='frontend.locations')
 def getFrontendContent(**params):
 
-    if 'area' in params.keys() and params['area'] in ['west', 'east']:  # small area view
+    if 'area' not in params.keys() and request.args.get('area', '') != '':
+        params['area'] = request.args.get('area')
 
+    if 'area' in params.keys() and params['area'] in ['west', 'east']:  # small area view
         streets = {}
         cities = classes.get('city').getCities()
         for c in cities:

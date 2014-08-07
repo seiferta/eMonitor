@@ -17,7 +17,7 @@ def getAdminContent(self, **params):
         if module[1] == 'definition':  # definition
             if request.method == 'POST':
 
-                if request.form.get('action').startswith('edititemtype_'):  # edit/add definition
+                if request.form.get('action').startswith('edititemtype_'):  # edit/add definition TODO: fix
                     typename = request.form.get('action').split('_')
                     itemtype = [d for d in classes.get('settings').get('mapitemdefinition') if d['name'] == typename[1]]
                     if len(itemtype) > 0:
