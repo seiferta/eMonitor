@@ -36,6 +36,7 @@ class MyScheduler(ApScheduler):
     def mylogger(event):
         if event.exception:
             MyScheduler.app.logger.error('scheduler: %s' % event.exception)
+            print event.__dict__
         else:
             MyScheduler.app.logger.error('error in scheduler event')
 

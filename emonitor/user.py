@@ -1,4 +1,4 @@
-from werkzeug import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from .extensions import db
 
 
@@ -9,8 +9,9 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True)
     _password = db.Column('password', db.String(68), nullable=False)
     email = db.Column(db.String(120), unique=True)
-    level = db.Column(db.Integer, default=0) # 0=not set, 1=admin
+    level = db.Column(db.Integer, default=0)  # 0=not set, 1=admin
     rights = db.Column(db.Text, default='')
+    active = db.Column(db.SMALLINT, default=0)
 
     def _get_password(self):
         return self._password
@@ -21,12 +22,15 @@ class User(db.Model):
     # Hide password encryption by exposing password field only.
     password = db.synonym('_password', descriptor=property(_get_password, _set_password))
 
-    def __init__(self, username, password, email, level, rights):
+    def __init__(self, username, password, email, level, rights, active=False):
         self.username = username
         self.password = password
         self.email = email
         self.level = level
         self.rights = rights
+        self.active = active
+        self.anonymous = False  # default value
+        self.authenticated = True  # default value
         
     def __repr__(self):
         return '<User %r>' % self.username
@@ -38,13 +42,19 @@ class User(db.Model):
 
     # Flask-Login integration
     def is_authenticated(self):
-        return True
+        try:
+            return self.authenticated
+        except AttributeError:
+            return True
 
     def is_active(self):
-        return True
+        return self.active == 1
 
     def is_anonymous(self):
-        return False
+        try:
+            return self.anonymous
+        except AttributeError:
+            return False
 
     def get_id(self):
         return self.id
@@ -55,14 +65,17 @@ class User(db.Model):
     
     # static part
     @staticmethod
-    def get(userid):
-        user = db.session.query(User).filter_by(id=userid)
-        if user.first():
-            return user.first()
+    def getUsers(userid=0):
+        if userid == 0:
+            return db.session.query(User).order_by(User.level).all()
+        else:
+            user = db.session.query(User).filter_by(id=userid)
+            if user.first():
+                return user.first()
             
-        # no user found -> init
+        # no user found -> init: create admin user
         if db.session.query(User).count() == 0:
-            user = User('Administrator', '', '', 1, '')
+            user = User('Administrator', '', '', 1, '', True)
             user._set_password('admin')
             db.session.add(user)
             db.session.commit()

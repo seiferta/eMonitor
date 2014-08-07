@@ -6,15 +6,24 @@ import time
 import datetime
 import traceback
 import random
-from .extensions import db, events, classes, babel
+from .extensions import db, events, classes, babel, signal
 
 
 class MonitorServer():
     
     app = None
+    clients = {'clients': {}, 'time': datetime.datetime.now()}
 
     def __init__(self):
-        pass
+        self.ANY = ""
+        self.MCAST_ADDR = ""
+        self.MCAST_PORT = ""
+        self.messages = []
+        self.currentLayout = {}
+        self.results = {}
+        self.host = ""
+        self.port = ""
+        self.sock = None
 
     def init_app(self, app):
         MonitorServer.app = app
@@ -23,52 +32,57 @@ class MonitorServer():
         self.ANY = app.config.get('MONITORSERVER_ANY', "0.0.0.0")
         self.MCAST_ADDR = app.config.get('MONITORSERVER_MCAST_ADDR', "224.168.2.9")
         self.MCAST_PORT = app.config.get('MONITORSERVER_MCAST_PORT', 1600)
-        self.messages = []
-        self.currentLayout = {}
-        self.results = {}
-
         self.host = app.config.get('HOST')
+
         ip = socket.gethostbyname(socket.gethostname())
         if ip:
             self.host = ip
         self.port = app.config.get('PORT')
         
         babel.gettext(u'emonitor.monitorserver.MonitorServer')
+        signal.addSignal('monitorserver', 'clientsearchstart')
+        signal.addSignal('monitorserver', 'clientsearchdone')
 
-    def sendMessage(self, clientid, operation, parameters=[]):
-        params = '&'.join(parameters)
-        if len(params) > 0: parameters = '?' + params
-        else: parameters = ''
-        
+    def sendMessage(self, clientid, operation, *parameters):
+        parameters = dict((x, y) for x, y in parameters)
+
+        params = ""
+        for p in parameters:
+            params += '&%s=%s' % (p, parameters[p])
+
+        if len(params) > 0: _parameters = '?' + params
+        else: _parameters = ''
+
         if operation == "load":  # load monitor
-            if "layoutid=-1" in parameters:
-                parameters = 'http://%s:%s/monitor' % (self.host, self.port)
+            if "layoutid" in parameters and parameters['layoutid'] == '-1':
+                    _parameters = 'http://%s:%s/monitor' % (self.host, self.port)
             else:
-                #parameters = 'http://%s:%s/monitor/%s%s' % (self.host, self.port, '%s', parameters)
-                parameters = 'http://%s:%s/monitor/%%s%s' % (self.host, self.port, parameters)
+                _parameters = 'http://%s:%s/monitor/%%s%s' % (self.host, self.port, _parameters)
 
         elif operation == "reset":  # reset monitor
-            parameters = 'http://%s:%s/monitor/%s' % (self.host, self.port, '%s')
+            _parameters = 'http://%s:%s/monitor/%s' % (self.host, self.port, '%s')
         elif operation == "execute":  # run script
-            parameters = params
+            _parameters = params
 
         message = '%s|%s' % (clientid, operation)
-        if parameters != "":
-            message += '|%s' % parameters
+        if _parameters != "":
+            message += '|%s' % _parameters
 
-        print "-->", message
         self.messages.append(message)
         try:
             _id = str(random.random())[2:10]
-            #thread.start_new_thread(self.run, (_id,))
             t = threading.Thread(target=self.run, args=(_id,))
             t.start()
         except:
+            _id = ""
             MonitorServer.app.logger.error('monitorserver: %s' % traceback.format_exc())
         return _id
 
-    def sendMessageWithReturn(self, clientid, operation, parameters=""):
-        _id = self.sendMessage(clientid, operation, parameters)
+    def sendMessageWithReturn(self, clientid, operation, *parameters):
+        if len(parameters) == 0:
+            _id = self.sendMessage(clientid, operation)
+        else:
+            _id = self.sendMessage(clientid, operation, *parameters)
 
         while _id not in self.results.keys():
             pass
@@ -81,6 +95,7 @@ class MonitorServer():
         return ""
         
     def getClients(self):
+        signal.send('monitorserver', 'clientsearchstart')
         monitors = classes.get('monitor').getMonitors()
         message, results = self.sendMessageWithReturn('0', 'ping')
         
@@ -95,11 +110,12 @@ class MonitorServer():
                 clients[str(monitor.id)].append(monitor)
             else:
                 clients[str(monitor.id)] = [None, monitor]
+        MonitorServer.clients = {'clients': clients, 'time': datetime.datetime.now()}
+        signal.send('monitorserver', 'clientsearchdone', clients=clients.keys())
         return clients
 
     @staticmethod
     def incomeData(eventname, kwargs):
-        #"monitorserver incomingData", kwargs
         pass
         
     @staticmethod
@@ -109,10 +125,11 @@ class MonitorServer():
     @staticmethod
     def handleEvent(eventname, *kwargs):
         from emonitor.extensions import scheduler
-        def cleanSchedules(monitorid):
-            for schedjob in scheduler.get_jobs():
-                if schedjob.name == 'changeState' and schedjob.args[0] == monitorid:
-                    scheduler.unschedule_job(schedjob)
+
+        #def cleanSchedules(monitorid):
+        #    for schedjob in scheduler.get_jobs():
+        #        if schedjob.name == 'changeState' and schedjob.args[0] == monitorid:
+        #            scheduler.unschedule_job(schedjob)
 
         if eventname == "client_income":
             return kwargs
@@ -125,6 +142,7 @@ class MonitorServer():
                 if p in kwargs[0]:
                     params.append((p, kwargs[0][p]))
         except:
+            hdl = []
             MonitorServer.app.logger.error('monitorserver: %s' % traceback.format_exc())
 
         if kwargs[0]['mode'] != 'test':
@@ -151,15 +169,15 @@ class MonitorServer():
         return kwargs
 
     @staticmethod
-    def changeLayout(monitorid, layoutid, params=[]):
+    def changeLayout(monitorid, layoutid, *params):
         from emonitor.extensions import monitorserver
         MonitorServer.app.logger.debug('monitorserver: changeLayout for monitor %s > %s' % (monitorid, layoutid))
-        parameters = 'layoutid=%s' % layoutid
+        parameters = tuple((u'layoutid', u'%s' % layoutid))
         for p in params:
-            parameters += ';%s=%s' % (p[0], p[1])
+            parameters.append((p[0], p[1]))  # do not change!
         l = MonitorLog.addLog(monitorid, 0, 'change layout', parameters)
         if l: MonitorServer.app.logger.error('monitorserver.addLog: %s' % l)
-        message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', parameters.split(";"))
+        message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', parameters)
 
         l = MonitorLog.addLog(int(message.split('|')[0]), 0, message.split('|')[1], '|'.join(message.split('|')[2:]))
         if l: MonitorServer.app.logger.error('monitorserver.addLog: %s' % l)
@@ -168,22 +186,21 @@ class MonitorServer():
     def run(self, id):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.settimeout(1.0)
-        ttl = struct.pack('b', 1)
-        self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
-        
+        self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, struct.pack('b', 1))
+
+        message = ""
+        result = None
         try:
             if len(self.messages) > 0:
                 # Send data to the multicast group
-                message = self.messages[-1]
-                self.messages.pop()
-                #MonitorServer.app.logger.debug('monitorserver: sending "%s"' % message)
-                sent = self.sock.sendto(message, (self.MCAST_ADDR, self.MCAST_PORT))
+                message = self.messages.pop()
+                self.sock.sendto(message, (self.MCAST_ADDR, self.MCAST_PORT))
                 
                 # Look for responses from all recipients
                 result = []
                 while True:
                     try:
-                        if select.select([self.sock], [], [], (3))[0]: # wait 5 seconds
+                        if select.select([self.sock], [], [], 3)[0]:  # wait 5 seconds
                             try:
                                 data, server = self.sock.recvfrom(8192)
                                 result.append({'data': data, 'from': server, 'name': socket.gethostbyaddr(server[0])[0]})
@@ -201,7 +218,6 @@ class MonitorServer():
             self.results[id] = (message, result)
 
     def stop(self):
-        print "CLOSE SOCKET"
         self.sock.close()
 
 
@@ -210,15 +226,15 @@ class MonitorLog(db.Model):
     
     timestamp = db.Column(db.TIMESTAMP, primary_key=True)
     clientid = db.Column(db.Integer)
-    direction = db.Column(db.Integer, default=0)  # 0: ->, 1:<-
+    direction = db.Column(db.Integer, default=0)  # 0: ->, 1: <-
     type = db.Column(db.String(16), default='info')
     operation = db.Column(db.Text, default='')
     
-    def __init__(self, timestamp, clientid, direction, type, operation):
+    def __init__(self, timestamp, clientid, direction, monitortype, operation):
         self.timestamp = timestamp
         self.clientid = clientid
         self.direction = direction
-        self.type = type
+        self.type = monitortype
         self.operation = operation
     
     @staticmethod

@@ -127,7 +127,7 @@ def configure_extensions(app):
     
     # user
     if User.count() == 0:
-        User.get(1)
+        User.getUsers(1)
     
     @login_manager.user_loader
     def load_user(id):
@@ -176,6 +176,15 @@ def configure_hook(app):
 
 
 def configure_handlers(app):
+
+    #@app.before_request
+    #def before_request():
+    #    print "before_request"
+
+    #@app.after_request
+    #def after_request(response):
+    #    print "after_request", response
+    #    return response
 
     @app.errorhandler(403)
     def forbidden_page(error):

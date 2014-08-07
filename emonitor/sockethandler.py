@@ -1,4 +1,4 @@
-import time
+from .extensions import signal
 from tornado.websocket import WebSocketHandler
 
 
@@ -14,18 +14,15 @@ class SocketHandler(WebSocketHandler):
             client.write_message(sender, extra)
 
     def open(self):
-        #print "api-open"
-        #if not hasattr(self, '_config'):
-        #    self._config = []
         SocketHandler.clients.add(self)
 
     def on_close(self):
-        #print "api-close"
         SocketHandler.clients.remove(self)
 
-    #def on_message(self, message):
-        #print ">>>", self in ApiHandler.clients, message
+    def on_message(self, message):
+        _op, _cls, _msg = message.split('.')
 
-       # key, value = message.split('=')
-        #if key == 'filter':
-       #     self._config.append(value)
+        if _op == 'add':
+            signal.addSignal(_cls, _msg)
+        elif _op == 'send':
+            signal.signals[_cls + '.' + _msg].send('')

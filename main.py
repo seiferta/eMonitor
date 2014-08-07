@@ -15,7 +15,7 @@ def tornado(args):
     def t_reload():
         print "before reload"
 
-    webapp.logger.info('emonitor startetd with tornado server on port %s' % webapp.config.get('PORT'))
+    webapp.logger.info('emonitor started with tornado server on port %s' % webapp.config.get('PORT'))
     #_server = httpserver.HTTPServer(wsgi.WSGIContainer(webapp))
     _server = web.Application([(r'/ws', SocketHandler), (r'.*', web.FallbackHandler, {'fallback': wsgi.WSGIContainer(webapp)})])
     _server.listen(int(webapp.config.get('PORT')))
@@ -42,7 +42,7 @@ def tornado(args):
 
 # run builtin server
 def builtin(args):
-    webapp.logger.info('emonitor startetd with builtin server on port %s' % webapp.config.get('PORT'))
+    webapp.logger.info('emonitor started with builtin server on port %s' % webapp.config.get('PORT'))
     webapp.run(host=webapp.config.get('HOST'), port=webapp.config.get('PORT'), debug=webapp.config.get('DEBUG'))
     webapp.logger.info('emonitor stopped')
 
