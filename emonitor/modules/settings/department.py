@@ -3,6 +3,7 @@ from emonitor.extensions import db, classes
 import emonitor.modules.cars.car
 
 
+# noinspection PyBroadException
 class Department(db.Model):
     __tablename__ = 'departments'
     
@@ -28,12 +29,15 @@ class Department(db.Model):
         
     @staticmethod
     def getDefaultDepartment():
-        return db.session.query(Department).order_by('orderpost')[0]
+        return db.session.query(Department).order_by('orderpost').first()
         
     @staticmethod
     def getDepartments(id=0):
         if id == 0:
-            return db.session.query(Department).order_by('orderpos').all()
+            try:
+                return db.session.query(Department).order_by('orderpos').all()
+            except:
+                return []
         else:
             return db.session.query(Department).filter_by(id=id).first()
 

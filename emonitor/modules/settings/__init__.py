@@ -38,6 +38,11 @@ class SettingsModule(Module):
         babel.gettext(u'settings.cars')
         babel.gettext(u'settings.start')
 
+        babel.gettext(u'settings.pathtype.pathdone')
+        babel.gettext(u'settings.pathtype.pathtmp')
+        babel.gettext(u'settings.pathtype.pathdata')
+        babel.gettext(u'settings.pathtype.pathincome')
+
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 
