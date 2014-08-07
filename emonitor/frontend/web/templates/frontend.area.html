@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="expires" content="43200"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Access-Control-Allow-Origin" content="*" />
+        <!--
+            This website is powered by eMonitor
+        -->
+        <title>{% block title %}{{ _('frontend.titlemain') }}{% endblock %}</title>
+        <meta name="generator" content="eMonitor"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="stylesheet" href="/css/layout.css" />
+        {% block style %} {% endblock %}
+        <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/jquery-ui-1.10.1.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/jquery.layout.min.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/jquery.form.js"> </script>
+        <script type="text/javascript" language="javascript" src="/js/bootstrap.min.js"></script>
+
+        {% block headscript %} {% endblock %}
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>

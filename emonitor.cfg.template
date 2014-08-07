@@ -1,0 +1,19 @@
+
+BABEL_DEFAULT_LOCALE = 'de'
+BABEL_DEFAULT_TIMEZONE = 'UTC'
+
+DEBUG = True
+TESTING = False
+
+PORT = 5000
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db'
+cachetimeout = 300
+
+TILE_MISSING = 'load'  # load|none
+
+PATH_DATA = 'D:/data/python/ffh/data2/'
+PATH_INCOME = 'D:/data/python/ffh/data2/income/'
+PATH_DONE = 'D:/data/python/ffh/data2/done/'
+PATH_TMP = 'D:/data/python/ffh/data2/tmp/'
+PATH_TILES = 'D:/data/python/ffh/data2/tiles/'
