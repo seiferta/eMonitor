@@ -5,7 +5,7 @@ from emonitor.extensions import classes
 def getFrontendData(self):
     if request.args.get('action') == 'streetcoords':  # get map parameter for given streetid
 
-        if request.args.get('id') != '':
+        if request.args.get('id') not in ['', 'None']:
             street = classes.get('street').getStreet(request.args.get('id'))
             return {'lat': street.lat, 'lng': street.lng, 'zoom': street.zoom, 'way': street.navigation,
                     'cityid': street.cityid}

@@ -1,6 +1,6 @@
 import yaml
 from sqlalchemy.orm import relationship
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from emonitor.modules.streets.housenumber import Housenumber
 
 
@@ -42,9 +42,13 @@ class Street(db.Model):
 
     @staticmethod
     def getStreet(id=0):
-        street = db.session.query(Street).filter_by(id=int(id))
-        if street:
-            return street.first()
+        try:
+            if int(id):
+                street = db.session.query(Street).filter_by(id=int(id))
+                if street:
+                    return street.first()
+        except ValueError:
+            return None
         return None
 
     @staticmethod
