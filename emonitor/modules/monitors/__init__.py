@@ -1,6 +1,7 @@
 from flask import send_from_directory
 
-from emonitor.extensions import db, classes, babel
+from emonitor.sockethandler import SocketHandler
+from emonitor.extensions import db, classes, babel, signal
 from emonitor.utils import Module
 from emonitor.widget.monitorwidget import MonitorWidget
 from .content_admin import getAdminContent, getAdminData
@@ -9,7 +10,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 class MonitorsModule(Module):
     info = {'area': ['admin', 'frontend', 'widget'], 'name': 'monitors', 'path': 'monitors', 'version': '0.1'}
-    
+
     def __repr__(self):
         return "monitors"
     
@@ -30,7 +31,9 @@ class MonitorsModule(Module):
         classes.add('monitor', Monitor)
         classes.add('monitorlayout', MonitorLayout)
         db.create_all()
-        
+
+        signal.connect('monitorserver', 'clientsearchdone', frontendMonitorHandler.handleClientSearch)
+
         # static folders
         @app.route('/monitors/inc/<path:filename>')
         def monitors_static(filename):
@@ -67,3 +70,9 @@ class MonitorsModule(Module):
         
         sleep(10)
         return kwargs
+
+
+class frontendMonitorHandler(SocketHandler):
+    @staticmethod
+    def handleClientSearch(sender, **extra):
+        SocketHandler.send_message(extra)
