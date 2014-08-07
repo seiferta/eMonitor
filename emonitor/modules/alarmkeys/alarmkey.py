@@ -48,7 +48,7 @@ class Alarmkey(db.Model):
 
     @staticmethod
     def getAlarmkeys(id=''):
-        if id != '':
+        if id not in ['', 'None']:
             return db.session.query(classes.get('alarmkey')).filter_by(id=int(id)).first()
         else:
             return db.session.query(classes.get('alarmkey')).order_by('category').all()

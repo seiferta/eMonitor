@@ -33,9 +33,8 @@ def getAdminContent(self, **params):
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savedefault':  # save default aao
-                    
-                alarmkey = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))[0]
-                if not alarmkey:  # add
+                alarmkey = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
+                if not alarmkey or len(alarmkey) == 0:  # add
                     alarmkey = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
                     db.session.add(alarmkey)
 
@@ -56,27 +55,23 @@ def getAdminContent(self, **params):
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savekey':  # save key
-                if request.form.get('keyid') == '':  # add new
+                if request.form.get('keyid') == 'None':  # add new
                     alarmkey = classes.get('alarmkey')('', '', '', '')
                     db.session.add(alarmkey)
                     db.session.commit()
-                    keycars = alarmkey.getCars(request.form.get('deptid'))
-                    db.session.add(keycars)
-                    keycars.kid = alarmkey.id
-                    
+
                 else:  # update existing
                     alarmkey = classes.get('alarmkey').getAlarmkeys(request.form.get('keyid'))
-                    keycars = classes.get('alarmkeycar').getAlarmkeyCars(kid=alarmkey.id, dept=int(request.form.get('deptid')))
-                    
+
                 alarmkey.category = request.form.get('category')
                 alarmkey.key = request.form.get('key')
                 alarmkey.key_internal = request.form.get('keyinternal')
                 alarmkey.remark = request.form.get('remark')
 
                 # add key cars
-                keycars._cars1 = request.form.get('cars1').replace(',', ';')
-                keycars._cars2 = request.form.get('cars2').replace(',', ';')
-                keycars._material = request.form.get('material').replace(',', ';')
+                alarmkey._cars1 = request.form.get('cars1').replace(',', ';')
+                alarmkey._cars2 = request.form.get('cars2').replace(',', ';')
+                alarmkey._material = request.form.get('material').replace(',', ';')
                 db.session.commit()
                 
             elif request.form.get('action').startswith('deletecars_'):  # delete car definition
@@ -86,7 +81,7 @@ def getAdminContent(self, **params):
                     db.session.delete(keycar)
                 
                 # delete key if no definied cars
-                if classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid).count() == 0:
+                if len(classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid)) == 0:
                     key = classes.get('alarmkey').getAlarmkeys(id=_kid)
                     db.session.delete(key)
 
