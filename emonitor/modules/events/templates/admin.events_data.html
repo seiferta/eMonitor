@@ -1,32 +1,71 @@
-<fieldset>
-    <h3>{{ _('event.parameters') }}:</h3>
-    <div style="width:50%;float:left;">
-    {% for var in handler[2] %}
-        {% if var.startswith('in.') %}
-        <p>
-            <label>{{ var[3:] }}:<br/>
-                <input type="hidden" name="edit_parameters" value="{{ var }}"/>
-                <select name="edit_parameters" style="width:99%">
-                    <option value="">{{ _('event.variable.notset') }}</option>
-                    {% for inparameter in inparameters %}
-                    <option value="{{ inparameter[4:] }}" {% if inparameter[4:]==eventhandler.getParameterValue(var) %}selected="selected"{% endif %}>&gt; {{ inparameter[4:] }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-        </p>
-        {% else %}
-        <p>
+<style>
+    .parametercontainer{border:1px solid silver;overflow:hidden;position:relative}
+    .parametercontainer .col1{width:45%;float:left;padding:10px;position:relative}
+    .col1 .arrow{font-size:40px;color:silver;position:absolute;right:2px;top:1px}
+    .centercol{width:10%;position:absolute;background-color:silver;top:0;bottom:0;left:45%}
+    .centercol .icon{text-align: center;padding-top:20%;color:#818181}
+    .col2{padding:10px;float:left;margin-left:10%;position:relative;width:45%}
+    .col2 .arrow{font-size:40px;color:silver;position:absolute;left:2px;top:1px}
+</style>
+
+<fieldset style="padding-bottom:20px">
+    <div class="parametercontainer">
+    <div class="col1">
+        <i class="fa fa-long-arrow-right arrow"></i>
+        <h3>{{ _('event.inparameters') }}:</h3>
+        <small>{{  _('event.inparameters.info') }}</small>
+        {% for var in handler[2] %}
+            {% if var.startswith('in.') %}
+            <hr/>
+            <p>
+                <label>{{ var[3:] }}:
+                    <div style="padding-left:40px">
+                        <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+                        {% for inparameter in inparameters %}
+                        <label><input type="radio" name="check.{{ var }}" value="{{ inparameter[4:] }}"{% if inparameter[4:]==eventhandler.getParameterValue(var) %} checked="checked"{% endif %}/> <em>{{ inparameter[4:] }}</em></label><br/>
+                        {% endfor %}
+                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" style="width:80%"/></label><br/>
+                    </div>
+                </label>
+            </p>
+            {% else %}
             <input type="hidden" name="edit_parameters" value="{{ var }}"/>
             <input type="hidden" name="edit_parameters" value="{{ var[4:] }}" style="width:99%"/>
-        </p>
+            {% endif %}
+        {% endfor %}
+        {% if handler[2]|count==0 %}
+        <p>{{ _('event.noparameters') }}</p>
         {% endif %}
-    {% endfor %}
-    
-    {% if handler[2]|count==0 %}
-    <p>{{ _('event.noparameters') }}</p>
-    {% endif %}
     </div>
-    {% if handler[2]|count %}
-    <div style="float:left;width:40%;padding:20px;">{{ _('event.paraminfo') }}</div>
-    {% endif %}
+    <div class="centercol">
+        <p class="icon"><i class="fa fa-cogs" style="font-size:40px"></i></p>
+    </div>
+    <div class="col2">
+        <i class="fa fa-long-arrow-right arrow"></i>
+        <h3>{{ _('event.outparameters') }}:</h3>
+        <small>{{  _('event.outparameters.info') }}</small>
+        {% for var in handler[2] %}
+            {% if var.startswith('out.') %}
+            <hr/>
+            <p>
+                <label>{{ var[4:] }}:
+                    <div style="padding-left:40px">
+                        <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+                        {% for outparameter in eventhandler.getParameterList() %}
+                        <label><input type="radio" name="check.{{ var }}" value="{{ outparameter[4:] }}"{% if outparameter[4:]==eventhandler.getParameterValue(var) %} checked="checked"{% endif %}/> <em>{{ outparameter[4:] }}</em></label><br/>
+                        {% endfor %}
+                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" style="width:80%"/></label><br/>
+                    </div>
+                </label>
+            </p>
+            {% else %}
+            <input type="hidden" name="edit_parameters" value="{{ var }}"/>
+            <input type="hidden" name="edit_parameters" value="{{ var[4:] }}" style="width:99%"/>
+            {% endif %}
+        {% endfor %}
+        {% if handler[2]|count==0 %}
+        <p>{{ _('event.noparameters') }}</p>
+        {% endif %}
+    </div>
+    </div>
 </fieldset>

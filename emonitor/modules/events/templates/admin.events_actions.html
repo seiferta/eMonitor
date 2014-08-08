@@ -6,7 +6,7 @@
     <form method="post" action="" name="editeventhandler">
         <p>
             {{ _('event.event') }}:<br/>
-            <span style="font-size:12px;margin-top:3px;">trigger.{{ handler.event }}</span>
+            <span style="font-size:12px;margin-top:3px;border:1px solid black;padding:1px 2px">{{ _('trigger.'+handler.event) }}</span>
             <input type="hidden" name="edit_event" id="edit_event" value="{{ handler.event }}" style="width:99%;"/>
         </p>
         <p>

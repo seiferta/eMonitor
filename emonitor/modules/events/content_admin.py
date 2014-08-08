@@ -10,7 +10,6 @@ def getAdminContent(self, **params):
         
     else:
         if request.method == 'POST':
-            
             if request.form.get('action').startswith('edithandler_'):  # edit handler
                 handler = classes.get('eventhandler').getEventhandlers(id=int(request.form.get('action').split('_')[-1]))  # handler defined in db
                 handlers = events.getEvents(name=handler.event).getHandlerList()  # all possible handlers for given event
@@ -23,7 +22,7 @@ def getAdminContent(self, **params):
                 params.update({'handler': handler, 'handlers': handlers})
                 return render_template('admin.events_actions.html', **params)
 
-            elif request.form.get('action' )== 'updateeventhandler':  # save handler
+            elif request.form.get('action') == 'updateeventhandler':  # save handler
                 if request.form.get('handler_id') != 'None':  # update
                     hdl = classes.get('eventhandler').getEventhandlers(id=request.form.get('handler_id'))
                     hdl.position = request.form.get('edit_position')
@@ -36,16 +35,20 @@ def getAdminContent(self, **params):
                     
                 hdl.handler = request.form.get('edit_handler')
                 hdl.parameters = ''
-                i = 0
-                for p in request.form.getlist('edit_parameters'):
-                    hdl.parameters += p
-                    i += 1
-                    if i % 2 == 0:
-                        hdl.parameters += '\r\n'
-                    else:
-                        hdl.parameters += '='
+                for k in request.form.keys():
+                    if k.startswith('check.in'):  # in parameters
+                        if request.form.get(k) == "alternative":  # use alternative text field
+                            hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get('in.' + k[9:]))
+                        else:
+                            hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get(k))  # use checkbox
+
+                    elif k.startswith('check.out'):  # out parameters
+                        if request.form.get(k) == "alternative":  # use alternative text field
+                            hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get('out.' + k[10:]))
+                        else:
+                            hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get(k))  # use checkbox
                 db.session.commit()
-                
+
             elif request.form.get('action').startswith('deletehandler_'):  # delete handler
                 handler = classes.get('eventhandler').getEventhandlers(id=int(request.form.get('action').split('_')[-1]))
                 db.session.delete(handler)
@@ -62,7 +65,7 @@ def getAdminContent(self, **params):
         return render_template('admin.events.html', **params)
 
     
-def getAdminData(self, params={}):
+def getAdminData(self, **params):
     
     if request.args.get('action') == 'getparams':  # event handler parameter sub form
         event = events.getEvents(name=request.args.get('event'))
@@ -70,7 +73,7 @@ def getAdminData(self, params={}):
             handler = [hdl for hdl in event.getHandlerList() if hdl[0] == request.args.get('handler')][0]  # defined
         else:
             return "- error, no handler given -"
-        
+
         if request.args.get('id') != 'None':
             eventhandler = classes.get('eventhandler').getEventhandlers(request.args.get('id'))  # db
         else:

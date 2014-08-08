@@ -26,5 +26,5 @@ class EventsModule(Module):
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
             
-    def getAdminData(self, params={}):
-        return getAdminData(self, params)
+    def getAdminData(self, **params):
+        return getAdminData(self, **params)

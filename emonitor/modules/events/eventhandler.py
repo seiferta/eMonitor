@@ -35,14 +35,14 @@ class Eventhandler(db.Model):
         elif self.position == '':
             if len(event.getHandlers()) > 0:
                 hdl = event.getHandlers()[-1]
-                return hdl.getParameterList()
+                return hdl.getParameterList() + event.parameters  # add event parameters
             else:
                 return []
         else:
             for hdl in event.getHandlers():
                 if hdl.position == self.position - 1:
                     #return [param.split('=')[0] for param in hdl.parameters.split('\r\n') if param.startswith('out.')]
-                    return hdl.getParameterList()
+                    return hdl.getParameterList() + event.parameters  # add event parameters
 
     @staticmethod
     def getEventhandlers(id="", event=""):
