@@ -18,7 +18,8 @@
     <form method="post" action="" style="padding-bottom:20px;">
         <div class="headrow">
             <div style="margin-right:70px;margin-left:15px;">
-                <div class="headcell" style="width:20%;">{{ _('printers.name') }}</div>
+                <div class="headcell" style="width:5%;">{{ _('printers.id') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('printers.name') }}</div>
                 <div class="headcell" style="width:15%;">{{ _('printers.module') }}</div>
                 <div class="headcell" style="width:25%;">{{ _('printers.layout') }}</div>
                 <div class="headcell" style="width:30%;">{{ _('printers.printer') }}</div>
@@ -36,7 +37,8 @@
             {% for printer in printers %}
             <div class="row">
                 <div style="margin-right:70px;margin-left:15px;">
-                    <div class="rowcell" style="width:20%;">{{ printer.name }}</div>
+                    <div class="rowcell" style="width:5%;">{{ printer.id }}</div>
+                    <div class="rowcell" style="width:15%;">{{ printer.name }}</div>
                     <div class="rowcell" style="width:15%;">{{ printer.module }}</div>
                     <div class="rowcell" style="width:25%;">{{ _('template.'+printer.layout[6:-5]) }}</div>
                     <div class="rowcell" style="width:30%;">{{ printer.printer }}</div>

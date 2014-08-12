@@ -1,11 +1,8 @@
 import os
-import urllib2
-import flask.ext.babel as b
-from flask import request, render_template, current_app
+from flask import request, render_template, current_app, redirect
 from emonitor.modules.settings.settings import Settings
 
 from emonitor.extensions import classes, db
-import settings_utils
 
 OBSERVERACTIVE = 1
 
@@ -15,7 +12,7 @@ def getAdminContent(self, **params):
 
     def chunks(l, n):
         return [l[i:i + n] for i in range(0, len(l), n)]
-    
+
     if len(module) == 2:
         if module[1] == 'department':  # department submodule
             if request.method == 'POST':
@@ -99,9 +96,10 @@ def getAdminContent(self, **params):
 
         params.update({'paths': paths, 'observerstate': OBSERVERACTIVE, 'alarmsettings': classes.get('settings').get('alarms.autoclose'), 'archivesettings': classes.get('settings').get('alarms.autoarchive'), 'alarmsevalfields': classes.get('settings').get('alarms.evalfields')})
         return render_template('admin.settings.html', **params)
+    return redirect("/admin/settings", code=302)
 
 
-def getAdminData(self, params={}):
+def getAdminData(self, **params):
     if request.args.get('action') == 'checkpath':
         if os.path.exists(request.args.get('path')):
             return '1'
