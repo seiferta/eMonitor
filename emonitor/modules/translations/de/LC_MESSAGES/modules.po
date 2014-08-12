@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-12 22:32+0200\n"
-"PO-Revision-Date: 2014-08-12 22:33+0100\n"
+"POT-Creation-Date: 2014-08-13 00:20+0200\n"
+"PO-Revision-Date: 2014-08-13 00:21+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -979,9 +979,8 @@ msgid "alarms.archivequestion"
 msgstr "Soll die Einsätze wirklich archiviert werden?"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:222
-#, fuzzy
 msgid "alarms.deletequestion"
-msgstr "Soll die gewählte Ausrückeordnung wirklich gelöscht werden?"
+msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
 
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:59
 #: emonitor/modules/printers/__init__.py:40
@@ -1131,6 +1130,10 @@ msgstr "- nicht definiert -"
 #: emonitor/modules/events/templates/admin.events.html:64
 msgid "events.updateorder"
 msgstr "Reihenfolge speichern"
+
+#: emonitor/modules/events/templates/admin.events.html:73
+msgid "events.delete"
+msgstr "Soll der gewählte Handler des Events wirklich gelöscht werden?"
 
 #: emonitor/modules/events/templates/admin.events_actions.html:4
 msgid "event.edittitle"

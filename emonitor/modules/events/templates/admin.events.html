@@ -70,7 +70,7 @@
 {% block script_end %}
     {{ super() }}
     function questionDel(){
-        return confirm(_('events.delete'));
+        return confirm('{{ _('events.delete') }}');
     }
     $(function() {$('div[id^="sortable_"]').sortable({update: function(event, ui){$('#orderchange').show()}});});
     

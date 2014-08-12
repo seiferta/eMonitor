@@ -2,7 +2,7 @@ import os
 import yaml
 import random
 import subprocess
-from flask import current_app
+import time
 from sqlalchemy import and_
 from emonitor.extensions import db, classes
 from emonitor.utils import Module
@@ -68,15 +68,42 @@ class Printers(db.Model):
 
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        stime = time.time()
         _printer = None
+
+        #handlers = events.getEvents('file_added').getHandlerList()
+        #dbhandlers = classes.get('eventhandler').getEventhandlers(event='file_added')
+        #for handler in dbhandlers:  # db
+        #    for hdl in handlers:
+        #        if handler.handler == hdl[0]:
+
+        print "eventname", eventname
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.printers.printers.Printers'][0]
         if hdl:
+            print ">>>", hdl.__dict__
             for p in hdl.getParameterValues('in'):
+                print p[0]
                 if p[0] == 'in.printerid':
                     _printer = Printers.getPrinters(p[1])
                     break
+        state = ""
         if _printer:
-            _printer.doPrint(alarmid=kwargs[0]['id'])
+            print "_printer found"
+            try:
+                if kwargs[0]['mode'] != 'test':
+                    _printer.doPrint(alarmid=kwargs[0]['id'])
+                else:
+                    state = "(testmode) "
+            except KeyError:
+                state = "with errors "
+        else:
+            print "_printer not found"
+
+        if not 'time' in kwargs[0]:
+            kwargs[0]['time'] = []
+        kwargs[0]['time'].append('printer: print done %sin %s sec.' % (state, time.time() - stime))
+
+        return kwargs
 
     @staticmethod
     def getPrinters(pid=0):
