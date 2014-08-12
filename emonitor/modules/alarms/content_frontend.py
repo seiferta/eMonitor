@@ -1,7 +1,6 @@
 import datetime
 from operator import attrgetter
-from flask import render_template, request, flash, render_template_string
-import flask.ext.babel as b
+from flask import render_template, request, flash, render_template_string, jsonify
 from emonitor.extensions import classes, monitorserver, scheduler, db, signal
 
 
@@ -117,7 +116,7 @@ def getFrontendContent(**params):
     return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'))
 
     
-def getFrontendData(self, params={}):
+def getFrontendData(self, *params):
     if request.args.get('action') == 'editalarm':
         
         if request.args.get('alarmid', '0') == '0':  # add new alarm
@@ -140,6 +139,16 @@ def getFrontendData(self, params={}):
         #print "print alarm", request.args.get('alarmid'), request.args.get('printerdef')
         classes.get('printer').getPrinters(pid=int(request.args.get('printerdef'))).doPrint(alarmid=request.args.get('alarmid'))
         return ""
+
+    elif request.args.get('action') == 'routeinfo':
+        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
+        data = alarm.getRouting()
+        return render_template('frontend.alarms_routing.html', routing=data)
+
+    elif request.args.get('action') == 'routecoords':
+        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
+        data = alarm.getRouting()
+        return jsonify(data)
 
     elif request.args.get('action') == 'message':
         return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))

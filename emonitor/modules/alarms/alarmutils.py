@@ -1,4 +1,6 @@
+import xml.etree.ElementTree as ET
 import datetime, time
+import requests
 from sqlalchemy import inspect
 from emonitor.extensions import classes, events, signal
 
@@ -143,6 +145,47 @@ class AlarmFaxChecker:
 
     def buildAlarmFromText(self, alarmtype, rawtext):
         return dict()
+
+
+def getAlarmRoute(alarm):
+    """
+    get routing from webservice, points and description
+    """
+    params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'tv': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': 'de'}
+    r = requests.get(alarm.ROUTEURL, params=params)
+    tree = ET.fromstring(r.content)
+    data = {}
+
+    def getText(items, elementname):
+        for el in items:
+            elname = el.tag[el.tag.find('}') + 1:]
+            if elname == elementname:
+                return el.text
+
+    def getElements(items, elementname):
+        for el in items:
+            elname = el.tag[el.tag.find('}') + 1:]
+            if elname == elementname:
+                return el
+
+    elements = getElements(tree, 'Document')
+
+    data['distance'] = float(getText(elements, 'distance'))
+    data['traveltime'] = int(getText(elements, 'traveltime'))
+    data['description'] = getText(elements, 'description')
+
+    if data['description'].startswith('Geradeaus fahren.<br>\n'):
+        data['description'] = data['description'][22:]
+    data['description'] = data['description'].replace('\nAuf fini weiterfahren.<br>\n', '')
+
+    f = getElements(getElements(elements, 'Folder'), 'Placemark')
+    f = getElements(f, 'LineString')
+    #data['coordinates'] = getText(f, 'coordinates').split('\n')
+    data['coordinates'] = []
+    for c in getText(f, 'coordinates').split('\n'):
+        if c.strip() != '':
+            data['coordinates'].append((float(c.split(',')[0]), float(c.split(',')[1])))
+    return data
 
 
 def processFile(incomepath, filename):

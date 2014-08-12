@@ -4,8 +4,9 @@ import datetime
 import shutil
 import requests
 import re
+import yaml
 
-from flask import current_app, flash, render_template, abort, request
+from flask import current_app, flash, render_template, abort
 from emonitor.extensions import babel, db, classes, events, monitorserver, scheduler, signal
 from sqlalchemy.orm.collections import attribute_mapped_collection
 import emonitor.modules.alarms.alarmutils as alarmutils
@@ -22,6 +23,7 @@ class Alarm(db.Model):
 
     ALARMSTATES = {'0': 'created', '1': 'active', '2': 'done'}  # 3:archived (not in list)
     ALARMTYPES = {'1': 'fax', '2': 'manual'}
+    ROUTEURL = "http://www.yournavigation.org/api/1.0/gosmore.php"
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DATETIME)
@@ -102,6 +104,12 @@ class Alarm(db.Model):
     def changeStates(state):
         for alarm in classes.get('alarm').getAlarms(0):
             Alarm.changeState(alarm.id, state)
+
+    def getRouting(self):
+        if self.get('routing', '') == "":  # load from webservice if not stored
+            self.set('routing', yaml.safe_dump(alarmutils.getAlarmRoute(self), encoding="UTF-8"))
+            db.session.commit()
+        return yaml.load(self.get('routing'))
 
     @staticmethod
     def changeState(id, state):

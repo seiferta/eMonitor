@@ -23,10 +23,11 @@ L.EmonitorMarkers = L.Class.extend({
 
         this._housenumbers = new L.LayerGroup();
         this._alarmmarkers = new L.LayerGroup();
+        this._alarmroute = new L.LayerGroup();
     },
 
     addTo: function (map) {
-        if(this.debug == true) console.log('add-Housenumber-layer');
+        if(this.debug == true) console.log('add new layers for marker, housenumber and route');
         this._map = map;
         this._map.emonitormarkersoptions = this.options;
 
@@ -40,6 +41,12 @@ L.EmonitorMarkers = L.Class.extend({
             this._map.clearLayers(this._housenumbers);
         }else{
             var markers_hn = this._housenumbers.addTo(this._map);
+        }
+
+        if (this._map.hasLayer(this._alarmroute)){
+            this._map.clearLayers(this._alarmroute);
+        }else{
+            var markers_route = this._alarmroute.addTo(this._map);
         }
 
         map.emomitoroptions = this.options;
@@ -77,6 +84,18 @@ L.EmonitorMarkers = L.Class.extend({
         map.clearHouseNumbers=function(){
             //if(this.emonitormarkeroptions.debug == true) console.log('clearNumbers');
             markers_hn.clearLayers();
+        };
+
+        map.clearRoute=function(){
+            markers_route.clearLayers();
+        };
+
+        map.addRoute=function(data){
+            var linePoints = [];
+            $.each(data.coordinates, function(index){
+                linePoints.push(new L.LatLng(data.coordinates[index][1], data.coordinates[index][0]));
+            });
+            markers_route.addLayer(new L.Polyline(linePoints, {color: 'blue', weight: map.getZoom()/2, opacity:0.5, smoothFactor:1}));
         };
 
         return this;

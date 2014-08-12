@@ -1,0 +1,16 @@
+
+<style>
+    #overlaycontent{padding:10px!important;}
+    #overlaycontent p{font-weight:bold}
+    #overlaycontent, #routing.p{line-height:20px;padding:10px;}
+</style>
+
+<p>Anfahrt:</p>
+<div id="routing" style="height:320px;overflow:auto;border:1px solid silver;padding:10px;">{{ routing.description|safe }}</div>
+
+<div style="float:left;width:50%;">
+    <b>Entfernung:</b> {{ routing.distance|float|round(2) }} km
+</div>
+<div style="float:left;width:50%">
+    <b>geschätzte Dauer:</b> {{ (routing.traveltime|float/60.0)|round(2) }} Minuten
+</div>

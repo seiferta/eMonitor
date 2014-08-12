@@ -9,6 +9,7 @@
         h3:hover{background-color:silver!important}
         .alarmrow {position:relative;clear:left;padding:4px 2px 0 15px;border-bottom:1px solid silver;background-color:#fff;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
         .alarmrow a{color:#818181;}
+        .alarmrow.selected{background-color: #dedede!important}
         .alarmrow a:hover{color:#b40431;}
         .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0;}
         .btn:hover {color:#428bca;}
@@ -26,6 +27,8 @@
         .addalarm {position:absolute;right:5px;top:5px;}
         .maphidden {visibility:hidden!important;}
         .dropdown button {background-color:transparent;cursor:pointer;padding:1px;margin:0;border-width:0;}
+        .showroute{background-color:red;}
+        .showroute:hover{background-color:red!important;}
     </style>
 {% endblock %}
 
@@ -132,6 +135,9 @@
                                 {% endif %}
                                 <li><a href="#" onclick="return questionDelete({{ alarm.id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
                                 <li class="divider"></li>
+                                <li><a href="#" onclick="return routeAlarm({{ alarm.id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
+                                <li><a href="#" onclick="return showRoute({{ alarm.id }})"><i class="fa fa-fw" id="route_{{ alarm.id }}"></i> {{ _('alarm.route') }}</a></li>
+                                <li class="divider"></li>
                                 {% for printdef in printdefs %}
                                 <li><a href="#" id="printalarm" alarmid="{{ alarm.id }}" onclick="return printAlarm({{ alarm.id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
                                 {% endfor %}
@@ -233,10 +239,7 @@
                     return false;
                 }
 
-
                 function printAlarm(id, printerdefid){
-                    //console.log('print alarm id '+id+' printerdefid: '+printerdefid);
-
                     $.ajax({ type : "POST", url : "/data/alarms?action=printalarm&alarmid="+id+"&printerdef="+printerdefid,
                         success: function(ret) {
                             $('.options').find('.dropdown-menu').stop(true, true).hide();
@@ -246,8 +249,37 @@
                     return false;
                 }
 
+                function routeAlarm(id){
+                    $.ajax({ type : "POST", url : "/data/alarms?action=routeinfo&alarmid="+id,
+                        success: function(ret) {
+                            parent.$('#overlaycontent').html(ret);
+                            parent.$('.overlay').toggle();
+                            return false;
+                        }
+                    });
+                    return false;
+                }
+
+                function showRoute(id){
+                    $('#route_'+id).toggleClass('fa-random');
+                    parent.maps.map.clearRoute();
+
+                    if($('#route_'+id).hasClass('fa-random')) {
+                        $.ajax({ type: "POST", url: "/data/alarms?action=routecoords&alarmid=" + id,
+                            success: function (ret) {
+                                parent.maps.map.addRoute(ret);
+                                return false;
+                            }
+                        });
+                    }
+                    return false;
+                }
+
                 function mapPanTo(obj){
                     parent.maps.map.clearMarkers();
+
+                    $('.alarmrow').removeClass('selected');
+                    $(obj).addClass('selected');
 
                     if ($(obj).attr('lat')!="") {
                         var m = parent.maps.map.addMarker($(obj).attr('lat'), $(obj).attr('lng'), $(obj).attr('priority'), false);
@@ -270,8 +302,10 @@
 
                 function showMappoints(state) {
                     if (typeof parent.maps.map != "undefined") {
+                        $('.alarmrow').removeClass('selected');
                         parent.maps.map.clearMarkers();
                         parent.maps.map.clearHouseNumbers();
+                        parent.maps.map.clearRoute();
 
                         $('#alarmstate_' + state).children().each(function (i) {
                             if ($(this).attr('lat')!="") {
