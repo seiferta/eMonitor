@@ -14,8 +14,8 @@ class StartModule(Module):
     """
         startpage for admin area
     """
-    info = dict(area=['admin', 'frontend'], name='startpages', path='', version='0.1')
-    
+    info = dict(area=['admin', 'frontend'], name='startpages', path='default', version='0.1')
+
     def __repr__(self):
         return "startpages"
 
@@ -46,9 +46,9 @@ class StartModule(Module):
                 current_app.logger.error("module %s not found for frontend area %s" % (defaultarea[params['area']]['module'], params['area']))
                 return ""
 
-        return ""
+        return render_template('frontend.default.html')
 
-    def getFrontendData(self, params={}):
+    def getFrontendData(self, *params):
         return ""
 
 

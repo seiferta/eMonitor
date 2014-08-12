@@ -7,7 +7,7 @@ from emonitor.modules.settings import settings_utils
 
 class SettingsModule(Module):
     info = {'area': ['admin'], 'name': 'settings', 'path': 'settings', 'version': '0.1'}
-    
+
     def __repr__(self):
         return "settings"
 
@@ -42,6 +42,16 @@ class SettingsModule(Module):
         babel.gettext(u'settings.pathtype.pathtmp')
         babel.gettext(u'settings.pathtype.pathdata')
         babel.gettext(u'settings.pathtype.pathincome')
+
+        # add default values
+        if db.session.query(Settings).count() == 0:  # add default values
+            db.session.add(Settings.set('defaultZoom', 15))
+            db.session.add(Settings.set('startLat', ''))
+            db.session.add(Settings.set('startLng', ''))
+            db.session.add(Settings.set('homeLat', ''))
+            db.session.add(Settings.set('homeLng', ''))
+            db.session.add(Settings.set('alarms.evalfields', '_bab_\r\n_train_\r\n_street_\r\n_default_city_\r\n_interchange_\r\n_kilometer_\r\n_bma_\r\n_bma_main_\r\n_bma_key_\r\n_train_identifier_'))
+            db.session.commit()
 
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)

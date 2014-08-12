@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-12 14:31+0200\n"
+"POT-Creation-Date: 2014-08-12 22:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -845,102 +845,102 @@ msgstr ""
 msgid "alarms.messagetext"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:46
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:129
 msgid "layout.resize"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:48
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:130
 msgid "layout.open"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:48
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:49
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:131
 msgid "layout.closed"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:68
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:69
 msgid "alarm.addedalert"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:78
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:79
 msgid "alarms.addtitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:79
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:80
 msgid "alarms.autorefresh"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:80
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:81
 msgid "alarms.archivetitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:110
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:111
 msgid "alarms.showfax"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:111
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:112
 msgid "alarms.messagestitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:112
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:113
 msgid "alarms.typeautomatic"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:113
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:114
 msgid "alarms.typemanual"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:115
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:116
 msgid "alarms.titlemap"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:125
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:126
 msgid "alarm.edit"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:127
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:128
 msgid "alarm.finish"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:130
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:131
 msgid "alarm.activate"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:133
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:134
 msgid "alarm.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:135
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
 msgid "alarm.delete"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
-msgid "alarm.print"
-msgstr ""
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:140
 msgid "alarm.route.info"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:141
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:139
 msgid "alarm.route"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:184
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:142
+msgid "alarm.print"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:186
 msgid "alarms.finishquestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:196
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:198
 msgid "alarms.activatequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:208
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:210
 msgid "alarms.archivequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:220
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:222
 msgid "alarms.deletequestion"
 msgstr ""
 
@@ -1504,6 +1504,10 @@ msgstr ""
 #: emonitor/modules/maps/templates/admin.map_actions.html:86
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:75
 msgid "settings.map.loadtiles"
+msgstr ""
+
+#: emonitor/modules/maps/templates/frontend.map.html:87
+msgid "maps.nodefaultposition"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:43

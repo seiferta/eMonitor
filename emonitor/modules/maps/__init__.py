@@ -33,13 +33,18 @@ class MapsModule(Module):
         babel.gettext(u'module.maps')
         babel.gettext(u'maps_map')
 
+        # add default values
+        if db.session.query(Map).count() == 0:  # add default map
+            db.session.add(Map('Bing (online)', '', maptype=2, tileserver="//ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236", default=1))
+            db.session.commit()
+
     def frontendContent(self):
         return 1
 
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 
-    def getAdminData(self, params={}):
+    def getAdminData(self, **params):
         return getAdminData(self, **params)
 
     def getFrontendContent(self, **params):

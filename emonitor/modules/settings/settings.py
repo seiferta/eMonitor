@@ -34,9 +34,9 @@ class Settings(db.Model):
 
     @staticmethod
     def getCarTypes():
-        val = db.session.query(Settings).filter_by(name='cartypes').first().value
+        val = db.session.query(Settings).filter_by(name='cartypes').first()
         if val:
-            return val
+            return val.value
         return []
 
     @staticmethod
@@ -62,7 +62,7 @@ class Settings(db.Model):
                 return s.first().value
             elif area in s.first().value.keys():
                 return s.first().value[area]
-        return {'module': 'default', 'width': '.2', 'visible': '0', 'west': {'width': 0.2}, 'east': {'width': 0.2}}
+        return {'module': 'default', 'width': '.2', 'visible': '0', 'center': {'module': 'default'}, 'west': {'module': 'default', 'width': '.2'}, 'east': {'module': 'default', 'width': '.2'}}
 
     @staticmethod
     def get(option, default=''):  # getter for settings
@@ -77,5 +77,7 @@ class Settings(db.Model):
         if s:  # update settings
             s.value = val
         else:  # add value
-            db.session.add(Settings(option, yaml.dump(val)))
+            s = Settings(option, yaml.dump(val))
+            db.session.add(s)
         db.session.commit()
+        return s

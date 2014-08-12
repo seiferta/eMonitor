@@ -84,5 +84,5 @@
 {% endblock %}
 
 {% block content %}
-    <div id="map" style="height:100%;width:100%;"></div>
+    <div id="map" style="height:100%;width:100%;">{%- if defaultlat=='' %}<p style="padding-top:300px;text-align:center">{{ _('maps.nodefaultposition') }}</p>{% endif -%}</div>
 {% endblock %}

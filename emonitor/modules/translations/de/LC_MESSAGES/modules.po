@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-12 14:31+0200\n"
-"PO-Revision-Date: 2014-08-12 14:32+0100\n"
+"POT-Creation-Date: 2014-08-12 22:32+0200\n"
+"PO-Revision-Date: 2014-08-12 22:33+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -883,102 +883,102 @@ msgstr "Meldungstyp"
 msgid "alarms.messagetext"
 msgstr "Text"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:46
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:129
 msgid "layout.resize"
 msgstr "Größe ändern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:48
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:130
 msgid "layout.open"
 msgstr "Öffnen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:48
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:49
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:131
 msgid "layout.closed"
 msgstr "Schließen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:68
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:69
 msgid "alarm.addedalert"
 msgstr "Alarmeingang: Ein neuer Einsatz wurde angelegt oder aktiviert!"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:78
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:79
 msgid "alarms.addtitle"
 msgstr "Einsatz erstellen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:79
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:80
 msgid "alarms.autorefresh"
 msgstr "Einsätze automatisch aktualisieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:80
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:81
 msgid "alarms.archivetitle"
 msgstr "Abgeschlossene Einsätze archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:110
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:111
 msgid "alarms.showfax"
 msgstr "Alarmfax anzeigen (pdf)"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:111
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:112
 msgid "alarms.messagestitle"
 msgstr "%(number)s Meldungen vorhanden"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:112
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:113
 msgid "alarms.typeautomatic"
 msgstr "Einsatz aus Fax erzeugt"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:113
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:114
 msgid "alarms.typemanual"
 msgstr "Einsatz manuell erzeugt"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:115
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:116
 msgid "alarms.titlemap"
 msgstr "Kartenposition gesetzt"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:125
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:126
 msgid "alarm.edit"
 msgstr "bearbeiten"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:127
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:128
 msgid "alarm.finish"
 msgstr "abschließen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:130
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:131
 msgid "alarm.activate"
 msgstr "aktivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:133
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:134
 msgid "alarm.archive"
 msgstr "archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:135
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
 msgid "alarm.delete"
 msgstr "löschen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
-msgid "alarm.print"
-msgstr "Drucken..."
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:140
 msgid "alarm.route.info"
 msgstr "Anfahrt-Information"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:141
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:139
 msgid "alarm.route"
 msgstr "Route anzeigen/ausblenden"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:184
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:142
+msgid "alarm.print"
+msgstr "Drucken..."
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:186
 msgid "alarms.finishquestion"
 msgstr "Soll die gewählte Einsatz abgeschlossen werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:196
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:198
 msgid "alarms.activatequestion"
 msgstr "Soll die gewählte Einsatz aktiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:208
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:210
 msgid "alarms.archivequestion"
 msgstr "Soll die Einsätze wirklich archiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:220
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:222
 #, fuzzy
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Ausrückeordnung wirklich gelöscht werden?"
@@ -1584,6 +1584,12 @@ msgstr "Aktualisierung läuft"
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:75
 msgid "settings.map.loadtiles"
 msgstr "Kartenteile laden"
+
+#: emonitor/modules/maps/templates/frontend.map.html:87
+msgid "maps.nodefaultposition"
+msgstr ""
+"Es wurde noch keine Standardposition für die Kartendarstellung gespeichert, "
+"das kann im Administrationsbereich unter 'Straßenkarte' eingestellt werden."
 
 #: emonitor/modules/monitors/__init__.py:43
 msgid "module.monitors"
