@@ -42,10 +42,14 @@ def getAdminContent(self, **params):
                 _map.value = [request.form.getlist('mapids').index(_id), _map.name, _map.path]
             db.session.commit()
 
-        elif request.form.get('action') == 'saveposition':  # safe default map position
+        elif request.form.get('action') == 'saveposition':  # safe default map position and home position
             classes.get('settings').set('defaultLat', request.form.get('default_lat', ''))
             classes.get('settings').set('defaultLng', request.form.get('default_lng', ''))
             classes.get('settings').set('defaultZoom', request.form.get('default_zoom', ''))
+
+            classes.get('settings').set('homeLat', request.form.get('home_lat', ''))
+            classes.get('settings').set('homeLng', request.form.get('home_lng', ''))
+
             db.session.commit()
 
     params.update({'maps': classes.get('map').getMaps(), 'settings': classes.get('settings')})
