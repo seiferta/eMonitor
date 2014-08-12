@@ -193,7 +193,7 @@ def processFile(incomepath, filename):
     run processing in test mode
     """
     params = dict(dict(incomepath=incomepath, filename=filename, mode='test'))
-    handlers = events.getEvents('file_added').handlers
+    handlers = events.getEvents('file_added').getHandlerList()
     dbhandlers = classes.get('eventhandler').getEventhandlers(event='file_added')
     for handler in dbhandlers:  # db
         for hdl in handlers:
