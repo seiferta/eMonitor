@@ -12,7 +12,7 @@
 <div style="padding:20px;">
     <h4>{{ _('monitor.ping.header') }}</h4>
     {% for id in clients.keys() %}
-    <div style="position:relative;width:270px;float:left;text-align:center;">
+    <div style="position:relative;width:270px;float:left;">
         {% if clients[id][0] and clients[id][1] %}
         <div class="client" onclick="getDetails({{ id }})">
             <div class="client_id">{{ id }}</div>
