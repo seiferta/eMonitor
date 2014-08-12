@@ -24,14 +24,24 @@
                         {% for inparameter in inparameters %}
                         <label><input type="radio" name="check.{{ var }}" value="{{ inparameter[4:] }}"{% if inparameter[4:]==eventhandler.getParameterValue(var) %} checked="checked"{% endif %}/> <em>{{ inparameter[4:] }}</em></label><br/>
                         {% endfor %}
-                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" style="width:80%"/></label><br/>
+                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" value="{{ eventhandler.getParameterValue(var) }}" style="width:80%"/></label><br/>
                     </div>
                 </label>
             </p>
+            <script>
+              var v = $('input:radio[name="check.{{ var }}"]:checked').val();
+                if (v!=undefined){
+                    $('input:text[name="{{ var }}"]').val('');
+                }else{
+                    $('input:radio[name="check.{{ var }}"]:last').attr("checked","checked");
+                }
+            </script>
+
             {% else %}
             <input type="hidden" name="edit_parameters" value="{{ var }}"/>
             <input type="hidden" name="edit_parameters" value="{{ var[4:] }}" style="width:99%"/>
             {% endif %}
+
         {% endfor %}
         {% if handler[2]|count==0 %}
         <p>{{ _('event.noparameters') }}</p>
@@ -54,13 +64,22 @@
                         {% for outparameter in eventhandler.getParameterList() %}
                         <label><input type="radio" name="check.{{ var }}" value="{{ outparameter[4:] }}"{% if outparameter[4:]==eventhandler.getParameterValue(var) %} checked="checked"{% endif %}/> <em>{{ outparameter[4:] }}</em></label><br/>
                         {% endfor %}
-                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" style="width:80%"/></label><br/>
+                        <label><input type="radio" name="check.{{ var }}" value="alternative"/> <input type="text" name="{{ var }}" value="{{ eventhandler.getParameterValue(var) }}" style="width:80%"/></label><br/>
                     </div>
                 </label>
             </p>
+            <script>
+               var v = $('input:radio[name="check.{{ var }}"]:checked').val();
+                if (v!=undefined){
+                    $('input:text[name="{{ var }}"]').val('');
+                }else{
+                    $('input:radio[name="check.{{ var }}"]').val('alternative');
+                }
+            </script>
             {% else %}
             <input type="hidden" name="edit_parameters" value="{{ var }}"/>
             <input type="hidden" name="edit_parameters" value="{{ var[4:] }}" style="width:99%"/>
+
             {% endif %}
         {% endfor %}
         {% if handler[2]|count==0 %}
@@ -68,4 +87,5 @@
         {% endif %}
     </div>
     </div>
+
 </fieldset>

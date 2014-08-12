@@ -36,13 +36,13 @@ def getAdminContent(self, **params):
                 hdl.handler = request.form.get('edit_handler')
                 hdl.parameters = ''
                 for k in request.form.keys():
-                    if k.startswith('check.in'):  # in parameters
+                    if k.startswith('incheck'):  # in parameters
                         if request.form.get(k) == "alternative":  # use alternative text field
                             hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get('in.' + k[9:]))
                         else:
                             hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get(k))  # use checkbox
 
-                    elif k.startswith('check.out'):  # out parameters
+                    elif k.startswith('outcheck'):  # out parameters
                         if request.form.get(k) == "alternative":  # use alternative text field
                             hdl.parameters += '%s=%s\r\n' % (k[6:], request.form.get('out.' + k[10:]))
                         else:

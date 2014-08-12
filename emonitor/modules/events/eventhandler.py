@@ -22,11 +22,11 @@ class Eventhandler(db.Model):
                 return p.split('=')[-1]
         return ""
         
-    def getParameterList(self, type='out'):
-        return [param.split('=')[0] for param in self.parameters.split('\r\n') if param.startswith(type + '.')]
+    def getParameterList(self, t='out'):
+        return [param.split('=')[0] for param in self.parameters.split('\r\n') if param.startswith(t + '.')]
         
-    def getParameterValues(self, type='out'):
-        return [param.split('=') for param in self.parameters.split('\r\n') if param.startswith(type + '.')]
+    def getParameterValues(self, t='out'):
+        return [param.split('=') for param in self.parameters.split('\r\n') if param.startswith(t + '.')]
         
     def getInParameters(self):
         event = events.getEvents(self.event)
@@ -43,6 +43,11 @@ class Eventhandler(db.Model):
                 if hdl.position == self.position - 1:
                     #return [param.split('=')[0] for param in hdl.parameters.split('\r\n') if param.startswith('out.')]
                     return hdl.getParameterList() + event.parameters  # add event parameters
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {'id': self.id, 'event': self.event, 'handler': self.handler, 'position': self.position, 'parameters': self.parameters}
 
     @staticmethod
     def getEventhandlers(id="", event=""):
