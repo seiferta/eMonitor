@@ -28,25 +28,25 @@
     cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
     mml = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 10, maxZoom: 14});
     map.setView(new L.LatLng({{ alarm.get('lat') }}, {{ alarm.get('lng') }}), startzoom).addLayer(cloudmade);
-    new L.Control.MiniMap(mml, { toggleDisplay: true,  zoomLevelFixed: 12}).addTo(map); /* minimap extension*/
+    new L.Control.MiniMap(mml, { toggleDisplay: true,  zoomLevelFixed: 14}).addTo(map); /* minimap extension*/
 
-    {% for item in alarm.getAdditionalLayers() %}
-        {% if item['parameters']['tileserver']=='1' %}
+    {%- for item in alarm.getAdditionalLayers() %}
+        {%- if item['parameters']['tileserver']=='1' %}
             var l_{{ item['name'] }} = new L.TileLayer('/tileserver/{{ item['name'] }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
             map.addLayer(l_{{ item['name'] }});
-        {% endif %}
-    {%  endfor %}
+        {%- endif %}
+    {%-  endfor %}
 
-{% if alarm.housenumber %}
+{%- if alarm.housenumber %}
     var coord = {'lat':[], 'lng':[]};
-    {% for p in alarm.housenumber.points %}
+    {%- for p in alarm.housenumber.points %}
         coord['lat'].push({{ p[0] }});
         coord['lng'].push({{ p[1] }});
-    {% endfor %}
+    {%- endfor %}
     map.addHouseNumber(coord);
-{% else %}
+{%- else %}
     if({{ alarm.get('marker') }}==1){
         map.addMarker({{ alarm.get('lat') }}, {{ alarm.get('lng') }}, 1, false);
     }
-{% endif %}
+{%- endif %}
 </script>

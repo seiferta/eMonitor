@@ -20,7 +20,7 @@
             div.versiontext small{color: #ababab;}
             div.footer{position:fixed;left:0;right:0;bottom:0;height:20px;background-color: #333333 !important;border-top:1px solid #6e6e6e;}
             div.time{float:right;color: #ababab;padding-right:5px;padding-top:2px;font-size:12px;}
-            #activecount{position:absolute;top:2px;right:2px;color: #ffffff;font-size:20px;}
+            #activecount{position:absolute;top:2px;left:2px;color: #ffffff;font-size:20px;}
         </style>
         <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
         <script type="text/javascript" language="javascript" src="/js/jquery-ui-1.10.1.min.js"> </script>
@@ -28,32 +28,35 @@
     </head>
     <body>
         {{ content|safe }}
-        {% if activecount > 0 %}
+        {%- if activecount > 0 %}
             <div class="footer">
-
                 <div class="versiontext">
                     <small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small>
                 </div>
                 <div class="time" id="time"> </div>
-
             </div>
             <div class="version"> </div>
-        {% endif %}
+        {%- endif %}
         <script type="text/javascript">
+
+            function zeroPad(num, places){
+                var zero = places - num.toString().length + 1;
+                return Array(+(zero > 0 && zero)).join("0") + num;
+            }
             function timestring() {
-                now = new Date();
-                minute  = now.getMinutes();
-                second = now.getSeconds();
-                $('#time').html(now.getHours()+":"+((minute<=9)?"0"+minute:minute)+":"+((second<=9)?"0"+second:second));
+                var now = new Date();
+                var minute  = zeroPad(now.getMinutes(),2);
+                var second = zeroPad(now.getSeconds(),2);
+                $('#time').html(now.getHours()+":"+minute+":"+second);
             }
 
             timestring();
             setInterval('timestring()', 1000);
         </script>
-        {% if activecount>1 %}
+        {%- if activecount>1 %}
         <div id="activecount">
             <span>{{ position }}</span>/<span>{{ activecount }}</span>
         </div>
-        {% endif %}
+        {%- endif %}
     </body>
 </html>

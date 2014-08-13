@@ -1,26 +1,35 @@
 <style>
-    div#car1{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:15px;width:19%;}
-    div#car2{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:15px;width:19%;}
-    div#material{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:15px;width:19%;}
-    
+    div#car1{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:5px 10px;width:19%;}
+    div#car2{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:5px 10px;width:19%;}
+    div#material{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:5px 10px;width:19%;}
+
+    div#alarm_cars{position:relative;padding-top:8px}
     div#alarm_cars1{display:block;overflow:hidden;padding:5px 0;}
     div#alarm_cars2{display:block;overflow:hidden;padding:5px 0;}
     div#alarm_material{display:block;overflow:hidden;padding:5px 0;}
+    div#alarm_cars div.label{color:#696969;font-size:12px;position:absolute;top:0;left:20px}
 </style>
-{% if alarm %}
-<div id="alarm_cars1" style="padding-left:20px;">
-    {% for car in alarm.cars1 %}
-        <div id="car1">{{ car.dept.name }}<br/>{{ car.name }}</div>
-    {% endfor %}
+{%- if alarm %}
+<div id="alarm_cars">
+    <div class="label">{{ _('cars') }}:</div>
+    <div id="alarm_cars1" style="padding-left:20px">
+        {%- for car in alarm.cars1 %}
+            <div id="car1">{{ car.dept.name }}<br/>{{ car.name }}</div>
+        {%- endfor %}
+    </div>
+    {%- if alarm.cars2|count %}
+    <div id="alarm_cars2" style="padding-left:20px;border-top:1px solid #696969">
+        {%- for car in alarm.cars2 %}
+            <div id="car2">{{ car.dept.name }}<br/>{{ car.name }}</div>
+        {%- endfor %}
+    </div>
+    {%- endif %}
+    {%- if alarm.material|count %}
+    <div id="alarm_material" style="padding-left:20px;border-top:1px solid #696969">
+        {%- for car in alarm.material %}
+            <div id="material">{{ car.dept.name }}<br/>{{ car.name }}</div>
+        {%- endfor %}
+    </div>
+    {%- endif %}
 </div>
-<div id="alarm_cars2" style="padding-left:20px;">
-    {% for car in alarm.cars2 %}
-        <div id="car2">{{ car.dept.name }}<br/>{{ car.name }}</div>
-    {% endfor %}
-</div>
-<div id="alarm_material" style="padding-left:20px;">
-    {% for car in alarm.material %}
-        <div id="material">{{ car.dept.name }}<br/>{{ car.name }}</div>
-    {% endfor %}
-</div>
-{% endif %}
+{%- endif %}

@@ -1,24 +1,28 @@
 <div id="streets_widget">
     <style scoped="">
-        div#streets_widget{position:relative;height:100%;}
-        div#streets_widget #street{margin-left:20px;font-size:3em;}
-        div#streets_widget #street2{margin-left:20px;font-size:2em;}
-        div#streets_widget #city{position:relative;font-size:2em;margin:40px 0 2px 20px;}
+        div#streets_widget{position:relative;height:100%}
+        div#streets_widget #street{margin-left:20px;font-size:3em}
+        div#streets_widget #street2{margin-left:20px;font-size:2em}
+        div#streets_widget #city{position:relative;font-size:2em;margin:40px 0 2px 20px;padding-top:5px}
+        div#streets_widget div.label{color:#696969;font-size:12px;position:absolute;top:0;left:20px}
     </style>
     <div class="street" id="street">
+        <div class="label">{{ _('alarms.address') }}:</div>
         {% if alarm.street %}
             {{ alarm.street.name }} {{ alarm.get('streetno') }}
         {% endif %}
     </div>
-    {% if alarm.get('address2') %}
-        <div class="street2" id="street2">
-        {{ alarm.get('address2') }}
-    </div>
-    {% endif %}
-    <div id="city">
-        {{ alarm.city.name }}
-        {% if alarm.street.id != None and alarm.street.subcity %}
-            - {{  alarm.street.subcity }}
-        {% endif %}
+    {%- if alarm.get('address2') %}
+        <div class="street2" id="street2">{{ alarm.get('address2') }}</div>
+    {% endif -%}
+    <div style="position:relative;">
+        <div class="label">{{ _('alarms.city') }}:</div>
+        <div id="city">
+
+            {{ alarm.city.name }}
+            {%- if alarm.street.id != None and alarm.street.subcity %}
+                - {{  alarm.street.subcity }}
+            {% endif -%}
+        </div>
     </div>
 </div>

@@ -1,25 +1,26 @@
 <div id="timer_widget">
-    <style>
-        div#timer_widget{position:relative;width:100%;}
-        div#timer_widget #alarmtimer{position:absolute;top:18px;right:1px;font-size:1.5em}
+    <style scoped="scoped">
+        div#timer_widget{position:relative;width:100%}
+        div#timer_widget #alarmtimer{position:absolute;top:2px;right:2px;font-size:1.2em;white-space:nowrap}
+        div#timer_widget #alarmtimer span{color:#696969;font-size:0.5em}
     </style>
 
-    <div id="alarmtimer"> </div>
+    <div id="alarmtimer"></div>
 
     <script type="text/javascript">
-        var d = {{ alarm.timestamp.hour}}*60*60 + {{ alarm.timestamp.minute }}*60 + {{ alarm.timestamp.second }};
-        function alarmtime() {
-            var now = new Date();
-            var n = now.getHours()*60*60+now.getMinutes()*60+now.getSeconds();
-            if(d){
-                diff = (n-d);
-                minutes = Math.floor(diff / 60) % 60;
-                seconds = Math.floor(diff) % 60;
-
-                $('#alarmtimer').html(((minutes<=9)?"0"+minutes:minutes)+":"+((seconds<=9)?"0"+seconds:seconds));
-            }
+        function zeroPad(num, places){
+            var zero = places - num.toString().length + 1;
+            return new Array(+(zero > 0 && zero)).join("0") + num;
         }
-        alarmtime();
-        setInterval('alarmtime()', 1000);
+
+        var datetime = new Date("{{ alarm.timestamp.year }}/{{alarm.timestamp.month }}/{{ alarm.timestamp.day }} {{ alarm.timestamp.hour }}:{{ alarm.timestamp.minute }}:{{ alarm.timestamp.second }}").getTime();
+        function get_time_diff(){
+            var now = new Date().getTime();
+            var milisec_diff = Math.abs(now - datetime);
+            var minutes = Math.floor(milisec_diff / 1000 / 60);
+            var seconds = Math.floor(milisec_diff / 1000) % 60;
+            $('#alarmtimer').html(minutes+'<span>m </span>'+zeroPad(seconds,2)+'<span>s</span>');
+        }
+        setInterval('get_time_diff()', 1000);
     </script>
 </div>
