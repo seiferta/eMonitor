@@ -94,8 +94,12 @@ def getFrontendContent(**params):
         params['area'] = request.args.get('area')
 
     elif request.args.get('action') == 'deletealarm':  # delete selected alarm
-        db.session.delete(classes.get('alarm').getAlarms(id=int(request.args.get('alarmid'))))
+        alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
+        refresh = alarm.state == 1  # check if alarm is active
+        db.session.delete(alarm)
         db.session.commit()
+        if refresh:
+            monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
 
     elif request.args.get('action') == 'archivealarm':  # archive selected alarms, id=0 == all
         if int(request.args.get('alarmid')) == 0:
