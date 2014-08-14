@@ -14,7 +14,7 @@
         #vtab > ul > li {width: 221px; background-color: #fafafa !important; list-style-type: none; display: block; font-size:12px;margin: auto; padding-bottom: 15px; border: 1px solid #fafafa; position: relative; border-right: none; padding-top:15px; padding-left:5px;cursor:pointer;}
         #vtab > ul > li.selected {border: 1px solid #ddd; border-right: none;z-index: 10; background-color: #fff !important; position: relative;}
         #vtab > ul {float: left; width: 110px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative; top: 0;}
-        #vtab > div {background-color: #fff; margin-left: 220px; border: 1px solid #ddd; min-height: 200px; padding-left: 12px; position: relative;z-index: 9}
+        #vtab > div {background-color: #fff; margin-left: 220px; border: 1px solid #ddd; min-height: 400px; padding: 12px; position: relative;z-index: 9}
         #vtab  > ul > li.enabled{cursor:pointer; font-weight:bold;}
     </style>
 
@@ -63,7 +63,11 @@
                     $('#state').hide();
                 }else{
                     (data.error) ? err='<p class="error">'+data.error+'</p>': err='';
-                    $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'<p><pre>'+data.result+'</pre></p></div>');
+                    if(data.result!=""){
+                        $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'<pre>'+data.result+'</pre></div>');
+                    }else{
+                        $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'</div>');
+                    }
                 }
             }
 

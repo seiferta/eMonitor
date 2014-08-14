@@ -211,7 +211,7 @@ def processFile(incomepath, filename):
                             res = ['error: key not found - %s' % p.split('.')[1]]
                             params['error'] = 'error: key not found - %s' % p.split('.')[1]
                 if u'error' in params.keys():
-                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.replace('emonitor.modules.', ''), protocol=params['time'][-1], error=params['error'])
+                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1], error=params['error'])
                 else:
-                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.replace('emonitor.modules.', ''), protocol=params['time'][-1])
+                    signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1])
     signal.send('alarm', 'testupload_start', result='done')

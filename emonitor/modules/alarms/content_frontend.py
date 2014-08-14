@@ -9,6 +9,8 @@ def getFrontendContent(**params):
 
     if 'area' in request.args:
         params['area'] = request.args.get('area')
+    if 'state' in request.args:
+        params['activeacc'] = request.args.get('state')
 
     if request.form.get('action') == 'updatealarm':
         if request.form.get('alarm_id') != 'None':  # update alarm
@@ -163,6 +165,15 @@ def getFrontendData(self, *params):
             alarm.addHistory(request.form.get('messagestate'), request.form.get('messagetext'))
             db.session.commit()
         return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.form.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))
+
+    elif request.args.get('action') == 'deletemessage':  # delete selected message
+        #print "delete message with timestamp", request.args.get('datetime'), request.args.get('alarmid')
+        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
+        for msg in alarm.history:
+            if str(msg.timestamp) == request.args.get('datetime'):
+                db.session.delete(msg)
+        db.session.commit()
+        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))
 
     elif request.args.get('action') == 'housecoordinates':  # return a dict with coordinats of housenumber
         if request.args.get('alarmid') != "None":
