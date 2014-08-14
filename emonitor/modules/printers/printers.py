@@ -73,7 +73,6 @@ class Printers(db.Model):
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.printers.printers.Printers'][0]
         if hdl:
             for p in hdl.getParameterValues('in'):
-                print p[0]
                 if p[0] == 'in.printerid':
                     _printer = Printers.getPrinters(p[1])
                     break
