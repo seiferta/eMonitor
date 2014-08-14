@@ -55,7 +55,7 @@ class Event:
     @staticmethod
     def addHandlerClass(name, classid, func, params):
         if name == "*" and classid not in Event.globalhandlers.keys():  # add global * handlers
-            Event.globalhandlers[id] = [classid, func, params]
+            Event.globalhandlers[classid] = [classid, func, params]
 
         for ev in [e for e in Event.events if e.name == name]:
             ev.handlers.append([classid, func, params])
