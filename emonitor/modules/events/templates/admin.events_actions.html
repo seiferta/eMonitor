@@ -13,7 +13,7 @@
             <label>{{ _('event.handler') }}:<br/>
                 <select name="edit_handler" id="edit_handler" onchange="getData(this.value)" style="width:100%">
                     {% for hdl in handlers %}
-                    <option value="{{ hdl[0] }}" {% if hdl[0]==handler.handler %}selected="selected"{% endif %}>{{ hdl[0] }}</option>
+                    <option value="{{ hdl[0] }}" {% if hdl[0]==handler.handler %}selected="selected"{% endif %}>{{ _(hdl[0]) }}</option>
                     {% endfor %}
                 </select>
             </label>

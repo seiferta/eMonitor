@@ -42,8 +42,8 @@
                         <div style="position:absolute;left:20px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
                         <div style="margin-right:70px;margin-left:15px;">
                             <div class="subrowcell" style="width:10%;"> </div>
-                            <div class="subrowcell" style="width:40%;">{{ handler.handler }}</div>
-                            <div class="subrowcell" style="width:50%;">{{ handler.parameters }}</div>
+                            <div class="subrowcell" style="width:40%;">{{ _(handler.handler) }}</div>
+                            <div class="subrowcell" style="width:50%;">{{ handler.parameters|replace('\n', '<br/>')|safe }}</div>
                         </div>
                         <button type="submit" name="action" value="deletehandler_{{ handler.id }}" title="{{ _('event.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                         <button type="submit" name="action" value="edithandler_{{ handler.id }}" title="{{ _('handler.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>

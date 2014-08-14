@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-13 00:20+0200\n"
-"PO-Revision-Date: 2014-08-13 00:21+0100\n"
+"POT-Creation-Date: 2014-08-14 09:51+0200\n"
+"PO-Revision-Date: 2014-08-14 10:05+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -501,7 +501,7 @@ msgstr "Alarmerstellung"
 
 #: emonitor/modules/alarms/__init__.py:91
 msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
-msgstr ""
+msgstr "Alarm-Typ"
 
 #: emonitor/modules/alarms/__init__.py:92
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:66
@@ -769,6 +769,7 @@ msgid "frontend.alarms.object"
 msgstr "Objektauswahl"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
+#: emonitor/modules/streets/templates/widget.street.html:10
 msgid "alarms.address"
 msgstr "Straße"
 
@@ -781,6 +782,7 @@ msgid "alarms.crossing"
 msgstr "Kreuzung <small>(optional</small>"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:58
+#: emonitor/modules/streets/templates/widget.street.html:19
 msgid "alarms.city"
 msgstr "Ort"
 
@@ -821,6 +823,7 @@ msgid "alarms.priority"
 msgstr "Priorität"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:132
+#: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr "Bemerkung"
 
@@ -992,6 +995,7 @@ msgid "module.cars"
 msgstr "Fahrzeug/Material"
 
 #: emonitor/modules/cars/__init__.py:31
+#: emonitor/modules/cars/templates/widget.cars.html:14
 msgid "cars"
 msgstr "Fahrzeuge"
 
@@ -2049,6 +2053,10 @@ msgstr "Speichern"
 #: emonitor/modules/printers/templates/admin.printers_actions.html:65
 msgid "printers.cancel"
 msgstr "Abbrechen"
+
+#: emonitor/modules/scripts/__init__.py:19
+msgid "emonitor.modules.scripts.script.Script"
+msgstr "Script"
 
 #: emonitor/modules/settings/__init__.py:35
 msgid "module.settings"

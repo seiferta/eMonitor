@@ -58,7 +58,7 @@ def getAdminContent(self, **params):
                 for item in [i for i in request.form if i.startswith('position_')]:
                     ids = request.form.getlist(item)
                     for _id in ids:
-                        hdl = classes.get('eventhandler').getEventhandlers(id=_id)
+                        hdl = classes.get('eventhandler').getEventhandlers(id=int(_id))
                         hdl.position = ids.index(_id) + 1
                 db.session.commit()
         params.update({'events': events.getEvents()})

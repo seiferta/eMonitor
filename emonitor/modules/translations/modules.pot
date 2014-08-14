@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-13 00:20+0200\n"
+"POT-Creation-Date: 2014-08-14 09:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -731,6 +731,7 @@ msgid "frontend.alarms.object"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
+#: emonitor/modules/streets/templates/widget.street.html:10
 msgid "alarms.address"
 msgstr ""
 
@@ -743,6 +744,7 @@ msgid "alarms.crossing"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:58
+#: emonitor/modules/streets/templates/widget.street.html:19
 msgid "alarms.city"
 msgstr ""
 
@@ -783,6 +785,7 @@ msgid "alarms.priority"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:132
+#: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr ""
 
@@ -954,6 +957,7 @@ msgid "module.cars"
 msgstr ""
 
 #: emonitor/modules/cars/__init__.py:31
+#: emonitor/modules/cars/templates/widget.cars.html:14
 msgid "cars"
 msgstr ""
 
@@ -1943,6 +1947,10 @@ msgstr ""
 
 #: emonitor/modules/printers/templates/admin.printers_actions.html:65
 msgid "printers.cancel"
+msgstr ""
+
+#: emonitor/modules/scripts/__init__.py:19
+msgid "emonitor.modules.scripts.script.Script"
 msgstr ""
 
 #: emonitor/modules/settings/__init__.py:35

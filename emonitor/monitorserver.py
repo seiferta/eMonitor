@@ -6,7 +6,7 @@ import time
 import datetime
 import traceback
 import random
-from .extensions import db, events, classes, babel, signal
+from .extensions import db, events, classes, signal
 
 
 class MonitorServer():
@@ -38,8 +38,7 @@ class MonitorServer():
         if ip:
             self.host = ip
         self.port = app.config.get('PORT')
-        
-        babel.gettext(u'emonitor.monitorserver.MonitorServer')
+
         signal.addSignal('monitorserver', 'clientsearchstart')
         signal.addSignal('monitorserver', 'clientsearchdone')
 

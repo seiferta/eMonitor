@@ -2,10 +2,13 @@ from collections import OrderedDict
 from flask import Blueprint, current_app, render_template, send_from_directory, request, jsonify
 from flask.ext import login
 from emonitor.user import User
-from emonitor.extensions import classes
+from emonitor.extensions import classes, babel
 
 frontend = Blueprint('frontend', __name__, template_folder="web/templates")
 frontend.modules = OrderedDict()
+
+babel.gettext(u'emonitor.monitorserver.MonitorServer')
+babel.gettext(u'trigger.default')
 
 
 def _addModule(module):

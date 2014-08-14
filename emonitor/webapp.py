@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, message_flashed
+from flask import Flask, request, render_template
 from .extensions import db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
 
@@ -103,8 +103,7 @@ def configure_extensions(app):
     #events
     events.init_app(app)
     events.addEvent('default', handlers=[], parameters=[])
-    babel.gettext(u'trigger.default')
-    
+
     # scheduler
     scheduler.start()
     scheduler.initJobs(app)
