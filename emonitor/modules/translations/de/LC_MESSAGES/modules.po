@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-14 09:51+0200\n"
-"PO-Revision-Date: 2014-08-14 10:05+0100\n"
+"POT-Creation-Date: 2014-08-14 13:41+0200\n"
+"PO-Revision-Date: 2014-08-14 13:42+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -504,7 +504,8 @@ msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr "Alarm-Typ"
 
 #: emonitor/modules/alarms/__init__.py:92
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:66
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:67
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:69
 msgid "alarms.test.protocol"
 msgstr "Verarbeitungs-Protokoll"
 
@@ -529,40 +530,57 @@ msgstr "Abgeschlossene Einsätze"
 msgid "alarmstate.archive"
 msgstr "Einsatz-Archiv"
 
-#: emonitor/modules/alarms/__init__.py:98 emonitor/modules/alarms/alarm.py:155
+#: emonitor/modules/alarms/__init__.py:98
+msgid "active"
+msgstr "aktiviert"
+
+#: emonitor/modules/alarms/__init__.py:99
+msgid "created"
+msgstr "erzeugt"
+
+#: emonitor/modules/alarms/__init__.py:100
+msgid "done"
+msgstr "abgeschlossen"
+
+#: emonitor/modules/alarms/__init__.py:101
+msgid "archive"
+msgstr "archiviert"
+
+#: emonitor/modules/alarms/__init__.py:102
+#: emonitor/modules/alarms/alarm.py:155
 msgid "alarms.statechangeactivated"
 msgstr "Einsatz aktiviert"
 
-#: emonitor/modules/alarms/__init__.py:99
+#: emonitor/modules/alarms/__init__.py:103
 msgid "alarms.prioshort0"
 msgstr "Niedrig"
 
-#: emonitor/modules/alarms/__init__.py:100
+#: emonitor/modules/alarms/__init__.py:104
 msgid "alarms.prioshort1"
 msgstr "Normal"
 
-#: emonitor/modules/alarms/__init__.py:101
+#: emonitor/modules/alarms/__init__.py:105
 msgid "alarms.prioshort2"
 msgstr "Hoch"
 
-#: emonitor/modules/alarms/__init__.py:102
+#: emonitor/modules/alarms/__init__.py:106
 msgid "alarms.carsinuse"
 msgstr ""
 "Folgende Fahrzeuge/Geräte sind bereits in einem anderen Einsatz eingebunden:"
 
-#: emonitor/modules/alarms/__init__.py:103
+#: emonitor/modules/alarms/__init__.py:107
 msgid "history.autochangeState"
 msgstr "autom. Statusänderung"
 
-#: emonitor/modules/alarms/__init__.py:104
+#: emonitor/modules/alarms/__init__.py:108
 msgid "history.message"
 msgstr "Mitteilung"
 
-#: emonitor/modules/alarms/__init__.py:105
+#: emonitor/modules/alarms/__init__.py:109
 msgid "trigger.alarm_added"
 msgstr "Einsatz hinzugefügt"
 
-#: emonitor/modules/alarms/__init__.py:106
+#: emonitor/modules/alarms/__init__.py:110
 msgid "trigger.alarm_changestate"
 msgstr "Einsatz-Status geändert"
 
@@ -862,7 +880,6 @@ msgstr "geänderte Kartenposition speichern"
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:198
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:199
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:37
 msgid "alarms.save"
 msgstr "Speichern"
 
@@ -882,7 +899,7 @@ msgstr "Mitteilung hinzufügen"
 msgid "alarms.messagetype"
 msgstr "Meldungstyp"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:41
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:40
 msgid "alarms.messagetext"
 msgstr "Text"
 

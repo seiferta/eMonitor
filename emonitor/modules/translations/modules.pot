@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-14 09:51+0200\n"
+"POT-Creation-Date: 2014-08-14 13:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -484,7 +484,8 @@ msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:92
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:66
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:67
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:69
 msgid "alarms.test.protocol"
 msgstr ""
 
@@ -509,39 +510,55 @@ msgstr ""
 msgid "alarmstate.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:98 emonitor/modules/alarms/alarm.py:155
-msgid "alarms.statechangeactivated"
+#: emonitor/modules/alarms/__init__.py:98
+msgid "active"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:99
-msgid "alarms.prioshort0"
+msgid "created"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:100
-msgid "alarms.prioshort1"
+msgid "done"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:101
-msgid "alarms.prioshort2"
+msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:102
-msgid "alarms.carsinuse"
+#: emonitor/modules/alarms/__init__.py:102 emonitor/modules/alarms/alarm.py:155
+msgid "alarms.statechangeactivated"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:103
-msgid "history.autochangeState"
+msgid "alarms.prioshort0"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:104
-msgid "history.message"
+msgid "alarms.prioshort1"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:105
-msgid "trigger.alarm_added"
+msgid "alarms.prioshort2"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:106
+msgid "alarms.carsinuse"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:107
+msgid "history.autochangeState"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:108
+msgid "history.message"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:109
+msgid "trigger.alarm_added"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:110
 msgid "trigger.alarm_changestate"
 msgstr ""
 
@@ -824,7 +841,6 @@ msgstr ""
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:198
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:199
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:37
 msgid "alarms.save"
 msgstr ""
 
@@ -844,7 +860,7 @@ msgstr ""
 msgid "alarms.messagetype"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:41
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:40
 msgid "alarms.messagetext"
 msgstr ""
 
