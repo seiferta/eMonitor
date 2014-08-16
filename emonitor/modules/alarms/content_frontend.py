@@ -68,8 +68,8 @@ def getFrontendContent(**params):
         alarm.set(u'endtimestamp', d)
         db.session.commit()
         signal.send('alarm', 'updated')
-        if request.form.get('alarm_id') is None:  # create new
-            classes.get('alarm').changeState(alarm.id, 2)  # prepare alarm
+        if request.form.get('alarm_id') == u'None':  # create new
+            classes.get('alarm').changeState(alarm.id, 0)  # prepare alarm
         else:
             classes.get('alarm').changeState(alarm.id, 1)  # activate alarm
 

@@ -16,11 +16,16 @@ def getFrontendData(self, params={}):
         return {'id': key.id, 'category': key.category}
 
     elif request.args.get('action') == 'carslookup':
-        city = classes.get('city').get_byid(int(request.args.get('cityid')))
+        city = None
+        ret = {'cars1': [], 'cars2': [], 'material': []}
+        try:
+            city = classes.get('city').get_byid(int(request.args.get('cityid')))
+        except ValueError:
+            city = None
         key = classes.get('alarmkey').getAlarmkeys(id=int(request.args.get('keyid')))
-        if key:
+        if key and city:
             ret = {'cars1': [c.id for c in key.getCars1(city.dept)], 'cars2': [c.id for c in key.getCars2(city.dept)],
                    'material': [m.id for m in key.getMaterial(city.dept)]}
-            return ret
+        return ret
         
     return ""

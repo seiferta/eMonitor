@@ -57,12 +57,12 @@
                             <p style="width:45%;float:left">
                                 <label style="width:99%">{{ _('alarms.city') }}:<br/>
                                     <select name="edit_city" style="width:100%;height:20px;">
-                                        {% for city in cities %}
+                                        {%- for city in cities %}
                                         <option value="{{ city.id }}" {% if alarm.city and city.id==alarm.city.id %}selected="selected"{% endif %}>{{ city.name }}</option>
-                                        {% endfor %}
-                                        {% if alarm.get('id.city')=='0' %}
+                                        {%- endfor %}
+                                        {%- if alarm.get('id.city')=='0' %}
                                         <option selected="selected">{{ alarm.city.name }}</option>
-                                        {% endif %}
+                                        {%- endif %}
                                     </select>
                                 </label>
                             </p>
@@ -74,9 +74,9 @@
                             <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
                                 <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
                                     <option value="0">{{ _('alarms.noobject') }}</option>
-                                    {% for aobject in objects %}
+                                    {%- for aobject in objects %}
                                         <option value="{{ aobject.id }}" {% if aobject==alarm.object %}selected="selected"{% endif %}>{{ aobject.name }}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                             </label>
                         </p>
@@ -114,21 +114,23 @@
                     </p>
                 </div>
 
-                <div style="width:100%;position:relative;clear:left;">
+                <div style="width:100%;position:relative">
                     <p style="width:100%">
                         <label style="width:99%">{{ _('alarms.person') }}:<br/>
                             <input type="text" name="edit_person" value="{{ alarm.person }}" style="width:100%;"/>
                         </label>
                     </p>
-                    <p style="min-width:80px;background-color:#fff;float:left;padding-right:20px;position:relative">
+                </div>
+                <div style="width:100%">
+                    <p style="width:20%;background-color:#fff;float:left;padding-right:20px;position:relative">
                         {{ _('alarms.priority') }}:<br/>
-                        {% for prio in range(2,-1,-1) %}
+                        {%- for prio in range(2,-1,-1) %}
                             <label style="min-width:80px">
                                 <input type="radio" name="edit_priority" value="{{ prio }}" {% if prio==alarm.priority %}checked="checked"{% endif %}/> {{ _('alarms.prioshort'+prio|string) }}
                             </label><br/>
-                        {% endfor %}
+                        {%- endfor %}
                     </p>
-                    <p style="width:73%;float:left">
+                    <p style="width:80%;float:left">
                         <label style="width:99%">{{ _('alarms.remark') }}:<br/>
                         <textarea name="edit_remark" style="width:99%;height:100px;">{{ alarm.remark }}</textarea>
                         </label>
@@ -143,48 +145,48 @@
                             <a href="#" onclick="return clearCars()" title="{{ _('alarms.clearcars') }}"><i class="fa fa-trash-o fa-lg"></i></a>
                         </div>
                         <ul id="cars1" class="group" style="min-height:100px;">
-                            {% for car in alarm.cars1 %}
+                            {%- for car in alarm.cars1 %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
                                 {{ car.dept.name }}<br/>
                                 {{ car.name }}
                             </li>
-                            {% endfor %}
+                            {%- endfor %}
                         </ul>
                     </div>
                     <div style="float:left;width:50%;padding-right:0;">
                         <small>{{ _('alarms.cars2') }}</small>
                         <ul id="cars2" class="group" style="min-height:102px;">
-                            {% for car in alarm.cars2 %}
+                            {%- for car in alarm.cars2 %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
                                 {{ car.dept.name }}<br/>
                                 {{ car.name }}
                             </li>
-                            {% endfor %}
+                            {%- endfor %}
                         </ul>
                     </div>
                     <div class="clear" style="clear:left;"> </div>
 
                     <small>{{ _('alarms.material') }}</small>
                     <ul id="material" class="group" style="width:99%;min-height:50px;">
-                        {% for car in alarm.material %}
+                        {%- for car in alarm.material %}
                         <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
                             {{ car.dept.name }}<br/>
                             {{ car.name }}
                         </li>
-                        {% endfor %}
+                        {%- endfor %}
                     </ul>
                     <div class="clear" style="clear:left;"> </div>
 
                     <small>{{ _('alarms.unused') }}</small><br/>
                     <ul id="unused" class="group" style="width:99%;">
-                        {% for car in cars %}
-                        {% if car not in alarm.cars1+alarm.cars2+alarm.material %}
+                        {%- for car in cars %}
+                        {%- if car not in alarm.cars1+alarm.cars2+alarm.material %}
                         <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
                             {{ car.dept.name }}<br/>
                             {{ car.name }}
                         </li>
-                        {% endif %}
-                        {% endfor %}
+                        {%- endif %}
+                        {%- endfor %}
                     </ul>
                 </div>
                 <div style="clear:left"></div>
