@@ -195,6 +195,10 @@ class Alarm(db.Model):
                         from emonitor.modules.maps.map_utils import getAlarmMap
                         return getAlarmMap(alarm, current_app.config.get('PATH_TILES'))
 
+                    elif params['style'] == 'routemap':  # deliver map with route
+                        from emonitor.modules.maps.map_utils import getAlarmRoute
+                        return getAlarmRoute(alarm, current_app.config.get('PATH_TILES'))
+
                     if 'filename' in params and os.path.exists("%s/inc/%s.png" % (os.path.abspath(os.path.dirname(__file__)), params['filename'])):
                         with open("%s/inc/%s.png" % (os.path.abspath(os.path.dirname(__file__)), params['filename']), 'rb') as f:
                             return f.read()

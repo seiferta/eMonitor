@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-14 13:41+0200\n"
+"POT-Creation-Date: 2014-08-19 12:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -562,6 +562,70 @@ msgstr ""
 msgid "trigger.alarm_changestate"
 msgstr ""
 
+#: emonitor/modules/alarms/__init__.py:112
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.slightleft"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:113
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.slightright"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:114
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.right"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:115
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.left"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:116
+#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.straight"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:117
+#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.exit"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:118
+#: emonitor/modules/alarms/alarmutils.py:182
+msgid "alarms.print.bus"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:119
+#: emonitor/modules/alarms/alarmutils.py:196
+msgid "alarms.print.positive"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:120
+#: emonitor/modules/alarms/alarmutils.py:197
+msgid "alarms.print.negative"
+msgstr ""
+
+#: emonitor/modules/alarms/alarmutils.py:189
+#: emonitor/modules/alarms/alarmutils.py:191
+msgid "alarms.print.highwaylong"
+msgstr ""
+
+#: emonitor/modules/alarms/alarmutils.py:191
+msgid "alarms.print.highwayshort"
+msgstr ""
+
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.exitstart"
+msgstr ""
+
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.straightexit"
+msgstr ""
+
 #: emonitor/modules/alarms/templates/admin.alarms.html:25
 msgid "alarms.header.overview"
 msgstr ""
@@ -794,62 +858,70 @@ msgid "alarms.endtime"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:119
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:140
 msgid "alarms.person"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:124
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:126
 msgid "alarms.priority"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:132
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:146
 #: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:137
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:139
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:152
 msgid "alarms.cars"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:140
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:142
 msgid "alarms.cars1"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:142
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:144
 msgid "alarms.setdefaultcars"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:143
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:145
 msgid "alarms.clearcars"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:155
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:157
 msgid "alarms.cars2"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:167
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:169
 msgid "alarms.material"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:178
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:180
 msgid "alarms.unused"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:194
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:196
 msgid "alarms.storeupdatedmarker"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:198
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:199
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:200
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:201
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 msgid "alarms.save"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:200
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:202
 msgid "alarms.cancel"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:11
 msgid "alarms.messagetitles"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:17
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
+msgid "alarm.delete"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:24
@@ -931,10 +1003,6 @@ msgstr ""
 msgid "alarm.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
-msgid "alarm.delete"
-msgstr ""
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
 msgid "alarm.route.info"
 msgstr ""
@@ -963,9 +1031,17 @@ msgstr ""
 msgid "alarms.deletequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:59
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:109
 #: emonitor/modules/printers/__init__.py:40
 msgid "template.alarm_sum"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:115
+msgid "alarms.page"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:133
+msgid "alarms.object"
 msgstr ""
 
 #: emonitor/modules/cars/__init__.py:30

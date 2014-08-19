@@ -1,8 +1,10 @@
+import re
 import xml.etree.ElementTree as ET
 import datetime, time
 import requests
 from sqlalchemy import inspect
-from emonitor.extensions import classes, events, signal
+from flask import current_app
+from emonitor.extensions import classes, events, signal, babel
 
 __all__ = ['evalStreet', 'evalMaterial', 'evalTime', 'evalObject', 'evalAlarmplan', 'evalCity', 'evalAddressPart', 'evalKey', 'getEvalMethods', 'buildAlarmFromText']
 
@@ -151,7 +153,7 @@ def getAlarmRoute(alarm):
     """
     get routing from webservice, points and description
     """
-    params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'tv': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': 'de'}
+    params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
     r = requests.get(alarm.ROUTEURL, params=params)
     tree = ET.fromstring(r.content)
     data = {}
@@ -174,13 +176,34 @@ def getAlarmRoute(alarm):
     data['traveltime'] = int(getText(elements, 'traveltime'))
     data['description'] = getText(elements, 'description')
 
-    if data['description'].startswith('Geradeaus fahren.<br>\n'):
-        data['description'] = data['description'][22:]
-    data['description'] = data['description'].replace('\nAuf fini weiterfahren.<br>\n', '')
+    data['description'] = re.sub('\s+', ' ', data['description'].replace('\\', ''))
+    description = []
+    for l in data['description'].split('<br>'):
+        if babel.gettext(u'alarms.print.bus') not in l.lower():
+            match_dir = re.findall(r"" + babel.gettext(u'alarms.print.slightleft') + "|" + babel.gettext(u'alarms.print.left') + "|" + babel.gettext(u'alarms.print.slightright') + "|" +babel.gettext(u'alarms.print.right') + "|" + babel.gettext(u'alarms.print.straight') + "|\d\.\s" + babel.gettext(u'alarms.print.exit'), l.lower()),  # km extraction
+            match_length = re.findall(r"\d*\.\d+\s*[k]?m|\d+\s*[k]?m", l)  # km extraction
+
+            if len(match_dir) > 0 and len(match_length) > 0:
+                try:
+                    match_dir = re.sub('\d*\.|\s', '', match_dir[0][0].lower())  # reformat direction
+                except IndexError:
+                    continue
+                direction = l.split('. Der Str')[0]
+                if '[positive]' in direction or '[negative]' in direction or babel.gettext(u'alarms.print.highwaylong') in direction:  # eval highway
+                    match_dir = 'highway'
+                    direction = direction.replace(babel.gettext(u'alarms.print.highwaylong'), babel.gettext(u'alarms.print.highwayshort'))
+                highwayexit = re.findall(r"auf .*;.*", l.lower())  # eval highway exit
+                if len(highwayexit) > 0:
+                    match_dir = 'highwayexit'
+                    direction = direction.replace(babel.gettext(u'alarms.print.exitstart'), babel.gettext(u'alarms.print.exit').title()).replace(babel.gettext(u'alarms.print.straight'), babel.gettext(u'alarms.print.straightexit'))
+                    direction = re.sub(';\s?', '/', direction)
+                direction = direction.replace('[positive]', u'<b>%s</b>' % babel.gettext(u'alarms.print.positive'))
+                direction = direction.replace('[negative]', u'<b>%s</b>' % babel.gettext(u'alarms.print.negative'))
+                description.append([match_dir, match_length[0], direction])
+    data['description'] = description
 
     f = getElements(getElements(elements, 'Folder'), 'Placemark')
     f = getElements(f, 'LineString')
-    #data['coordinates'] = getText(f, 'coordinates').split('\n')
     data['coordinates'] = []
     for c in getText(f, 'coordinates').split('\n'):
         if c.strip() != '':

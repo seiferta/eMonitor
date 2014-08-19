@@ -5,39 +5,86 @@
                 height: 742px;
                 width: 495px;
 
-                @frame content_frame{
+                @frame content_frame {
                     top: 80px;
                     left: 50px;
                     right: 150px;
-                    height:565px;
-                    -pdf-frame-border: 1;
+                    height: 565px;
                 }
 
-                @frame header_frame{
-                    -pdf-frame-content: header_content;
+                @frame pages{
+                    -pdf-frame-content:pages;
+                    right: 50px;
+                    top: 50px;
+                    left: 50px;
+                    height: 23px;
+                }
+
+                @frame header_frame {
+                    -pdf-frame-content:header_content;
                     left: 50px;
                     right: 50px;
                     top: 50px;
                     height:23px;
                 }
 
-                @frame cars_frame{
-                    -pdf-frame-content: cars_content;
+                @frame cars_frame {
+                    -pdf-frame-content:cars_content;
                     top:80px;
                     right:50px;
                     width:90px;
                     height:565px;
-                    -pdf-frame-border: 1;
                 }
 
-                @frame map_frame{
-                    -pdf-frame-content: map_content;
+                @frame map_frame {
+                    -pdf-frame-content:map_content;
                     left: 50px;
                     right: 50px;
                     bottom: 50px;
                     height: 418px;
                     margin: 0;
-                    -pdf-frame-border: 1;
+                }
+            }
+
+            @page second_page{
+                height: 742px;
+                width: 495px;
+
+                @frame content_second{
+                    top: 80px;
+                    left: 50px;
+                    right: 50px;
+                    bottom: 50px;
+                }
+
+                @frame pages{
+                    -pdf-frame-content:pages;
+                    right: 50px;
+                    top: 50px;
+                    left: 50px;
+                    height: 23px;
+                }
+
+                @frame header_frame {
+                    -pdf-frame-content:header_content;
+                    left: 50px;
+                    right: 50px;
+                    top: 50px;
+                    height:23px;
+                }
+
+                @frame description_route {
+                    border: 0;
+                    padding:10px;
+                }
+
+                @frame map_route {
+                    -pdf-frame-content:route_content;
+                    left: 50px;
+                    right: 50px;
+                    bottom: 50px;
+                    margin: 0;
+                    top:450px;
                 }
             }
 
@@ -51,12 +98,28 @@
             p{font-size:1em}
 
             p.car{border:1px solid black; padding:5px 1px 1px 1px; text-align:center}
+            p.header{padding:5px 5px 0 1px}
+            p.page{padding:5px 5px 0 1px; text-align:right}
+            td.description{border-bottom:1px solid silver;padding-top:2px}
         </style>
     </head>
     <body>
-
         <div id="header_content">
-            <p>ALARMFAX: {{ _('template.alarm_sum') }} - {{ alarm.timestamp|datetime }}</p>
+            <p class="header">ALARMFAX: {{ _('template.alarm_sum') }} - {{ alarm.timestamp|datetime }}</p>
+        </div>
+
+        <div id="pages">
+            {%- if alarm.city.id==None %}
+            <p class="page">
+                {{ _('alarms.page') }}
+                <span>
+                    <pdf:pagenumber/>
+                </span> /
+                <span>
+                    <pdf:pagecount/>
+                </span>
+            </p>
+            {%- endif %}
         </div>
 
         <div id="content">
@@ -65,54 +128,79 @@
             <h1 style="font-size:2em;padding:0">{{ alarm.street2.name }}</h1>
             <hr style="margin: 1em 0;"/>
 
-            {% if alarm.object %}
-                <p style="font-size:1em;">Objekt:</p>
+            {%- if alarm.object %}
+                <p style="font-size:1em;">{{ _('alarms.object') }}:</p>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.object.name }}</h3>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">Einsatzplan: {{ alarm.get('alarmplan') }}</h3>
                 <hr style="margin: 1em 0;"/>
-            {% endif %}
+            {%- endif %}
 
-            {% if alarm.person %}
-                <p style="font-size:1em;">Mitteiler:</p>
+            {%- if alarm.person %}
+                <p style="font-size:1em;">{{ _('alarms.person') }}:</p>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.person }}</h3>
-            {% endif %}
+            {%- endif %}
 
-            {% if alarm.remark %}
+            {%- if alarm.remark %}
                 <hr style="margin: 1em 0;"/>
-                <p style="font-size:1em;">Bemerkung:</p>
+                <p style="font-size:1em;">{{ _('alarms.remark') }}:</p>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.remark }}</h3>
-            {% endif %}
+            {%- endif %}
         </div>
 
         <div id="cars_content">
-            <p style="text-align:center;padding:5px 0 0 0">Fahrzeuge</p>
+            <p style="text-align:center;padding:5px 0 0 0">{{ _('alarms.cars') }}</p>
             <div style="margin:10px">
-            {% for car in alarm.cars1 %}
+            {%- for car in alarm.cars1 %}
                 <p class="car">
                     {{ car.dept.name }}<br/>
                     {{ car.name }}
                 </p>
-            {% endfor %}
+            {%- endfor %}
             <p>&nbsp;</p>
-            {% for car in alarm.cars2 %}
+            {%- for car in alarm.cars2 %}
                 <p class="car">
                     {{ car.dept.name }}<br/>
                     {{ car.name }}
                 </p>
-            {% endfor %}
+            {%- endfor %}
             <p>&nbsp;</p>
-            {% for car in alarm.material %}
+            {%- for car in alarm.material %}
                 <p class="car">
                     {{ car.dept.name }}<br/>
                     {{ car.name }}
                 </p>
-            {% endfor %}
+            {%- endfor %}
             </div>
         </div>
 
         <div id="map_content">
             <img src="/alarms/export/{{ alarm.id }}-alarmmap.png" width="691"/>
         </div>
+        {%- if alarm.city.id==None %}
 
+        <pdf:nexttemplate name="second_page" />
+        <pdf:nextpage />
+
+        <div id="content_second">
+            <div id="description_route">
+                <table style="padding:0 5px;margin:2px" class="description">
+                    {%- for d in alarm.getRouting().description %}
+                    <tr>
+                        <td style="width:150px;" class="description {{ d[0]|safe }}"> <img src="/alarms/inc/{{ d[0]|safe }}.png" width="12"/></td>
+                        <td class="description">{{ d[2]|safe }}</td>
+                        <td style="width:100px;text-align: right" class="description">{{ d[1]|safe }}</td>
+                    </tr>
+                    {%- endfor  %}
+                    <tr>
+                        <td style="padding-top:4px">{{ (alarm.getRouting().traveltime / 60)|int }}:{{ alarm.getRouting().traveltime % 60 }} min.</td>
+                        <td colspan="2" style="text-align: right;padding-top:4px">{{ alarm.getRouting().distance|round(2) }} km</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="route_content">
+                <img src="/alarms/export/{{ alarm.id }}-routemap.png"/>
+            </div>
+        </div>
+        {%- endif %}
     </body>
 </html>

@@ -55,9 +55,62 @@ def getAlarmMap(alarm, tilepath):
         img_map.paste(poly, mask=poly)
 
     stream = StringIO()
-    #img_map = img_map.resize((640, 364), Image.ANTIALIAS)
     img_map.save(stream, format="PNG", dpi=(600, 600))
     return stream.getvalue()
+
+
+def getAlarmRoute(alarm, tilepath):
+    from emonitor.tileserver.tileserver import getTileFromURL
+    if alarm.city.id is None:
+        zoom = 18  # initial max zoom
+        coords = alarm.getRouting()['coordinates']
+
+        def getCoords(zoom):  # eval tiles for zoom factor
+            tiles = {'lat': [], 'lng': []}
+            for coord in coords:
+                t = deg2num(coord[1], coord[0], zoom)
+                if t[0] not in tiles['lat']:
+                    tiles['lat'].append(t[0])
+                if t[1] not in tiles['lng']:
+                    tiles['lng'].append(t[1])
+            tiles['lat'] = sorted(tiles['lat'])
+            tiles['lng'] = sorted(tiles['lng'])
+            tiles['lat'] = tiles['lat'] + [tiles['lat'][-1] + 1]
+            tiles['lng'] = tiles['lng'] + [tiles['lng'][-1] + 1]
+            if len(tiles['lat']) > 6:  # use zoom level lower
+                zoom -= 1
+                return getCoords(zoom)
+            return tiles, zoom
+
+        tiles, zoom = getCoords(zoom)
+
+        # image map
+        img_map = Image.new('RGBA', ((len(tiles['lat']) - 1) * 256, (len(tiles['lng']) - 1) * 256), (255, 255, 255, 255))
+        for i in range(tiles['lat'][0], tiles['lat'][-1]):
+            for j in range(tiles['lng'][0], tiles['lng'][-1]):
+                if not os.path.exists("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j)):
+                    getTileFromURL(zoom, "%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j), i, j)
+                img_tile = Image.open("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j))
+                img_map.paste(img_tile, (tiles['lat'].index(i) * 256, tiles['lng'].index(j) * 256))
+        img_map = img_map.convert('LA').convert('RGBA')  # convert background to grayscale
+
+        # image route
+        img_route = Image.new('RGBA', ((len(tiles['lat']) - 1) * 256, (len(tiles['lng']) - 1) * 256), (255, 255, 255, 0))
+        l = []
+        for p in coords:
+            t = deg2num(p[1], p[0], zoom)
+            x = 256 * (t[0] - tiles['lat'][0]) + t[2]  # convert to absolute pixel coords
+            y = 256 * (t[1] - tiles['lng'][0]) + t[3]
+            l.append((x, y))
+        for (s, e) in zip(l, l[1:])[2::]:  # route line in pixel
+            line = ImageDraw.Draw(img_route)
+            line.line([s, e], fill=(255, 0, 0, 100), width=10)
+
+        img_map.paste(img_route, (0, 0), mask=img_route)  # add route to map
+        stream = StringIO()
+        img_map.save(stream, format="PNG", dpi=(300, 300))
+        return stream.getvalue()
+    return None
 
 
 def loadTiles(path, tilelist):
@@ -125,18 +178,6 @@ def deg2num(lat_deg, lon_deg, zoom):
     ytile = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
     y = (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n
     return [xtile, ytile, int(x % 1 * 256), int(y % 1 * 256)]
-
-
-def deg2num_old(lat_deg, lon_deg, zoom):
-    lat_rad = math.radians(lat_deg)
-    n = 2.0 ** zoom
-    xtile = int((lon_deg + 180.0) / 360.0 * n)
-    x = (lon_deg + 180.0) / 360.0 * n
-    print "x", x, x % 1 * 256
-    ytile = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
-    y = (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n
-    print "y", y, y % 1 * 256
-    return xtile, ytile
 
 
 if __name__ == "__main__":

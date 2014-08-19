@@ -108,7 +108,17 @@ class AlarmsModule(Module):
         babel.gettext(u'history.message')
         babel.gettext(u'trigger.alarm_added')
         babel.gettext(u'trigger.alarm_changestate')
-        
+
+        babel.gettext(u'alarms.print.slightleft')
+        babel.gettext(u'alarms.print.slightright')
+        babel.gettext(u'alarms.print.right')
+        babel.gettext(u'alarms.print.left')
+        babel.gettext(u'alarms.print.straight')
+        babel.gettext(u'alarms.print.exit')
+        babel.gettext(u'alarms.print.bus')
+        babel.gettext(u'alarms.print.positive')
+        babel.gettext(u'alarms.print.negative')
+
         # init
         # Do init script for alarms at start and add active alarms (state = 1)
         #from modules.alarms.alarm import Alarm

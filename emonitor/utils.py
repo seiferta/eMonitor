@@ -52,17 +52,20 @@ class Module:
         return Module.info['name']
     
     def __init__(self, app):
+        self.app = app
         self.widgets = []
         self.adminsubnavigation = []
         self.dependency = []  # modulenames with dependency, if module data updated, alert
         self.signalHandler = sockethandler.SocketHandler
     
+    @property
     def getName(self):
         try:
             return Module.info['name']
         except:
             return ""
 
+    @property
     def getPath(self):
         return Module.info['path']
         
@@ -99,20 +102,20 @@ class Module:
         images = []
 
         def link_callback(uri, rel):
-            if '/export/' in uri:  # create tmp-files for export items
+            if '/export/' in uri and not rel:  # create tmp-files for export items
                 if "/alarms/" in uri and uri.endswith('png'):
                     f, ext = os.path.splitext(uri)
                     from emonitor.modules.alarms.alarm import Alarm
                     fname = '%s%s' % (current_app.config.get('PATH_TMP'), '%s.png' % random.random())
                     with open(fname, 'wb') as tmpimg:  # write tmp image file
-                        tmpimg.write(Alarm.getExportData('.png', style="alarmmap", id=f.split('/')[-1].split('-')[0]))
+                        tmpimg.write(Alarm.getExportData('.png', style=uri.split('-')[1][:-4], id=f.split('/')[-1].split('-')[0]))
                         images.append(fname)
                     return fname
-            return "%s/emonitor/modules%s" % (current_app.config.get('PROJECT_ROOT'), uri)  # make absoulte links
+            return "%s/emonitor/modules%s" % (current_app.config.get('PROJECT_ROOT'), uri)  # make absolute links
 
         pdf = StringIO()
         pisa.CreatePDF(StringIO(pdfdata), pdf, link_callback=link_callback)
-        for image in images:
+        for image in images:  # remove tmp images
             if os.path.exists(image):
                 os.remove(image)
 

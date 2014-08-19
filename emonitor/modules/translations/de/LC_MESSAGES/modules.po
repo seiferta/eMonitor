@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-14 13:41+0200\n"
-"PO-Revision-Date: 2014-08-14 13:42+0100\n"
+"POT-Creation-Date: 2014-08-19 12:53+0200\n"
+"PO-Revision-Date: 2014-08-19 12:54+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -584,6 +584,70 @@ msgstr "Einsatz hinzugefügt"
 msgid "trigger.alarm_changestate"
 msgstr "Einsatz-Status geändert"
 
+#: emonitor/modules/alarms/__init__.py:112
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.slightleft"
+msgstr "leicht links"
+
+#: emonitor/modules/alarms/__init__.py:113
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.slightright"
+msgstr "leicht rechts"
+
+#: emonitor/modules/alarms/__init__.py:114
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.right"
+msgstr "rechts"
+
+#: emonitor/modules/alarms/__init__.py:115
+#: emonitor/modules/alarms/alarmutils.py:183
+msgid "alarms.print.left"
+msgstr "links"
+
+#: emonitor/modules/alarms/__init__.py:116
+#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.straight"
+msgstr "weiterfahren"
+
+#: emonitor/modules/alarms/__init__.py:117
+#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.exit"
+msgstr "ausfahrt"
+
+#: emonitor/modules/alarms/__init__.py:118
+#: emonitor/modules/alarms/alarmutils.py:182
+msgid "alarms.print.bus"
+msgstr "bus"
+
+#: emonitor/modules/alarms/__init__.py:119
+#: emonitor/modules/alarms/alarmutils.py:196
+msgid "alarms.print.positive"
+msgstr "Fahrtrichtung SÜD"
+
+#: emonitor/modules/alarms/__init__.py:120
+#: emonitor/modules/alarms/alarmutils.py:197
+msgid "alarms.print.negative"
+msgstr "Fahrtrichtung NORD"
+
+#: emonitor/modules/alarms/alarmutils.py:189
+#: emonitor/modules/alarms/alarmutils.py:191
+msgid "alarms.print.highwaylong"
+msgstr "Bundesautobahn"
+
+#: emonitor/modules/alarms/alarmutils.py:191
+msgid "alarms.print.highwayshort"
+msgstr "A"
+
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.exitstart"
+msgstr "Auf"
+
+#: emonitor/modules/alarms/alarmutils.py:195
+msgid "alarms.print.straightexit"
+msgstr "nehmen"
+
 #: emonitor/modules/alarms/templates/admin.alarms.html:25
 msgid "alarms.header.overview"
 msgstr "Einsatzübersicht"
@@ -833,63 +897,71 @@ msgid "alarms.endtime"
 msgstr "Uhrzeit Ende"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:119
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:140
 msgid "alarms.person"
 msgstr "Mitteiler"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:124
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:126
 msgid "alarms.priority"
 msgstr "Priorität"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:132
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:146
 #: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr "Bemerkung"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:137
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:139
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:152
 msgid "alarms.cars"
 msgstr "Einsatzmittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:140
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:142
 msgid "alarms.cars1"
 msgstr "Primärfahrzeug(e)"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:142
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:144
 msgid "alarms.setdefaultcars"
 msgstr "Standardausrückereihenfolge setzen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:143
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:145
 msgid "alarms.clearcars"
 msgstr "Fahrzeuge/Material entfernen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:155
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:157
 msgid "alarms.cars2"
 msgstr "Folgefahrzeug(e)"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:167
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:169
 msgid "alarms.material"
 msgstr "Sondermittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:178
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:180
 msgid "alarms.unused"
 msgstr "Nicht disponierte Einsatzmittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:194
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:196
 msgid "alarms.storeupdatedmarker"
 msgstr "geänderte Kartenposition speichern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:198
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:199
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:200
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:201
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 msgid "alarms.save"
 msgstr "Speichern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:200
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:202
 msgid "alarms.cancel"
 msgstr "Abbrechen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:11
 msgid "alarms.messagetitles"
 msgstr "Vorhandene Meldungen"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:17
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
+msgid "alarm.delete"
+msgstr "löschen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:24
 msgid "alarms.addmessage"
@@ -970,10 +1042,6 @@ msgstr "aktivieren"
 msgid "alarm.archive"
 msgstr "archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
-msgid "alarm.delete"
-msgstr "löschen"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
 msgid "alarm.route.info"
 msgstr "Anfahrt-Information"
@@ -1002,10 +1070,19 @@ msgstr "Soll die Einsätze wirklich archiviert werden?"
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:59
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:109
 #: emonitor/modules/printers/__init__.py:40
 msgid "template.alarm_sum"
 msgstr "Einsatzzusammenfassung"
+
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:115
+msgid "alarms.page"
+msgstr "Seite"
+
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:133
+#, fuzzy
+msgid "alarms.object"
+msgstr "- kein Einsatzobjekt -"
 
 #: emonitor/modules/cars/__init__.py:30
 msgid "module.cars"
@@ -3039,3 +3116,6 @@ msgstr "Abbrechen"
 
 #~ msgid "event.variable.notset"
 #~ msgstr "- nicht gesetzt -"
+
+#~ msgid "alarm.route_print"
+#~ msgstr "Anfahrt"
