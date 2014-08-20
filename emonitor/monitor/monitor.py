@@ -69,7 +69,7 @@ def monitorContent(clientid=0):
     for w in re.findall('\[\[\s?(.+?)\s?\]\]', content):
         for widgets in current_app.blueprints['widget'].modules:
             for widget in widgets.getMonitorWidgets():
-                if widget.getName == w:
+                if widget.getName() == w:
                     content = content.replace(u'[[%s]]' % w, widget.getHTML(request, alarmid=alarmid, alarm=alarm))
 
     return render_template('monitor.html', content=content, theme=layout.theme, activecount=len(count), position=pos, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
