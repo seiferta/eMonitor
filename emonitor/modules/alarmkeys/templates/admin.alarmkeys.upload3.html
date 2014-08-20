@@ -1,70 +1,78 @@
 <form name="defintion" id="definitionForm" action="/admin/data/alarmkeys?action=testimport" method="post">
-<div id="colselection" style="position:relative;">
-    <h3>{{ _('alarmkeys.upload.step3header') }}</h3>
-    <div style="width:50%;float:left;">
-        {{ _('alarmkeys.upload.category') }}:<span class="required">*</span><br/>
-        <select name="category" style="width:99%">
-            <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
-            {% for col in cols %}
-            <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;float:left;">
-        {{ _('alarmkeys.upload.key') }}:<span class="required">*</span><br/>
-        <select name="key" style="width:99%">
-            <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
-            {% for col in cols %}
-            <option value="{{col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;float:left;padding-top:5px;">
-        {{ _('alarmkeys.upload.keyinternal') }}:<span class="required">*</span><br/>
-        <select name="keyinternal" style="width:99%">
-            <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
-            {% for col in cols %}
-            <option value="{{ col[0]  }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;float:left;padding-top:5px;">
-        {{ _('alarmkeys.upload.remark') }}:<br/>
-        <select name="remark" style="width:99%;">
-            <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
-            {% for col in cols %}
-            <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;float:left;padding-top:5px;">
-        {{ _('alarmkeys.upload.cars1') }}:<br/>
-        <select name="cars1" multiple="multiple" style="width:99%;height" size="6">
-            {% for col in cols %}
-            <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;float:left;padding-top:5px;">
-        <span i18n:translate="alarmkeys.upload.cars2">TEXT</span>:<br/>
-        <select name="cars2" multiple="multiple" style="width:99%;" size="6">
-            {% for col in cols %}
-            <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div style="width:50%;">
-        &nbsp;<br/>
-        {{ _('alarmkeys.upload.material') }}:<br/>
-        <select name="material" multiple="multiple" style="width:99%;" size="6">
-            {% for col in cols %}
-            <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-        </select>
-        <p>{{ _('alarmkeys.upload.requiredlabel', mark='\'*\'') }}</p>
-        <p>
-            <button type="button" onclick="return sendDefinition()" id="evalData">{{ _('alarmkeys.upload.evaldata') }}</button>
-        </p>
+    <div id="colselection" style="position:relative;">
+        <h3>{{ _('alarmkeys.upload.step3header') }}</h3>
+        <div style="width:50%;float:left;">
+            <label>{{ _('alarmkeys.upload.category') }}:<span class="required">*</span><br/>
+                <select name="category" style="width:99%">
+                    <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
+                    {% for col in cols %}
+                    <option value="{{ col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;float:left;">
+            <label>{{ _('alarmkeys.upload.key') }}:<span class="required">*</span><br/>
+                <select name="key" style="width:99%">
+                    <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
+                    {% for col in cols %}
+                    <option value="{{col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;float:left;padding-top:5px;">
+            <label>{{ _('alarmkeys.upload.keyinternal') }}:<span class="required">*</span><br/>
+                <select name="keyinternal" style="width:99%">
+                    <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
+                    {% for col in cols %}
+                    <option value="{{ col[0]  }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;float:left;padding-top:5px;">
+            <label>{{ _('alarmkeys.upload.remark') }}:<br/>
+                <select name="remark" style="width:99%;">
+                    <option value="">{{ _('alarmkeys.upload.choosecol') }}</option>
+                    {% for col in cols %}
+                    <option value="{{ col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;float:left;padding-top:5px;">
+            <label>{{ _('alarmkeys.upload.cars1') }}:<br/>
+                <select name="cars1" multiple="multiple" style="width:99%;height" size="6">
+                    {% for col in cols %}
+                    <option value="{{ col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;float:left;padding-top:5px;">
+            <label>{{ _('alarmkeys.upload.cars2') }}:<br/>
+                <select name="cars2" multiple="multiple" style="width:99%;" size="6">
+                    {% for col in cols %}
+                    <option value="{{ col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div style="width:50%;">
+            &nbsp;<br/>
+            <label>{{ _('alarmkeys.upload.material') }}:<br/>
+                <select name="material" multiple="multiple" style="width:99%;" size="6">
+                    {% for col in cols %}
+                    <option value="{{ col[0] }}">{{ col[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <p>{{ _('alarmkeys.upload.requiredlabel', mark='\'*\'') }}</p>
+            <p>
+                <button type="button" onclick="return sendDefinition()" id="evalData">{{ _('alarmkeys.upload.evaldata') }}</button>
+            </p>
+        </div>
     </div>
 </form>
 <script>
@@ -82,8 +90,8 @@
                 $('#testimport').html(data);
                 $('#tab0 > .overlayproto').remove();
                 $('#myTab li:eq(1) a').tab('show');
-            },
+            }
         });
         return false; 
-    };
+    }
 </script>

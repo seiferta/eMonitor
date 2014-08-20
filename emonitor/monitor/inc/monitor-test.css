@@ -7,9 +7,9 @@
 }
 
 body{color:#fff;}
-div.version{background:url(/img/logo.png) no-repeat 0px 0px transparent;position:absolute;left:2px; bottom:2px;height:30px;padding-left:30px;}
+div.version{background:url(/img/logo.png) no-repeat 0 0 transparent;position:absolute;left:2px; bottom:2px;height:30px;padding-left:30px;}
 div.versiontext{clear:both;position:fixed;bottom:5px;left:30px;}
 div.versiontext small{color: #ababab;}
-div.footer{position:fixed;left:0px;right:0px;bottom:0px;height:20px;background-color: #333333 !important;border-top:1px solid #6e6e6e;}
+div.footer{position:fixed;left:0;right:0;bottom:0;height:20px;background-color: #333333 !important;border-top:1px solid #6e6e6e;}
 div.time{float:right;color: #ababab;padding-right:5px;padding-top:2px;font-size:12px;}
 #activecount{position:absolute;top:2px;right:2px;color: #ffffff;font-size:20px;}

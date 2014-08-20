@@ -27,25 +27,21 @@
                     </div>
                     <div class="loginform" style="padding:20px;">
                         <h3>{{ _('login.user_header') }}</h3>
-                        <p>
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                              <input class="form-control" id="password" type="password" placeholder="{{ _('login.curpassword') }}" name="curpwd">
-                            </div>
-                        </p>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                          <input class="form-control" id="password" type="password" placeholder="{{ _('login.curpassword') }}" name="curpwd">
+                        </div>
+                        <br/>
                         <p>{{ _('login.newpassword') }}</p>
-                        <p>
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                              <input class="form-control" type="password" placeholder="{{ _('login.newpasswd') }}" name="newpwd">
-                            </div>
-                        </p>
-                        <p>
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                              <input class="form-control" type="password" placeholder="{{ _('login.repeat') }}" name="newpwdcheck">
-                            </div>
-                        </p>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                          <input class="form-control" type="password" placeholder="{{ _('login.newpasswd') }}" name="newpwd">
+                        </div>
+                        <br/>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                          <input class="form-control" type="password" placeholder="{{ _('login.repeat') }}" name="newpwdcheck">
+                        </div>
                         <p style="display:none;">
                             <input type="checkbox" name="remember" value="1" checked="checked"/>
                             {{ _('login.rememberme') }}
@@ -57,7 +53,7 @@
                         <p>&nbsp;</p>
                         <a href="/" title="{{ _('startpage.title') }}"><div class="version"> </div></a>
                         <div class="loginversion">
-                            <small style="color:rgb(171,171,171)">{{ app_name }} <span>{{ app_version }}</span></small>
+                            <small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small>
                         </div>
                     </div>
                 </div>

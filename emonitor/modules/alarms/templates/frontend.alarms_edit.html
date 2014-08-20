@@ -56,15 +56,23 @@
                             </p>
                             <p style="width:45%;float:left">
                                 <label style="width:99%">{{ _('alarms.city') }}:<br/>
-                                    <select name="edit_city" style="width:100%;height:20px;">
+
+                                    {# <select name="edit_city" style="width:100%;height:20px;">
                                         {%- for city in cities %}
                                         <option value="{{ city.id }}" {% if alarm.city and city.id==alarm.city.id %}selected="selected"{% endif %}>{{ city.name }}</option>
                                         {%- endfor %}
                                         {%- if alarm.get('id.city')=='0' %}
                                         <option selected="selected">{{ alarm.city.name }}</option>
                                         {%- endif %}
-                                    </select>
+                                    </select> #}
+                                    <input type="text" name="edit_cityname" id="edit_cityname" list="citylist" value="{{ alarm.city.name }}"/>
+                                    <datalist id="citylist">
+                                        {%- for city in cities %}
+                                        <option value="{{ city.name }}">
+                                        {%- endfor  %}
+                                    </datalist>
                                 </label>
+                                <input type="text" name="edit_city" id="edit_city" value="{{ alarm.city.id }}"/>
                             </p>
                         </div>
                     </div>
@@ -254,11 +262,15 @@
                     $('#lat').val(street.lat);
                     $('#lng').val(street.lng);
                     $('#zoom').val(street.zoom);
-                    $('select[name=edit_city]').val(street.cityid);
+                    //$('select[name=edit_city]').val(street.cityid);
+                    $('input[name=edit_cityname]').val(street.cityname);
+                    $('input[name=edit_city]').val(street.cityid);
                 }
             });
             return false;
         }
+
+        $('input[name=edit_cityname]').change(function(){/* TODO: add callback for id*/ $('input[name=edit_city]').val('')});
 
         function clearCars(){
             $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){

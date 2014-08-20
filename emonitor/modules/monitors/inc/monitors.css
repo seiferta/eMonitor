@@ -1,8 +1,8 @@
 
-.monitorclient{background:url('/img/monitor.png');width:200px;height:143px;position:relative;float:left;margin-right:10px;margin-bottom:10px;}
-.monitorclient .id{position:absolute;color:#fff;font-size:50px;left:0px;bottom:50px;text-align:center;width:200px;}
-.monitorclient .ip{position:absolute;bottom:10px;left:0px;text-align:center;color:#fff;width:200px;}
-.monitorclient .alive{position:absolute;bottom:12px;right:12px;width:10px;height:10px;background:url('/img/marker_greenpoint.png')}
+.monitorclient{background:url(/img/monitor.png);width:200px;height:143px;position:relative;float:left;margin-right:10px;margin-bottom:10px;}
+.monitorclient .id{position:absolute;color:#fff;font-size:50px;left:0;bottom:50px;text-align:center;width:200px;}
+.monitorclient .ip{position:absolute;bottom:10px;left:0;text-align:center;color:#fff;width:200px;}
+.monitorclient .alive{position:absolute;bottom:12px;right:12px;width:10px;height:10px;background:url(/img/marker_greenpoint.png)}
 
 .widgets{overflow:hidden;display:block;margin-bottom:20px;}
 .widget{border:1px solid silver;float:left;width:80px;margin-right:5px;margin-bottom:5px;cursor:pointer;text-align:center;padding:5px;}
@@ -11,13 +11,13 @@
 .gridster .del{position:absolute;top:1px;right:1px;cursor:pointer;}
 .gridster .edit{position:absolute;top:1px;right:14px;cursor:pointer;}
 .gridster li{text-align:center;}
-.gridster li p{padding-top:0px;}
+.gridster li p{padding-top:0;}
 
-#vtab {margin: 0px; width: 620px; height: 100%;}
+#vtab {margin: 0; width: 620px; height: 100%;}
 #vtab > ul > li {width: 215px; background-color: #fafafa !important; list-style-type: none; display: block; font-size:12px; margin: auto; padding-bottom: 15px; border: 1px solid #fafafa; position: relative; border-right: none; padding-top:15px; padding-left:5px;}
 
 #vtab > ul > li.selected {border: 1px solid #ddd; border-right: none; z-index: 10; background-color: #fff !important; position: relative;}
-#vtab > ul {float: left; width: 110px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative; top: 0px;}
+#vtab > ul {float: left; width: 110px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative; top: 0;}
 #vtab > div {background-color: #fff; margin-left: 220px; border: 1px solid #ddd; min-height: 200px; padding-left: 12px; position: relative;z-index: 9;}
 #vtab  > ul > li.enabled {cursor:pointer; font-weight:bold;}
 

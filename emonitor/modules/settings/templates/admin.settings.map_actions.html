@@ -3,9 +3,9 @@
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
 <style>
     .path{width:99%;border:1px solid black;}
-    .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0px transparent}
-    .pathok{background:url(/settings/inc/active.png) no-repeat right 0px transparent}
-    .patherror{background:url(/settings/inc/error.png) no-repeat right 0px transparent}
+    .pathloading{background:url(/settings/inc/updating.gif) no-repeat right 0 transparent}
+    .pathok{background:url(/settings/inc/active.png) no-repeat right 0 transparent}
+    .patherror{background:url(/settings/inc/error.png) no-repeat right 0 transparent}
     div.leaflet-control-attribution{display:none!important;}
     .leaflet-control-zoom{display:none!important;}
     .leaflet-tile{border:1px solid black!important;opacity:0.3!important;filter:alpha(opacity=30);}
@@ -90,7 +90,7 @@
     var map = null;
     var interval;
     function onMapClick(e){
-        obj =  $(e.originalEvent.target)
+        var obj =  $(e.originalEvent.target)
         if (obj.hasClass('selectedtile') && !obj.hasClass('noclick')){
             obj.removeClass('selectedtile');
         }else{
@@ -103,7 +103,7 @@
         interval = setInterval(getLoadProgress, 1000);
         getLoadProgress();
         $('#progress_state').show();
-        $('.leaflet-layer').children().children('img').each(function (index){
+        $('.leaflet-layer').children().children('img').each(function(index){
             if ($(this).hasClass('selectedtile')){
                 var p = $(this).attr('src').split(/[\/]+/);
                 t += p[3]+','+p[4].split(".")[0]+'-';

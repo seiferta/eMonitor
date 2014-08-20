@@ -27,20 +27,16 @@
                     </div>
                     <div class="loginform" style="padding:20px;">
                         <h3>{{ _('login.header') }}</h3>
-                        <p>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                <input class="form-control" type="text" name="username" id="username" placeholder="{{ _('login.username') }}">
-                            </div>
-
-                        </p>
-                        <p>
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                              <input class="form-control" type="password" placeholder="{{ _('login.password') }}" name="password">
-                            </div>
-                        </p>
-                        <p style="display:none;">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                            <input class="form-control" type="text" name="username" id="username" placeholder="{{ _('login.username') }}">
+                        </div>
+                        <br/>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                          <input class="form-control" type="password" placeholder="{{ _('login.password') }}" name="password">
+                        </div>
+                         <p style="display:none;">
                             <input type="checkbox" name="remember" value="1" checked="checked"/>
                             {{ _('login.rememberme') }}
                         </p>

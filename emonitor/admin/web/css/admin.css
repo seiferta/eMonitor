@@ -48,8 +48,8 @@ div.headrow{background-color: #ababab;font-weight:bolder;overflow:hidden;padding
 div.headcell{float:left;}
 div.subheadrow{background-color:#F2F2F2;font-weight:bolder;overflow:hidden;padding:4px 4px;border:1px solid silver;border-top-width:0;}
 div.subheadcell{float:left;}
-div.rowadd{position:relative;overflow:hidden;padding:1px 4px;background-color:#fff/*rgb(222, 222, 222)*/;border:1px solid silver;border-top:0;}
-div.row{position:relative;overflow:hidden;padding:1px 4px!important;background-color:#fff/*rgb(222, 222, 222)*/;border:1px solid silver;border-top:0;margin:0 !important;}
+div.rowadd{position:relative;overflow:hidden;padding:1px 4px;background-color:#fff;border:1px solid silver;border-top:0;}
+div.row{position:relative;overflow:hidden;padding:1px 4px!important;background-color:#fff/;border:1px solid silver;border-top:0;margin:0 !important;}
 div.row:hover{background-color: #dedede /*#fff*/;cursor:default;}
 div.row .morelink{background:url(/img/more.png) no-repeat 3px transparent;border:0;position:absolute;top:3px;width:20px;height:20px;}
 div.row .morelink:hover{background:url(/img/moreover.png) no-repeat 3px transparent;}
@@ -60,7 +60,7 @@ div.subrow{position:relative;overflow:hidden;padding:1px 4px;background-color:#f
 div.subrow:hover{background-color: #dedede;cursor:default;}
 div.subrowcell{float:left;margin-top:4px;}
 div.rownoentry{border:1px solid silver;min-height:40px;}
-div.row button, div.subrow button{float:right;width:22px;height:22px;padding:1px;margin: 0px 0px 0px 2px}
+div.row button, div.subrow button{float:right;width:22px;height:22px;padding:1px;margin: 0 0 0 2px}
 div.headrow button.add{float:right;width:24px;height:21px;margin:0;padding: 0;}
 div.subheadrow button.add{float:right;width:24px;height:21px;margin:0;padding: 0;}
 div.rowadd button.save{float:right;width:46px;height:21px;padding:1px; margin: 4px 0 0 2px;}
