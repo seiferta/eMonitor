@@ -60,6 +60,7 @@ def getFrontendContent(**params):
             alarm.set(u'address2', request.form.get('edit_address2'))
 
         if (request.form.get(u'marker') == '1' and not hnumber) or request.form.get('update_position') == '1':
+            alarm.set(u'routing', '')
             alarm.set(u'lat', request.form.get('lat'))
             alarm.set(u'lng', request.form.get('lng'))
             alarm.set(u'zoom', request.form.get('zoom'))
