@@ -43,12 +43,12 @@ def loadTiles(path, tilelist):
             try:
                 getTile(err[0], err[1])
             except:
-                print "error in %s" %err
+                print "error in %s" % err
             
         LOADINPROGRESS = [0, 0]
     
     if LOADINPROGRESS[0] != 0:
-        return LOADINPROGRESS   # still in progress
+        return LOADINPROGRESS  # still in progress
     
     LOADINPROGRESS = [sum(map(lambda x:len(tilelist[x]), tilelist)), 0]  # init progress
     scheduler.add_date_job(doLoadTiles, datetime.datetime.fromtimestamp(time.time() + 2), kwargs={'path': path, 'tilelist': tilelist})

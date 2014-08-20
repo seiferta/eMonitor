@@ -4,7 +4,6 @@ import itertools as IT
 from collections import OrderedDict
 
 from flask import render_template, current_app
-from emonitor.modules.settings.settings import Settings
 from emonitor.modules.maps.map import Map
 from emonitor.modules.streets.city import City
 
@@ -52,13 +51,11 @@ def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given c
     map_details = Map.getDefaultMap().getMapBox(tilepath=current_app.config.get('PATH_TILES'))
 
     SEARCHSTRING = 'area[name="%s"];way(%s,%s,%s,%s)(area)[highway][name];(._;>;);out;' % (city.name, map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all streets for given city
-    #requests.session()
     r = requests.post(URL, data={'data': SEARCHSTRING})
     xmldoc = minidom.parseString(r._content)
     nodes = xmldoc.getElementsByTagName('node') 
     ways = xmldoc.getElementsByTagName('way')
 
-    #dbosmids = [int(s.osmid) for s in Street.getStreets(cityid=city.id)]
     dbosmids = [int(s.osmid) for s in city.getStreets()]
     
     streets = OrderedDict()

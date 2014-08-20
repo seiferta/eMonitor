@@ -180,7 +180,7 @@ def getAlarmRoute(alarm):
     description = []
     for l in data['description'].split('<br>'):
         if babel.gettext(u'alarms.print.bus') not in l.lower():
-            match_dir = re.findall(r"" + babel.gettext(u'alarms.print.slightleft') + "|" + babel.gettext(u'alarms.print.left') + "|" + babel.gettext(u'alarms.print.slightright') + "|" +babel.gettext(u'alarms.print.right') + "|" + babel.gettext(u'alarms.print.straight') + "|\d\.\s" + babel.gettext(u'alarms.print.exit'), l.lower()),  # km extraction
+            match_dir = re.findall(r"" + babel.gettext(u'alarms.print.slightleft') + "|" + babel.gettext(u'alarms.print.left') + "|" + babel.gettext(u'alarms.print.slightright') + "|" + babel.gettext(u'alarms.print.right') + "|" + babel.gettext(u'alarms.print.straight') + "|\d\.\s" + babel.gettext(u'alarms.print.exit'), l.lower()),  # km extraction
             match_length = re.findall(r"\d*\.\d+\s*[k]?m|\d+\s*[k]?m", l)  # km extraction
 
             if len(match_dir) > 0 and len(match_length) > 0:

@@ -28,7 +28,7 @@ class AlarmSection(db.Model):
         return self.method.split(';')[0]
         
     def getSectionMethodParams(self):
-        if len(self.method.split(';'))>1:
+        if len(self.method.split(';')) > 1:
             return ','.join(self.method.split(';')[1:])
         return ''
 

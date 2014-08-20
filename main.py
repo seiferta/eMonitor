@@ -10,13 +10,12 @@ os.environ['TESSDATA_PREFIX'] = _PATH + '/bin/tesseract'
 
 
 def tornado(args):
-    from tornado import ioloop, wsgi, httpserver, autoreload, web
+    from tornado import ioloop, wsgi, autoreload, web
 
     def t_reload():
         print "before reload"
 
     webapp.logger.info('emonitor started with tornado server on port %s' % webapp.config.get('PORT'))
-    #_server = httpserver.HTTPServer(wsgi.WSGIContainer(webapp))
     _server = web.Application([(r'/ws', SocketHandler), (r'.*', web.FallbackHandler, {'fallback': wsgi.WSGIContainer(webapp)})])
     _server.listen(int(webapp.config.get('PORT')))
 
@@ -29,14 +28,12 @@ def tornado(args):
         tornadoloop.start()
     except KeyboardInterrupt:
         webapp.logger.info('emonitor stopped')
-        #_server.stop()
         tornadoloop.stop()
         try:
             sys.exit(0)
         except:
             pass
     finally:
-        #_server.stop()
         tornadoloop.stop()
 
 

@@ -17,7 +17,7 @@ class Ocr(Settings):
 
     @staticmethod  # convert [pdf, tif, .jpg] -> jpg or png
     def convertFileType(path, inname):
-        import emonitor.webapp as wa
+        from main import webapp as wa
         i = t = 0
         params = Ocr.getOCRParams()
         convertparams = Ocr.getConvertParams()
@@ -60,7 +60,7 @@ class Ocr(Settings):
         
     @staticmethod  # run ocr with given file
     def convertText(path, inname, pages):
-        import emonitor.webapp as wa
+        from main import webapp as wa
         i = t = 0
         text = ""
         params = Ocr.getOCRParams()

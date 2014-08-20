@@ -1,7 +1,4 @@
-import re
-import difflib
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker
-from emonitor.extensions import classes
 
 __all__ = ['DummyAlarmFaxChecker']
 
@@ -14,4 +11,3 @@ class DummyAlarmFaxChecker(AlarmFaxChecker):
 
     def getEvalMethods(self):
         return []
-

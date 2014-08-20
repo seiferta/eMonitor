@@ -8,7 +8,7 @@ def getFrontendData(self):
         if request.args.get('id') not in ['', 'None']:
             street = classes.get('street').getStreet(request.args.get('id'))
             return {'lat': street.lat, 'lng': street.lng, 'zoom': street.zoom, 'way': street.navigation,
-                    'cityid': street.cityid}
+                    'cityid': street.cityid, 'cityname': street.city.name}
 
     elif request.args.get('action') == 'housecoords':  # deliver center of housenumbers
         if request.args.get('streetid') != '' and request.args.get('housenumber') != '':

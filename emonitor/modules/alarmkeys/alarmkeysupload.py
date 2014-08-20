@@ -69,7 +69,7 @@ class XLSFile:
         
         importkeys = []
         # state -1:new, 0:no changes, 1:need update
-        for row in range(self.headerrow+1, worksheet.nrows - 1):
+        for row in range(self.headerrow + 1, worksheet.nrows - 1):
             item = {'cars1': [], 'cars2': [], 'material': [], 'cars1_ids': [], 'cars2_ids': [], 'material_ids': [],
                     'dbid': None, 'state': '0', 'category': evalValue(row, getPosForCol(coldefinition['category'])),
                     'key': evalValue(row, getPosForCol(coldefinition['key'])),
