@@ -30,9 +30,11 @@ def getFrontendContent(**params):
 
         alarm.set(u'marker', request.form.get('marker'))
         alarm.set(u'id.city', request.form.get('edit_city'))
-        _city = classes.get('city').get_byid(request.form.get('edit_city'))
+        _city = classes.get('city').get_byid(request.form.get('edit_cityname'))
         if _city:
             alarm.set(u'city', _city.name)
+        else:
+            alarm.set(u'city', request.form.get('edit_cityname'))
 
         alarm.set(u'streetno', request.form.get('edit_streetno'))
         street = classes.get('street').getStreet(request.form.get('edit_addressid'))
@@ -71,8 +73,8 @@ def getFrontendContent(**params):
         signal.send('alarm', 'updated')
         if request.form.get('alarm_id') == u'None':  # create new
             classes.get('alarm').changeState(alarm.id, 0)  # prepare alarm
-        else:
-            classes.get('alarm').changeState(alarm.id, 1)  # activate alarm
+        #else:
+        #    classes.get('alarm').changeState(alarm.id, 1)  # activate alarm
 
     elif request.args.get('action') == 'editalarm':
         if request.args.get('alarmid', '0') == '0':  # add new alarm
@@ -143,7 +145,6 @@ def getFrontendData(self, *params):
                     monitorserver.sendMessage(str(monitor.id), 'load', layoutid='%s' % l.id, alarmid='%s' % request.args.get('alarmid'))  # TODO check
 
     elif request.args.get('action') == 'printalarm':
-        #print "print alarm", request.args.get('alarmid'), request.args.get('printerdef')
         classes.get('printer').getPrinters(pid=int(request.args.get('printerdef'))).doPrint(alarmid=request.args.get('alarmid'))
         return ""
 
