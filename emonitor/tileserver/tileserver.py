@@ -18,6 +18,8 @@ def getTileFromURL(zoom, filename, lat, lng):
     """ path example: /tileserver/osmap/14/8724/5688 """
     import urllib2
     response = urllib2.urlopen('http://a.tile.openstreetmap.org/%s/%s/%s.png' % (zoom, lat, lng))
+    if not(os.path.exists(os.path.dirname(filename))):
+        os.makedirs(os.path.dirname(filename))
     fout = open(filename, 'wb')
     fout.write(response.read())
     fout.close()
