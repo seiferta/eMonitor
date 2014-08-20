@@ -162,7 +162,6 @@
                 $.each(data.mappath, function(i, item){
                     $('img[src$="'+item+'"]').addClass('selectedtile').addClass('noclick');
                 });
-                console.log(data.min_latdeg);
                 $('#min_lat').html(data.min_latdeg);
                 $('#max_lat').html(data.max_latdeg);
                 $('#min_lng').html(data.min_lngdeg);
