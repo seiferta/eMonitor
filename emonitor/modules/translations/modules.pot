@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-19 12:53+0200\n"
+"POT-Creation-Date: 2014-08-19 19:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,7 +196,7 @@ msgid "alarmkeys.upload.exportbutton"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:64
-msgid "alarmeys.upload.noexportdata"
+msgid "alarmkeys.upload.noexportdata"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:72
@@ -584,13 +584,13 @@ msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:116
 #: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.straight"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:117
 #: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.exit"
 msgstr ""
 
@@ -600,29 +600,29 @@ msgid "alarms.print.bus"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:119
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:200
 msgid "alarms.print.positive"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:120
-#: emonitor/modules/alarms/alarmutils.py:197
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.negative"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:189
-#: emonitor/modules/alarms/alarmutils.py:191
+#: emonitor/modules/alarms/alarmutils.py:192
+#: emonitor/modules/alarms/alarmutils.py:194
 msgid "alarms.print.highwaylong"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:191
+#: emonitor/modules/alarms/alarmutils.py:194
 msgid "alarms.print.highwayshort"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.exitstart"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.straightexit"
 msgstr ""
 
@@ -858,7 +858,7 @@ msgid "alarms.endtime"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:119
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:140
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:151
 msgid "alarms.person"
 msgstr ""
 
@@ -867,13 +867,13 @@ msgid "alarms.priority"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:146
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:157
 #: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:139
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:152
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:163
 msgid "alarms.cars"
 msgstr ""
 
@@ -934,6 +934,11 @@ msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:40
 msgid "alarms.messagetext"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_routing.html:9
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
+msgid "alarm.route.info"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
@@ -1003,10 +1008,6 @@ msgstr ""
 msgid "alarm.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
-msgid "alarm.route.info"
-msgstr ""
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:139
 msgid "alarm.route"
 msgstr ""
@@ -1031,16 +1032,16 @@ msgstr ""
 msgid "alarms.deletequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:109
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:120
 #: emonitor/modules/printers/__init__.py:40
 msgid "template.alarm_sum"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:115
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:126
 msgid "alarms.page"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:133
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:144
 msgid "alarms.object"
 msgstr ""
 

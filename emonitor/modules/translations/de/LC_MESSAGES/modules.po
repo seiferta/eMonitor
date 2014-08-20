@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-19 12:53+0200\n"
-"PO-Revision-Date: 2014-08-19 12:54+0100\n"
+"POT-Creation-Date: 2014-08-19 19:56+0200\n"
+"PO-Revision-Date: 2014-08-19 20:04+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -207,9 +207,8 @@ msgid "alarmkeys.upload.exportbutton"
 msgstr "Export starten"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:64
-#, fuzzy
-msgid "alarmeys.upload.noexportdata"
-msgstr "- keine Einsatztypen definiert -"
+msgid "alarmkeys.upload.noexportdata"
+msgstr "- keine Stichworte vorhanden -"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:72
 msgid "alarmkeys.upload.importinfo"
@@ -295,13 +294,12 @@ msgid "alarmkeys.upload.cars2"
 msgstr "Folgefahrzeug(e)"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:39
-#, fuzzy
 msgid "alarmkeys.upload.existingtitle"
-msgstr "Einsatztyp bearbeiten"
+msgstr "Vorhandene Stichworte aktualisieren"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:41
 msgid "alarmkeys.upload.changestitle"
-msgstr ""
+msgstr "Änderungen"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:43
 msgid "alarmkeys.upload.addtitle"
@@ -606,13 +604,13 @@ msgstr "links"
 
 #: emonitor/modules/alarms/__init__.py:116
 #: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.straight"
 msgstr "weiterfahren"
 
 #: emonitor/modules/alarms/__init__.py:117
 #: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.exit"
 msgstr "ausfahrt"
 
@@ -622,29 +620,29 @@ msgid "alarms.print.bus"
 msgstr "bus"
 
 #: emonitor/modules/alarms/__init__.py:119
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:200
 msgid "alarms.print.positive"
 msgstr "Fahrtrichtung SÜD"
 
 #: emonitor/modules/alarms/__init__.py:120
-#: emonitor/modules/alarms/alarmutils.py:197
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.negative"
 msgstr "Fahrtrichtung NORD"
 
-#: emonitor/modules/alarms/alarmutils.py:189
-#: emonitor/modules/alarms/alarmutils.py:191
+#: emonitor/modules/alarms/alarmutils.py:192
+#: emonitor/modules/alarms/alarmutils.py:194
 msgid "alarms.print.highwaylong"
 msgstr "Bundesautobahn"
 
-#: emonitor/modules/alarms/alarmutils.py:191
+#: emonitor/modules/alarms/alarmutils.py:194
 msgid "alarms.print.highwayshort"
 msgstr "A"
 
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.exitstart"
 msgstr "Auf"
 
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:198
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
@@ -815,9 +813,8 @@ msgid "alarms.type.itemscount"
 msgstr "(%(count)s Einsatztypen vorhanden)"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:18
-#, fuzzy
 msgid "alarms.type.interpreter"
-msgstr "Typname"
+msgstr "Interpreter/Auswerter"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:32
 msgid "alarms.type.variables"
@@ -897,7 +894,7 @@ msgid "alarms.endtime"
 msgstr "Uhrzeit Ende"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:119
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:140
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:151
 msgid "alarms.person"
 msgstr "Mitteiler"
 
@@ -906,13 +903,13 @@ msgid "alarms.priority"
 msgstr "Priorität"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:146
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:157
 #: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr "Bemerkung"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:139
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:152
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:163
 msgid "alarms.cars"
 msgstr "Einsatzmittel"
 
@@ -974,6 +971,11 @@ msgstr "Meldungstyp"
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:40
 msgid "alarms.messagetext"
 msgstr "Text"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_routing.html:9
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
+msgid "alarm.route.info"
+msgstr "Anfahrt-Information"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:47
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:129
@@ -1042,10 +1044,6 @@ msgstr "aktivieren"
 msgid "alarm.archive"
 msgstr "archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:138
-msgid "alarm.route.info"
-msgstr "Anfahrt-Information"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:139
 msgid "alarm.route"
 msgstr "Route anzeigen/ausblenden"
@@ -1070,19 +1068,18 @@ msgstr "Soll die Einsätze wirklich archiviert werden?"
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:109
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:120
 #: emonitor/modules/printers/__init__.py:40
 msgid "template.alarm_sum"
 msgstr "Einsatzzusammenfassung"
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:115
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:126
 msgid "alarms.page"
 msgstr "Seite"
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:133
-#, fuzzy
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:144
 msgid "alarms.object"
-msgstr "- kein Einsatzobjekt -"
+msgstr "Einsatzobjekt"
 
 #: emonitor/modules/cars/__init__.py:30
 msgid "module.cars"
@@ -2455,12 +2452,12 @@ msgstr "..."
 #: emonitor/modules/streets/content_admin.py:130
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
-msgstr ""
+msgstr "%(i)s Städte/Orte wurden hinzugefügt."
 
 #: emonitor/modules/streets/content_admin.py:153
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
-msgstr ""
+msgstr "%(i)s Straßen wurden hinugefügt"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:34
 msgid "streets.city.edittitle"
@@ -2525,7 +2522,7 @@ msgstr "Abbrechen"
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:101
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:109
 msgid "streets.hnumbersloaded"
-msgstr ""
+msgstr "Hausnummern wurden geladen."
 
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:12
 msgid "streets.city.delquestion"
@@ -2700,9 +2697,8 @@ msgid "streets.navigation"
 msgstr "Navigation"
 
 #: emonitor/modules/streets/templates/admin.streets_edit.html:36
-#, fuzzy
 msgid "streets.changemaptitle"
-msgstr "Straße hinzufügen"
+msgstr "Karte ändern"
 
 #: emonitor/modules/streets/templates/admin.streets_edit.html:44
 msgid "streets.city"
