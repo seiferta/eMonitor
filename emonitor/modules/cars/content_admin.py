@@ -39,6 +39,8 @@ def getAdminContent(self, **params):
         elif request.form.get('action').startswith('deletecars_'):  # delete car
             db.session.delete(classes.get('car').getCars(id=request.form.get('action').split('_')[-1]))
             db.session.commit()
-
-    params.update({'cars': classes.get('department').getDepartments(module[1]).getCars()})
+    try:
+        params.update({'cars': classes.get('department').getDepartments(module[1]).getCars()})
+    except AttributeError:
+        params.update({'cars': []})
     return render_template('admin.cars.html', **params)
