@@ -56,10 +56,11 @@
             <p>{{ _('alarmkeys.upload.tab3info') }}</p>
             
             <form id="exportForm" method="post" action="">
-                <input type="radio" name="export_opt" value="0" checked="checked"/> {{ _('alarmkeys.upload.exportall') }}<br/>
-                <input type="radio" name="export_opt" value="1"/> {{ _('alarmkeys.upload.exportnoown') }}<br/>
+                <label><input type="radio" name="export_opt" value="0" checked="checked"/> {{ _('alarmkeys.upload.exportall') }}</label><br/>
+                <label><input type="radio" name="export_opt" value="1"/> {{ _('alarmkeys.upload.exportnoown') }}</label><br/>
                 <p> </p>
                 <button type="button" id="startexport" onclick="getFilename()"><i class="fa fa-download"></i> {{ _('alarmkeys.upload.exportbutton') }}</button>
+                <img id="loadingimage" src="/admin/img/loading.gif" style="display:none"/>
             </form>
             <div id="noexportdata" style="display:none;text-align:center;">{{ _('alarmkeys.upload.noexportdata') }}</div>
         </div>
@@ -79,7 +80,6 @@
 {%  block script_end %}
     {{ super() }}
     $(document).ready(function(){
-        /*$("#tabs ul").idTabs();*/ 
         var status = $('#status');
         
         $('#requestForm').ajaxForm({
@@ -102,16 +102,17 @@
     
     function getFilename(){
         $('#noexportdata').hide();
+        $('#loadingimage').show();
         $('#tab3').append($('#overlay_proto').html());
-        //$("#tabs ul").idTabs(2);
-        $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=download&options="+$('input:radio[name=export_opt]:checked').val()+'&department='+$('#department').val(), 
+        $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=download&options="+$('input:radio[name=export_opt]:checked').val()+'&department='+$('#department').val(),
             success: function(filename){
                 $('#tab3 > .overlayproto').remove();
                 if (filename==''){
                     $('#noexportdata').show();
                 }else{
-                    window.location.href = '/download/'+filename;
+                    window.location.href = '/admin/data/alarmkeys/download/'+filename;
                 }
+                $('#loadingimage').hide();
                 return false;
             }
         });

@@ -1,6 +1,6 @@
 import os
 import re
-from flask import current_app, render_template, request
+from flask import current_app, render_template, request, send_from_directory
 import werkzeug
 
 from emonitor.extensions import classes, db
@@ -215,4 +215,10 @@ def getAdminData(self):
         key = classes.get('alarmkey').getAlarmkeys(id=int(request.args.get('keyid')))
         return {'id': key.id, 'category': key.category}
 
+    if "/download/" in request.url:  # deliver file
+        filename = os.path.basename(request.url)
+        mime = "application/x.download"
+        if filename.endswith('.xlsx'):
+            mime = "application/vnd.ms-excel"
+        return send_from_directory("%s/" % current_app.config.get('PATH_TMP'), filename, as_attachment=True, mimetype=mime)
     return ""

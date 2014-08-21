@@ -1,5 +1,6 @@
 import xlrd
 import xlsxwriter
+from flask import current_app
 from emonitor.extensions import classes
 
 
@@ -131,7 +132,7 @@ def buildDownloadFile(department, dtype=0):
     header += ['remark']
         
     # Create an new Excel file and add a worksheet.
-    workbook = xlsxwriter.Workbook('d:/data/python/ffh/data/tmp/aao.xlsx')
+    workbook = xlsxwriter.Workbook('%s/aao.xlsx' % current_app.config.get('PATH_TMP'))
     worksheet = workbook.add_worksheet('aao')
     bold = workbook.add_format({'bold': 1})
 
