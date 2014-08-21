@@ -70,7 +70,7 @@ def getFrontendContent(**params):
         d = datetime.datetime.strptime('%s %s' % (request.form.get('edit_endtimestamp_date'), request.form.get('edit_endtimestamp_time')), "%d.%m.%Y %H:%M:%S")
         alarm.set(u'endtimestamp', d)
         db.session.commit()
-        signal.send('alarm', 'updated')
+        signal.send('alarm', 'updated', alarmid=alarm.id)
         if request.form.get('alarm_id') == u'None':  # create new
             classes.get('alarm').changeState(alarm.id, 0)  # prepare alarm
         #else:
@@ -105,6 +105,7 @@ def getFrontendContent(**params):
         db.session.commit()
         if refresh:
             monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
+        signal.send('alarm', 'deleted', alarmid=request.args.get('alarmid'))
 
     elif request.args.get('action') == 'archivealarm':  # archive selected alarms, id=0 == all
         if int(request.args.get('alarmid')) == 0:

@@ -51,9 +51,10 @@ class AlarmsModule(Module):
         signal.addSignal('alarm', 'changestate')
         signal.addSignal('alarm', 'added')
         signal.addSignal('alarm', 'updated')
-        signal.connect('alarm', 'changestate', frontendAlarmHandler.handleAlarmUpdated)
-        signal.connect('alarm', 'added', frontendAlarmHandler.handleAlarmAdded)
-        signal.connect('alarm', 'updated', frontendAlarmHandler.handleAlarmUpdated)
+        signal.connect('alarm', 'changestate', frontendAlarmHandler.handleAlarmChanges)
+        signal.connect('alarm', 'added', frontendAlarmHandler.handleAlarmChanges)
+        signal.connect('alarm', 'updated', frontendAlarmHandler.handleAlarmChanges)
+        signal.connect('alarm', 'deleted', frontendAlarmHandler.handleAlarmChanges)
 
         signal.connect('alarm', 'testupload_start', adminAlarmHandler.handleAlarmTestUpload)
 
@@ -159,16 +160,8 @@ class AlarmsModule(Module):
 
 class frontendAlarmHandler(SocketHandler):
     @staticmethod
-    def handleAlarmChangestate(sender, **extra):
-        SocketHandler.send_message('alarm.updated', **extra)
-
-    @staticmethod
-    def handleAlarmAdded(sender, **extra):
-        SocketHandler.send_message('alarm.added', **extra)
-
-    @staticmethod
-    def handleAlarmUpdated(sender, **extra):
-        SocketHandler.send_message('alarm.updated', **extra)
+    def handleAlarmChanges(sender, **extra):
+        SocketHandler.send_message(sender, **extra)
 
 
 class adminAlarmHandler(SocketHandler):

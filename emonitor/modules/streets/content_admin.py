@@ -9,7 +9,6 @@ from emonitor.modules.streets.city import City
 
 
 def getAdminContent(self, **params):
-    signal.send('streets', 'class')
     module = request.view_args['module'].split('/')
     if len(module) < 2:
         module.append(u'1')

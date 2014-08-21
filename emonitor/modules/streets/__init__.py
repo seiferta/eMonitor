@@ -1,7 +1,8 @@
 from flask import send_from_directory
+from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
 from emonitor.widget.monitorwidget import MonitorWidget
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import classes, db, babel, signal
 
 from.city import City
 from.street import Street
@@ -33,6 +34,9 @@ class StreetsModule(Module):
         self.updateAdminSubNavigation()
         self.widgets = [MonitorWidget('streets_street', size=(2, 1), template='widget.street.html')]
 
+        signal.addSignal('housenumber', 'osm')
+        signal.connect('housenumber', 'osm', adminHousenumberHandler.handleOSMChanged)
+
         # static folders
         @app.route('/streets/inc/<path:filename>')
         def streets_static(filename):
@@ -61,3 +65,9 @@ class StreetsModule(Module):
 
     def getAdminData(self):
         return getAdminData(self)
+
+
+class adminHousenumberHandler(SocketHandler):
+    @staticmethod
+    def handleOSMChanged(sender, **extra):
+        SocketHandler.send_message(sender, **extra)

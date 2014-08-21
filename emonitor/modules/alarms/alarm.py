@@ -157,7 +157,7 @@ class Alarm(db.Model):
                 pass
             finally:
                 monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
-                signal.send('alarm', 'changestate', value=1)
+                signal.send('alarm', 'changestate', newstate=1)
                 return list(set(c))
 
         elif state == 2:  # close alarm
@@ -172,14 +172,14 @@ class Alarm(db.Model):
             monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
 
             #flash(babel.gettext(u'alarms.statechangeclosed'), 'alarms.close')
-            signal.send('alarm', 'changestate', value=2)
+            signal.send('alarm', 'changestate', newstate=2)
             return []
 
         elif state == 3:  # archive alarm
-            signal.send('alarm', 'changestate', value=3)
+            signal.send('alarm', 'changestate', newstate=3)
             return []
 
-        signal.send('alarm', 'changestate', value=state)
+        signal.send('alarm', 'changestate', newstate=state)
 
     @staticmethod
     def getExportData(exportformat, **params):
@@ -448,7 +448,7 @@ class Alarm(db.Model):
 
             alarm.set('priority', '1')
             db.session.commit()
-            signal.send('alarm', 'added')
+            signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
 
             #copy file

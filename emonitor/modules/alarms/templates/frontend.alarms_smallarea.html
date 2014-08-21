@@ -62,9 +62,10 @@
 
         parent.ws.onmessage=function(e){
             $('#ws').html('<i class="fa fa-eye fa-lg"></i>');
-            if(e.data=='alarm.updated'){
+            d = JSON.parse(e.data);
+            if(d.sender=='alarm.updated' || d.sender=='alarm.deleted' || d.sender=='alarm.changestate'){
                 location.reload();
-            }else if(e.data=='alarm.added'){
+            }else if(d.sender=='alarm.added'){
                 location.reload();
                 alert('{{ _('alarm.addedalert') }}');
             }

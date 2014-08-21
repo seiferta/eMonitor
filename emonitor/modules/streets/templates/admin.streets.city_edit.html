@@ -9,12 +9,6 @@
             }
           });
         });
-        var pid = '';
-        ws.onmessage=function(e){
-            if (e.data==pid){
-                 loadDone();
-             }
-        }
     </script>
 {% endblock %}
 
@@ -81,7 +75,7 @@
             {{_('streets.city.housenumbers') }}:<br/>
            
             <button type="button" onclick="loadOSMHouseNumbers()"> <i class="fa fa-download fa-hn"></i> {{ _('streets.city.loadhnumbers') }}</button>
-            <span id="osmhousenumbers"> </span>
+            <span id="progressstate" style="display:none;margin-left:10px;"><progress id="progress" value="0" max="100"></progress> <span id="progressstreet"></span>: <span id="progressstreetnumbers"></span> {{  _('streets.city.housenumbersfound') }}</span>
         </p>
         <p>
             <button type="submit" name="action" value="updatecity" class="save"><i class="fa fa-check"></i> {{ _('streets.city.save') }}</button>
@@ -94,18 +88,31 @@
 
 {% block script_end %}
     {{ super() }}
-    function loadOSMHouseNumbers(){
-        $('#osmhousenumbers').html('<img class="updating" src="/admin/img/loading.gif"/>');
-        $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbersfromosm&cityid={{ city.id }}",
-            success: function(result) {
-                //$('#housnumbers').html(result+ '{{ _('streets.hnumbersloaded') }}');
-                pid = result;
+
+    window.WebSocket=window.WebSocket || window.MozWebSocket || false;
+    if(window.WebSocket){
+        ws = new WebSocket("ws://"+location.host+"/ws");
+        ws.onmessage=function(e){
+            d = JSON.parse(e.data);
+            if (d.sender=="housenumber.osm" && {{ city.id }}==d.cityid){
+                if(d.position[0]!=d.position[1]){
+                    $('#progressstate').show();
+                    $('#progress').attr('max', d.position[1]).attr('value', d.position[0]);
+                    $('#progressstreet').html(d.street);
+                    $('#progressstreetnumbers').html(d.hnumbers);
+                }else{
+                    $('#progressstate').hide();
+                }
             }
-        });
+        }
     }
 
-    function loadDone(){
-        $('#osmhousenumbers').html('');
-        $('#housnumbers').html('{{ _('streets.hnumbersloaded') }}');
+    function loadOSMHouseNumbers(){
+        $('#progressstate').show();
+        $.ajax({ type : "POST", url : "/admin/data/streets?action=loadhnumbersfromosm&cityid={{ city.id }}",
+            success: function(result) {
+                return false;
+            }
+        });
     }
 {% endblock %}

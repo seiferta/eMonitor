@@ -6,12 +6,13 @@ class SocketHandler(WebSocketHandler):
     clients = set()
 
     @staticmethod
-    #def send_message(sender='', message='', category='', **extra):
     def send_message(sender, **extra):
         for client in SocketHandler.clients:
-            #if category.split('.')[0] in client._config:
-            #client.write_message(time.ctime() + '<i class="fa fa-bell-o"></i>')
-            client.write_message(sender, extra)
+            if extra:
+                extra['sender'] = sender
+                client.write_message(extra)
+            else:
+                client.write_message(sender, extra)
 
     def open(self):
         SocketHandler.clients.add(self)

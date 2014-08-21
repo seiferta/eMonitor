@@ -1,6 +1,6 @@
 import requests
 from xml.dom import minidom
-from emonitor.extensions import classes
+from emonitor.extensions import classes, signal
 
 URL = 'http://overpass-api.de/api/interpreter'
 
@@ -24,6 +24,7 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
         for node in xmldoc.getElementsByTagName('node'):
             nodes[node.attributes['id'].value] = [float(node.attributes['lat'].value), float(node.attributes['lon'].value)]
 
+        _numbers = 0
         for way in xmldoc.getElementsByTagName('way'):
             nd = []
             _id = None
@@ -35,4 +36,6 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
             if _id:
                 housenumbers[_id] = nd
                 street.addHouseNumber(_id, housenumbers[_id])
+                _numbers += 1
+        signal.send('housenumber', 'osm', street=street.name, hnumbers=_numbers, position=(streets.index(street) + 1, len(streets)), cityid=city.id)
     return len(housenumbers)

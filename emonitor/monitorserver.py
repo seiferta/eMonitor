@@ -94,7 +94,7 @@ class MonitorServer():
         return ""
         
     def getClients(self):
-        signal.send('monitorserver', 'clientsearchstart')
+        signal.send('monitorserver', 'clientsearchstart', clients=[])
         monitors = classes.get('monitor').getMonitors()
         message, results = self.sendMessageWithReturn('0', 'ping')
         
