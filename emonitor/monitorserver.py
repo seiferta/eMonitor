@@ -42,7 +42,7 @@ class MonitorServer():
         signal.addSignal('monitorserver', 'clientsearchstart')
         signal.addSignal('monitorserver', 'clientsearchdone')
 
-    def sendMessage(self, clientid, operation, **parameters):
+    def sendMessage(self, clientid, operation, *parameters):
         parameters = dict((x, y) for x, y in parameters)
 
         params = ""
