@@ -1,6 +1,6 @@
 from flask import request, render_template, flash
 
-from emonitor.extensions import classes, db, cache, scheduler, babel, signal
+from emonitor.extensions import classes, db, cache, scheduler, babel
 from .city_utils import loadCitiesFromOsm
 from .street_utils import loadStreetsFromOsm
 from .housenumber_utils import loadHousenumbersFromOsm
@@ -102,7 +102,10 @@ def getAdminContent(self, **params):
                         city.addStreet(Street(request.form.get('edit_name'), request.form.get('edit_navigation'), int(c[0]), c[1], request.form.get('edit_lat'), request.form.get('edit_lng'), request.form.get('edit_zoom'), request.form.get('edit_active'), ''))
                         db.session.commit()
 
-            streets = classes.get('city').get_byid(module[-1]).getStreets()
+            try:
+                streets = classes.get('city').get_byid(module[-1]).getStreets()
+            except AttributeError:
+                streets = []
             chars = {}
             for s in streets:
                 chars[s.name[0].upper()] = 0
