@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import re
 import difflib
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker
@@ -14,6 +15,27 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
     def getEvalMethods(self):
         return [m for m in self.__class__.__dict__.keys() if m.startswith('eval')]
+
+    def getDefaultConfig(self):
+        sections = OrderedDict()
+        sections[u'Alarmschreiben'] = (u'', u'')
+        sections[u'Telefon'] = (u'', u'')
+        sections[u'Einsatznr'] = (u'time', u'evalTime')
+        sections[u'Alarm'] = (u'', u'')
+        sections[u'Mitteiler'] = (u'person', u'')
+        sections[u'Einsatzort'] = (u'', u'')
+        sections[u'Ortsteil/Ort'] = (u'city', u'evalCity')
+        sections[u'Stra\xdfe'] = (u'address', u'evalStreet')
+        sections[u'Abschnitt'] = (u'addresspart', u'evalAddressPart')
+        sections[u'Kreuzung'] = (u'crossing', u'')
+        sections[u'Objekt'] = (u'object', u'evalObject')
+        sections[u'Einsatzplan'] = (u'alarmplan', u'evalAlarmplan')
+        sections[u'Meldebild'] = (u'key', u'evalKey')
+        sections[u'Hinweis'] = (u'remark', u'')
+        sections[u'Funkkan\xe4le'] = (u'remark2', u'')
+        sections[u'Geforderte Einsatzmittel bzw. Ausr\xfcstung'] = (u'', u'')
+        sections[u'(Alarmschreiben Ende)'] = (u'', u'')
+        return {u'keywords': [u'Alarmschreiben', u'Feuerwehreinsatzzentrale'], 'sections': sections}  # section: ('key', 'method')
 
     # eval methods for fax text recognition
     @staticmethod

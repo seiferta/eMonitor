@@ -24,6 +24,13 @@ class AlarmSection(db.Model):
         self.method = method
         self.orderpos = orderpos
 
+    def __repr__(self):
+        return '{}: {} {}'.format(self.orderpos, self.name, self.key)
+
+    def __cmp__(self, other):
+        if hasattr(other, 'orderpos'):
+            return self.orderpos.__cmp__(other.orderpos)
+
     def getSectionMethod(self):
         return self.method.split(';')[0]
         

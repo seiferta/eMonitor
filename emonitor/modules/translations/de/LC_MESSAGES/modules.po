@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-21 15:40+0200\n"
-"PO-Revision-Date: 2014-08-21 15:41+0100\n"
+"POT-Creation-Date: 2014-08-24 20:11+0200\n"
+"PO-Revision-Date: 2014-08-24 20:15+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -584,66 +584,66 @@ msgid "trigger.alarm_changestate"
 msgstr "Einsatz-Status geändert"
 
 #: emonitor/modules/alarms/__init__.py:113
-#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:186
 msgid "alarms.print.slightleft"
 msgstr "leicht links"
 
 #: emonitor/modules/alarms/__init__.py:114
-#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:186
 msgid "alarms.print.slightright"
 msgstr "leicht rechts"
 
 #: emonitor/modules/alarms/__init__.py:115
-#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:186
 msgid "alarms.print.right"
 msgstr "rechts"
 
 #: emonitor/modules/alarms/__init__.py:116
-#: emonitor/modules/alarms/alarmutils.py:183
+#: emonitor/modules/alarms/alarmutils.py:186
 msgid "alarms.print.left"
 msgstr "links"
 
 #: emonitor/modules/alarms/__init__.py:117
-#: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:198
+#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.straight"
 msgstr "weiterfahren"
 
 #: emonitor/modules/alarms/__init__.py:118
-#: emonitor/modules/alarms/alarmutils.py:183
-#: emonitor/modules/alarms/alarmutils.py:198
+#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.exit"
 msgstr "ausfahrt"
 
 #: emonitor/modules/alarms/__init__.py:119
-#: emonitor/modules/alarms/alarmutils.py:182
+#: emonitor/modules/alarms/alarmutils.py:185
 msgid "alarms.print.bus"
 msgstr "bus"
 
 #: emonitor/modules/alarms/__init__.py:120
-#: emonitor/modules/alarms/alarmutils.py:200
+#: emonitor/modules/alarms/alarmutils.py:203
 msgid "alarms.print.positive"
 msgstr "Fahrtrichtung SÜD"
 
 #: emonitor/modules/alarms/__init__.py:121
-#: emonitor/modules/alarms/alarmutils.py:201
+#: emonitor/modules/alarms/alarmutils.py:204
 msgid "alarms.print.negative"
 msgstr "Fahrtrichtung NORD"
 
-#: emonitor/modules/alarms/alarmutils.py:192
-#: emonitor/modules/alarms/alarmutils.py:194
+#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:197
 msgid "alarms.print.highwaylong"
 msgstr "Bundesautobahn"
 
-#: emonitor/modules/alarms/alarmutils.py:194
+#: emonitor/modules/alarms/alarmutils.py:197
 msgid "alarms.print.highwayshort"
 msgstr "A"
 
-#: emonitor/modules/alarms/alarmutils.py:198
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.exitstart"
 msgstr "Auf"
 
-#: emonitor/modules/alarms/alarmutils.py:198
+#: emonitor/modules/alarms/alarmutils.py:201
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
@@ -672,17 +672,17 @@ msgstr ""
 "der Reihenfolge im Fax entsprechen und kann per Drag&Drop geändert werden."
 
 #: emonitor/modules/alarms/templates/admin.alarms.sections_actions.html:9
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:52
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:53
 msgid "alarms.sections.name"
 msgstr "Bereichsname im Fax"
 
 #: emonitor/modules/alarms/templates/admin.alarms.sections_actions.html:14
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:53
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:54
 msgid "alarms.sections.key"
 msgstr "Bereichsschlüssel"
 
 #: emonitor/modules/alarms/templates/admin.alarms.sections_actions.html:19
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:54
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:55
 msgid "alarms.sections.method"
 msgstr "Bearbeitungsmethode"
 
@@ -695,7 +695,7 @@ msgid "alarm.sections.type"
 msgstr "Einsatztypname"
 
 #: emonitor/modules/alarms/templates/admin.alarms.sections_actions.html:35
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:55
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:56
 msgid "alarms.sections.active"
 msgstr "Aktiv"
 
@@ -745,12 +745,12 @@ msgstr "Soll die gewählte Einsatztyp wirklich gelöscht werden?"
 msgid "alarms.sections.delquestion"
 msgstr "Soll der gewählte Bereich wirklich gelöscht werden?"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:19
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:20
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:8
 msgid "alarms.type.header.overview"
 msgstr "Einsatztypen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:20
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:21
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:9
 msgid "alarms.type.info"
 msgstr ""
@@ -759,59 +759,99 @@ msgstr ""
 "unterschiedlichen Alarmfaxen Einsätze erstellen. Die Bereiche innerhalb der "
 "Faxe können abhängig vom Einsatztyp definiert werden."
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:25
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:26
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:13
 msgid "alarms.type.name"
 msgstr "Typname"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:26
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:27
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:27
 msgid "alarms.type.keywords"
 msgstr "Stichwörter"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:28
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:29
 msgid "alarms.type.addtype"
 msgstr "Einsatztyp hinzufügen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:33
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:34
 msgid "alarms.type.nodata"
 msgstr "- keine Einsatztypen definiert -"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:39
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:40
 msgid "alarms.type.detailtitle"
 msgstr "Details anzeigen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:44
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:45
 msgid "alarms.type.deletetitle"
 msgstr "Einsatztyp löschen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:45
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:46
 msgid "alarms.type.edittitle"
 msgstr "Einsatztyp bearbeiten"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:57
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:58
 msgid "alarms.type.addsection"
 msgstr "Bereich hinzufügen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:62
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:63
 msgid "alarms.sections.nodata"
 msgstr "- keine Bereiche definiert -"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:70
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:71
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:117
 msgid "alarms.sections.ignore"
 msgstr "ignoriert"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:75
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:76
 msgid "alarms.sections.deletetitle"
 msgstr "Bereich löschen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:76
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:77
 msgid "alarms.sections.edittitle"
 msgstr "Bereich bearbeiten"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:83
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:84
 msgid "alarms.type.itemscount"
 msgstr "(%(count)s Einsatztypen vorhanden)"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:89
+msgid "alarms.type.header.types"
+msgstr "FAX-Interpreter"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:90
+msgid "alarms.type.types.info"
+msgstr ""
+"Für unterschiedliche Alarmarten können verschiedene Interpreter in das "
+"System geladen werden. Jeder Interpreter ist dabei auf ein bestimmtes FAX-"
+"Layout optimiert und kann aus dem erkannten Text die notwendigen "
+"Informationen in ein Einsatz-Objekt umbauen. Innerhalb eines Faxes können "
+"unterschiedliche Bereiche definiert werden, die auch über spezielle "
+"Optimierungsmethoden die Inhalte für eine Weiterverarbeitung aufbereiten. "
+"Hier können weitere Auswerter in das System geladen werden."
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:94
+msgid "alarms.type.checkername"
+msgstr "Name"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:95
+msgid "alarms.type.checkerversion"
+msgstr "Version"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:96
+msgid "alarms.type.checkerkeywords"
+msgstr "Stichwörter"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:97
+msgid "alarms.type.checkersections"
+msgstr "Bereiche"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:128
+msgid "alarms.upload.checkerfile"
+msgstr "Interpreter-Datei hochladen"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:131
+msgid "alarms.test.checkerstart"
+msgstr "Datei hochladen"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:18
 msgid "alarms.type.interpreter"
@@ -2450,12 +2490,12 @@ msgstr "Straße (text)"
 msgid "admin.streets.cities.edit..."
 msgstr "..."
 
-#: emonitor/modules/streets/content_admin.py:129
+#: emonitor/modules/streets/content_admin.py:132
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr "%(i)s Städte/Orte wurden hinzugefügt."
 
-#: emonitor/modules/streets/content_admin.py:152
+#: emonitor/modules/streets/content_admin.py:155
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr "%(i)s Straßen wurden hinugefügt"

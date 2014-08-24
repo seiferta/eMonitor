@@ -8,7 +8,12 @@
         function questionDelSection(){
             return confirm('{{ _('alarms.sections.delquestion') }}');
         }
+
+        function questionDelChecker(){
+            return confirm('{{ _('alarms.type.delcheckerquestion') }}');
+        }
     </script>
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
 {% endblock %}
 
 {%  block subnavigation %}
@@ -65,7 +70,7 @@
             {% for section in alarmtype.getSections() %}
             <div class="subrow">
                 <div style="margin-right:70px;margin-left:15px;" class="sortable" id="sortable_{{ alarmtype.name }}">
-                    <div class="subheadcell" style="width:5%;font-size:9px;color:rgb(171, 171, 171);padding-top:6px">{{ loop.index }}.</div>
+                    <div class="subheadcell" style="width:5%;font-size:9px;color:#ababab;padding-top:6px">{{ loop.index }}.</div>
                     <div class="subrowcell" style="width:35%;">{{ section.name }}</div>
                     <div class="subrowcell" style="width:20%;">{{ section.key }} {% if section.key =='' %}<small>(<em>{{ _('alarms.sections.ignore') }}</em>)</small>{% endif %}</div>
                     <div class="subrowcell" style="width:30%;">{{ section.method }}</div>
@@ -84,6 +89,56 @@
         </div>
         <input type="hidden" name="form_id" value="admin.alarms.type.overview"/>
     </form>
+
+    <h2>{{ _('alarms.type.header.types') }}</h2>
+    <p><small>{{ _('alarms.type.types.info') }}</small></p>
+
+    <form method="post" style="padding-bottom:20px;">
+        <div class="headrow">
+            <div style="margin-right:60px;margin-left:15px;">
+                <div class="headcell" style="width:20%;">{{ _('alarms.type.checkername') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('alarms.type.checkerversion') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('alarms.type.checkerkeywords') }}</div>
+                <div class="headcell" style="width:40%;">{{ _('alarms.type.checkersections') }}</div>
+            </div>
+        </div>
+
+        {%- for interpreter in interpreters %}
+        <div class="row">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="rowcell" style="width:20%;">{{ interpreter[1].__name__ }}</div>
+                <div class="rowcell" style="width:10%;">{{ interpreter[1].__version__ }}</div>
+                <div class="rowcell" style="width:30%;">
+                    {%- if interpreter[1].getDefaultConfig().keywords|length==0 %}-{%- endif %}
+                    {%- for keyword in interpreter[1].getDefaultConfig().keywords %}
+                    {{ keyword }}<br/>
+                    {%- endfor %}
+                </div>
+                <div class="rowcell" style="width:40%;">
+                    {%- if interpreter[1].getDefaultConfig().sections|length==0 %}-{%- endif %}
+                    {%- for section in interpreter[1].getDefaultConfig().sections %}
+                        <small style="color:silver">{{ loop.index }}.</small>
+                        {%- set sectionparams =  interpreter[1].getDefaultConfig().sections[section] %}
+                        <b>{{ section }}</b>{%- if sectionparams[0]|length %} &raquo; {{ sectionparams[0] }}{% else %} <small>(<em>{{ _('alarms.sections.ignore') }}</em>)</small>{% endif %}
+                        {%- if sectionparams[1] %}, Methode: <em>{{ sectionparams[1] }}</em>{%- endif %}
+                        <br/>
+                    {%- endfor %}
+                </div>
+            </div>
+            {%- if interpreter[1].__name__!='Dummy' and interpreter[2]|count == 0 %}<button type="submit" name="action" value="deleteinterpreter_{{ interpreter[0] }}" title="{{ _('alarms.type.deletecheckertitle') }}" onclick="return questionDelChecker()"><i class="fa fa-trash-o fa-lg"></i></button>{%- endif %}
+        </div>
+        {%- endfor %}
+    </form>
+    <p> </p>
+    <form name="form" id="requestForm" action="/admin/data/alarms?action=uploadchecker" method="post" enctype="multipart/form-data">
+        <p>
+            {{ _('alarms.upload.checkerfile') }}:<br/>
+            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
+            <input type="hidden" name="filename" id="filename"/><br/>
+            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.checkerstart') }}</button>
+        </p>
+    </form>
+
 {% endblock %}
 
 {% block script_end %}
@@ -97,4 +152,23 @@
         }
         return false;
     }
+
+    $(document).ready(function(){
+        $('#requestForm').ajaxForm({
+            success: function(result){
+                if(result == "ok"){
+                     window.location.href='/admin/alarms/types';
+                }else if (result!=""){
+                    alert(result);
+                    $('#requestForm').resetForm();
+                }else{
+                    $('#requestForm').resetForm();
+                    return false;
+                }
+            }
+        });
+
+
+
+    });
 {% endblock %}

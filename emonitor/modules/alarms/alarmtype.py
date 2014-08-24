@@ -42,7 +42,7 @@ class AlarmType(db.Model):
         return ""
         
     def getSections(self):
-        return self.sections.values()
+        return sorted(self.sections.values())
 
     @staticmethod
     def getVariables():
@@ -54,6 +54,10 @@ class AlarmType(db.Model):
             return db.session.query(AlarmType).filter_by(id=id).first()
         else:
             return db.session.query(AlarmType).order_by('id').all()
+
+    @staticmethod
+    def getAlarmTypeByClassname(name):
+        return db.session.query(AlarmType).filter_by(interpreter=name).all() or []
 
     @staticmethod
     def handleEvent(eventname, *kwargs):

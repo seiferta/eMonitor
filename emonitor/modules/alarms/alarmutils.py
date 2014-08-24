@@ -145,6 +145,9 @@ class AlarmFaxChecker:
     def getEvalMethods(self):
         return []
 
+    def getDefaultConfig(self):
+        return {'keywords': [], 'sections': {}}  # section: ('key', 'method')
+
     def buildAlarmFromText(self, alarmtype, rawtext):
         return dict()
 

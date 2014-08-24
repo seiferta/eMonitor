@@ -49,3 +49,21 @@
         <input type="hidden" name="form_id" value="admin.alarms.type.edit"/>
     </form>
 {% endblock %}
+
+{%  block script_end %}
+    {{ super() }}
+
+    {%- if alarmtype.id == None %}
+    $(document).ready(function(){
+        $("select[name='edit_interpreter']").change(function() {
+            $.ajax({ type : "POST", url : "/admin/data/alarms?action=getkeywords&checker="+$("select[name='edit_interpreter']").val(),
+                success: function(result) {
+                    $("textarea[name='edit_keywords']").val(result);
+                    return false;
+                }
+            });
+            return false;
+        });
+    });
+    {%- endif %}
+{% endblock %}
