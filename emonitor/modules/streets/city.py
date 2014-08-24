@@ -59,7 +59,7 @@ class City(db.Model):
     # static part
     @staticmethod
     def getCities():
-        return db.session.query(City).order_by('id').all()
+        return db.session.query(City).order_by(City.default.desc(), City.name).all()
         
     @staticmethod
     def getCitiesDict():
