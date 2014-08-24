@@ -24,9 +24,13 @@ class Replace(db.Model):
     def handleEvent(eventname, *kwargs):
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
         in_params = [v[1] for v in hdl.getParameterValues('in')]  # required parameters for method
-        t = None
-        if in_params == list(set(in_params) & set(kwargs[0].keys())):
 
+        if sorted(in_params) != sorted(list(set(in_params) & set(kwargs[0].keys()))):
+            if not 'time' in kwargs[0]:
+                kwargs[0]['time'] = []
+            kwargs[0]['time'].append('replace: missing parameters for replace, nothing done.')
+            return kwargs
+        else:
             stime = time.time()
             text = ''
             for l in kwargs[0]['text'].split("\n"):
