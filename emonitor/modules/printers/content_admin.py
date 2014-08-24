@@ -50,7 +50,7 @@ def getAdminContent(self, **params):
 
         if request.method == 'POST':
             if request.form.get('action') == 'createprinter':  # add printer definition
-                printer = classes.get('printer')('', '', '', '')
+                printer = classes.get('printer')('', '', '', '', "['1']")
                 params.update({'printer': printer, 'templates': _templates(), 'printernames': sorted(_printernames(printer.getCallString()))})
                 return render_template('admin.printers_actions.html', **params)
 
