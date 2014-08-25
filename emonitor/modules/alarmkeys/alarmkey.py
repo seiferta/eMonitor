@@ -33,6 +33,18 @@ class Alarmkey(db.Model):
         else:
             return []
 
+    def setCars(self, department, **kwargs):
+        alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id, dept=department).first()
+        if not alarmcars:
+            alarmcars = classes.get('alarmkeycar')(self.id, department, '', '', '')
+            db.session.add(alarmcars)
+        if "cars1" in kwargs.keys():
+            alarmcars._cars1 = kwargs['cars1']
+        if "cars2" in kwargs.keys():
+            alarmcars._cars2 = kwargs['cars2']
+        if "material" in kwargs.keys():
+            alarmcars._materials = kwargs['materials']
+
     def getCars1(self, department):
         return self._getCars(1, department)
 
@@ -43,8 +55,7 @@ class Alarmkey(db.Model):
         return self._getCars(3, department)
 
     def hasDefinition(self, department):
-        alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first()
-        return alarmcars is None
+        return db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first() is None
 
     @staticmethod
     def getAlarmkeys(id=''):
@@ -72,8 +83,3 @@ class Alarmkey(db.Model):
     def getDefault(department):
         return db.session.query(classes.get('alarmkeycar')).filter_by(kid=0, dept=department).first() or classes.get(
             'alarmkeycar')(0, department, '', '', '')
-        #default = db.session.query(classes.get('alarmkeycar')).filter_by(kid=0, dept=department)
-        #if default.count()==1:
-        #    return default.first()
-        #else:
-        #    return classes.get('alarmkeycar')(0, department,'','','')

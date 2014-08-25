@@ -37,12 +37,18 @@ class AlarmkeyCars(db.Model):
     def _get_cars1(self):
         return self._get_cars_proto(1)
 
+    def _set_cars1(self, cars):
+        self._cars1 = cars
+
     def _get_cars1id(self):
         return [int(i) for i in self._cars1.split(';') if i != '']
 
     # cars2
     def _get_cars2(self):
         return self._get_cars_proto(2)
+
+    def _set_cars2(self, cars):
+        self._cars2 = cars
 
     def _get_cars2id(self):
         return [int(i) for i in self._cars2.split(';') if i != '']
@@ -51,50 +57,35 @@ class AlarmkeyCars(db.Model):
     def _get_material(self):
         return self._get_cars_proto(3)
 
+    def _set_material(self, material):
+        self._material = material
+
     def _get_materialid(self):
         return [int(i) for i in self.material.split(';') if i != '']
 
     car1id = property(_get_cars1id)
-    cars1 = property(_get_cars1)
+    cars1 = property(_get_cars1, _set_cars1)
     car2id = property(_get_cars2id)
-    cars2 = property(_get_cars2)
+    cars2 = property(_get_cars2, _set_cars2)
     materialid = property(_get_materialid)
-    materials = property(_get_material)
+    materials = property(_get_material, _set_material)
 
     def __init__(self, kid, dept, cars1, cars2, material):
         self.kid = kid
         self.dept = dept
-        self._cars1 = cars1
-        self._cars2 = cars2
-        self._material = material
-        
-        acc = AlarmkeyCars.getAlarmkeyCars(kid=0, dept=dept)
+        self.cars1 = cars1
+        self.cars2 = cars2
+        self.material = material
+        acc = AlarmkeyCars.getAlarmkeyCars(0, dept=dept)
         if acc:
-            self.defaultcars1 = acc.cars1
-            self.defaultcars2 = acc.cars2
-            self.defaultmaterial = acc.materials
+            self.defaultcars1 = acc[0].cars1
+            self.defaultcars2 = acc[0].cars2
+            self.defaultmaterial = acc[0].materials
         else:
             self.defaultcars1 = []
             self.defaultcars2 = []
             self.defaultmaterial = []
-            
-    """
-    def getCar1ids(self):
-        return [i.id for i in self.cars1 if i != '']
-        
-    def getCar2ids(self):
-        return [i.id for i in self.cars2 if i != '']
-        
-    def getMaterialids(self):
-        return [i.id for i in self.material if i != '']
-        
-    def getCar1cars(self):
-        cars = classes.get('car').getCarsDict()
-        ret = []
-        for c in [i for i in self.cars1.split(';') if i != '']:
-            ret.append(cars[c])
-        return ret
-    """
+
     def defaultUsed(self, cartype='cars1'):
         if cartype == 'cars1':
             return self.cars1 == ''
@@ -102,10 +93,10 @@ class AlarmkeyCars(db.Model):
             return self.cars2 == ''
         else:
             return self.material == ''
-        
+
     @staticmethod
     def getAlarmkeyCars(kid=0, dept=''):
-        if kid != 0 and dept != '':
+        if int(kid) != 0 and dept != '':
             return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
         elif dept != '':
             return db.session.query(classes.get('alarmkeycar')).filter_by(dept=int(dept)).all()

@@ -33,17 +33,17 @@ def getAdminContent(self, **params):
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savedefault':  # save default aao
-                alarmkey = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
-                if not alarmkey or len(alarmkey) == 0:  # add
-                    alarmkey = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
-                    db.session.add(alarmkey)
+                alarmkeycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
+                if not alarmkeycar or len(alarmkeycar) == 0:  # add
+                    alarmkeycar = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
+                    db.session.add(alarmkeycar)
 
-                alarmkey._cars1 = request.form.get('cars1').replace(',', ';')
-                alarmkey._cars2 = request.form.get('cars2').replace(',', ';')
-                alarmkey._material = request.form.get('material').replace(',', ';')
+                alarmkeycar.cars1(request.form.get('cars1'))
+                alarmkeycar.cars2(request.form.get('cars2'))
+                alarmkeycar.material(request.form.get('material'))
                 
                 if request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
-                    db.session.delete(alarmkey)
+                    db.session.delete(alarmkeycar)
                 db.session.commit()
                 
             elif request.form.get('action') == 'editdefault':  # edit default aao
@@ -67,11 +67,7 @@ def getAdminContent(self, **params):
                 alarmkey.key = request.form.get('key')
                 alarmkey.key_internal = request.form.get('keyinternal')
                 alarmkey.remark = request.form.get('remark')
-
-                # add key cars
-                alarmkey._cars1 = request.form.get('cars1').replace(',', ';')
-                alarmkey._cars2 = request.form.get('cars2').replace(',', ';')
-                alarmkey._material = request.form.get('material').replace(',', ';')
+                alarmkey.setCars(int(request.form.get('deptid')), cars1=request.form.get('cars1'), cars2=request.form.get('cars2'), materials=request.form.get('material'))
                 db.session.commit()
                 
             elif request.form.get('action').startswith('deletecars_'):  # delete car definition
@@ -143,11 +139,7 @@ def getAdminData(self):
 
         vals = deffile.getValues(coldefinition)
         states = []
-        
-        #selectionlist = None
-        #if request.form.get('add_selected'):
-        #    selectionlist = request.form.getlist('importindex')
-            
+
         if request.form.get('add_material'):  # add new material
             p = re.compile(r'<.*?>')
             for k in vals['carsnotfound']:
@@ -169,32 +161,24 @@ def getAdminData(self):
                 
                 if key['state'] == '-1':  # add key
                     k = classes.get('alarmkey')(key['category'], key['key'], key['keyinternal'], key['remark'])
+                    k.setCars(coldefinition['dept'],
+                              ";".join([str(c.id) for c in key['cars1']]),
+                              ";".join([str(c.id) for c in key['cars2']]),
+                              ";".join([str(c.id) for c in key['material']]))
                     db.session.add(k)
                     db.session.commit()
                     key['state'] = '0'
-                
-                    # add cars for key
-                    keycar = classes.get('alarmkeycar')(k.id, coldefinition['dept'], '', '', '')
-                    keycar._cars1 = ";".join([str(c.id) for c in key['cars1']])
-                    keycar._cars2 = ";".join([str(c.id) for c in key['cars2']])
-                    keycar._material = ";".join([str(c.id) for c in key['material']])
-                        
-                    db.session.add(keycar)
-                    db.session.commit()
-                    
+
                 elif key['state'] == '1':  # update key
                     k = classes.get('alarmkey').getAlarmkeys(id=int(key['dbid']))
                     k.category = key['category']
                     k.key = key['key']
                     k.key_internal = key['keyinternal']
                     k.remark = key['remark']
-                    
-                    # cars
-                    keycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=key['dbid'], dept=coldefinition['dept'])
-                    keycar._cars1 = ';'.join([c for c in key['cars1_ids'] if c != ''])
-                    keycar._cars2 = ';'.join([c for c in key['cars2_ids'] if c != ''])
-                    keycar._material = ';'.join([c for c in key['material_ids'] if c != ''])
-                    
+                    k.setCars(coldefinition['dept'],
+                              cars1=';'.join([c for c in key['cars1_ids'] if c != '']),
+                              cars2=';'.join([c for c in key['cars2_ids'] if c != '']),
+                              materials=';'.join([c for c in key['material_ids'] if c != '']))
                     db.session.commit()
         return ""
         

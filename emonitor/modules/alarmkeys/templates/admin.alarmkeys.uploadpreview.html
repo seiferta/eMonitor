@@ -56,7 +56,8 @@
         <div class="headrow">
             <small style="float:right;margin-right:50px">{{ _('alarmkeys.upload.itemscount', count=vals['keys']|count) }}</small><br/>
             {% for state in vals['states'].keys() %}
-                {{ vals['states'][state] }} {{ _('alarmkeys.upload.states'+state) }}, 
+                {{ vals['states'][state] }} {{ _('alarmkeys.upload.states'+state) }}
+                {%- if not loop.last %}, {%- endif  %}
             {% endfor %}
         </div>
         <p> </p>

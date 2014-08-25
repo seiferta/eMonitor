@@ -31,7 +31,7 @@ class XLSFile:
                 curr_cell = row.index(item)
                 cell_value = worksheet.cell_value(curr_row, curr_cell)
 
-                if cell_value == "Stichwort":
+                if cell_value in ["Stichwort", "category"]:
                     self.headerrow = curr_row
                     for i in row:
                         c_cell = row.index(i)
