@@ -70,7 +70,7 @@
         </div>
         {% endif %}
         <div id="sortable">
-            {%-  if city %}
+            {%- if city %}
             {%- for street in city.getStreets() %}
             <div class="row" id="{{ street.name[0].upper() }}" {% if street.active!=1 %}title="{{ _('streets.inactive') }}"{% endif %}>
                 <div style="margin-right:80px;margin-left:15px;" {% if street.active!=1 %}class="inactive"{% endif %}>
@@ -85,7 +85,7 @@
                 <button type="submit" name="action" value="detailstreet_{{ street.id }}" title="{{ _('streets.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
             </div>
             {%- endfor %}
-            {%- endfor %}
+            {%- enif %}
         </div>
         
         <div class="headrow">
