@@ -13,7 +13,7 @@ def loadCitiesFromOsm():  # load all cities in bounding box
     global URL
     map_details = Map.getMaps()[0].getMapBox(tilepath=current_app.config.get('PATH_TILES'))
     SEARCHSTRING = 'rel[boundary=administrative](%s,%s,%s,%s);out;' % (map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all cities in bounding box
-
+    print SEARCHSTRING
     requests.session()
     r = requests.post(URL, data={'data': SEARCHSTRING})
 

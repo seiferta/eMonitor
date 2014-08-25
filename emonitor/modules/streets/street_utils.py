@@ -50,7 +50,7 @@ def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given c
 
     map_details = Map.getDefaultMap().getMapBox(tilepath=current_app.config.get('PATH_TILES'))
 
-    SEARCHSTRING = 'area[name="%s"];way(%s,%s,%s,%s)(area)[highway][name];(._;>;);out;' % (city.name, map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all streets for given city
+    SEARCHSTRING = 'area[name~"%s"];way(%s,%s,%s,%s)(area)[highway][name];(._;>;);out;' % (city.name, map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all streets for given city
     r = requests.post(URL, data={'data': SEARCHSTRING})
     xmldoc = minidom.parseString(r._content)
     nodes = xmldoc.getElementsByTagName('node') 

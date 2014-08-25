@@ -63,7 +63,7 @@
         </p>
         <p style="width:45%">
             {{_('streets.housenumbers') }}:<br/>
-            <span id="housnumbers">{{ street.housenumbers|count }}</span> {{_('streets.existingnumbers') }}
+            <span id="housenumbers">{{ street.housenumbers|count }}</span> {{_('streets.existingnumbers') }}
             <button type="button" onclick="loadOSMHouseNumbers()"> <i class="fa fa-download fa-hn"></i> {{ _('streets.hnumbers.update') }}</button>
             <span id="osmhousenumbers"> </span>
         </p>
@@ -123,9 +123,11 @@
     var hnid = '0';
 
     ws.onmessage=function(e){
-        if (e.data==hnid){
-             loadDone();
-             showOSMHousenumbers({{ street.id }});
+        d = JSON.parse(e.data);
+        if (d.sender=="housenumber.osmdone"){
+            loadDone();
+            showOSMHousenumbers({{ street.id }});
+            $('#housenumbers').html(d.numbers);
          }
     }
 

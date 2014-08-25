@@ -36,6 +36,7 @@ class StreetsModule(Module):
 
         signal.addSignal('housenumber', 'osm')
         signal.connect('housenumber', 'osm', adminHousenumberHandler.handleOSMChanged)
+        signal.connect('housenumber', 'osmdone', adminHousenumberHandler.handleOSMDone)
 
         # static folders
         @app.route('/streets/inc/<path:filename>')
@@ -70,4 +71,8 @@ class StreetsModule(Module):
 class adminHousenumberHandler(SocketHandler):
     @staticmethod
     def handleOSMChanged(sender, **extra):
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleOSMDone(sender, **extra):
         SocketHandler.send_message(sender, **extra)
