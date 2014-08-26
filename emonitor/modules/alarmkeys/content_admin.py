@@ -161,11 +161,12 @@ def getAdminData(self):
                 
                 if key['state'] == '-1':  # add key
                     k = classes.get('alarmkey')(key['category'], key['key'], key['keyinternal'], key['remark'])
-                    k.setCars(coldefinition['dept'],
-                              ";".join([str(c.id) for c in key['cars1']]),
-                              ";".join([str(c.id) for c in key['cars2']]),
-                              ";".join([str(c.id) for c in key['material']]))
                     db.session.add(k)
+                    db.session.commit()
+                    k.setCars(coldefinition['dept'],
+                              cars1=";".join([str(c.id) for c in key['cars1']]),
+                              cars2=";".join([str(c.id) for c in key['cars2']]),
+                              materials=";".join([str(c.id) for c in key['material']]))
                     db.session.commit()
                     key['state'] = '0'
 
@@ -176,9 +177,9 @@ def getAdminData(self):
                     k.key_internal = key['keyinternal']
                     k.remark = key['remark']
                     k.setCars(coldefinition['dept'],
-                              cars1=';'.join([c for c in key['cars1_ids'] if c != '']),
-                              cars2=';'.join([c for c in key['cars2_ids'] if c != '']),
-                              materials=';'.join([c for c in key['material_ids'] if c != '']))
+                              cars1=';'.join(filter(None, key['cars1_ids'])),
+                              cars2=';'.join(filter(None, key['cars2_ids'])),
+                              materials=';'.join(filter(None, key['material_ids'])))
                     db.session.commit()
         return ""
         

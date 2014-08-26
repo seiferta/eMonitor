@@ -4,11 +4,9 @@
         <div>
             <h3>{{ _('alarmkeys.upload.step4header') }}</h3>
             <ul>
-                {% for k in vals['carsnotfound'].keys() %}
-                {% if k!='' %}
+                {%- for k in vals['carsnotfound'].keys()|sort %}
                 <li>{{ k }}</li>
-                {% endif %}
-                {% endfor %}
+                {%- endfor %}
             </ul>
         </div>
         {% endif %}

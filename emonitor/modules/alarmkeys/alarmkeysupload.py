@@ -83,7 +83,7 @@ class XLSFile:
                     if u(cell_val) in cars.keys():
                         item[field].append(cars[u(cell_val)])
                         item[field + '_ids'].append(str(cars[u(cell_val)].id))
-                    elif cell_val != '':
+                    elif cell_val.strip() != '':
                         if u(cell_val) not in notfound.keys():
                             n_c = classes.get('car')('<em style="color:#ff0000">%s</em>' % cell_val, '', '', 0, 'new', coldefinition['dept'])
                             notfound[u(cell_val)] = n_c
