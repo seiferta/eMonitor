@@ -99,11 +99,11 @@ def get_key(self):  # deliver alarmkey object
 
 def get_city(self):  # deliver city object
     if not inspect(self).session:
-        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0)
+        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
     if self.get('id.city') and self.get('id.city') != '0':  # city found
         return classes.get('city').get_byid(self.get('id.city'))
     elif self.get('id.city', '0') == '0':  # not in list
-        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0)
+        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
     else:
         return classes.get('city').getDefaultCity()
 

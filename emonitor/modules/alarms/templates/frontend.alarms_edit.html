@@ -146,7 +146,7 @@
                         <ul id="cars1" class="group" style="min-height:100px;">
                             {%- for car in alarm.cars1 %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.name }}<br/>
+                                {{ car.dept.shortname }}<br/>
                                 {{ car.name }}
                             </li>
                             {%- endfor %}
@@ -157,7 +157,7 @@
                         <ul id="cars2" class="group" style="min-height:102px;">
                             {%- for car in alarm.cars2 %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.name }}<br/>
+                                {{ car.dept.shortname }}<br/>
                                 {{ car.name }}
                             </li>
                             {%- endfor %}
@@ -169,7 +169,7 @@
                     <ul id="material" class="group" style="width:99%;min-height:50px;">
                         {%- for car in alarm.material %}
                         <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                            {{ car.dept.name }}<br/>
+                            {{ car.dept.shortname }}<br/>
                             {{ car.name }}
                         </li>
                         {%- endfor %}
@@ -181,7 +181,7 @@
                         {%- for car in cars %}
                         {%- if car not in alarm.cars1+alarm.cars2+alarm.material %}
                         <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                            {{ car.dept.name }}<br/>
+                            {{ car.dept.shortname }}<br/>
                             {{ car.name }}
                         </li>
                         {%- endif %}
