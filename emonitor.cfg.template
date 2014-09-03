@@ -11,6 +11,10 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db'
 cachetimeout = 300
 
 TILE_MISSING = 'load'  # load|none
+ADMIN_DEFAULT_PASSWORD = 'admin'
+
+# flask-alembic
+ALEMBIC = {'script_location': 'alembic'}
 
 PATH_DATA = './data/'
 PATH_INCOME = './data/income/'

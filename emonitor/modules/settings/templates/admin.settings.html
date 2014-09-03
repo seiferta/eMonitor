@@ -52,6 +52,18 @@
             <button type="submit" name="action" value="observerstate"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
         </fieldset>
     </form>
+
+    <form method="post" name="path" action="">
+        <fieldset>
+            <legend>{{ _('settings.db.title') }}</legend>
+            <small>{{ _('settings.db.info') }}</small>
+            <p>{{ _('settings.db.currentrevision') }}: <span id="dbstate">{{ alembic.current()}}</span></p>
+            <p>
+                <button type="button" onclick="return doUpgrade()">{{ _('settings.db.upgradebutton') }}</button>
+                <button type="button" onclick="return doDowngrade()">{{ _('settings.db.downgradebutton') }}</button>
+            </p>
+        </fieldset>
+    </form>
     
     <form method="post" name="paths" action="">
         <fieldset>
@@ -117,4 +129,23 @@
             }
         });
     }
+
+    function doUpgrade(){
+        $.ajax({ type : "POST", url : "/admin/data/settings?action=upgradedb",
+            success: function(result) {
+                $('#dbstate').html(result);
+                return false;
+            }
+        });
+    }
+
+    function doDowngrade(){
+        $.ajax({ type : "POST", url : "/admin/data/settings?action=downgradedb",
+            success: function(result) {
+                alert(result);
+                return false;
+            }
+        });
+    }
+
 {% endblock %}

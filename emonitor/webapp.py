@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, render_template
-from .extensions import db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
+from .extensions import alembic, db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
 
 from emonitor.widget.widget import widget
@@ -40,6 +40,7 @@ class DEFAULT_CONFIG(object):
     LANGUAGE_DIR = 'emonitor/web/translations'            # relative path of default templates
     DEFAULTZOOM = 12                                      # used for map-data
     LANGUAGES = {'de': 'Deutsch'}
+    DB_VERSION = '22dbd57d8271'                           # version of database
 
     # monitorserver
     MONITORSERVER_ANY = "0.0.0.0"
@@ -84,7 +85,10 @@ def configure_extensions(app):
     db.init_app(app)
     db.app = app
     db.create_all()
-    
+
+    # alembic
+    alembic.init_app(app)
+
     # babel
     babel.init_app(app)
 
@@ -107,10 +111,7 @@ def configure_extensions(app):
     # scheduler
     scheduler.start()
     scheduler.initJobs(app)
-    
-    # modules
-    #modules.init_app(app)
-    
+
     # monitorserver
     monitorserver.init_app(app)
     monitorserver.sendMessage('0', 'reset')
@@ -132,10 +133,7 @@ def configure_extensions(app):
     def load_user(id):
         return User.query.get(id)
 
-    #message_flashed.connect(record, app)
-    #message_flashed.connect(ApiHandler.send_message, app)
 
-    
 def configure_blueprints(app, blueprints):
     """Configure blueprints in views."""
 
@@ -144,7 +142,7 @@ def configure_blueprints(app, blueprints):
         if hasattr(blueprint, 'init_app'):
             blueprint.init_app(app)
 
-   
+
 def configure_logging(app):
     """Configure file(info)"""
 

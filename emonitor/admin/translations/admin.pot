@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-04 12:30+0200\n"
+"POT-Creation-Date: 2014-09-03 16:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,18 @@ msgstr ""
 
 #: emonitor/admin/admin.py:39
 msgid "trigger.file_removed"
+msgstr ""
+
+#: emonitor/admin/web/templates/admin.dbrevision.html:5
+msgid "admin.db.updatetitle"
+msgstr ""
+
+#: emonitor/admin/web/templates/admin.dbrevision.html:8
+msgid "admin.db.revision.created"
+msgstr ""
+
+#: emonitor/admin/web/templates/admin.dbrevision.html:10
+msgid "admin.db.revision.error"
 msgstr ""
 
 #: emonitor/admin/web/templates/admin.html:14

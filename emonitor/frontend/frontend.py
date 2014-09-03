@@ -2,7 +2,7 @@ from collections import OrderedDict
 from flask import Blueprint, current_app, render_template, send_from_directory, request, jsonify
 from flask.ext import login
 from emonitor.user import User
-from emonitor.extensions import classes, babel
+from emonitor.extensions import alembic, classes, babel
 
 frontend = Blueprint('frontend', __name__, template_folder="web/templates")
 frontend.modules = OrderedDict()
@@ -26,6 +26,8 @@ def favicon():
 @frontend.route('/', methods=['GET', 'POST'])
 @frontend.route('/<module>', methods=['GET', 'POST'])
 def frontendContent(module=u''):
+    if alembic.current() != current_app.config.get('DB_VERSION'):
+        alembic.upgrade(current_app.config.get('DB_VERSION'))
 
     if module != "":
         if module == 'none':

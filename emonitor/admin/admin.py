@@ -1,10 +1,10 @@
 from collections import OrderedDict
 import flask.ext.login as login
 from emonitor.sockethandler import SocketHandler
-from flask import Blueprint, request, send_from_directory, current_app, jsonify
+from flask import Blueprint, request, render_template, send_from_directory, current_app, jsonify
 from emonitor.decorators import admin_required
 from emonitor.user import User
-from emonitor.extensions import babel, signal
+from emonitor.extensions import alembic, babel, signal
 
 
 admin = Blueprint('admin', __name__, template_folder="web/templates")
@@ -44,6 +44,13 @@ babel.gettext(u'trigger.file_removed')
 @admin.route('/admin/<path:module>', methods=['GET', 'POST'])
 @admin_required
 def adminContent(module=''):
+    if alembic.current() != current_app.config.get('DB_VERSION'):
+        alembic.upgrade(current_app.config.get('DB_VERSION'))
+
+    if module == 'upgradedb':  # create new db-revision name given by revisionname
+        if request.args.get('revisionname', '') != '':
+            msg = alembic.revision(request.args.get('revisionname'))
+        return render_template('admin.dbrevision.html', modules=[], current_mod='upgradedb', user=User.getUsers(login.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), path='/admin/' + module, revisionname=request.args.get('revisionname', ''), msg=msg)
     try:
         current_mod = [admin.modules[m] for m in admin.modules if admin.modules[m].info['path'] == module.split('/')[0]][0]
     except IndexError:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-25 09:42+0200\n"
+"POT-Creation-Date: 2014-09-03 17:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,7 @@ msgid "alarmkeys.upload.step3header"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:5
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:18
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:16
 msgid "alarmkeys.upload.category"
 msgstr ""
 
@@ -236,12 +236,12 @@ msgid "alarmkeys.upload.choosecol"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:15
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:19
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:17
 msgid "alarmkeys.upload.key"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:25
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:20
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:18
 msgid "alarmkeys.upload.keyinternal"
 msgstr ""
 
@@ -250,17 +250,17 @@ msgid "alarmkeys.upload.remark"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:45
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:21
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:19
 msgid "alarmkeys.upload.cars1"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:54
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:22
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:20
 msgid "alarmkeys.upload.cars2"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:64
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:23
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:21
 msgid "alarmkeys.upload.material"
 msgstr ""
 
@@ -276,47 +276,47 @@ msgstr ""
 msgid "alarmkeys.upload.step4header"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:15
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:13
 msgid "alarmkeys.upload.step5header"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:39
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:37
 msgid "alarmkeys.upload.existingtitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:41
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:39
 msgid "alarmkeys.upload.changestitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:43
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:41
 msgid "alarmkeys.upload.addtitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:57
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:55
 msgid "alarmkeys.upload.itemscount"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:63
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:62
 msgid "alarmkeys.upload.step6header"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:65
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:64
 msgid "alarmkeys.upload.uploadoption1"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:65
 msgid "alarmkeys.upload.uploadoption2"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:67
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
 msgid "alarmkeys.upload.uploadoption3"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:69
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:68
 msgid "alarmkeys.upload.missingadd"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:72
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:71
 msgid "alarmkeys.upload.startupdate"
 msgstr ""
 
@@ -712,7 +712,7 @@ msgid "alarms.test.step2"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:6
-#: emonitor/modules/streets/templates/admin.streets_edit.html:199
+#: emonitor/modules/streets/templates/admin.streets_edit.html:201
 msgid "alarms.type.delquestion"
 msgstr ""
 
@@ -2128,6 +2128,10 @@ msgstr ""
 msgid "settings.pathtype.pathincome"
 msgstr ""
 
+#: emonitor/modules/settings/content_admin.py:113
+msgid "admin.settings.updatedberror"
+msgstr ""
+
 #: emonitor/modules/settings/templates/admin.settings.cars.html:19
 msgid "settings.cars.listtitle"
 msgstr ""
@@ -2257,41 +2261,61 @@ msgid "settings.observerinactive"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.html:52
-#: emonitor/modules/settings/templates/admin.settings.html:66
-#: emonitor/modules/settings/templates/admin.settings.html:80
-#: emonitor/modules/settings/templates/admin.settings.html:90
+#: emonitor/modules/settings/templates/admin.settings.html:78
+#: emonitor/modules/settings/templates/admin.settings.html:92
+#: emonitor/modules/settings/templates/admin.settings.html:102
 msgid "settings.save"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.html:58
-msgid "settings.autoclose.title"
+msgid "settings.db.title"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.html:59
+msgid "settings.db.info"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.html:60
+msgid "settings.db.currentrevision"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.html:62
+msgid "settings.db.upgradebutton"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.html:63
+msgid "settings.db.downgradebutton"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.html:70
+msgid "settings.autoclose.title"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.html:71
 msgid "settings.autoclose.info"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:61
+#: emonitor/modules/settings/templates/admin.settings.html:73
 msgid "settings.autoclose"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:72
+#: emonitor/modules/settings/templates/admin.settings.html:84
 msgid "settings.autoarchive.title"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:73
+#: emonitor/modules/settings/templates/admin.settings.html:85
 msgid "settings.autoarchive.info"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:75
+#: emonitor/modules/settings/templates/admin.settings.html:87
 msgid "settings.autoarchive"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:86
+#: emonitor/modules/settings/templates/admin.settings.html:98
 msgid "settings.alarmsevalfields.title"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.html:88
+#: emonitor/modules/settings/templates/admin.settings.html:100
 msgid "settings.alarmsevalfields.info"
 msgstr ""
 
@@ -2355,24 +2379,24 @@ msgstr ""
 msgid "settings.start.save"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:46
+#: emonitor/modules/streets/__init__.py:47
 msgid "module.streets"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:47
+#: emonitor/modules/streets/__init__.py:48
 msgid "streets_street"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:54
+#: emonitor/modules/streets/__init__.py:55
 msgid "admin.streets.cities.edit..."
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:132
+#: emonitor/modules/streets/content_admin.py:134
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:155
+#: emonitor/modules/streets/content_admin.py:157
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr ""
@@ -2552,35 +2576,35 @@ msgstr ""
 msgid "streets.nodata"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:74
+#: emonitor/modules/streets/templates/admin.streets.html:75
 msgid "streets.inactive"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:81
+#: emonitor/modules/streets/templates/admin.streets.html:82
 msgid "streets.mapset"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:83
+#: emonitor/modules/streets/templates/admin.streets.html:84
 msgid "streets.deletetitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:84
+#: emonitor/modules/streets/templates/admin.streets.html:85
 msgid "streets.edittitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:90
+#: emonitor/modules/streets/templates/admin.streets.html:92
 msgid "streets.itemscount"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:95
+#: emonitor/modules/streets/templates/admin.streets.html:97
 msgid "streets.loadtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:96
+#: emonitor/modules/streets/templates/admin.streets.html:98
 msgid "streets.load.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:97
+#: emonitor/modules/streets/templates/admin.streets.html:99
 msgid "streets.loadbutton"
 msgstr ""
 

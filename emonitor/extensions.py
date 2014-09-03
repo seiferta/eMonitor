@@ -3,6 +3,10 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+# flask alembic
+from flask_alembic import Alembic
+alembic = Alembic()
+
 # flask babel translator
 from .mybabel import MyBabel
 babel = MyBabel()

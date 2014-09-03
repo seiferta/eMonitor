@@ -2,7 +2,7 @@ import os
 from flask import request, render_template, current_app, redirect
 from emonitor.modules.settings.settings import Settings
 
-from emonitor.extensions import classes, db
+from emonitor.extensions import alembic, classes, db, babel
 
 OBSERVERACTIVE = 1
 
@@ -94,7 +94,7 @@ def getAdminContent(self, **params):
 
         paths = dict(pathdata=current_app.config.get('PATH_DATA'), pathtmp=current_app.config.get('PATH_TMP'), pathincome=current_app.config.get('PATH_INCOME'), pathdone=current_app.config.get('PATH_DONE'))
 
-        params.update({'paths': paths, 'observerstate': OBSERVERACTIVE, 'alarmsettings': classes.get('settings').get('alarms.autoclose'), 'archivesettings': classes.get('settings').get('alarms.autoarchive'), 'alarmsevalfields': classes.get('settings').get('alarms.evalfields')})
+        params.update({'paths': paths, 'observerstate': OBSERVERACTIVE, 'alarmsettings': classes.get('settings').get('alarms.autoclose'), 'archivesettings': classes.get('settings').get('alarms.autoarchive'), 'alarmsevalfields': classes.get('settings').get('alarms.evalfields'), 'alembic': alembic})
         return render_template('admin.settings.html', **params)
     return redirect("/admin/settings", code=302)
 
@@ -104,5 +104,15 @@ def getAdminData(self, **params):
         if os.path.exists(request.args.get('path')):
             return '1'
         return '0'
+
+    elif request.args.get('action') == 'upgradedb':
+        try:
+            alembic.upgrade()
+            return str(alembic.current())
+        except:
+            return babel.gettext(u'admin.settings.updatedberror')
+
+    elif request.args.get('action') == 'downgradedb':
+        return alembic.downgrade() or "done"
 
     return ""
