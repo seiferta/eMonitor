@@ -44,9 +44,6 @@ babel.gettext(u'trigger.file_removed')
 @admin.route('/admin/<path:module>', methods=['GET', 'POST'])
 @admin_required
 def adminContent(module=''):
-    if alembic.current() != current_app.config.get('DB_VERSION'):
-        alembic.upgrade(current_app.config.get('DB_VERSION'))
-
     if module == 'upgradedb':  # create new db-revision name given by revisionname
         if request.args.get('revisionname', '') != '':
             msg = alembic.revision(request.args.get('revisionname'))

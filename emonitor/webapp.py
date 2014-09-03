@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, render_template
+from alembic import util as alembicutil
+from flask import Flask, flash, request, render_template, current_app
 from .extensions import alembic, db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
 
@@ -88,6 +89,13 @@ def configure_extensions(app):
 
     # alembic
     alembic.init_app(app)
+    with app.app_context():  # check current db revision
+        if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):
+            try:
+                alembic.upgrade(current_app.config.get('DB_VERSION'))
+                print "database update done"
+            except alembicutil.CommandError, e:
+                print e
 
     # babel
     babel.init_app(app)
