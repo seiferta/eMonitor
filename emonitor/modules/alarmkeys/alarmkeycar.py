@@ -73,9 +73,9 @@ class AlarmkeyCars(db.Model):
     def __init__(self, kid, dept, cars1, cars2, material):
         self.kid = kid
         self.dept = dept
-        self.cars1 = cars1
-        self.cars2 = cars2
-        self.material = material
+        self._cars1 = cars1
+        self._cars2 = cars2
+        self._material = material
         acc = AlarmkeyCars.getAlarmkeyCars(0, dept=dept)
         if acc:
             self.defaultcars1 = acc[0].cars1
@@ -88,15 +88,17 @@ class AlarmkeyCars(db.Model):
 
     def defaultUsed(self, cartype='cars1'):
         if cartype == 'cars1':
-            return self.cars1 == ''
+            return self._cars1 == ''
         elif cartype == 'cars2':
-            return self.cars2 == ''
+            return self._cars2 == ''
         else:
-            return self.material == ''
+            return self._material == ''
 
     @staticmethod
     def getAlarmkeyCars(kid=0, dept=''):
         if int(kid) != 0 and dept != '':
+            return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
+        elif int(kid) == 0 and dept != '':  # default aao cars for dept
             return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
         elif dept != '':
             return db.session.query(classes.get('alarmkeycar')).filter_by(dept=int(dept)).all()

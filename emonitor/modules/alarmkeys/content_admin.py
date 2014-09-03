@@ -38,10 +38,9 @@ def getAdminContent(self, **params):
                     alarmkeycar = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
                     db.session.add(alarmkeycar)
 
-                alarmkeycar.cars1(request.form.get('cars1'))
-                alarmkeycar.cars2(request.form.get('cars2'))
-                alarmkeycar.material(request.form.get('material'))
-                
+                alarmkeycar.cars1 = request.form.get('cars1')
+                alarmkeycar.cars2 = request.form.get('cars2')
+                alarmkeycar.material = request.form.get('material')
                 if request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
                     db.session.delete(alarmkeycar)
                 db.session.commit()
