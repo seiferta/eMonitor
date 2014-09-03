@@ -328,12 +328,15 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             alarmtype = params['alarmtype']
         if 'options' in params:
             options = params['options']
-        _str = FezAlarmFaxChecker().fields[fieldname][0].strip()
+        _str = FezAlarmFaxChecker().fields[fieldname][0].strip().replace('\r', '').replace('\n', '')
         options.append('part')
         params['options'] = filter(None, options)
         FezAlarmFaxChecker().evalStreet(fieldname, **params)
-
-        if _str.endswith(')') and alarmtype.translation(u'_interchange_') in unicode(_str):  # bab part found
+        try:
+            _str = unicode(_str)
+        except:
+            pass
+        if _str.endswith(')') and alarmtype.translation(u'_interchange_') in _str:  # bab part found
             part = '%s' % _str[_str.rfind('(') + 1:-1].replace('\n', ' ')
             FezAlarmFaxChecker().fields[fieldname] = ('%s: %s' % (alarmtype.translation(u'_kilometer_'), part), 1)
             numbers = classes.get('street').getStreet(FezAlarmFaxChecker().fields['address'][1]).housenumbers
@@ -348,7 +351,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             return
 
         elif alarmtype.translation(u'_train_identifier_') in _str:  # found train position
-            part = '%s' % _str[unicode(_str).find(alarmtype.translation(u'_train_identifier_')):]
+            part = '%s' % _str[_str.find(alarmtype.translation(u'_train_identifier_')):]
             FezAlarmFaxChecker().fields[fieldname] = ('%s' % part, 1)
             numbers = classes.get('street').getStreet(FezAlarmFaxChecker().fields['address'][1]).housenumbers
 
