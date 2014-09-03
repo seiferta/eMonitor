@@ -1,0 +1,13 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+    <h2>{{ _('admin.db.updatetitle') }}</h2>
+
+    {% if revisionname!='' %}
+    <p>{{ _('admin.db.revision.created') }}: '{{ revisionname|safe }}'</p>
+    {% else %}
+    <p>{{  _('admin.db.revision.error') }}</p>
+    {% endif %}
+
+{% endblock %}
