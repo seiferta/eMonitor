@@ -32,18 +32,20 @@ def getAdminContent(self, **params):
                         city.color = request.form.get('colorname')
                         city.default = request.form.get('citydefault')
                         city.osmid = request.form.get('osmid')
+                        city.osmname = request.form.get('osmname')
 
                     else:  # add city
                         city = classes.get('city')(request.form.get('cityname'), request.form.get('department'),
                                                    request.form.get('citymap'), request.form.get('citydefault'),
                                                    request.form.get('subcity'), request.form.get('colorname'),
-                                                   request.form.get('osmid'))
+                                                   request.form.get('osmid'), request.form.get('osmname'))
                         db.session.add(city)
 
                     db.session.commit()
+                    cache.delete_memoized(classes.get('city').getCities)
 
                 elif request.form.get('action') == 'createcity':  # add city
-                    params.update({'city': classes.get('city')('', '', '', '', '', '', 0), 'departments': classes.get('department').getDepartments(), 'maps': classes.get('map').getMaps()})
+                    params.update({'city': classes.get('city')('', '', '', '', '', '', 0, ''), 'departments': classes.get('department').getDepartments(), 'maps': classes.get('map').getMaps()})
                     return render_template('admin.streets.city_edit.html', **params)
 
                 elif request.form.get('action').startswith('deletecity_'):  # delete city
@@ -76,6 +78,7 @@ def getAdminContent(self, **params):
                 elif request.form.get('action').startswith('deletestreets_'):  # delete street
                     db.session.delete(classes.get('street').getStreet(int(request.form.get('action').split('_')[-1])))
                     db.session.commit()
+                    cache.delete_memoized(classes.get('city').getStreets)
 
                 elif request.form.get('action') == 'savestreet':  # save street
                     if request.form.get('street_id') != 'None':  # update existing street

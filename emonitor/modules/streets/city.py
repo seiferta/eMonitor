@@ -13,11 +13,12 @@ class City(db.Model):
     subcity = db.Column(db.Text)
     color = db.Column(db.String(6), default="000000")
     osmid = db.Column(db.Integer, default=0)
+    osmname = db.Column(db.String(30), default="")
     
     streets = db.relationship("Street", collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
     department = db.relationship("Department", collection_class=attribute_mapped_collection('id'))
     
-    def __init__(self, name, dept, mapname, default, subcity, color, osmid):
+    def __init__(self, name, dept, mapname, default, subcity, color, osmid, osmname):
         self.name = name
         self.dept = dept
         self.mapname = mapname
@@ -25,6 +26,7 @@ class City(db.Model):
         self.subcity = subcity
         self.color = color
         self.osmid = osmid
+        self.osmname = osmname
     
     def getSubCityList(self):
         try:

@@ -22,16 +22,17 @@ def getAdminContent(self, **params):
                         l = request.form.get('dep_pos')
                     else:  # add
                         l = len(classes.get('department').getDepartments()) + 1
-                        department = classes.get('department')('', '', 0)
+                        department = classes.get('department')('', '', '', 0)
                         db.session.add(department)
                     department.name = request.form.get('dep_name')
+                    department.shortname = request.form.get('dep_shortname')
                     department.color = request.form.get('dep_color')
                     department.orderpos = l
                     department.defaultcity = request.form.get('dep_city')
                     db.session.commit()
                     
                 elif request.form.get('action') == 'createdepartment':  # add department
-                    params.update({'department': classes.get('department')('', '', 0)})
+                    params.update({'department': classes.get('department')('', '', '', 0)})
                     return render_template('admin.settings.department_actions.html', **params)
 
                 elif request.form.get('action').startswith('detaildept_'):  # edit department

@@ -3,7 +3,7 @@ from flask import render_template, request
 from emonitor.extensions import classes, cache
 
 
-@cache.cached(timeout=5000, key_prefix='frontend.locations')
+#@cache.cached(timeout=5000, key_prefix='frontend.locations')
 def getFrontendContent(**params):
 
     if 'area' not in params.keys() and request.args.get('area', '') != '':

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 17:22+0200\n"
+"POT-Creation-Date: 2014-09-03 18:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2128,7 +2128,7 @@ msgstr ""
 msgid "settings.pathtype.pathincome"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:113
+#: emonitor/modules/settings/content_admin.py:114
 msgid "admin.settings.updatedberror"
 msgstr ""
 
@@ -2171,12 +2171,12 @@ msgid "settings.department.name"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:32
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:26
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
 msgid "settings.department.defaultcity"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:33
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:37
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
 msgid "settings.department.color"
 msgstr ""
 
@@ -2212,15 +2212,19 @@ msgstr ""
 msgid "settings.department.edittitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:28
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:26
+msgid "settings.department.shortname"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:34
 msgid "settings.department.notset"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:49
 msgid "settings.department.save"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:44
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:50
 msgid "settings.department.cancel"
 msgstr ""
 
@@ -2391,12 +2395,12 @@ msgstr ""
 msgid "admin.streets.cities.edit..."
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:134
+#: emonitor/modules/streets/content_admin.py:135
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:157
+#: emonitor/modules/streets/content_admin.py:158
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr ""
@@ -2444,22 +2448,26 @@ msgid "streets.city.osmid"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:75
+msgid "streets.city.osmname"
+msgstr ""
+
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:80
 msgid "streets.city.housenumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:77
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:82
 msgid "streets.city.loadhnumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:78
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:83
 msgid "streets.city.housenumbersfound"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:81
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:86
 msgid "streets.city.save"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:82
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:87
 msgid "streets.city.cancel"
 msgstr ""
 

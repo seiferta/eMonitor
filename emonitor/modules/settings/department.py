@@ -9,14 +9,16 @@ class Department(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
+    shortname = db.Column(db.String(10))
     color = db.Column(db.String(7))
     orderpos = db.Column(db.Integer)
     defaultcity = db.Column(db.Integer)  # id of default city for this department
     
     cars = db.relationship("Car", collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
     
-    def __init__(self, name, color, orderpos, defaultcity=0):
+    def __init__(self, name, shortname, color, orderpos, defaultcity=0):
         self.name = name
+        self.shortname = shortname
         self.color = color
         self.orderpos = orderpos
         self.defaultcity = defaultcity

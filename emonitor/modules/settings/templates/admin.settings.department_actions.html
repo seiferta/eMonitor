@@ -23,6 +23,12 @@
         </p>
         <p>
             <label>
+                {{ _('settings.department.shortname') }}:<br/>
+                <input type="text" name="dep_shortname" value="{{ department.shortname }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            <label>
                 {{ _('settings.department.defaultcity') }}:<br/>
                 <select name="dep_city">
                     <option>{{ _('settings.department.notset') }}</option>

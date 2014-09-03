@@ -12,7 +12,7 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
         nodes = {}
         ways = []
         city = classes.get('city').get_byid(street.cityid)
-        SEARCHSTRING = 'area[name~"%s"];way(area)[building]["addr:street"="%s"];(._;>;);out;' % (city.name, street.name)
+        SEARCHSTRING = 'area[name~"%s"];way(area)[building]["addr:street"="%s"];(._;>;);out;' % (city.osmname, street.name)
         r = requests.post(URL, data={'data': SEARCHSTRING})
         xmldoc = minidom.parseString(r._content)
         for node in xmldoc.getElementsByTagName('node'):
@@ -21,7 +21,7 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
             ways.append(way)
 
         # try with associatedStreet
-        SEARCHSTRING = 'area[name~"%s"];rel[type=associatedStreet](area)->.allASRelations;way(r.allASRelations:"street")[name="%s"];rel(bw:"street")[type=associatedStreet]->.relationsWithRoleStreet;way(r.relationsWithRoleStreet)[building];(._;>;);out;' % (city.name, street.name)
+        SEARCHSTRING = 'area[name~"%s"];rel[type=associatedStreet](area)->.allASRelations;way(r.allASRelations:"street")[name="%s"];rel(bw:"street")[type=associatedStreet]->.relationsWithRoleStreet;way(r.relationsWithRoleStreet)[building];(._;>;);out;' % (city.osmname, street.name)
         r = requests.post(URL, data={'data': SEARCHSTRING})
         xmldoc = minidom.parseString(r._content)
         for node in xmldoc.getElementsByTagName('node'):

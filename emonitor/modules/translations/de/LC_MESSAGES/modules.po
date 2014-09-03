@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 17:22+0200\n"
-"PO-Revision-Date: 2014-09-03 17:25+0100\n"
+"POT-Creation-Date: 2014-09-03 18:22+0200\n"
+"PO-Revision-Date: 2014-09-03 18:23+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2241,7 +2241,7 @@ msgstr "Pfad <em>Daten</em>"
 msgid "settings.pathtype.pathincome"
 msgstr "Pfad <em>Eingang</em>"
 
-#: emonitor/modules/settings/content_admin.py:113
+#: emonitor/modules/settings/content_admin.py:114
 msgid "admin.settings.updatedberror"
 msgstr "Aktualisierung fehlgeschlagen!"
 
@@ -2288,12 +2288,12 @@ msgid "settings.department.name"
 msgstr "Einheitsname"
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:32
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:26
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
 msgid "settings.department.defaultcity"
 msgstr "Standardort"
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:33
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:37
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
 msgid "settings.department.color"
 msgstr "Farbe der Einheit"
 
@@ -2329,15 +2329,19 @@ msgstr "(%(count)s Einheiten vorhanden)"
 msgid "settings.department.edittitle"
 msgstr "Einheit bearbeiten"
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:28
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:26
+msgid "settings.department.shortname"
+msgstr "Kurzname (sinnvoll bei langen Ortsnamen)"
+
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:34
 msgid "settings.department.notset"
 msgstr "- kein Standard definiert -"
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:49
 msgid "settings.department.save"
 msgstr "Speichern"
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:44
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:50
 msgid "settings.department.cancel"
 msgstr "Abbrechen"
 
@@ -2531,12 +2535,12 @@ msgstr "Straße (text)"
 msgid "admin.streets.cities.edit..."
 msgstr "..."
 
-#: emonitor/modules/streets/content_admin.py:134
+#: emonitor/modules/streets/content_admin.py:135
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr "%(i)s Städte/Orte wurden hinzugefügt."
 
-#: emonitor/modules/streets/content_admin.py:157
+#: emonitor/modules/streets/content_admin.py:158
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr "%(i)s Straßen wurden hinugefügt"
@@ -2586,22 +2590,26 @@ msgid "streets.city.osmid"
 msgstr "OpenStreetMap-Id"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:75
+msgid "streets.city.osmname"
+msgstr "OpenStreetMap-Ortsname"
+
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:80
 msgid "streets.city.housenumbers"
 msgstr "Hausnummern aller Straßen des aktuellen Ortes laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:77
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:82
 msgid "streets.city.loadhnumbers"
 msgstr "Hausnummern von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:78
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:83
 msgid "streets.city.housenumbersfound"
 msgstr "Hausnummern gefunden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:81
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:86
 msgid "streets.city.save"
 msgstr "Speichern"
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:82
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:87
 msgid "streets.city.cancel"
 msgstr "Abbrechen"
 
