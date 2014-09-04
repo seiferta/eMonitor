@@ -23,7 +23,7 @@ def getAdminContent(self, **params):
 
         def _printernames(callstring):
             printernames = ['<default>']
-            callstring = '%s -printer "xxx"' % callstring.split()[0]
+            callstring = '%s -printer "xxx"' % "" or callstring.split()[0]
             try:
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
             except subprocess.CalledProcessError as e:

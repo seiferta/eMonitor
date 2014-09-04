@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 18:22+0200\n"
-"PO-Revision-Date: 2014-09-03 18:23+0100\n"
+"POT-Creation-Date: 2014-09-03 21:42+0200\n"
+"PO-Revision-Date: 2014-09-03 21:43+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -891,119 +891,135 @@ msgstr "Speichern"
 msgid "alarms.type.cancel"
 msgstr "Abbrechen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:26
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:27
 msgid "alarms.header.edit"
 msgstr "Einsatz bearbeiten"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:33
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:34
 msgid "frontend.alarms.address"
 msgstr "Direkte Adresse"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:34
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:35
 msgid "frontend.alarms.object"
 msgstr "Objektauswahl"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:41
 #: emonitor/modules/streets/templates/widget.street.html:10
 msgid "alarms.address"
 msgstr "Straße"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:46
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:42
+msgid "alarms.address.placeholder"
+msgstr "Straßenname"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:47
 msgid "alarms.streetno"
 msgstr "Haus-Nr."
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:53
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:48
+msgid "alarms.streetno.placeholder"
+msgstr "Nr."
+
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:54
 msgid "alarms.crossing"
 msgstr "Kreuzung <small>(optional</small>"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:58
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:55
+msgid "alarms.crossing.placeholder"
+msgstr "Kreuzung (optional)"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:59
 #: emonitor/modules/streets/templates/widget.street.html:19
 msgid "alarms.city"
 msgstr "Ort"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:73
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:60
+msgid "alarms.city.placeholder"
+msgstr "Ort/Stadt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:74
 msgid "alarms.alarmobjects"
 msgstr "Einsatzobjekte"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:75
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:76
 msgid "alarms.noobject"
 msgstr "- kein Einsatzobjekt -"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:85
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:86
 msgid "alarms.key"
 msgstr "Schlagwort/Meldebild"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:93
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:94
 msgid "alarms.date"
 msgstr "Datum"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:98
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:99
 msgid "alarms.time"
 msgstr "Uhrzeit"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:105
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:106
 msgid "alarms.enddate"
 msgstr "Datum Ende"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:110
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:111
 msgid "alarms.endtime"
 msgstr "Uhrzeit Ende"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:118
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:119
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:152
 msgid "alarms.person"
 msgstr "Mitteiler"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:125
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:126
 msgid "alarms.priority"
 msgstr "Priorität"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:133
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:158
 #: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
 msgid "alarms.remark"
 msgstr "Bemerkung"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:138
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:139
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:164
 msgid "alarms.cars"
 msgstr "Einsatzmittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:141
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:142
 msgid "alarms.cars1"
 msgstr "Primärfahrzeug(e)"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:143
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:144
 msgid "alarms.setdefaultcars"
 msgstr "Standardausrückereihenfolge setzen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:144
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:145
 msgid "alarms.clearcars"
 msgstr "Fahrzeuge/Material entfernen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:156
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:157
 msgid "alarms.cars2"
 msgstr "Folgefahrzeug(e)"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:168
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:169
 msgid "alarms.material"
 msgstr "Sondermittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:179
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:180
 msgid "alarms.unused"
 msgstr "Nicht disponierte Einsatzmittel"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:195
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:196
 msgid "alarms.storeupdatedmarker"
 msgstr "geänderte Kartenposition speichern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:199
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:200
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:201
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 msgid "alarms.save"
 msgstr "Speichern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:201
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:202
 msgid "alarms.cancel"
 msgstr "Abbrechen"
 

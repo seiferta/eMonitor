@@ -82,20 +82,24 @@ recorded = []
 
 
 def configure_extensions(app):
+    # alembic
+    alembic.init_app(app)
+
     # flask-sqlalchemy
     db.init_app(app)
     db.app = app
-    db.create_all()
 
-    # alembic
-    alembic.init_app(app)
-    with app.app_context():  # check current db revision
-        if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):
-            try:
-                alembic.upgrade(current_app.config.get('DB_VERSION'))
-                print "database update done"
-            except alembicutil.CommandError, e:
-                print e
+    with app.app_context():
+        try:
+            db.reflect()  # check init
+            db.create_all()
+            alembic.stamp()  # set stamp to latest version
+        except:
+            if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
+                try:
+                    alembic.upgrade(current_app.config.get('DB_VERSION'))
+                except alembicutil.CommandError:
+                    pass
 
     # babel
     babel.init_app(app)

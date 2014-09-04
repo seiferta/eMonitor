@@ -11,6 +11,7 @@
         .lists li:active { background:#999; }
         .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
         .extended{border:1px solid silver!important}
+        input[placeholder], [placeholder], *[placeholder] {color:silver !important;}
     </style>
 {% endblock %}
 
@@ -38,25 +39,25 @@
                         <div style="width:100%;position:relative">
                             <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
                                 <label style="width:99%">{{ _('alarms.address') }}:<br/>
-                                    <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%"/>
+                                    <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%" autofocus placeholder="{{ _('alarms.address.placeholder') }}"/>
                                 </label>
                                 <input type="hidden" name="edit_addressid" id="edit_addressid" value="{% if alarm.street %}{{  alarm.street.id }}{% endif %}"/>
                             </p>
                             <p style="width:25%;float:left">
                                 <label style="width:99%">{{ _('alarms.streetno') }}:<br/>
-                                    <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" style="width:99%;"/>
+                                    <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" style="width:99%;" placeholder="{{ _('alarms.streetno.placeholder') }}"/>
                                 </label>
                             </p>
                         </div>
                         <div style="width:100%;position:relative">
                             <p style="width:55%;background-color:#fff;float:left;padding-right:20px;position:relative">
                                 <label style="width:99%">{{ _('alarms.crossing') }}:<br/>
-                                    <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%"/>
+                                    <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%" placeholder="{{ _('alarms.crossing.placeholder') }}"/>
                                 </label>
                             </p>
                             <p style="width:45%;float:left">
                                 <label style="width:99%">{{ _('alarms.city') }}:<br/>
-                                    <input type="text" name="edit_cityname" id="edit_cityname" list="citylist" value="{{ alarm.city.name }}"/>
+                                    <input type="text" name="edit_cityname" id="edit_cityname" list="citylist" value="{{ alarm.city.name }}" placeholder="{{ _('alarms.city.placeholder') }}"/>
                                     <datalist id="citylist">
                                         {%- for city in cities %}
                                         <option value="{{ city.name }}" id="{{ city.id }}">

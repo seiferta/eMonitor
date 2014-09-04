@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-14 09:50+0200\n"
+"POT-Creation-Date: 2014-09-03 21:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,8 +28,6 @@ msgstr ""
 #: emonitor/frontend/web/templates/frontend.area.html:12
 #: emonitor/frontend/web/templates/frontend.html:13
 #: emonitor/frontend/web/templates/frontend.html:80
-#: emonitor/frontend/web/templates/frontend_tmp.html:12
-#: emonitor/frontend/web/templates/frontend_tmp.html:61
 #: emonitor/frontend/web/templates/frontendframe.html:13
 #: emonitor/frontend/web/templates/frontendframe.html:77
 msgid "frontend.titlemain"
@@ -40,25 +38,21 @@ msgid "frontend.default.module"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:37
-#: emonitor/frontend/web/templates/frontend_tmp.html:36
 #: emonitor/frontend/web/templates/frontendframe.html:36
 msgid "layout.resize"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:38
-#: emonitor/frontend/web/templates/frontend_tmp.html:37
 #: emonitor/frontend/web/templates/frontendframe.html:37
 msgid "layout.open"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:39
-#: emonitor/frontend/web/templates/frontend_tmp.html:38
 #: emonitor/frontend/web/templates/frontendframe.html:38
 msgid "layout.closed"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:82
-#: emonitor/frontend/web/templates/frontend_tmp.html:62
 #: emonitor/frontend/web/templates/frontendframe.html:79
 msgid "frontend.adminlink"
 msgstr ""
@@ -69,13 +63,11 @@ msgid "admin.logout"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:88
-#: emonitor/frontend/web/templates/frontend_tmp.html:78
 #: emonitor/frontend/web/templates/frontendframe.html:85
 msgid "frontend.login"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:116
-#: emonitor/frontend/web/templates/frontend_tmp.html:111
 #: emonitor/frontend/web/templates/frontendframe.html:103
 msgid "frontend.show.monitors"
 msgstr ""
