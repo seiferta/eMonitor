@@ -6,7 +6,7 @@ from emonitor.modules.settings import settings_utils
 
 
 class SettingsModule(Module):
-    info = {'area': ['admin'], 'name': 'settings', 'path': 'settings', 'version': '0.1'}
+    info = dict(area=['admin'], name='settings', path='settings', icon='fa-gears', version='0.1')
 
     def __repr__(self):
         return "settings"

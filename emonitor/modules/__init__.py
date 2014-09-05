@@ -14,7 +14,7 @@ class StartModule(Module):
     """
         startpage for admin area
     """
-    info = dict(area=['admin', 'frontend'], name='startpages', path='default', version='0.1')
+    info = dict(area=['admin', 'frontend'], name='startpages', path='default', icon='fa-home', version='0.1')
 
     def __repr__(self):
         return "startpages"

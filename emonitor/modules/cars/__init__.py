@@ -6,7 +6,7 @@ from emonitor.modules.cars.content_frontend import getFrontendData
 
 
 class CarsModule(Module):
-    info = {'area': ['admin', 'frontend', 'widget'], 'name': 'cars', 'path': 'cars', 'version': '0.1'}
+    info = dict(area=['admin', 'frontend', 'widget'], name='cars', path='cars', icon='fa-truck', version='0.1')
 
     def __repr__(self):
         return "cars"

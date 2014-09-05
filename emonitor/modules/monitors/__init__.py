@@ -9,7 +9,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 
 class MonitorsModule(Module):
-    info = {'area': ['admin', 'frontend', 'widget'], 'name': 'monitors', 'path': 'monitors', 'version': '0.1'}
+    info = dict(area=['admin', 'frontend', 'widget'], name='monitors', path='monitors', icon='fa-desktop', version='0.1')
 
     def __repr__(self):
         return "monitors"

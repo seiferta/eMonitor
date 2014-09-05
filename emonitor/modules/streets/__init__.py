@@ -11,7 +11,7 @@ from .content_frontend import getFrontendData
 
 
 class StreetsModule(Module):
-    info = {'area': ['admin', 'frontend', 'widget'], 'name': 'streets', 'path': 'streets', 'version': '0.1'}
+    info = dict(area=['admin', 'frontend', 'widget'], name='streets', path='streets', icon='fa-road', version='0.1')
     
     def __repr__(self):
         return "streets"

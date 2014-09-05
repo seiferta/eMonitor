@@ -6,7 +6,7 @@ from emonitor.modules.mapitems.content_admin import getAdminContent, getAdminDat
 
 
 class MapitemsModule(Module):
-    info = {'area': ['admin'], 'name': 'mapitems', 'path': 'mapitems', 'version': '0.1'}
+    info = dict(area=['admin'], name='mapitems', path='mapitems', icon='fa-bullseye', version='0.1')
 
     def __repr__(self):
         return "mapitems"

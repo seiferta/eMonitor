@@ -4,7 +4,7 @@ from .content_admin import getAdminContent
 
 
 class UserModule(Module):
-    info = {'area': ['admin'], 'name': 'usermodule', 'path': 'users', 'version': '0.1'}
+    info = dict(area=['admin'], name='usermodule', path='users', icon='fa-users', version='0.1')
     
     def __repr__(self):
         return "usermodule"

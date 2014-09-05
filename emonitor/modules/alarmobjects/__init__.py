@@ -6,7 +6,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 class AlarmobjectsModule(Module):
     
-    info = dict(area=['admin', 'frontend'], name='alarmobjects', path='alarmobjects', version='0.1')
+    info = dict(area=['admin', 'frontend'], name='alarmobjects', path='alarmobjects', icon='fa-building', version='0.1')
     
     def __repr__(self):
         return "alarmobjects"

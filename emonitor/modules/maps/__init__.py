@@ -7,7 +7,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 
 class MapsModule(Module):
-    info = {'area': ['admin', 'frontend', 'widget'], 'name': 'maps', 'path': 'maps', 'version': '0.1'}
+    info = dict(area=['admin', 'frontend', 'widget'], name='maps', path='maps', icon='fa-globe', version='0.1')
 
     def __repr__(self):
         return "maps"

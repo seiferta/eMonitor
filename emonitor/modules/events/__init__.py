@@ -4,7 +4,7 @@ from emonitor.modules.events.content_admin import getAdminContent, getAdminData
 
 
 class EventsModule(Module):
-    info = {'area': ['admin'], 'name': 'events', 'path': 'events', 'version': '0.1'}
+    info = dict(area=['admin'], name='events', path='events', icon='fa-magic', version='0.1')
     
     def __repr__(self):
         return "events"

@@ -4,7 +4,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 
 class LocationsModule(Module):
-    info = {'area': ['frontend'], 'name': 'locations', 'path': 'locations', 'version': '0.1'}
+    info = dict(area=['frontend'], name='localtions', path='locations', icon='fa-code-fork', version='0.1')
 
     def __repr__(self):
         return "locations"

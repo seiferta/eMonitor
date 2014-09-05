@@ -4,7 +4,7 @@ from emonitor.modules.scripts.script import Script
 
 
 class ScriptsModule(Module):
-    info = {'area': [], 'name': 'scripts', 'path': '', 'version': '0.1'}
+    info = dict(area=[], name='scripts', path='', icon='fa-terminal', version='0.1')
 
     def __repr__(self):
         return "scripts"

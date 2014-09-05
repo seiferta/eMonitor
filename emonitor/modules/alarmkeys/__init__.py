@@ -7,7 +7,7 @@ from emonitor.modules.alarmkeys.content_frontend import getFrontendData
 
 
 class AlarmkeysModule(Module):
-    info = dict(area=['admin', 'frontend'], name='alarmkeys', path='alarmkeys', version='0.1')
+    info = dict(area=['admin', 'frontend'], name='alarmkeys', path='alarmkeys', icon='fa-list-ol', version='0.1')
     
     def __repr__(self):
         return "alarmkeys"

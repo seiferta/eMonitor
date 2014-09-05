@@ -4,7 +4,7 @@ from .content_admin import getAdminContent
 
 
 class TextmodModule(Module):
-    info = {'area': ['admin'], 'name': 'textmod', 'path': 'textmod', 'version': '0.1'}
+    info = dict(area=['admin'], name='textmod', path='textmod', icon='fa-text-width', version='0.1')
     
     def __repr__(self):
         return "textmod"
