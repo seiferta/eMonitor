@@ -11,7 +11,7 @@ from emonitor.modules.streets.city import City
 def getAdminContent(self, **params):
     module = request.view_args['module'].split('/')
     if len(module) < 2:
-        module.append(u'1')
+        module.append(u'%s' % classes.get('city').getDefaultCity().id)
 
     if len(module) == 2:  # cities
         if module[1] == '0':  # city list
