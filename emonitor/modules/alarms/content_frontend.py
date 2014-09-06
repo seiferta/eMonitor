@@ -2,6 +2,7 @@ import datetime
 from operator import attrgetter
 from flask import render_template, request, flash, render_template_string, jsonify
 from emonitor.extensions import classes, monitorserver, scheduler, db, signal
+from emonitor.frontend import frontend
 
 
 def getFrontendContent(**params):
@@ -82,7 +83,7 @@ def getFrontendContent(**params):
             #flash(babel.gettext(u'alarms.alarmadded'), 'alarms.add')
         else:  # edit alarm
             alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
-        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=classes.get('city').getCities(), objects=classes.get('alarmobject').getAlarmObjects(), cars=classes.get('car').getCars(), frontendarea=params['area'])
+        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=classes.get('city').getCities(), objects=classes.get('alarmobject').getAlarmObjects(), cars=classes.get('car').getCars(), frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'))
 
     elif request.args.get('action') == 'refresh':  # refresh alarm section
         params['area'] = request.args.get('area')
@@ -123,7 +124,7 @@ def getFrontendContent(**params):
         params['area'] = 'center'
     if 'activeacc' not in params:
         params['activeacc'] = 0
-    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'))
+    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'))
 
     
 def getFrontendData(self, *params):

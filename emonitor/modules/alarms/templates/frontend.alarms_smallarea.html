@@ -4,8 +4,9 @@
     <style>
         #alarmssubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0 0 1px 0;}
         #alarmssubcenter {border-width:0;padding:0;}
+        #alarmssubnorth button{width:36px;height:25px}
 
-        h3 {font-size: 1.1em; background: #ababab; border: 1px 1px solid black!important;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;}
+        h3 {font-size: 1.1em; background: #ababab;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;}
         h3:hover{background-color:silver!important}
         .alarmrow {position:relative;clear:left;padding:4px 2px 0 15px;border-bottom:1px solid silver;background-color:#fff;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
         .alarmrow a{color:#818181;}
@@ -29,6 +30,7 @@
         .dropdown button {background-color:transparent;cursor:pointer;padding:1px;margin:0;border-width:0;}
         .showroute{background-color:red;}
         .showroute:hover{background-color:red!important;}
+        p.noalarms{margin-top:50%;text-align:center;color:#818181;font-size:1.4em}
     </style>
 {% endblock %}
 
@@ -80,6 +82,13 @@
             <button type="button" name="action" value="addalarm" onclick="window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'" title="{{ _('alarms.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
             <button type="button" name="action" value="activatealarm" title="{{ _('alarms.autorefresh') }}" onclick="window.location.href='/alarms?area={{ frontendarea }}'"><i class="fa fa-refresh fa-lg"></i></button>
             <button type="button" title="{{ _('alarms.archivetitle') }}" onclick="questionArchive(0)"><i class="fa fa-shield fa-lg"></i></button>
+            <div class="smallmodulesarea">
+                {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
+                {%- if mod != 'alarms' %} {# exclude current module #}
+                <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
+                {%- endif %}
+                {%- endfor %}
+            </div>
         </div>
 
         <div id="alarmssubcenter">
@@ -90,9 +99,12 @@
                     <span class="badge badge-info pull-right">{{ stats[k] }}</span>
                 </h3>
 
-                <div id="alarmstate_{{ k }}" style="overflow-x:hidden!important;">
-                    {% for alarm in alarms %}
-                    {% if k==alarm.state|string %}
+                <div id="alarmstate_{{ k }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px">
+                    {%- if stats[k]==0 %}
+                        <p class="noalarms">{{ _('alarms.noactive') }}</p>
+                    {%- endif %}
+                    {%- for alarm in alarms %}
+                    {%- if k==alarm.state|string %}
                     <!--<div class="alarmrow" lat="{{ alarm.lat }}" lng="{{ alarm.lng }}" zoom="{{ alarm.zoom }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}" ondblclick="$('#editalarm_{{ alarm.id}}').click()">-->
                     <div class="alarmrow" lat="{{ alarm.get('lat') }}" lng="{{ alarm.get('lng') }}" zoom="{{ alarm.get('zoom') }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}">
 
@@ -106,16 +118,16 @@
                                 {{ alarm.street.name }}
                                 {{ alarm.streetno }}
                                 <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
-                                {% if alarm.object %}> {{ alarm.object.name }}{% endif %}
+                                {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
                             </span>
                             <div class="alarmdetails">
-                                {% if alarm.type==1 %}<a href="/file/fax/{{ alarm.get('filename') }}" target="blank"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{% endif %}
+                                {%- if alarm.type==1 %}<a href="/file/fax/{{ alarm.get('filename') }}" target="blank"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{%- endif %}
                                 <a href="#" onclick="return addMessage({{ alarm.id }})" title="{{ _('alarms.messagestitle', number=alarm.history|count) }}">{{ alarm.history|count }}<i class="fa fa-comment-o" style="padding-left:2px;"></i></a>
-                                {% if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{% endif %}
-                                {% if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{% endif %}
-                                {% if alarm.get('lat', '0')!='' %}
+                                {%- if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{%- endif %}
+                                {%- if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{%- endif %}
+                                {%- if alarm.get('lat', '0')!='' %}
                                 <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
-                                {% endif %}
+                                {%- endif %}
                             </div>
                        </div>
 
@@ -125,29 +137,29 @@
                             </a>
                             <ul class="dropdown-menu pull-right">
                                 <li><a href="#" onclick="editAlarm({{ alarm.id }})" id="editalarm_{{ alarm.id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('alarm.edit') }}</a></li>
-                                {% if alarm.state==1 %}
+                                {%- if alarm.state==1 %}
                                 <li><a href="#" onclick="return questionFinish({{ alarm.id }})"><i class="fa fa-flag-checkered fa-fw"></i> {{ _('alarm.finish') }}</a></li>
-                                {% endif %}
-                                {% if alarm.state==0 or alarm.state==2 %}
+                                {%- endif %}
+                                {%- if alarm.state==0 or alarm.state==2 %}
                                 <li><a href="#" onclick="return questionActivate({{ alarm.id }})"><i class="fa fa-bell fa-fw"></i> {{ _('alarm.activate') }}</a></li>
-                                {% endif %}
-                                {% if alarm.state==2 %}
+                                {%- endif %}
+                                {%- if alarm.state==2 %}
                                 <li><a href="#" onclick="return questionArchive({{ alarm.id }})"><i class="fa fa-shield fa-fw"></i> {{ _('alarm.archive') }}</a></li>
-                                {% endif %}
+                                {%- endif %}
                                 <li><a href="#" onclick="return questionDelete({{ alarm.id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
                                 <li class="divider"></li>
                                 <li><a href="#" onclick="return routeAlarm({{ alarm.id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
                                 <li><a href="#" onclick="return showRoute({{ alarm.id }})"><i class="fa fa-fw" id="route_{{ alarm.id }}"></i> {{ _('alarm.route') }}</a></li>
                                 <li class="divider"></li>
-                                {% for printdef in printdefs %}
+                                {%- for printdef in printdefs %}
                                 <li><a href="#" id="printalarm" alarmid="{{ alarm.id }}" onclick="return printAlarm({{ alarm.id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
-                                {% endfor %}
+                                {%- endfor %}
                             </ul>
                         </div>
 
                     </div>
-                    {% endif %}
-                    {% endfor %}
+                    {%- endif %}
+                    {%- endfor %}
                 </div>
                 {% endfor %}
             </div>
@@ -285,11 +297,13 @@
 
                     if ($(obj).attr('lat')!="") {
                         var m = parent.maps.map.addMarker($(obj).attr('lat'), $(obj).attr('lng'), $(obj).attr('priority'), false);
-                        m.bindPopup('<small>' + $(obj).find('.date').html() + '</small><br/>' + $(obj).find('.key').html() + '<br/><b>' + $(obj).find('.address').html() + '</b>');
-                        m.options['alarmid'] = $(obj).attr('alarmid');
-                        m.on('click', onAlarmMarkerClick);
-                        m.on('mouseover', onAlarmMarkerMouseOver);
-                        m.on('mouseout', onAlarmMarkerMouseOut);
+                        if(m) {
+                            m.bindPopup('<small>' + $(obj).find('.date').html() + '</small><br/>' + $(obj).find('.key').html() + '<br/><b>' + $(obj).find('.address').html() + '</b>');
+                            m.options['alarmid'] = $(obj).attr('alarmid');
+                            m.on('click', onAlarmMarkerClick);
+                            m.on('mouseover', onAlarmMarkerMouseOver);
+                            m.on('mouseout', onAlarmMarkerMouseOut);
+                        }
                     }
 
                     parent.maps.map.setView(new L.LatLng($(obj).attr('lat'), $(obj).attr('lng')), parent.maps.map.getZoom());
@@ -312,11 +326,13 @@
                         $('#alarmstate_' + state).children().each(function (i) {
                             if ($(this).attr('lat')!="") {
                                 var m = parent.maps.map.addMarker($(this).attr('lat'), $(this).attr('lng'), $(this).attr('priority'), false);
-                                m.bindPopup('<small>' + $(this).find('.date').html() + '</small><br/>' + $(this).find('.key').html() + '<br/><b>' + $(this).find('.address').html() + '</b>');
-                                m.options['alarmid'] = $(this).attr('alarmid');
-                                m.on('click', onAlarmMarkerClick);
-                                m.on('mouseover', onAlarmMarkerMouseOver);
-                                m.on('mouseout', onAlarmMarkerMouseOut);
+                                if (m) {
+                                    m.bindPopup('<small>' + $(this).find('.date').html() + '</small><br/>' + $(this).find('.key').html() + '<br/><b>' + $(this).find('.address').html() + '</b>');
+                                    m.options['alarmid'] = $(this).attr('alarmid');
+                                    m.on('click', onAlarmMarkerClick);
+                                    m.on('mouseover', onAlarmMarkerMouseOver);
+                                    m.on('mouseout', onAlarmMarkerMouseOut);
+                                }
                             }
                         });
                         return false;

@@ -12,7 +12,7 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 class AlarmsModule(Module):
     
-    info = dict(area=['admin', 'frontend', 'widget'], messages=['add', 'info', 'activate', 'close'], name='alarms', path='alarms', icon='fa-fire', version='0.1')
+    info = dict(area=['admin', 'frontend', 'widget'], messages=['add', 'info', 'activate', 'close'], name='alarms', path='alarms', icon='fa-fire', version='0.2')
     
     def __repr__(self):
         return "alarms"

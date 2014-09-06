@@ -2,6 +2,16 @@
 
 {% block style %}
     <style>
+        #alarmssubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0;}
+        #alarmssubcenter {border-width:0;padding:0;}
+        #alarmssubnorth button{width:36px;height:25px;}
+
+
+       #alarmssubnorth p{font-size:14px;font-weight:bold;margin:5px 0!important}
+
+        ::-webkit-input-placeholder {color: #999}
+        :-ms-input-placeholder {color: #999}
+        :-moz-placeholder {color: #999}
         .lists {float:left;}
         .lists div{overflow:hidden;}
         .lists .group{min-height:50px;border:1px solid #ddd;padding:0;width:99%;}
@@ -11,7 +21,7 @@
         .lists li:active { background:#999; }
         .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
         .extended{border:1px solid silver!important}
-        input[placeholder], [placeholder], *[placeholder] {color:silver !important;}
+        body{background-color: #fff!important}
     </style>
 {% endblock %}
 
@@ -19,200 +29,228 @@
     <script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js" xmlns="http://www.w3.org/1999/html"> </script>
     <script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+    <script>
+        $(document).ready(function() {
+            var innerLayout = $('#alarmcontainer').layout({
+                center:{paneSelector: "#alarmssubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
+                north: {paneSelector: "#alarmssubnorth", size: 40, slidable: false, resizable: false, closable:false, spacing_open: 0},
+                resizerTip:'{{ _('layout.resize') }}',
+                togglerTip_open: '{{ _('layout.open') }}',
+                togglerTip_closed: '{{ _('layout.closed') }}'
+            });
+        });
+
+    </script>
 {% endblock %}
 
 {% block content %}
-    <form id="editForm_{{ frontendarea }}" method="post" style="height:100%;overflow:auto">
-        <div style="padding:5px;overflow:auto;height:100%;position:relative;">
-            <h2>{{ _('alarms.header.edit') }}</h2>
-            <div style="position:absolute;top:5px;right:5px;">
-                <a href="#" onclick="return addMessage({{ alarm.id }})">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></a>
-                <a href="#" onclick="return toggleDetails()"><i class="fa fa-indent fa-lg" id="detailswitch"></i></a>
+    <div style="height:100%;width:100%;padding:0;margin:0;" id="alarmcontainer" class="alarmcontainer">
 
+        <div class="pane" id="alarmssubnorth" style="padding-top:5px;">
+            <p>{{ _('alarms.header.edit') }}</p>
+
+            <div class="smallmodulesarea">
+                <button type="button" onclick="return addMessage('{{ alarm.id }}')" style="width:50px">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></button>
+                <button type="button" {%- if ([frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd)|length >1 %}style="margin-right:10px"{%- endif  %} onclick="return toggleDetails()" ><i class="fa fa-indent fa-lg" id="detailswitch"></i></button>
+
+                {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
+                {%- if mod != 'alarms' %} {# exclude current module #}
+                <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
+                {%- endif %}
+                {%- endfor %}
             </div>
-                <ul class="nav nav-tabs" id="myTab">
-                    <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
-                    <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab0">
-                        <div style="width:100%;position:relative">
-                            <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
-                                <label style="width:99%">{{ _('alarms.address') }}:<br/>
-                                    <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%" autofocus placeholder="{{ _('alarms.address.placeholder') }}"/>
-                                </label>
-                                <input type="hidden" name="edit_addressid" id="edit_addressid" value="{% if alarm.street %}{{  alarm.street.id }}{% endif %}"/>
-                            </p>
-                            <p style="width:25%;float:left">
-                                <label style="width:99%">{{ _('alarms.streetno') }}:<br/>
-                                    <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" style="width:99%;" placeholder="{{ _('alarms.streetno.placeholder') }}"/>
-                                </label>
-                            </p>
-                        </div>
-                        <div style="width:100%;position:relative">
-                            <p style="width:55%;background-color:#fff;float:left;padding-right:20px;position:relative">
-                                <label style="width:99%">{{ _('alarms.crossing') }}:<br/>
-                                    <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%" placeholder="{{ _('alarms.crossing.placeholder') }}"/>
-                                </label>
-                            </p>
-                            <p style="width:45%;float:left">
-                                <label style="width:99%">{{ _('alarms.city') }}:<br/>
-                                    <input type="text" name="edit_cityname" id="edit_cityname" list="citylist" value="{{ alarm.city.name }}" placeholder="{{ _('alarms.city.placeholder') }}"/>
-                                    <datalist id="citylist">
-                                        {%- for city in cities %}
-                                        <option value="{{ city.name }}" id="{{ city.id }}">
-                                        {%- endfor  %}
-                                    </datalist>
-                                </label>
-                                <input type="hidden" name="edit_city" id="edit_city" value="{{ alarm.city.id }}"/>
-                            </p>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="tab-pane" id="tab1">
-                        <p>
-                            <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
-                                <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
-                                    <option value="0">{{ _('alarms.noobject') }}</option>
-                                    {%- for aobject in objects %}
-                                        <option value="{{ aobject.id }}" {% if aobject==alarm.object %}selected="selected"{% endif %}>{{ aobject.name }}</option>
+        <div id="alarmssubcenter">
+
+            <form id="editForm_{{ frontendarea }}" method="post" style="height:100%;overflow:auto">
+                <div style="padding:5px;overflow:auto;height:100%;position:relative;border:1px solid silver">
+
+
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
+                            <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab0">
+                                <div style="width:100%;position:relative">
+                                    <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
+                                        <label style="width:99%">{{ _('alarms.address') }}:<br/>
+                                            <input type="text" value="{%if alarm.street %}{{ alarm.street.name }}{% endif %}" name="edit_address" id="edit_address" style="width:99%" autofocus placeholder="{{ _('alarms.address.placeholder') }}"/>
+                                        </label>
+                                        <input type="hidden" name="edit_addressid" id="edit_addressid" value="{% if alarm.street %}{{  alarm.street.id }}{% endif %}"/>
+                                    </p>
+                                    <p style="width:25%;float:left">
+                                        <label style="width:99%">{{ _('alarms.streetno') }}:<br/>
+                                            <input type="text" name="edit_streetno" id="edit_streetno" value="{{ alarm.streetno }}" style="width:99%;" placeholder="{{ _('alarms.streetno.placeholder') }}"/>
+                                        </label>
+                                    </p>
+                                </div>
+                                <div style="width:100%;position:relative">
+                                    <p style="width:55%;background-color:#fff;float:left;padding-right:20px;position:relative">
+                                        <label style="width:99%">{{ _('alarms.crossing') }}:<br/>
+                                            <input type="text" value="{% if alarm.street2 %}{{ alarm.street2.name }}{% endif %}" name="edit_address2" style="width:99%" placeholder="{{ _('alarms.crossing.placeholder') }}"/>
+                                        </label>
+                                    </p>
+                                    <p style="width:45%;float:left">
+                                        <label style="width:99%">{{ _('alarms.city') }}:<br/>
+                                            <input type="text" name="edit_cityname" id="edit_cityname" list="citylist" value="{{ alarm.city.name }}" placeholder="{{ _('alarms.city.placeholder') }}"/>
+                                            <datalist id="citylist">
+                                                {%- for city in cities %}
+                                                <option value="{{ city.name }}" id="{{ city.id }}">
+                                                {%- endfor  %}
+                                            </datalist>
+                                        </label>
+                                        <input type="hidden" name="edit_city" id="edit_city" value="{{ alarm.city.id }}"/>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab1">
+                                <p>
+                                    <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
+                                        <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
+                                            <option value="0">{{ _('alarms.noobject') }}</option>
+                                            {%- for aobject in objects %}
+                                                <option value="{{ aobject.id }}" {% if aobject==alarm.object %}selected="selected"{% endif %}>{{ aobject.name }}</option>
+                                            {%- endfor %}
+                                        </select>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                        <p style="clear:left">
+                           <label style="width:99%">{{ _('alarms.key') }}:<br/>
+                                <input type="text" name="edit_key" id="edit_key" value="{% if alarm.id!=None %}{{ alarm.key.category }}: {% endif %}{%  if alarm.key %}{{ alarm.key.key }}{% endif %}" style="width:100%;"/>
+                            </label>
+                            <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
+
+                        </p>
+                        <div style="width:100%;position:relative">
+                            <p style="width:50%;float:left;background-color:#fff;padding-right:20px;position:relative">
+                                <label style="width:99%;">{{ _('alarms.date') }}:<br/>
+                                    <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date"/>
+                                </label>
+                            </p>
+                            <p style="width:50%;float:left;background-color:#fff;position:relative">
+                                <label style="width:99%">{{ _('alarms.time') }}:<br/>
+                                    <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" class="time"/>
+                                </label>
+                            </p>
+                        </div>
+                        <div style="width:100%;position:relative;display:none;" class="extended">
+                            <p style="width:50%;float:left;padding-right:20px;position:relative">
+                                <label style="width:99%">{{ _('alarms.enddate') }}:<br/>
+                                    <input type="text" value="{{ alarm.endtimestamp|datetime('dd.MM.yyyy') }}" name="edit_endtimestamp_date" style="width:100%" class="date"/>
+                                </label>
+                            </p>
+                            <p style="width:50%;float:left;position:relative">
+                                <label style="width:99%">{{ _('alarms.endtime') }}:<br/>
+                                    <input type="text" value="{{ alarm.endtimestamp|datetime('HH:mm:ss') }}" name="edit_endtimestamp_time" style="width:100%" class="time"/>
+                                </label>
+                            </p>
+                        </div>
+
+                        <div style="width:100%;position:relative">
+                            <p style="width:100%">
+                                <label style="width:99%">{{ _('alarms.person') }}:<br/>
+                                    <input type="text" name="edit_person" value="{{ alarm.person }}" style="width:100%;"/>
+                                </label>
+                            </p>
+                        </div>
+                        <div style="width:100%">
+                            <p style="width:20%;background-color:#fff;float:left;padding-right:20px;position:relative">
+                                {{ _('alarms.priority') }}:<br/>
+                                {%- for prio in range(2,-1,-1) %}
+                                    <label style="min-width:80px">
+                                        <input type="radio" name="edit_priority" value="{{ prio }}" {% if prio==alarm.priority %}checked="checked"{% endif %}/> {{ _('alarms.prioshort'+prio|string) }}
+                                    </label><br/>
+                                {%- endfor %}
+                            </p>
+                            <p style="width:80%;float:left">
+                                <label style="width:99%">{{ _('alarms.remark') }}:<br/>
+                                <textarea name="edit_remark" style="width:99%;height:100px;">{{ alarm.remark }}</textarea>
+                                </label>
+                            </p>
+                        </div>
+                        {{ _('alarms.cars') }}:<br/>
+                        <div class="lists" style="width:100%;position:relative;margin:0;padding:0">
+                            <div style="float:left;width:50%;padding-right:0;position:relative;">
+                                <small>{{ _('alarms.cars1') }}</small>
+                                <div style="position:absolute;right:5px;top:0;">
+                                    <a href="#" onclick="return $('input[name=edit_keyid]').change();" title="{{ _('alarms.setdefaultcars') }}"><i class="fa fa-truck fa-lg"></i></a>
+                                    <a href="#" onclick="return clearCars()" title="{{ _('alarms.clearcars') }}"><i class="fa fa-trash-o fa-lg"></i></a>
+                                </div>
+                                <ul id="cars1" class="group" style="min-height:100px;">
+                                    {%- for car in alarm.cars1 %}
+                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                        {{ car.dept.shortname }}<br/>
+                                        {{ car.name }}
+                                    </li>
                                     {%- endfor %}
-                                </select>
+                                </ul>
+                            </div>
+                            <div style="float:left;width:50%;padding-right:0;">
+                                <small>{{ _('alarms.cars2') }}</small>
+                                <ul id="cars2" class="group" style="min-height:102px;">
+                                    {%- for car in alarm.cars2 %}
+                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                        {{ car.dept.shortname }}<br/>
+                                        {{ car.name }}
+                                    </li>
+                                    {%- endfor %}
+                                </ul>
+                            </div>
+                            <div class="clear" style="clear:left;"> </div>
+
+                            <small>{{ _('alarms.material') }}</small>
+                            <ul id="material" class="group" style="width:99%;min-height:50px;">
+                                {%- for car in alarm.material %}
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                    {{ car.dept.shortname }}<br/>
+                                    {{ car.name }}
+                                </li>
+                                {%- endfor %}
+                            </ul>
+                            <div class="clear" style="clear:left;"> </div>
+
+                            <small>{{ _('alarms.unused') }}</small><br/>
+                            <ul id="unused" class="group" style="width:99%;">
+                                {%- for car in cars %}
+                                {%- if car not in alarm.cars1+alarm.cars2+alarm.material %}
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                    {{ car.dept.shortname }}<br/>
+                                    {{ car.name }}
+                                </li>
+                                {%- endif %}
+                                {%- endfor %}
+                            </ul>
+                        </div>
+                        <div style="clear:left"></div>
+                        <p>
+                            <label>
+                            <input type="checkbox" name="update_position" id="check_positionupdate" value="1"/>
+                            {{ _('alarms.storeupdatedmarker') }}
                             </label>
                         </p>
-                    </div>
+                        <p style="padding-bottom:10px;">
+                            <button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+                            <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
+                        </p>
+                        <input type="hidden" name="alarm_id" value="{{ alarm.id }}"/>
+                        <input type="hidden" name="form_id" value="frontend.alarms.edit"/>
+                        <input type="hidden" name="lat" id="lat" value="{{ alarm.lat }}"/>
+                        <input type="hidden" name="lng" id="lng" value="{{ alarm.lng }}"/>
+                        <input type="hidden" name="zoom" id="zoom" value="{{ alarm.zoom }}"/>
+                        <input type="hidden" name="marker" id="marker" value="{{ alarm.marker }}"/>
+                        <input type="hidden" name="val_cars1" id="val_cars1"/>
+                        <input type="hidden" name="val_cars2" id="val_cars2"/>
+                        <input type="hidden" name="val_material" id="val_material"/>
+                    <div id="response"></div>
                 </div>
-                <p style="clear:left">
-                   <label style="width:99%">{{ _('alarms.key') }}:<br/>
-                        <input type="text" name="edit_key" id="edit_key" value="{% if alarm.id!=None %}{{ alarm.key.category }}: {% endif %}{%  if alarm.key %}{{ alarm.key.key }}{% endif %}" style="width:100%;"/>
-                    </label>
-                    <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
-
-                </p>
-                <div style="width:100%;position:relative">
-                    <p style="width:50%;float:left;background-color:#fff;padding-right:20px;position:relative">
-                        <label style="width:99%;">{{ _('alarms.date') }}:<br/>
-                            <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date"/>
-                        </label>
-                    </p>
-                    <p style="width:50%;float:left;background-color:#fff;position:relative">
-                        <label style="width:99%">{{ _('alarms.time') }}:<br/>
-                            <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" class="time"/>
-                        </label>
-                    </p>
-                </div>
-                <div style="width:100%;position:relative;display:none;" class="extended">
-                    <p style="width:50%;float:left;padding-right:20px;position:relative">
-                        <label style="width:99%">{{ _('alarms.enddate') }}:<br/>
-                            <input type="text" value="{{ alarm.endtimestamp|datetime('dd.MM.yyyy') }}" name="edit_endtimestamp_date" style="width:100%" class="date"/>
-                        </label>
-                    </p>
-                    <p style="width:50%;float:left;position:relative">
-                        <label style="width:99%">{{ _('alarms.endtime') }}:<br/>
-                            <input type="text" value="{{ alarm.endtimestamp|datetime('HH:mm:ss') }}" name="edit_endtimestamp_time" style="width:100%" class="time"/>
-                        </label>
-                    </p>
-                </div>
-
-                <div style="width:100%;position:relative">
-                    <p style="width:100%">
-                        <label style="width:99%">{{ _('alarms.person') }}:<br/>
-                            <input type="text" name="edit_person" value="{{ alarm.person }}" style="width:100%;"/>
-                        </label>
-                    </p>
-                </div>
-                <div style="width:100%">
-                    <p style="width:20%;background-color:#fff;float:left;padding-right:20px;position:relative">
-                        {{ _('alarms.priority') }}:<br/>
-                        {%- for prio in range(2,-1,-1) %}
-                            <label style="min-width:80px">
-                                <input type="radio" name="edit_priority" value="{{ prio }}" {% if prio==alarm.priority %}checked="checked"{% endif %}/> {{ _('alarms.prioshort'+prio|string) }}
-                            </label><br/>
-                        {%- endfor %}
-                    </p>
-                    <p style="width:80%;float:left">
-                        <label style="width:99%">{{ _('alarms.remark') }}:<br/>
-                        <textarea name="edit_remark" style="width:99%;height:100px;">{{ alarm.remark }}</textarea>
-                        </label>
-                    </p>
-                </div>
-                {{ _('alarms.cars') }}:<br/>
-                <div class="lists" style="width:100%;position:relative;margin:0;padding:0">
-                    <div style="float:left;width:50%;padding-right:0;position:relative;">
-                        <small>{{ _('alarms.cars1') }}</small>
-                        <div style="position:absolute;right:5px;top:0;">
-                            <a href="#" onclick="return $('input[name=edit_keyid]').change();" title="{{ _('alarms.setdefaultcars') }}"><i class="fa fa-truck fa-lg"></i></a>
-                            <a href="#" onclick="return clearCars()" title="{{ _('alarms.clearcars') }}"><i class="fa fa-trash-o fa-lg"></i></a>
-                        </div>
-                        <ul id="cars1" class="group" style="min-height:100px;">
-                            {%- for car in alarm.cars1 %}
-                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.shortname }}<br/>
-                                {{ car.name }}
-                            </li>
-                            {%- endfor %}
-                        </ul>
-                    </div>
-                    <div style="float:left;width:50%;padding-right:0;">
-                        <small>{{ _('alarms.cars2') }}</small>
-                        <ul id="cars2" class="group" style="min-height:102px;">
-                            {%- for car in alarm.cars2 %}
-                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.shortname }}<br/>
-                                {{ car.name }}
-                            </li>
-                            {%- endfor %}
-                        </ul>
-                    </div>
-                    <div class="clear" style="clear:left;"> </div>
-
-                    <small>{{ _('alarms.material') }}</small>
-                    <ul id="material" class="group" style="width:99%;min-height:50px;">
-                        {%- for car in alarm.material %}
-                        <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                            {{ car.dept.shortname }}<br/>
-                            {{ car.name }}
-                        </li>
-                        {%- endfor %}
-                    </ul>
-                    <div class="clear" style="clear:left;"> </div>
-
-                    <small>{{ _('alarms.unused') }}</small><br/>
-                    <ul id="unused" class="group" style="width:99%;">
-                        {%- for car in cars %}
-                        {%- if car not in alarm.cars1+alarm.cars2+alarm.material %}
-                        <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                            {{ car.dept.shortname }}<br/>
-                            {{ car.name }}
-                        </li>
-                        {%- endif %}
-                        {%- endfor %}
-                    </ul>
-                </div>
-                <div style="clear:left"></div>
-                <p>
-                    <label>
-                    <input type="checkbox" name="update_position" id="check_positionupdate" value="1"/>
-                    {{ _('alarms.storeupdatedmarker') }}
-                    </label>
-                </p>
-                <p style="padding-bottom:10px;">
-                    <!--<button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="return getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>-->
-                    <button type="submit" name="action" value="updatealarm" class="save" id="saveButton" onclick="getSaveValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
-                    <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
-                </p>
-                <input type="hidden" name="alarm_id" value="{{ alarm.id }}"/>
-                <input type="hidden" name="form_id" value="frontend.alarms.edit"/>
-                <input type="hidden" name="lat" id="lat" value="{{ alarm.lat }}"/>
-                <input type="hidden" name="lng" id="lng" value="{{ alarm.lng }}"/>
-                <input type="hidden" name="zoom" id="zoom" value="{{ alarm.zoom }}"/>
-                <input type="hidden" name="marker" id="marker" value="{{ alarm.marker }}"/>
-                <input type="hidden" name="val_cars1" id="val_cars1"/>
-                <input type="hidden" name="val_cars2" id="val_cars2"/>
-                <input type="hidden" name="val_material" id="val_material"/>
-            <div id="response"></div>
+            </form>
         </div>
-    </form>
+    </div>
 
     <script>
         /* global template values*/
@@ -228,6 +266,7 @@
         var mymarker = null;
 
         function addMessage(alarmid){
+            if (alarmid=='None'){return false;}
             $.ajax({ type : "POST", url : "/data/alarms?action=message&alarmid="+alarmid,
                 success: function(result) {
                     parent.$('#overlaycontent').html(result);
@@ -253,13 +292,13 @@
 
         // update map position
         function getMapPosition(streetid){
+            if(streetid=='None'){return false;}
             $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
                  success: function(street) {
                     parent.maps.map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
                     $('#lat').val(street.lat);
                     $('#lng').val(street.lng);
                     $('#zoom').val(street.zoom);
-                    //$('select[name=edit_city]').val(street.cityid);
                     $('input[name=edit_cityname]').val(street.cityname);
                     $('input[name=edit_city]').val(street.cityid);
                 }
