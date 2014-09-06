@@ -30,14 +30,7 @@ def getAdminContent(self, **params):
             
         elif request.form.get('action').startswith('editalarmobject_'):  # edit alarmobject
             alarmobject = classes.get('alarmobject').getAlarmObjects(id=int(request.form.get('action').split('_')[-1]))
-            try:
-                _s = filter(lambda s: s.id == alarmobject.streetid, streets)
-                _c = classes.get('city').get_byid(_s[0].cityid)
-                selstreet = '%s (%s)' % (_s[0].name, _c.name)
-            except:
-                selstreet = ''
-
-            params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': selstreet, 'map': classes.get('map').getDefaultMap()})
+            params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': '%s (%s)' % (alarmobject.street.name, alarmobject.street.city.name), 'map': classes.get('map').getDefaultMap()})
             return render_template('admin.alarmobjects_actions.html', **params)
 
         elif request.form.get('action').startswith('deletealarmobject_'):  # delete alarmobject

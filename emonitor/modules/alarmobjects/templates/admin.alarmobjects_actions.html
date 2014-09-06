@@ -117,8 +117,7 @@
                 $('#autocomplete-street').autocomplete({
                     lookup: alarmstreetsArray,
                     onSelect: function(suggestion) {
-                         $('#streetid').val(suggestion.data); // id
-                         $('#streetid').change();
+                         $('#streetid').val(suggestion.data).change(); // id
                     }
                 });
                 
