@@ -30,7 +30,10 @@ def frontendContent(module=u''):
     if module != "":
         if module == 'none':
             return render_template('frontend.area.html')
-        current_mod = [frontend.modules[m] for m in frontend.modules if frontend.modules[m].info['path'] == module.split('/')[0]][0]
+        try:
+            current_mod = [frontend.modules[m] for m in frontend.modules if frontend.modules[m].info['path'] == module.split('/')[0]][0]
+        except IndexError:
+            current_mod = frontend.modules['startpages']
         return current_mod.getFrontendContent()
     current_mod = frontend.modules['startpages']
     return render_template('frontendframe.html', user=User.getUsers(login.current_user.get_id() or -1), current_mod=current_mod, modules=frontend.modules, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), areas=classes.get('settings').getFrontendSettings())

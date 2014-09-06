@@ -72,3 +72,6 @@ div.loginform{width: 400px;border:1px solid silver;margin:auto;position:relative
 div.loginversion{position:absolute;bottom:2px;right:2px;color: #ababab;}
 
 .error{ border:1px solid #FF0000; background:#FFE7E7; padding: 10px;margin:20px;}
+
+div.smallmodulesarea{right:0;position:absolute;top:5px}
+div.smallmodulesarea button{width:36px;height:25px}
