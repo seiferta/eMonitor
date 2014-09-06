@@ -72,11 +72,11 @@
             <div class="pane ui-layout-west">
                 <div class="navigation">
                 <ul>
-                    {% for module in modules %}
+                    {%- for module in modules %}
                     <li>
-                        <a href="/admin/{{ modules[module].info['path'] }}" {% if module==current_mod.info['name'] %} class="active" {% endif %}>{{ _('module.'+module) }}</a>
+                        <a href="/admin/{{ modules[module].info.path }}" {% if module==current_mod.info.name %} class="active" {% endif %}><i class="fa {{ modules[module].info.icon }} fa-lg"></i> {{ _('module.'+module) }}</a>
                     </li>
-                    {% endfor %}
+                    {%- endfor %}
                 </ul>
                 </div>
             </div><div class="version"> </div>

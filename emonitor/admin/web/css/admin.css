@@ -73,3 +73,4 @@ div.popup_close a img{border:0;}
 
 div.version{background:url(/img/logo.png) no-repeat 0 0 transparent;position:absolute;left:2px; bottom:2px;height:30px;padding-left:30px;}
 .required{margin-left:5px;color:red;}
+.navigation i{color:#aaa;padding-right:5px;}
