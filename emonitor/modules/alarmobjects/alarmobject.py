@@ -1,5 +1,5 @@
-from sqlalchemy import inspect
 from emonitor.modules.streets.street import Street
+from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db
 
         
@@ -8,20 +8,14 @@ class AlarmObject(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    streetid = db.Column(db.Integer)
+    _streetid = db.Column('streetid', db.ForeignKey('streets.id'))
     remark = db.Column(db.Text)
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     zoom = db.Column(db.Integer)
     alarmplan = db.Column(db.String(5), default='')
     streetno = db.Column(db.String(10), default='')
-
-    def _get_street(self):
-        if not inspect(self).session:
-            return ''
-        return filter(lambda s: s.id == self.streetid, inspect(self).session.query(Street))[0]
-    
-    street = property(_get_street)
+    street = db.relationship(Street, collection_class=attribute_mapped_collection('id'))
 
     def __init__(self, name, streetid, remark, lat, lng, zoom, alarmplan, streetno):
         self.name = name
