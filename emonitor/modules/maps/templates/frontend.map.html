@@ -70,6 +70,7 @@
             new L.Control.MiniMap(ml_1, { toggleDisplay: true }).addTo(map); /* minimap extension*/
             new L.EmonitorMarkers().addTo(map); /* marker extension */
             new L.Control.ZoomHome().addTo(map);
+            new L.control.scale({imperial: false}).addTo(map);
 
             // select default map
             $('.leaflet-control-layers-base').children().last().children('.leaflet-control-layers-selector').click();
