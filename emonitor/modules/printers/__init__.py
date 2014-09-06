@@ -6,7 +6,7 @@ from .content_admin import getAdminContent, getAdminData
 
 
 class PrintersModule(Module):
-    info = dict(area=['admin'], name='printers', path='printers', icon='fa-print', version='0.1')
+    info = dict(area=['admin'], name='printer', path='printers', icon='fa-print', version='0.1')
 
     def __repr__(self):
         return "printer"
