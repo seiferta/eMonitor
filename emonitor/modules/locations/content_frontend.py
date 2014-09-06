@@ -3,7 +3,7 @@ from flask import render_template, request
 from emonitor.extensions import classes, cache
 
 
-#@cache.cached(timeout=5000, key_prefix='frontend.locations')
+@cache.memoize(5000)
 def getFrontendContent(**params):
 
     if 'area' not in params.keys() and request.args.get('area', '') != '':
@@ -21,7 +21,7 @@ def getFrontendContent(**params):
             streets[c.id] = sorted(streets[c.id].items(), key=lambda t: t[0])
         return render_template('frontend.locations_smallarea.html', cities=cities, streets=streets, alarmobjects=classes.get('alarmobject').getAlarmObjects(), frontendarea=params['area'])
 
-    return "default"
+    return ""
     
     
 def getFrontendData(self):
