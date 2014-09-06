@@ -1,6 +1,6 @@
 import os
 from alembic import util as alembicutil
-from flask import Flask, flash, request, render_template, current_app
+from flask import Flask, request, render_template, current_app
 from .extensions import alembic, db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
 
@@ -36,7 +36,7 @@ class DEFAULT_CONFIG(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 60
     SECRET_KEY = 'secret key'                             # default key, overwrite in cfg
-    APP_VERSION = '0.3a'                                  # current version
+    APP_VERSION = '0.3.1'                                  # current version
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     LANGUAGE_DIR = 'emonitor/web/translations'            # relative path of default templates
     DEFAULTZOOM = 12                                      # used for map-data
@@ -167,11 +167,10 @@ def configure_logging(app):
         from logging.handlers import RotatingFileHandler
 
         file_handler = RotatingFileHandler('%swebapp.log' % app.config.get('PATH_DATA'), maxBytes=1024 * 1024 * 100, backupCount=20)
-        #file_handler.setLevel(app.config.get('LOGLEVEL', 40)) # 40 = error as default
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
-        app.logger.setLevel(app.config.get('LOGLEVEL', 40))  # 40 = error as default
+        app.logger.setLevel(app.config.get('LOGLEVEL', logging.ERROR))
    
 
 def configure_hook(app):
