@@ -37,11 +37,10 @@
             </label>
         </p>
         <p>
-            <label>{{ _('settings.map.maptype') }}:<br/>
-                <input type="radio" name="map_type" value="0"{% if map.maptype==0 %} checked="checked"{% endif %}/> {{ _('settings.map.type0') }}<br/>
-                <input type="radio" name="map_type" value="1"{% if map.maptype==1 %} checked="checked"{% endif %}/> {{ _('settings.map.type1') }}<br/>
-                <input type="radio" name="map_type" value="2"{% if map.maptype==2 %} checked="checked"{% endif %}/> {{ _('settings.map.type2') }}<br/>
-            </label>
+            {{ _('settings.map.maptype') }}:<br/>
+            <label><input type="radio" name="map_type" value="0"{% if map.maptype==0 %} checked="checked"{% endif %}/> {{ _('settings.map.type0') }}</label><br/>
+            <label><input type="radio" name="map_type" value="1"{% if map.maptype==1 %} checked="checked"{% endif %}/> {{ _('settings.map.type1') }}</label><br/>
+            <label><input type="radio" name="map_type" value="2"{% if map.maptype==2 %} checked="checked"{% endif %}/> {{ _('settings.map.type2') }}</label><br/>
         </p>
         <p>
             <label style="width:99%">{{ _('settings.map.tileserver') }}:<br/>
@@ -51,10 +50,9 @@
             <small>{{ _('settings.tileserver.info') }}</small>
         </p>
         <p>
-            <label>{{ _('settings.map.default') }}:<br/>
-                <input type="radio" name="map_default" value="1"{% if map.default==1 %} checked="checked"{% endif %}/> {{ _('settings.map.default1') }}<br/>
-                <input type="radio" name="map_default" value="0"{% if map.default==0 %} checked="checked"{% endif %}/> {{ _('settings.map.default0') }}<br/>
-            </label>
+            {{ _('settings.map.default') }}:<br/>
+            <label><input type="radio" name="map_default" value="1"{% if map.default==1 %} checked="checked"{% endif %}/> {{ _('settings.map.default1') }}</label><br/>
+            <label><input type="radio" name="map_default" value="0"{% if map.default==0 %} checked="checked"{% endif %}/> {{ _('settings.map.default0') }}</label><br/>
         </p>
         <p>&nbsp;</p>
         <p>
