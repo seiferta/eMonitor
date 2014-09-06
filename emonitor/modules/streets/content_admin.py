@@ -42,7 +42,7 @@ def getAdminContent(self, **params):
                         db.session.add(city)
 
                     db.session.commit()
-                    cache.delete_memoized(classes.get('city').getCities)
+                    cache.clear()
 
                 elif request.form.get('action') == 'createcity':  # add city
                     params.update({'city': classes.get('city')('', '', '', '', '', '', 0, ''), 'departments': classes.get('department').getDepartments(), 'maps': classes.get('map').getMaps()})
@@ -52,6 +52,7 @@ def getAdminContent(self, **params):
                     db.session.delete(classes.get('city').get_byid(request.form.get('action').split('_')[-1]))
                     db.session.commit()
                 self.updateAdminSubNavigation()
+                cache.clear()
 
             params.update({'cities': classes.get('city').getCities()})
             return render_template('admin.streets.city_list.html', **params)
@@ -78,7 +79,7 @@ def getAdminContent(self, **params):
                 elif request.form.get('action').startswith('deletestreets_'):  # delete street
                     db.session.delete(classes.get('street').getStreet(int(request.form.get('action').split('_')[-1])))
                     db.session.commit()
-                    cache.delete_memoized(classes.get('city').getStreets)
+                    cache.clear()
 
                 elif request.form.get('action') == 'savestreet':  # save street
                     if request.form.get('street_id') != 'None':  # update existing street
@@ -104,6 +105,8 @@ def getAdminContent(self, **params):
                         city = [ct for ct in classes.get('city').getCities() if str(ct.id) == c[0]][0]
                         city.addStreet(Street(request.form.get('edit_name'), request.form.get('edit_navigation'), int(c[0]), c[1], request.form.get('edit_lat'), request.form.get('edit_lng'), request.form.get('edit_zoom'), request.form.get('edit_active'), ''))
                         db.session.commit()
+                    print cache.__dict__
+                    cache.clear()
 
             try:
                 streets = classes.get('city').get_byid(module[-1]).getStreets()
