@@ -2,9 +2,10 @@
 
 {% block style %}
     <style>
-        .west{float:left;width:20%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
-        .center{float:left;width:50%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
-        .east{float:left;width:20%;height:200px;border:1px solid silver;margin:3px;padding:5px;}
+        .container{width:100%;border:2px solid silver;overflow:hidden;position:relative}
+        .west{float:left;width:25%;min-height:100%;border-right:5px double silver;margin:0;padding:5px 10px 0 0;}
+        .center{float:left;width:50%;min-height:100%;margin:0;padding:5px 10px;}
+        .east{float:right;width:25%;min-height:100%;border-left:5px double silver;margin:0;padding:5px 0 0 10px;}
     </style>
 {% endblock %}
 
@@ -16,19 +17,24 @@
     <h2>{{ _('settings.start.title') }}</h2>
     <p><small>{{ _('settings.start.info') }}</small></p>
     <form method="post" style="padding-bottom:20px;">
-        <div style="width:100%;">
-
+        <div class="container">
             <div id="west" class="west">
                 <p style="text-align:center">{{ _('settings.start.west') }}</p>
                 <p>
                     <label>{{ _('settings.start.westcontent') }}:<br/>
                         <select name="west.module" style="width:99%;">
                             <option value="none">{{ _('settings.start.none') }}</option>
-                            {% for mod in mods %}
+                            {%- for mod in mods %}
                                 <option value="{{ mod.info['name'] }}" {% if west.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                            {% endfor %}
+                            {%- endfor %}
                         </select>
                     </label>
+                    <div id="westmodules">
+                        {{ _('settings.start.westcontentadd') }}:<br/>
+                        {%- for mod in mods %}
+                        <label><input{%- if west.module==mod.info['name'] %} disabled="disabled"{%- endif %}{%- if mod.info['name'] in west.moduleadd %} checked="checked"{%- endif %} type="checkbox" name="west.module.add" value="{{ mod.info['name'] }}"/> {{ _('module.' + mod.info['name']) }}</label><br/>
+                        {%- endfor %}
+                    </div>
                 </p>
                 <p>
                     {{ _('settings.start.westparams') }}:<br/>
@@ -37,21 +43,6 @@
                     </label>
                     <br/><br/>
                     <label><input type="checkbox" name="west.visible" value="1" {% if west.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}</label>
-
-                </p>
-            </div>
-
-            <div id="center" class="center">
-                <p style="text-align:center">{{ _('settings.start.center') }}</p>
-                <p>
-                    <label>{{ _('settings.start.centercontent') }}:<br/>
-                        <select name="center.module" style="width:99%;">
-                            <option value="none">{{ _('settings.start.none') }}</option>
-                            {% for mod in mods %}
-                                <option value="{{ mod.info['name'] }}" {% if center.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
                 </p>
             </div>
 
@@ -61,11 +52,17 @@
                     <label>{{ _('settings.start.eastcontent') }}:<br/>
                         <select name="east.module" style="width:99%;">
                             <option value="none">{{ _('settings.start.none') }}</option>
-                            {% for mod in mods %}
+                            {%- for mod in mods %}
                                 <option value="{{ mod.info['name'] }}" {% if east.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
-                            {% endfor %}
+                            {%- endfor %}
                         </select>
                     </label>
+                    <div id="eastmodules">
+                        {{ _('settings.start.eastcontentadd') }}:<br/>
+                        {%- for mod in mods %}
+                        <label><input{% if east.module==mod.info['name'] %} disabled="disabled"{% endif %}{%- if mod.info['name'] in east.moduleadd %} checked="checked"{%- endif %} type="checkbox" name="east.module.add" value="{{ mod.info['name'] }}"/> {{ _('module.' + mod.info['name']) }}</label><br/>
+                        {%- endfor %}
+                    </div>
                 </p>
                 <p>{{ _('settings.start.eastparams') }}:<br/>
                     <label>{{ _('settings.start.width') }}:
@@ -75,6 +72,21 @@
                     <label><input type="checkbox" name="east.visible" value="1" {% if east.visible=="1" %}checked="checked"{% endif %}/> {{ _('settings.start.show') }}</label>
                 </p>
             </div>
+
+            <div id="center" class="center">
+                <p style="text-align:center">{{ _('settings.start.center') }}</p>
+                <p>
+                    <label>{{ _('settings.start.centercontent') }}:<br/>
+                        <select name="center.module" style="width:99%;">
+                            <option value="none">{{ _('settings.start.none') }}</option>
+                            {%- for mod in mods %}
+                                <option value="{{ mod.info['name'] }}" {% if center.module==mod.info['name'] %}selected="selected"{% endif %}>{{ _('module.' + mod.info['name']) }}</option>
+                            {%- endfor %}
+                        </select>
+                    </label>
+                </p>
+            </div>
+
         </div>
 
         <div style="clear:left;"></div>
@@ -82,4 +94,25 @@
             <button type="submit" name="action" value="updatestart" class="save"><i class="fa fa-check"></i> {{ _('settings.start.save') }}</button>
         </p>
     </form>
+    <script>
+        $("select[name='west.module']").change(function() {
+            $("input[name='west.module.add']").each(function(){
+                if ($(this).val()==$("select[name='west.module']").val()){
+                    $(this).attr('disabled', true).attr('checked', false);
+                }else{
+                    $(this).attr('disabled', false);
+                }
+            });
+        });
+
+        $("select[name='east.module']").change(function() {
+            $("input[name='east.module.add']").each(function(){
+                if ($(this).val()==$("select[name='east.module']").val()){
+                    $(this).attr('disabled', true).attr('checked', false);
+                }else{
+                    $(this).attr('disabled', false);
+                }
+            });
+        });
+    </script>
 {% endblock %}

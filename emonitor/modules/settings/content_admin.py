@@ -72,13 +72,17 @@ def getAdminContent(self, **params):
                 if request.form.get('action') == 'updatestart':  # update start page definition
                     areas = dict()
                     areas['center'] = {'module': request.form.get('center.module'), 'width': '0', 'visible': 1}
-                    areas['west'] = {'module': request.form.get('west.module'), 'width': '.%s' % request.form.get('west.width'), 'visible': request.form.get('west.visible')}
-                    areas['east'] = {'module': request.form.get('east.module'), 'width': '.%s' % request.form.get('east.width'), 'visible': request.form.get('east.visible')}
+                    areas['west'] = {'module': request.form.get('west.module'), 'moduleadd': request.form.getlist('west.module.add'), 'width': '.%s' % request.form.get('west.width'), 'visible': request.form.get('west.visible')}
+                    areas['east'] = {'module': request.form.get('east.module'), 'moduleadd': request.form.getlist('east.module.add'), 'width': '.%s' % request.form.get('east.width'), 'visible': request.form.get('east.visible')}
 
                     Settings.set('frontend.default', areas)
                     db.session.commit()
 
-            params.update({'mods': [m for m in current_app.blueprints['frontend'].modules.values() if m.frontendContent() == 1], 'center': classes.get('settings').getFrontendSettings('center'), 'west': classes.get('settings').getFrontendSettings('west'), 'east': classes.get('settings').getFrontendSettings('east')})
+            def modname(obj):  # get translation for sorting of module
+                _t = "module.%s" % obj.info['name']
+                return babel.gettext(_t)
+
+            params.update({'mods': sorted([m for m in current_app.blueprints['frontend'].modules.values() if m.frontendContent() == 1], key=modname), 'center': classes.get('settings').getFrontendSettings('center'), 'west': classes.get('settings').getFrontendSettings('west'), 'east': classes.get('settings').getFrontendSettings('east')})
             return render_template('admin.settings.start.html', **params)
 
     else:
