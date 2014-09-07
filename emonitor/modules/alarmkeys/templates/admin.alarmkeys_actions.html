@@ -61,7 +61,7 @@
                 <ul id="cars2" class="group" style="width:99%;">
                     {%- for car in alarmkey.getCars2(depid) %}
                     <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                        {{ car.dept.name }}<br/>{{ car.name }}
+                        {{ car.dept.shortname }}<br/>{{ car.name }}
                     </li>
                     {%- endfor %}
                 </ul>
@@ -70,7 +70,7 @@
                 <ul id="material" class="group" style="width:99%;">
                     {%- for car in alarmkey.getMaterial(depid) %}
                     <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                        {{ car.dept.name }}<br/>{{ car.name }}
+                        {{ car.dept.shortname }}<br/>{{ car.name }}
                     </li>
                     {%- endfor %}
                 </ul>
@@ -80,7 +80,7 @@
                 {%- for car in cars %}
                     {%- if car not in (alarmkey.getCars1(depid)+alarmkey.getCars2(depid)+alarmkey.getMaterial(depid)) %}
                     <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                        {{ car.dept.name }}<br/>{{ car.name }}
+                        {{ car.dept.shortname }}<br/>{{ car.name }}
                     </li>
                     {%- endif %}
                 {%- endfor %}
