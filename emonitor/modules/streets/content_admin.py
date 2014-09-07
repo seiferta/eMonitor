@@ -134,7 +134,7 @@ def getAdminData(self):
         for c in request.args.get('values').split(","):
             _id, name = c.split('|')
             if int(_id) not in osmids:  # add city
-                db.session.add(City(name, 1, '', 0, '', '', int(_id)))
+                db.session.add(City(name, 1, '', 0, '', '', int(_id), ''))
                 db.session.commit()
                 i += 1
 
@@ -143,8 +143,7 @@ def getAdminData(self):
         return '1'
 
     elif request.args.get('action') == 'loadstreetsfromosm':  # get street list from osm
-        city = classes.get('city').get_byid(int(request.args.get('cityid')))
-        return loadStreetsFromOsm(city)
+        return loadStreetsFromOsm(classes.get('city').get_byid(int(request.args.get('cityid'))))
 
     elif request.args.get('action') == 'createstreet':  # create streets from osm
         city = classes.get('city').get_byid(int(request.args.get('cityid')))
