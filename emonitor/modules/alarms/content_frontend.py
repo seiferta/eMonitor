@@ -101,7 +101,7 @@ def getFrontendContent(**params):
 
     elif request.args.get('action') == 'deletealarm':  # delete selected alarm
         alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
-        refresh = alarm.state == 1  # check if alarm is active
+        refresh = 1 or alarm.state == 1  # check if alarm is active
         db.session.delete(alarm)
         db.session.commit()
         if refresh:

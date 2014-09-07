@@ -178,6 +178,9 @@ def getAlarmRoute(alarm):
     data['distance'] = float(getText(elements, 'distance'))
     data['traveltime'] = int(getText(elements, 'traveltime'))
     data['description'] = getText(elements, 'description')
+    if data['description'] is None:
+        data['description'] = ""
+        data['error'] = 1
 
     data['description'] = re.sub('\s+', ' ', data['description'].replace('\\', ''))
     description = []

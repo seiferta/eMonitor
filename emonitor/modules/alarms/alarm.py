@@ -107,9 +107,14 @@ class Alarm(db.Model):
 
     def getRouting(self):
         if self.get('routing', '') == "":  # load from webservice if not stored
-            self.set('routing', yaml.safe_dump(alarmutils.getAlarmRoute(self), encoding="UTF-8"))
-            db.session.commit()
-        return yaml.load(self.get('routing'))
+            routingdata = alarmutils.getAlarmRoute(self)
+            if len(routingdata['coordinates']) > 0:
+                self.set('routing', yaml.safe_dump(routingdata, encoding="UTF-8"))
+                db.session.commit()
+        data = yaml.load(self.get('routing'))
+        if 'error' in data:
+            data['errormessage'] = babel.gettext(u'alarms.routingerror')
+        return data
 
     @staticmethod
     def changeState(id, state):

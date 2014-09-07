@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-06 12:36+0200\n"
+"POT-Creation-Date: 2014-09-07 21:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -527,7 +527,7 @@ msgstr ""
 msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:103 emonitor/modules/alarms/alarm.py:155
+#: emonitor/modules/alarms/__init__.py:103 emonitor/modules/alarms/alarm.py:160
 msgid "alarms.statechangeactivated"
 msgstr ""
 
@@ -564,66 +564,70 @@ msgid "trigger.alarm_changestate"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:113
-#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:189
 msgid "alarms.print.slightleft"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:114
-#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:189
 msgid "alarms.print.slightright"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:115
-#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:189
 msgid "alarms.print.right"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:116
-#: emonitor/modules/alarms/alarmutils.py:186
+#: emonitor/modules/alarms/alarmutils.py:189
 msgid "alarms.print.left"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:117
-#: emonitor/modules/alarms/alarmutils.py:186
-#: emonitor/modules/alarms/alarmutils.py:201
+#: emonitor/modules/alarms/alarmutils.py:189
+#: emonitor/modules/alarms/alarmutils.py:204
 msgid "alarms.print.straight"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:118
-#: emonitor/modules/alarms/alarmutils.py:186
-#: emonitor/modules/alarms/alarmutils.py:201
+#: emonitor/modules/alarms/alarmutils.py:189
+#: emonitor/modules/alarms/alarmutils.py:204
 msgid "alarms.print.exit"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:119
-#: emonitor/modules/alarms/alarmutils.py:185
+#: emonitor/modules/alarms/alarmutils.py:188
 msgid "alarms.print.bus"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:120
-#: emonitor/modules/alarms/alarmutils.py:203
+#: emonitor/modules/alarms/alarmutils.py:206
 msgid "alarms.print.positive"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:121
-#: emonitor/modules/alarms/alarmutils.py:204
+#: emonitor/modules/alarms/alarmutils.py:207
 msgid "alarms.print.negative"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:195
-#: emonitor/modules/alarms/alarmutils.py:197
+#: emonitor/modules/alarms/alarm.py:116
+msgid "alarms.routingerror"
+msgstr ""
+
+#: emonitor/modules/alarms/alarmutils.py:198
+#: emonitor/modules/alarms/alarmutils.py:200
 msgid "alarms.print.highwaylong"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:197
+#: emonitor/modules/alarms/alarmutils.py:200
 msgid "alarms.print.highwayshort"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:201
+#: emonitor/modules/alarms/alarmutils.py:204
 msgid "alarms.print.exitstart"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:201
+#: emonitor/modules/alarms/alarmutils.py:204
 msgid "alarms.print.straightexit"
 msgstr ""
 
@@ -1547,13 +1551,13 @@ msgid "settings.map.startposition"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.html:69
-#: emonitor/modules/maps/templates/admin.map_actions.html:77
+#: emonitor/modules/maps/templates/admin.map_actions.html:75
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:66
 msgid "settings.map.lat"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.html:70
-#: emonitor/modules/maps/templates/admin.map_actions.html:78
+#: emonitor/modules/maps/templates/admin.map_actions.html:76
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:67
 msgid "settings.map.lng"
 msgstr ""
@@ -1616,57 +1620,57 @@ msgstr ""
 msgid "settings.map.type2"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:47
+#: emonitor/modules/maps/templates/admin.map_actions.html:46
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:38
 msgid "settings.map.tileserver"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:51
+#: emonitor/modules/maps/templates/admin.map_actions.html:50
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:40
 msgid "settings.tileserver.info"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:54
+#: emonitor/modules/maps/templates/admin.map_actions.html:53
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:44
 msgid "settings.map.default"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:55
+#: emonitor/modules/maps/templates/admin.map_actions.html:54
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:45
 msgid "settings.map.default1"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:56
+#: emonitor/modules/maps/templates/admin.map_actions.html:55
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:46
 msgid "settings.map.default0"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:61
+#: emonitor/modules/maps/templates/admin.map_actions.html:59
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:50
 msgid "settings.map.save"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:62
+#: emonitor/modules/maps/templates/admin.map_actions.html:60
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:51
 msgid "settings.map.cancel"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:73
+#: emonitor/modules/maps/templates/admin.map_actions.html:71
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:62
 msgid "settings.map.gettiles"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:74
+#: emonitor/modules/maps/templates/admin.map_actions.html:72
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:63
 msgid "settings.map.gettilesinfo"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:82
+#: emonitor/modules/maps/templates/admin.map_actions.html:80
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:71
 msgid "settings.map.updateinprogress"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:86
+#: emonitor/modules/maps/templates/admin.map_actions.html:84
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:75
 msgid "settings.map.loadtiles"
 msgstr ""
@@ -1816,7 +1820,7 @@ msgid "monitors.edittitle"
 msgstr ""
 
 #: emonitor/modules/monitors/templates/admin.monitors.html:60
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:56
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:55
 msgid "monitorlayouts.trigger"
 msgstr ""
 
@@ -1825,7 +1829,7 @@ msgid "monitorlayouts.layout"
 msgstr ""
 
 #: emonitor/modules/monitors/templates/admin.monitors.html:62
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:47
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:46
 msgid "monitorlayouts.theme"
 msgstr ""
 
@@ -1861,51 +1865,51 @@ msgstr ""
 msgid "monitorlayouts.buildlayout"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:60
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:59
 msgid "monitorlayouts.triggerinuse"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:66
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:65
 msgid "monitorlayouts.mintime"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:67
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:66
 msgid "monitorlayouts.mintimelabel"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:71
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:70
 msgid "monitorlayouts.maxtime"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:72
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:71
 msgid "monitorlayouts.maxtimelabel"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:76
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:75
 msgid "monitorlayouts.nextid"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:78
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:77
 msgid "monitorlayouts.nonextlayout"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:83
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:82
 msgid "monitorlayouts.nextidlabel"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:87
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:86
 msgid "monitorlayouts.save"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:88
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:87
 msgid "monitorlayouts.cancel"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:96
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:95
 msgid "monitorlayouts.modules"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:110
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:108
 msgid "monitorlayouts.modulesinfo"
 msgstr ""
 
@@ -2425,12 +2429,12 @@ msgstr ""
 msgid "admin.streets.cities.edit..."
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:138
+#: emonitor/modules/streets/content_admin.py:141
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:161
+#: emonitor/modules/streets/content_admin.py:163
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr ""

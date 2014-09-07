@@ -280,6 +280,10 @@
                     if($('#route_'+id).hasClass('fa-random')) {
                         $.ajax({ type: "POST", url: "/data/alarms?action=routecoords&alarmid=" + id,
                             success: function (ret) {
+                                if (ret.error=='1') {
+                                    alert(ret.errormessage);
+                                    return false;
+                                }
                                 parent.maps.map.addRoute(ret);
                                 return false;
                             }
