@@ -50,9 +50,9 @@
     <form method="post">
         <div class="headrow" style="border-bottom:1px solid black;">
             {{ _('streets.filterlabel') }}: <a href="#" onclick="return filter('')">{{ _('streets.filterall') }}</a>
-            {% for char in chars %}
+            {%- for char in chars %}
             | <a href="#" onclick="return filter('{{ char }}')">{{ char }}</a>
-            {% endfor %}
+            {%- endfor %}
         </div>
         <div class="headrow">
             <div style="margin-right:80px;margin-left:15px;">
@@ -64,11 +64,11 @@
             <button class="add" type="submit" name="action" value="createstreet" title="{{ _('streets.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         
-        {% if streets|count==0 %}
+        {%- if streets|count==0 %}
         <div class="rownoentry">
             <p style="text-align:center">{{ _('streets.nodata') }}</p>
         </div>
-        {% endif %}
+        {%- endif %}
         <div id="sortable">
             {%- if city %}
             {%- for street in city.getStreets() %}
@@ -79,7 +79,7 @@
                     <div class="rowcell" style="width:33%;">{{ street.subcity }}</div>
                     <div class="rowcell" style="width:10%;text-align:right;padding-right:10px;">{{ street.housenumbers|count }}</div>
                 </div>
-                {% if street.lat!='' %}<i class="fa fa-map-marker" style="color:#adadad" title="{{ _('streets.mapset') }}"> </i>{% endif %}
+                {%-if street.lat!='' %}<i class="fa fa-map-marker" style="color:#adadad" title="{{ _('streets.mapset') }}"> </i>{%- endif %}
                 
                 <button type="submit" name="action" value="deletestreets_{{ street.id }}" title="{{ _('streets.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="detailstreet_{{ street.id }}" title="{{ _('streets.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>

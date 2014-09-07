@@ -1,16 +1,16 @@
 <style>
     div.osmcity{float:left;width:50%;}
     div.osmcity:hover{background-color:#ddd;}
-    div.osmno{width:18px;float:left;padding-top:4px;color:#ababab;text-align:right;}
+    span.osmno{width:30px;float:left;padding-top:4px;padding-right:5px;color:#ababab;text-align:right;}
 </style>
 <form method="post" name="osmcitylist">
     <p>{{ _('streets.city.osmresult', count=cities|count) }}</p>
     <div style="border:1px solid silver;overflow:hidden;padding:5px;">
-    {% for city in cities %}
+    {%- for city in cities %}
         <div class="osmcity">
-            <div class="osmno">{{ loop.index }}:</div> <label><input type="checkbox" class="osmcheck" name="{{ city[1] }}" value="{{ city[0] }}"/> {% if city[2] %}<em style="color:#bbb;" title="{{ _('streets.city.indb') }}">{% endif %}{{ city[1] }} <small>(osmid {{ city[0] }})</small>{% if city[2] %}</em>{% endif %}</label>
+           <label><span class="osmno">{{ loop.index }}:</span> <input type="checkbox" class="osmcheck" name="{{ city[1] }}" value="{{ city[0] }}"/> {% if city[2] %}<em style="color:#bbb;" title="{{ _('streets.city.indb') }}">{% endif %}{{ city[1] }} <small>(osmid {{ city[0] }})</small>{% if city[2] %}</em>{% endif %}</label>
         </div>
-    {% endfor %}
+    {%- endfor %}
         <div style="clear:left"> </div>
         <small><a href="#" onclick="return toggleSelect()">{{ _('streets.city.toggleselection') }}</a></small>
         <p style="text-align:center">

@@ -8,13 +8,13 @@
     </style>
     <div class="street" id="street">
         <div class="label">{{ _('alarms.address') }}:</div>
-        {% if alarm.street %}
+        {%- if alarm.street %}
             {{ alarm.street.name }} {{ alarm.get('streetno') }}
-        {% endif %}
+        {%- endif %}
     </div>
     {%- if alarm.get('address2') %}
         <div class="street2" id="street2">{{ alarm.get('address2') }}</div>
-    {% endif -%}
+    {%- endif %}
     <div style="position:relative;">
         <div class="label">{{ _('alarms.city') }}:</div>
         <div id="city">
@@ -22,7 +22,7 @@
             {{ alarm.city.name }}
             {%- if alarm.street.id != None and alarm.street.subcity %}
                 - {{  alarm.street.subcity }}
-            {% endif -%}
+            {%- endif %}
         </div>
     </div>
 </div>

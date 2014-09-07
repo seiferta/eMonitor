@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 21:41+0200\n"
+"POT-Creation-Date: 2014-09-07 21:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: emonitor/frontend/web/templates/frontend.html:13
 #: emonitor/frontend/web/templates/frontend.html:80
 #: emonitor/frontend/web/templates/frontendframe.html:13
-#: emonitor/frontend/web/templates/frontendframe.html:77
+#: emonitor/frontend/web/templates/frontendframe.html:73
 msgid "frontend.titlemain"
 msgstr ""
 
@@ -53,22 +53,22 @@ msgid "layout.closed"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:82
-#: emonitor/frontend/web/templates/frontendframe.html:79
+#: emonitor/frontend/web/templates/frontendframe.html:75
 msgid "frontend.adminlink"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:84
-#: emonitor/frontend/web/templates/frontendframe.html:81
+#: emonitor/frontend/web/templates/frontendframe.html:77
 msgid "admin.logout"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:88
-#: emonitor/frontend/web/templates/frontendframe.html:85
+#: emonitor/frontend/web/templates/frontendframe.html:81
 msgid "frontend.login"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.html:116
-#: emonitor/frontend/web/templates/frontendframe.html:103
+#: emonitor/frontend/web/templates/frontendframe.html:97
 msgid "frontend.show.monitors"
 msgstr ""
 

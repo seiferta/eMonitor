@@ -1,4 +1,4 @@
-{% for hnumber in hnumbers %}
+{%- for hnumber in hnumbers %}
 <div class="row" >
     <div style="margin-right:80px;margin-left:15px;">
         <div class="rowcell" style="width:20%;">{{ hnumber.number }}</div>
@@ -6,4 +6,4 @@
     </div>
     <button type="button" name="action" value="deletehnumber_{{ hnumber.id }}" onclick="return questionDelHn({{ hnumber.id }})"><i class="fa fa-trash-o fa-lg"></i></button>
 </div>
-{% endfor %}
+{%- endfor %}

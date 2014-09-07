@@ -51,13 +51,13 @@
             <button class="add" type="submit" name="action" value="createcity" title="{{ _('streets.city.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         
-        {% if not cities|count %}
+        {%- if not cities|count %}
         <div class="rownoentry">
             <p style="text-align:center">{{ _('streets.city.nodata') }}</p>
         </div>
-        {% endif %}
+        {%- endif %}
         <div id="sortable">
-            {% for city in cities %}
+            {%- for city in cities %}
             <div class="row">
                 <div style="margin-right:70px;margin-left:15px;">
                     <div class="rowcell" style="width:30%;">{{ city.name }} {% if city.default==1 %}<small>({{ _('streets.city.default') }})</small>{% endif %}</div>
@@ -69,7 +69,7 @@
                 <button type="submit" name="action" value="deletecity_{{ city.id }}" title="{{ _('streets.city.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="detailcity_{{ city.id }}" title="{{ _('streets.city.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
             </div>
-            {% endfor %}
+            {%- endfor %}
         </div>
         
         <div class="headrow">
