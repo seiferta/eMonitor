@@ -79,20 +79,20 @@
     <form method="post" style="margin-bottom:20px;">
         <p id="progress_state" style="display:none;">{{ _('settings.map.updateinprogress') }} (<span id="progress">{{ progress[1] }}</span> / <span id="progressof">{{ progress[0] }}</span>)</p>
         <div class="osm_div" id="map"> </div>
-        {% if progress[0]==0 %}
+        {%- if progress[0]==0 %}
         <p> </p>
         <p style="text-align:center"><button type="button" onclick="loadTiles()"><i class="fa fa-download"></i> {{ _('settings.map.loadtiles') }}</button></p>
         <p id="loading_info"></p>
-        {% else %}
+        {%- else %}
             <script>
                 $(document).ready(function () {
                     var interval = setInterval(getLoadProgress, 1000);
                     $('#progress_state').show();
                 });
             </script>
-        {% endif %}
+        {%- endif %}
     </form>
-{% endblock %}
+{%  endblock %}
 
 {% block script_end %}
     {{ super() }}

@@ -27,9 +27,9 @@
             <p>
                 <label>{{ _('monitorlayouts.monitorid') }}:<br/>
                     <select name="edit_mid" style="width:50%;">
-                        {% for monitor in monitors %}
+                        {%- for monitor in monitors %}
                             <option value="{{ monitor.id }}" {% if layout.mid==monitor.id %}selected="selected"{% endif %}>{{ monitor.name }}</option>
-                        {% endfor %}
+                        {%- endfor %}
                     </select>
                 </label>
             <p>
@@ -38,28 +38,27 @@
             {{ _('monitorlayouts.buildlayout') }}:<br/>
             <div class="monitor" style="width:{{ monitor.formatx*70 + 2 }}px !important;height:{{ monitor.formaty*55 - 2 }}px !important;box-sizing:content-box!important;-moz-box-sizing:content-box!important;-webkit-box-sizing:content-box!important;">
                 <div class="gridster" id="layout">
-                    <ul style="position:absolute!important;">
-                    </ul>
+                    <ul style="position:absolute!important;"> </ul>
                 </div>
             </div>
             <p> </p>
             <p>
                 <label>{{ _('monitorlayouts.theme') }}:<br/>
                     <select name="edit_theme" style="width:50%;">
-                        {% for theme in layout.themes %}
+                        {%- for theme in layout.themes %}
                             <option value="{{ theme }}" {% if theme==layout.theme %}selected="selected"{% endif %}>{{ theme }}</option>
-                        {% endfor %}
+                        {%- endfor %}
                     </select>
                 </label>
             </p>
             <p>
                 <label>{{ _('monitorlayouts.trigger') }}:<br/>
-                    {% for trigger in triggers %}
-                        <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}" {%if trigger.name in layout.trigger %}checked="selected"{% endif %} {% if trigger.name in usedtriggers %}disabled="disabled"{%endif %}/>
-                        <label>{{ _('trigger.'+trigger.name) }}</label>
-                        {% if trigger.name in usedtriggers %}<em>({{ _('monitorlayouts.triggerinuse') }})</em>{% endif %}
+                    {%- for trigger in triggers %}
+                        <label>
+                            <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}"{%if trigger.name in layout.trigger %} checked="selected"{% endif %}{% if trigger.name in usedtriggers %} disabled="disabled"{%endif %}/>
+                            {{ _('trigger.'+trigger.name) }}{%- if trigger.name in usedtriggers %} <em>({{ _('monitorlayouts.triggerinuse') }})</em>{%- endif %}</label>
                         <br/>
-                    {% endfor %}
+                    {%- endfor %}
                 </label>
             </p>
             <p>
@@ -76,9 +75,9 @@
                 <label>{{ _('monitorlayouts.nextid') }}:<br/>
                     <select name="edit_nextid">
                         <option value="0">{{_('monitorlayouts.nonextlayout') }}</option>
-                        {% for l in layouts %}
-                            <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
-                        {% endfor %}
+                        {%- for l in layouts %}
+                        <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
+                        {%- endfor %}
                     </select>
                     {{ _('monitorlayouts.nextidlabel') }}
                 </label>
@@ -96,16 +95,15 @@
         <p>{{ _('monitorlayouts.modules') }}:</p>
         <p> </p>
         <div class="widgets">
-            {% for widgetmodule in widgets %}
-            {% for widget in widgetmodule.getMonitorWidgets() %}
+            {%- for widgetmodule in widgets %}
+            {%- for widget in widgetmodule.getMonitorWidgets() %}
             <div class="widget" id="{{ widget.getName() }}_name" onclick="return doAdd('{{ widget.getName() }}', {{ widget.getDimension()[0] }}, {{ widget.getDimension()[1] }})">
                 <span id="name">{{ _(widget.getName()) }}</span>
                 <br/>
                 (<span id="w">{{ widget.getDimension()[0] }}</span> x <span id="h">{{ widget.getDimension()[1] }}</span>)
             </div>
-
-            {% endfor %}
-            {% endfor %}
+            {%- endfor %}
+            {%- endfor %}
         </div>
         <small>{{ _('monitorlayouts.modulesinfo') }}</small>
     </div>

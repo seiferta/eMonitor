@@ -37,9 +37,9 @@
         $(document).ready(function () {
 
             {% for map in maps | reverse %}
-                {% if map.maptype in [0, 1] %}var l_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+                {%- if map.maptype in [0, 1] %}var l_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
                     var ml_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
-                {% else %}var l_{{ map.id }} = new L.TileLayerQuad('{{ map.tileserver|safe }}');{% endif %}
+                {%- else %}var l_{{ map.id }} = new L.TileLayerQuad('{{ map.tileserver|safe }}');{% endif %}
             {% endfor %}
 
             {% for tiledef in tiledefs %}
