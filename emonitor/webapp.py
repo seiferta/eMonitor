@@ -77,6 +77,10 @@ def configure_app(app, config=None):
         app.config.from_object(config)
     app.config.from_pyfile('emonitor.cfg', silent=False)
 
+    # create missing directories of config
+    for p in [path for path in app.config.keys() if path.startswith('PATH')]:
+        if not os.path.exists(app.config[p]):
+            os.makedirs(app.config[p])
 
 recorded = []
 
