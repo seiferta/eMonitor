@@ -46,6 +46,9 @@ class Classes:
 
 class Module:
 
+    CHECKOK = 0
+    INITNEEDED = 1
+
     info = {}
     
     def __repr__(self):
@@ -70,6 +73,12 @@ class Module:
         return Module.info['path']
         
     def doInit(self):
+        pass
+
+    def checkDefinition(self):
+        return Module.CHECKOK
+
+    def fixDefinition(self, id):
         pass
 
     def getAdminSubNavigation(self):
