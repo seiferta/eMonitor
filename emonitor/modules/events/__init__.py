@@ -22,6 +22,11 @@ class EventsModule(Module):
         
         # translations
         babel.gettext(u'module.events')
+
+    def checkDefinition(self):
+        if db.session.query(classes.get('eventhandler')).count() == 0:
+            return Module.INITNEEDED
+        return Module.CHECKOK
         
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)

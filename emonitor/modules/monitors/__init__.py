@@ -51,6 +51,11 @@ class MonitorsModule(Module):
         babel.gettext(u'monitors.orientation.1')
         babel.gettext(u'placeholder')
 
+    def checkDefinition(self):
+        if db.session.query(classes.get('monitor')).count() == 0:
+            return Module.INITNEEDED
+        return Module.CHECKOK
+
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 

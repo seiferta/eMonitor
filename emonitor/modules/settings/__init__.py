@@ -54,6 +54,14 @@ class SettingsModule(Module):
             db.session.add(Settings.set('cartypes', ['car', '#ffffff']))
             db.session.commit()
 
+    def checkDefinition(self):
+        if len(classes.get('department').getDepartments()) == 0:
+            return Module.INITNEEDED
+        return Module.CHECKOK
+
+    def fixDefinition(self, id):
+        pass
+
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 

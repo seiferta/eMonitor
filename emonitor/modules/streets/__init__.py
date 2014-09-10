@@ -57,6 +57,11 @@ class StreetsModule(Module):
    # @cache.cached(timeout=8000, key_prefix='streets')
     #def getFrontendContent(self, params={}):
     #    return getFrontendContent(self, params=params)
+
+    def checkDefinition(self):
+        if db.session.query(classes.get('city')).count() == 0:
+            return Module.INITNEEDED
+        return Module.CHECKOK
         
     def getFrontendData(self):
         return getFrontendData(self)
