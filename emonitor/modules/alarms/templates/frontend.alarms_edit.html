@@ -50,7 +50,7 @@
             <p>{{ _('alarms.header.edit') }}</p>
 
             <div class="smallmodulesarea">
-                <button type="button" onclick="return addMessage('{{ alarm.id }}')" style="width:50px">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></button>
+                <button type="button" onclick="return addMessage('{{ alarm.id }}')" style="min-width:50px;white-space: nowrap">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></button>
                 <button type="button" {%- if ([frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd)|length >1 %}style="margin-right:10px"{%- endif  %} onclick="return toggleDetails()" ><i class="fa fa-indent fa-lg" id="detailswitch"></i></button>
 
                 {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}

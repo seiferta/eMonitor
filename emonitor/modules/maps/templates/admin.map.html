@@ -26,18 +26,18 @@
             <button class="add" type="submit" name="action" value="createmap" title="{{ _('settings.map.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         <div id="sortable">
-            {% if maps|count==0 %}
+            {%- if maps|count==0 %}
             <div class="rownoentry">
                 <p style="text-align:center">{{ _('settings.maps.nodata') }}</p>
             </div>
-            {% endif %}
-            {% for map in maps %}
+            {%- endif %}
+            {%- for map in maps %}
             <div class="row">
                 <div style="position:absolute;left:3px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
                 <div style="margin-right:70px;margin-left:15px;">
                     <div class="rowcell" style="width:50%;">
                         {{ map.name }}
-                        {% if map.default==1 %}<small><em>{{ _('settings.map.defaultmap') }}</em></small>{% endif %}
+                        {%- if map.default==1 %}<small><em>{{ _('settings.map.defaultmap') }}</em></small>{%- endif %}
                     </div>
                     <div class="rowcell" style="width:50%;">{{ map.path }}</div>
                 </div>
@@ -45,7 +45,7 @@
                 <button type="submit" name="action" value="deletemap_{{ map.id }}" title="{{ _('settings.map.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="detailmap_{{ map.id }}" title="{{ _('settings.map.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
             </div>
-            {% endfor %}
+            {%- endfor %}
         </div>
         <div class="headrow">
             <button type="submit" name="action" value="ordersetting" id="orderchange" style="display:none;">{{ _('settings.map.ordersave') }}</button>
@@ -56,9 +56,9 @@
 
     <h2>{{ _('settings.map.positiontitle') }}</h2>
     <p><small>{{ _('settings.map.positioninfo') }}</small></p>
-    {% if maps|count==0 %}
+    {%- if maps|count==0 %}
     <p>{{ _('settings.map.positionerror') }}</p>
-    {% endif %}
+    {%- endif %}
 
     <form name="mapposition" method="post" action="">
 
@@ -90,11 +90,11 @@
     var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
     var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
     var startzoom = "{{ settings.get('defaultZoom', '14') }}";
-    {% if maps|count > 0 %}
+    {%- if maps|count > 0 %}
     var maptype = "{{ maps[0].name }}";
-    {% else %}
+    {%- else %}
     var maptype = "";
-    {% endif %}
+    {%- endif %}
 
     function questionDel(){
         return confirm('{{ _('settings.map.delquestion') }}');
