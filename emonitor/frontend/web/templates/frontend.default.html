@@ -1,1 +1,22 @@
-<p style="text-align:center;padding-top:50px;">{{ _('frontend.default.module') }}</p>
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="expires" content="43200"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Access-Control-Allow-Origin" content="*" />
+        <!--
+            This website is powered by eMonitor
+        -->
+        <title>{% block title %}{{ _('frontend.titlemain') }}{% endblock %}</title>
+        <meta name="generator" content="eMonitor"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="stylesheet" href="/css/layout.css" />
+    </head>
+    <body style="background-color:#fff;position:relative;height:100%;">
+        <p style="text-align:center;padding-top:200px;font-size:1.4em;color:#818181">{{ _('frontend.default.module') }}</p>
+    </body>
+</html>
