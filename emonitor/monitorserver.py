@@ -6,6 +6,7 @@ import time
 import datetime
 import traceback
 import random
+from compiler.ast import flatten
 from .extensions import db, events, classes, signal
 
 
@@ -43,8 +44,8 @@ class MonitorServer():
         signal.addSignal('monitorserver', 'clientsearchdone')
 
     def sendMessage(self, clientid, operation, *parameters):
-        parameters = dict((x, y) for x, y in parameters)
-
+        p = flatten(parameters)
+        parameters = dict(zip(p[::2], p[1::2]))
         params = ""
         for p in parameters:
             params += '&%s=%s' % (p, parameters[p])
@@ -171,9 +172,11 @@ class MonitorServer():
     def changeLayout(monitorid, layoutid, *params):
         from emonitor.extensions import monitorserver
         MonitorServer.app.logger.debug('monitorserver: changeLayout for monitor %s > %s' % (monitorid, layoutid))
-        parameters = tuple((u'layoutid', u'%s' % layoutid))
-        for p in params:
-            parameters.append((p[0], p[1]))  # do not change!
+        parameters = [(u'layoutid', u'%s' % layoutid)]
+        try:
+            for p in params:
+                parameters.append((p[0], p[1]))  # do not change!
+        except: pass
         l = MonitorLog.addLog(monitorid, 0, 'change layout', parameters)
         if l: MonitorServer.app.logger.error('monitorserver.addLog: %s' % l)
         message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', parameters)
