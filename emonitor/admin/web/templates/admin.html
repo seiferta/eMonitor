@@ -24,6 +24,10 @@
             .footer_functions a{color:#fff;}
             .footer_functions a:hover{color:#428bca;}
             span#ws i{padding-right:4px;}
+            span.initneed{position:absolute;top:2px;right:2px}
+            span.initneed i{color:#97070B!important;cursor:pointer}
+            .navigation li{position:relative}
+
         </style>
         {% block style %}{% endblock %}
         <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
@@ -75,6 +79,7 @@
                     {%- for module in modules %}
                     <li>
                         <a href="/admin/{{ modules[module].info.path }}" {% if module==current_mod.info.name %} class="active" {% endif %}><i class="fa {{ modules[module].info.icon }} fa-lg"></i> {{ _('module.'+module) }}</a>
+                        {%- if modules[module].checkDefinition()==1 %} <span class="initneed" title="{{ _('admin.moduleinitneeded') }}"><i class="fa fa-exclamation-triangle"></i></span>{%- endif %}
                     </li>
                     {%- endfor %}
                 </ul>

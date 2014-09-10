@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 16:55+0200\n"
+"POT-Creation-Date: 2014-09-08 16:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,27 +42,31 @@ msgid "admin.db.revision.error"
 msgstr ""
 
 #: emonitor/admin/web/templates/admin.html:14
-#: emonitor/admin/web/templates/admin.html:50
+#: emonitor/admin/web/templates/admin.html:54
 msgid "admin.titlemain"
 msgstr ""
 
-#: emonitor/admin/web/templates/admin.html:51
+#: emonitor/admin/web/templates/admin.html:55
 msgid "admin.frontendlink"
 msgstr ""
 
-#: emonitor/admin/web/templates/admin.html:59
+#: emonitor/admin/web/templates/admin.html:63
 msgid "admin.logout"
 msgstr ""
 
-#: emonitor/admin/web/templates/admin.html:108
+#: emonitor/admin/web/templates/admin.html:82
+msgid "admin.moduleinitneeded"
+msgstr ""
+
+#: emonitor/admin/web/templates/admin.html:113
 msgid "layout.resize"
 msgstr ""
 
-#: emonitor/admin/web/templates/admin.html:109
+#: emonitor/admin/web/templates/admin.html:114
 msgid "layout.open"
 msgstr ""
 
-#: emonitor/admin/web/templates/admin.html:110
+#: emonitor/admin/web/templates/admin.html:115
 msgid "layout.closed"
 msgstr ""
 

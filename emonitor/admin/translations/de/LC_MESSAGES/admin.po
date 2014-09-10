@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-03 16:55+0200\n"
-"PO-Revision-Date: 2014-09-03 16:56+0100\n"
+"POT-Creation-Date: 2014-09-08 16:05+0200\n"
+"PO-Revision-Date: 2014-09-10 15:11+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -45,27 +45,31 @@ msgstr ""
 "nicht über die URL mit angegeben."
 
 #: emonitor/admin/web/templates/admin.html:14
-#: emonitor/admin/web/templates/admin.html:50
+#: emonitor/admin/web/templates/admin.html:54
 msgid "admin.titlemain"
 msgstr "eMonitor - Administrationsbereich"
 
-#: emonitor/admin/web/templates/admin.html:51
+#: emonitor/admin/web/templates/admin.html:55
 msgid "admin.frontendlink"
 msgstr "Eingabeoberfläche"
 
-#: emonitor/admin/web/templates/admin.html:59
+#: emonitor/admin/web/templates/admin.html:63
 msgid "admin.logout"
 msgstr "abmelden"
 
-#: emonitor/admin/web/templates/admin.html:108
+#: emonitor/admin/web/templates/admin.html:82
+msgid "admin.moduleinitneeded"
+msgstr "Definition unvollständig oder fehlerhaft"
+
+#: emonitor/admin/web/templates/admin.html:113
 msgid "layout.resize"
 msgstr "Verschieben"
 
-#: emonitor/admin/web/templates/admin.html:109
+#: emonitor/admin/web/templates/admin.html:114
 msgid "layout.open"
 msgstr "Schließen"
 
-#: emonitor/admin/web/templates/admin.html:110
+#: emonitor/admin/web/templates/admin.html:115
 msgid "layout.closed"
 msgstr "Öffnen"
 
