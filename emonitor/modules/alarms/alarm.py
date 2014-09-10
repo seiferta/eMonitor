@@ -146,9 +146,7 @@ class Alarm(db.Model):
                 except:
                     current_app.logger.error('%s' % [a.id for a in Alarm.getActiveAlarms()])
             LASTALARM = time.time() + 2.0
-
-            j = scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM),
-                                       ['alarm_added', {'alarmid': id}])
+            j = scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added', {'alarmid': id}])
 
             # close alarm after alarms.autoclose, default 30 minutes
             if alarm.state == 1:  # autoclose only automatic alarms
@@ -218,7 +216,7 @@ class Alarm(db.Model):
         stime = time.time()
         alarmtype = None
         for t in classes.get('alarmtype').getAlarmTypes():
-            if re.match(t.keywords.replace('\r\n', '|'), kwargs[0]['text']):
+            if re.match(t.keywords.replace('\r\n', '|'), unicode(kwargs[0]['text'], errors='ignore')):
                 alarm_fields = t.interpreterclass().buildAlarmFromText(t, kwargs[0]['text'])
                 if u'error' in alarm_fields.keys():
                     kwargs[0]['error'] = alarm_fields['error']
