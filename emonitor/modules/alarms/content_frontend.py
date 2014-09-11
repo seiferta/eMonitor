@@ -161,7 +161,7 @@ def getFrontendData(self, *params):
         return jsonify(data)
 
     elif request.args.get('action') == 'message':
-        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))
+        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'), reload=request.args.get('reload', 'true'))
 
     elif request.args.get('action') == 'addmessage':  # add message
         if request.form.get('messagetext') != "":

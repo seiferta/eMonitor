@@ -93,19 +93,16 @@
 
         <div id="alarmssubcenter">
             <div id="alarmaccordion">
-                {% for k in alarmstates.keys() %}
+                {%- for k in alarmstates.keys() %}
                 <h3 a_name="alarmstate__{{ k }}" class="btn-default" style="background-color:#adadad;padding-right:5px;border-bottom:1px solid #ddd;" onclick="return showMappoints({{ k }})" key="{{ k }}">
                     {{ _('alarmstate.'+alarmstates[k]) }}
                     <span class="badge badge-info pull-right">{{ stats[k] }}</span>
                 </h3>
 
                 <div id="alarmstate_{{ k }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px">
-                    {%- if stats[k]==0 %}
-                        <p class="noalarms">{{ _('alarms.noactive') }}</p>
-                    {%- endif %}
+                    {%- if stats[k]==0 %}<p class="noalarms">{{ _('alarms.noactive') }}</p>{%- endif %}
                     {%- for alarm in alarms %}
                     {%- if k==alarm.state|string %}
-                    <!--<div class="alarmrow" lat="{{ alarm.lat }}" lng="{{ alarm.lng }}" zoom="{{ alarm.zoom }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}" ondblclick="$('#editalarm_{{ alarm.id}}').click()">-->
                     <div class="alarmrow" lat="{{ alarm.get('lat') }}" lng="{{ alarm.get('lng') }}" zoom="{{ alarm.get('zoom') }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}">
 
                        <div style="overflow:hidden;">
@@ -114,10 +111,7 @@
                             <b class="key">{%  if alarm.key.category!='' %}{{ alarm.key.category }}: {% endif %}{{ alarm.key.key }}</b>
                             <br/>
                             <span class="address">
-                                {{ alarm.city.name }}:
-                                {{ alarm.street.name }}
-                                {{ alarm.streetno }}
-                                <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
+                                {{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }} <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
                                 {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
                             </span>
                             <div class="alarmdetails">

@@ -267,7 +267,7 @@
 
         function addMessage(alarmid){
             if (alarmid=='None'){return false;}
-            $.ajax({ type : "POST", url : "/data/alarms?action=message&alarmid="+alarmid,
+            $.ajax({ type : "POST", url : "/data/alarms?action=message&alarmid="+alarmid+"&area={{ frontendarea }}&reload=false",
                 success: function(result) {
                     parent.$('#overlaycontent').html(result);
                     parent.$('.overlay').toggle();

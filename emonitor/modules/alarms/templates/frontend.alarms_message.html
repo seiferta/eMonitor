@@ -52,7 +52,7 @@
                 type: 'post',
                 data: $('form#addmessage').serialize(),
                 success: function(result) {
-                    $('iframe#alarms').attr('src', '/alarms?area={{ area }}&state={{ alarm.state }}');
+                    {%- if reload=='true' %}$('iframe#alarms').attr('src', '/alarms?area={{ area }}&state={{ alarm.state }}');{%- endif %}
                     parent.$('#overlaycontent').html(result);
                 }
             });
@@ -64,7 +64,7 @@
                 url: '/data/alarms?action=deletemessage&area={{ area }}&datetime='+$(obj).attr('datetime')+'&alarmid={{ alarm.id }}',
                 type: 'get',
                 success: function(result) {
-                    $('iframe#alarms').attr('src', '/alarms?area={{ area }}&state={{ alarm.state }}');
+                    {%- if reload=='true' %}$('iframe#alarms').attr('src', '/alarms?area={{ area }}&state={{ alarm.state }}');{%- endif %}
                     parent.$('#overlaycontent').html(result);
                 }
             });
