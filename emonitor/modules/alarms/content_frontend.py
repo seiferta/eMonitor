@@ -1,12 +1,17 @@
 import datetime
 from operator import attrgetter
-from flask import render_template, request, flash, render_template_string, jsonify
+from flask import render_template, request, flash, session, render_template_string, jsonify
 from emonitor.extensions import classes, monitorserver, scheduler, db, signal
 from emonitor.frontend import frontend
 
 
 def getFrontendContent(**params):
     alarmstates = classes.get('alarm').ALARMSTATES
+
+    if request.args.get('alarmfilter', '-1') != '-1':  # filter for alarms last x days, -1 no filter set
+        session['alarmfilter'] = request.args.get('alarmfilter', '-1')
+    elif 'alarmfilter' not in session:
+        session['alarmfilter'] = '0'
 
     if 'area' in request.args:
         params['area'] = request.args.get('area')
@@ -115,7 +120,7 @@ def getFrontendContent(**params):
             classes.get('alarm').changeState(int(request.args.get('alarmid')), 3)
         params['area'] = request.args.get('area')
 
-    alarms = classes.get('alarm').getAlarms()
+    alarms = classes.get('alarm').getAlarms(days=int(session['alarmfilter']))
     stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], 0)
     for alarm in alarms:
         stats[str(alarm.state)] += 1
@@ -124,7 +129,7 @@ def getFrontendContent(**params):
         params['area'] = 'center'
     if 'activeacc' not in params:
         params['activeacc'] = 0
-    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'))
+    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), alarmfilter=session['alarmfilter'])
 
     
 def getFrontendData(self, *params):

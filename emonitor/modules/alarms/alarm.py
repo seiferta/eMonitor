@@ -90,9 +90,11 @@ class Alarm(db.Model):
         return classes.get('map').getDefaultMap()
 
     @staticmethod
-    def getAlarms(id=0):
+    def getAlarms(id=0, days=0):
         if id != 0:
             return db.session.query(Alarm).filter_by(id=id).first()
+        elif days != 0:  # filter last days, 0 = all days
+            return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').all()
         else:
             return db.session.query(Alarm).order_by('alarms.timestamp desc').all()
 

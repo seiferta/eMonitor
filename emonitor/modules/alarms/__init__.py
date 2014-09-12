@@ -120,6 +120,11 @@ class AlarmsModule(Module):
         babel.gettext(u'alarms.print.positive')
         babel.gettext(u'alarms.print.negative')
 
+        babel.gettext(u'alarms.filter.0')
+        babel.gettext(u'alarms.filter.1')
+        babel.gettext(u'alarms.filter.7')
+        babel.gettext(u'alarms.filter.31')
+
         # init
         # Do init script for alarms at start and add active alarms (state = 1)
         #from modules.alarms.alarm import Alarm
