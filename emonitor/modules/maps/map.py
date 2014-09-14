@@ -17,7 +17,7 @@ class Map(db.Model):
     def __init__(self, name, path, maptype=0, tileserver="", default=0):
         self.name = name
         self.path = path
-        self.type = maptype
+        self.maptype = maptype
         self.tileserver = tileserver
         self.default = default
 

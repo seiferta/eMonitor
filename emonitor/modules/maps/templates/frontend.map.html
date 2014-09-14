@@ -35,31 +35,27 @@
         var hydrant = new HydrantMarker({iconUrl:'/img/hydrant.png'});
 
         $(document).ready(function () {
+            {%- for map in maps | reverse %}
+            {%- if map.maptype in [0, 1] %}
+            var l_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            var ml_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            {%- else %}
+            var l_{{ map.id }} = new L.TileLayerQuad('{{ map.tileserver|safe }}');
+            {%- endif %}
+            {%- endfor %}
+            {%- for tiledef in tiledefs %}
+            var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.name|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            {%- endfor %}
 
-            {% for map in maps | reverse %}
-                {%- if map.maptype in [0, 1] %}var l_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
-                    var ml_{{ map.id }} = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
-                {%- else %}var l_{{ map.id }} = new L.TileLayerQuad('{{ map.tileserver|safe }}');{% endif %}
-            {% endfor %}
+            map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true, zoomControl: false, layers:[{% for map in maps | reverse %}l_{{map.id}}{% if not loop.last %}, {% endif %}{% endfor %}]});
 
-            {% for tiledef in tiledefs %}
-                var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.name|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
-            {% endfor %}
-
-            map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true,zoomControl: false,
-                      layers:[{% for map in maps | reverse %}l_{{map.id}}{% if not loop.last %}, {% endif %}{% endfor %}]
-            });
-
-            //alarmMarkers.addTo(map);
-            var baseMaps = { {% for map in maps | reverse %}"{{ map.name }}" : l_{{map.id}},{% endfor %}};
+            var baseMaps = { {%- for map in maps | reverse %}"{{ map.name }}" : l_{{map.id}},{%- endfor %}};
             if (startlat!="" && startlng!="" && startzoom!=""){
                 map.setView(new L.LatLng(startlat, startlng), startzoom);
             }
 
             var overlayMaps = {
-                {% for tiledef in tiledefs %}
-                    "{{ tiledef.name|safe }}": l_{{ tiledef.name|safe }},
-                {% endfor %}
+                {% for tiledef in tiledefs %}"{{ tiledef.name|safe }}": l_{{ tiledef.name|safe }},{%- endfor %}
             };
 
             function my_button_onClick(){

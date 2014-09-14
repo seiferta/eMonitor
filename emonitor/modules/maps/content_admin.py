@@ -38,10 +38,9 @@ def getAdminContent(self, **params):
 
         elif request.form.get('action') == 'ordersetting':  # change map order
             maps = []
-            for _id in request.form.getlist('mapids'):  # TODO: add change algorithm
+            for _id in request.form.getlist('mapids'):
                 _map = Map.getMaps(int(_id))
                 maps.append(dict(name=_map.__dict__['name'], path=_map.__dict__['path'], maptype=_map.__dict__['maptype'], tileserver=_map.__dict__['tileserver'], default=_map.__dict__['default']))
-                _map.value = [request.form.getlist('mapids').index(_id) + 1, _map.name, _map.path]
             db.session.query(Map).delete()  # delete all maps
             for _map in maps:  # add maps in new order
                 db.session.add(Map(_map['name'], _map['path'], _map['maptype'], _map['tileserver'], _map['default']))
