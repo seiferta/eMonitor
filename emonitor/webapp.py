@@ -1,5 +1,6 @@
 import os
 from alembic import util as alembicutil
+from sqlalchemy.exc import OperationalError
 from flask import Flask, request, render_template, current_app
 from .extensions import alembic, db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
@@ -102,8 +103,10 @@ def configure_extensions(app):
             if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
                 try:
                     alembic.upgrade(current_app.config.get('DB_VERSION'))
-                except alembicutil.CommandError:
+                except (alembicutil.CommandError, OperationalError):
                     pass
+                finally:
+                    alembic.stamp()
 
     # babel
     babel.init_app(app)
