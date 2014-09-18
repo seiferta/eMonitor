@@ -236,17 +236,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
     @staticmethod
     def evalAlarmplan(fieldname, **params):
-        _str = FezAlarmFaxChecker().fields[fieldname][0].replace('B', '6')
-
-        ret = u''
-        for i in _str.strip():
-            if i == ' ':
-                FezAlarmFaxChecker().fields[fieldname] = (ret, 1)
-                return
-            try:
-                ret += i
-            except:
-                ret += ''
+        _str = FezAlarmFaxChecker().fields[fieldname][0].replace('B', '6').strip()
         FezAlarmFaxChecker().fields[fieldname] = (_str, 1)
         return
 
