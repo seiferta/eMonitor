@@ -43,7 +43,7 @@ class Alarmkey(db.Model):
         if "cars2" in kwargs.keys():
             alarmcars._cars2 = kwargs['cars2']
         if "material" in kwargs.keys():
-            alarmcars._materials = kwargs['materials']
+            alarmcars._material = kwargs['material']
 
     def getCars1(self, department):
         return self._getCars(1, department)

@@ -41,7 +41,7 @@ def getAdminContent(self, **params):
 
                 alarmkeycar.cars1 = request.form.get('cars1')
                 alarmkeycar.cars2 = request.form.get('cars2')
-                alarmkeycar.material = request.form.get('material')
+                alarmkeycar.materials = request.form.get('material')
                 if request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
                     db.session.delete(alarmkeycar)
                 db.session.commit()
@@ -67,7 +67,7 @@ def getAdminContent(self, **params):
                 alarmkey.key = request.form.get('key')
                 alarmkey.key_internal = request.form.get('keyinternal')
                 alarmkey.remark = request.form.get('remark')
-                alarmkey.setCars(int(request.form.get('deptid')), cars1=request.form.get('cars1'), cars2=request.form.get('cars2'), materials=request.form.get('material'))
+                alarmkey.setCars(int(request.form.get('deptid')), cars1=request.form.get('cars1'), cars2=request.form.get('cars2'), material=request.form.get('material'))
                 db.session.commit()
                 
             elif request.form.get('action').startswith('deletecars_'):  # delete car definition
