@@ -1,5 +1,6 @@
 import os
 import re
+from sqlalchemy import func
 from flask import current_app, render_template, request, send_from_directory
 import werkzeug
 
@@ -34,7 +35,7 @@ def getAdminContent(self, **params):
 
             elif request.form.get('action') == 'savedefault':  # save default aao
                 alarmkeycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
-                if not alarmkeycar or len(alarmkeycar) == 0:  # add
+                if not alarmkeycar:  # add
                     alarmkeycar = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
                     db.session.add(alarmkeycar)
 
@@ -74,12 +75,12 @@ def getAdminContent(self, **params):
                 keycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid, dept=_dept)
                 if keycar:
                     db.session.delete(keycar)
-                
+                    db.session.commit()
+
                 # delete key if no definied cars
                 if len(classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid)) == 0:
                     key = classes.get('alarmkey').getAlarmkeys(id=_kid)
                     db.session.delete(key)
-
                 db.session.commit()
                 
             elif request.form.get('action').startswith('editcars_'):  # edit key with cars
@@ -88,7 +89,8 @@ def getAdminContent(self, **params):
                 return render_template('admin.alarmkeys_actions.html', **params)
 
         alarmkeys_count = []
-        counted_keys = classes.get('alarmkey').query.from_statement('select category, count(key) as key, id from alarmkeys group by category order by id;')
+        ak = classes.get('alarmkey')
+        counted_keys = db.session.query(ak.category.label('category'), func.count(ak.key).label('key'), ak.id.label('id')).group_by(ak.category)
         _sum = 0
         for r in counted_keys.all():
             alarmkeys_count.append((r.category, r.key))

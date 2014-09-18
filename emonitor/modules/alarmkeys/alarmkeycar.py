@@ -78,9 +78,9 @@ class AlarmkeyCars(db.Model):
         self._material = material
         acc = AlarmkeyCars.getAlarmkeyCars(0, dept=dept)
         if acc:
-            self.defaultcars1 = acc[0].cars1
-            self.defaultcars2 = acc[0].cars2
-            self.defaultmaterial = acc[0].materials
+            self.defaultcars1 = acc.cars1
+            self.defaultcars2 = acc.cars2
+            self.defaultmaterial = acc.materials
         else:
             self.defaultcars1 = []
             self.defaultcars2 = []
