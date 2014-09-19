@@ -1,6 +1,6 @@
 from emonitor.utils import Module
 from emonitor.extensions import classes, db, events, babel
-from .content_admin import getAdminContent
+from .content_admin import getAdminContent, getAdminData
 
 
 class TextmodModule(Module):
@@ -39,3 +39,6 @@ class TextmodModule(Module):
 
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
+
+    def getAdminData(self):
+        return getAdminData(self)

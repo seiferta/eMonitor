@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-11 22:25+0200\n"
-"PO-Revision-Date: 2014-09-11 22:27+0100\n"
+"POT-Creation-Date: 2014-09-19 18:16+0200\n"
+"PO-Revision-Date: 2014-09-19 18:18+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1065,7 +1065,7 @@ msgid "alarms.messagetitles"
 msgstr "Vorhandene Meldungen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:17
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:157
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:101
 msgid "alarm.delete"
 msgstr "löschen"
 
@@ -1082,7 +1082,7 @@ msgid "alarms.messagetext"
 msgstr "Text"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_routing.html:9
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:159
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:103
 msgid "alarm.route.info"
 msgstr "Anfahrt-Information"
 
@@ -1090,87 +1090,87 @@ msgstr "Anfahrt-Information"
 msgid "alarm.addedalert"
 msgstr "Alarmeingang: Ein neuer Einsatz wurde angelegt oder aktiviert!"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:89
-msgid "alarms.addtitle"
-msgstr "Einsatz erstellen"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:90
-msgid "alarms.autorefresh"
-msgstr "Einsätze automatisch aktualisieren"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:91
-msgid "alarms.archivetitle"
-msgstr "Abgeschlossene Einsätze archivieren"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:92
-msgid "alarms.filter.title"
-msgstr "Einsätze filtern"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:92
-msgid "alarms.filter.activetitle"
-msgstr "Einsatzfilter aktiv"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:117
-msgid "alarms.noactive"
-msgstr "keine Einsätze"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:132
-msgid "alarms.showfax"
-msgstr "Alarmfax anzeigen (pdf)"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:133
-msgid "alarms.messagestitle"
-msgstr "%(number)s Meldungen vorhanden"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:134
-msgid "alarms.typeautomatic"
-msgstr "Einsatz aus Fax erzeugt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:135
-msgid "alarms.typemanual"
-msgstr "Einsatz manuell erzeugt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:137
-msgid "alarms.titlemap"
-msgstr "Kartenposition gesetzt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:147
 msgid "alarm.edit"
 msgstr "bearbeiten"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:149
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:93
 msgid "alarm.finish"
 msgstr "abschließen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:152
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:96
 msgid "alarm.activate"
 msgstr "aktivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:155
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:99
 msgid "alarm.archive"
 msgstr "archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:160
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:104
 msgid "alarm.route"
 msgstr "Route anzeigen/ausblenden"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:163
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:107
 msgid "alarm.print"
 msgstr "Drucken..."
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:217
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:117
+msgid "alarms.addtitle"
+msgstr "Einsatz erstellen"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:118
+msgid "alarms.autorefresh"
+msgstr "Einsätze automatisch aktualisieren"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:119
+msgid "alarms.archivetitle"
+msgstr "Abgeschlossene Einsätze archivieren"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:120
+msgid "alarms.filter.title"
+msgstr "Einsätze filtern"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:120
+msgid "alarms.filter.activetitle"
+msgstr "Einsatzfilter aktiv"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:145
+msgid "alarms.noactive"
+msgstr "keine Einsätze"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:159
+msgid "alarms.showfax"
+msgstr "Alarmfax anzeigen (pdf)"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:160
+msgid "alarms.messagestitle"
+msgstr "%(number)s Meldungen vorhanden"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:161
+msgid "alarms.typeautomatic"
+msgstr "Einsatz aus Fax erzeugt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:162
+msgid "alarms.typemanual"
+msgstr "Einsatz manuell erzeugt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:164
+msgid "alarms.titlemap"
+msgstr "Kartenposition gesetzt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:215
 msgid "alarms.finishquestion"
 msgstr "Soll die gewählte Einsatz abgeschlossen werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:229
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:227
 msgid "alarms.activatequestion"
 msgstr "Soll die gewählte Einsatz aktiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:241
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:239
 msgid "alarms.archivequestion"
 msgstr "Soll die Einsätze wirklich archiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:253
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:251
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
 
@@ -1571,11 +1571,11 @@ msgstr "Straßenkarte"
 msgid "maps_map"
 msgstr "Karte"
 
-#: emonitor/modules/maps/content_admin.py:96
+#: emonitor/modules/maps/content_admin.py:95
 msgid "settings.map.loadinginprogress"
 msgstr "Download gestartet"
 
-#: emonitor/modules/maps/content_admin.py:98
+#: emonitor/modules/maps/content_admin.py:97
 msgid "settings.map.loadingstarted"
 msgstr "Tile-Download in Bearbeitung..."
 
@@ -1785,7 +1785,7 @@ msgstr "Aktualisierung läuft"
 msgid "settings.map.loadtiles"
 msgstr "Kartenteile laden"
 
-#: emonitor/modules/maps/templates/frontend.map.html:88
+#: emonitor/modules/maps/templates/frontend.map.html:84
 msgid "maps.nodefaultposition"
 msgstr ""
 "Es wurde noch keine Standardposition für die Kartendarstellung gespeichert, "
@@ -3030,30 +3030,46 @@ msgstr "Ersetzung bearbeiten"
 msgid "textmod.replace.itemscount"
 msgstr "(%(count)s Ersetzungen vorhanden)"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:8
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:10
+msgid "textmod.ocr.teststart"
+msgstr "OCR-Test gestartet..."
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:14
+msgid "textmod.ocr.testok"
+msgstr "OCR-Test in Ordnung."
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:16
+msgid "textmod.ocr.testerror"
+msgstr "Fehler bei der OCR-Erkennung! Werte nicht identisch"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:26
 msgid "textmod.ocr.header.overview"
 msgstr "OCR-Parameter"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:9
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:27
 msgid "textmod.ocr.info"
 msgstr ""
 "Konfigurationsparameter für die korrekte Verarbeitung der Texterkennung. "
 "Darunter fallen die unterstützten Eingangsformate und die Parameter für die "
 "OCR Verarbeitung"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:12
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:29
 msgid "textmod.ocr.inportformats"
 msgstr "Datenformate"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:14
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:31
 msgid "textmod.ocr.inputformatinfo"
 msgstr "Dateiendungen, jeweils in einer eigenen Zeile"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:18
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:34
 msgid "textmod.ocr.callstring"
 msgstr "Aufruf der Textverarbeitung"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:20
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:36
+msgid "textmod.ocr.starttest"
+msgstr "OCR-Test starten"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:37
 msgid "textmod.ocr.callstringinfo"
 msgstr ""
 "Aufruf der Texterkennung. Folgende Variablen können verwendet werden und "
@@ -3063,7 +3079,7 @@ msgstr ""
 "zum Zwischenspeichern<br/><br/>Standard: [basepath]/bin/tesseract/tesseract "
 "[incomepath][filename] [tmppath] -l deu -psm 6 quiet custom"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:24
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:40
 msgid "textmod.ocr.save"
 msgstr "Speichern"
 

@@ -1,5 +1,8 @@
 import os
+import random
 import codecs
+from xhtml2pdf import pisa
+from StringIO import StringIO
 from flask import request, render_template, current_app
 
 from emonitor.extensions import db, classes
@@ -70,3 +73,36 @@ def getAdminContent(self, **params):
                
         params.update({'replacements': classes.get('replace').getReplacements().all()})
         return render_template('admin.textmod.html', **params)
+
+
+def getAdminData(self):
+    if request.args.get('action') == 'testocr':
+        ret = {'path': '', 'ocrtext': ''}
+        teststring = request.args.get('callstring')
+        teststring = teststring.replace('[basepath]', current_app.config.get('PROJECT_ROOT'))
+
+        # test program
+        ret['path'] = str(os.path.exists(teststring.split()[0]))
+
+        # test ocr with random data
+        ret['ocrtext'] = ""
+        testtext = pisa.COPYRIGHT[:100].replace("\n", "")
+        pdf = StringIO()
+        pisa.CreatePDF(StringIO(render_template('admin.textmod.testfax.html', text=testtext)), pdf)
+        tmpfilename = '%s.pdf' % random.random()
+        with open("%s%s" % (current_app.config.get('PATH_TMP'), tmpfilename), 'wb') as f:
+            f.write(pdf.getvalue())
+
+        p, t = classes.get('ocr').convertFileType(current_app.config.get('PATH_TMP'), tmpfilename)
+        if p != 1:  # only one page possible
+            ret['error'] = "convert error"
+
+        text, t = classes.get('ocr').convertText(current_app.config.get('PATH_TMP'), tmpfilename[:-3] + 'png', p)
+        ret['ocrtext'] = str(text.replace("\n", " ").strip() == testtext)
+        if os.path.exists('%s%s' % (current_app.config.get('PATH_TMP'), tmpfilename)):
+            os.remove('%s%s' % (current_app.config.get('PATH_TMP'), tmpfilename))
+        if os.path.exists('%s%s' % (current_app.config.get('PATH_TMP'), tmpfilename[:-3] + 'png')):
+            os.remove('%s%s' % (current_app.config.get('PATH_TMP'), tmpfilename[:-3] + 'png'))
+
+        return ret
+    return ""

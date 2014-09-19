@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <style>
+            @page {
+                height: 742px;
+                width: 495px;
+
+                @frame content_frame {
+                    -pdf-frame-content:content;
+                    -pdf-frame-border: 0;
+                    top: 80px;
+                    left: 50px;
+                    right: 150px;
+                    height: 565px;
+                }
+            }
+            body{font-family: Arial, Helvetica, sans-serif}
+            h1{font-size:5em;padding:20px;}
+        </style>
+    </head>
+    <body>
+        <div id="content">
+             <h1>{{ text }}</h1>
+        </div>
+    </body>
+</html>

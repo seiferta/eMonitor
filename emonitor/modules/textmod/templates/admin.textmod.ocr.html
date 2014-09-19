@@ -4,22 +4,38 @@
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
+{% block script %}
+    <script>
+        function testparams(){
+            $('#testresult').html('{{ _('textmod.ocr.teststart') }}');
+            $.ajax({ type : "POST", url : "/admin/data/textmod?action=testocr&callstring="+$("textarea[name='ocr_callstring']").html()+"&format=json",
+                 success: function(result) {
+                     if(result.ocrtext=='True'){
+                         $('#testresult').html('{{ _('textmod.ocr.testok') }}');
+                     }else{
+                         $('#testresult').html('{{ _('textmod.ocr.testerror') }}');
+                     }
+                }
+            });
+            return false;
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
     <h2>{{ _('textmod.ocr.header.overview') }}</h2>
     <p><small>{{ _('textmod.ocr.info') }}</small></p>
     <form method="post" action="">
-        <p>
             <label>{{ _('textmod.ocr.inportformats') }}:<br/>
-                <textarea name="ocr_formats" style="width:99%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
+                <textarea name="ocr_formats" style="width:100%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
                 {{ _('textmod.ocr.inputformatinfo') }}
             </label>
-        </p>
-        <p>
+
             <label>{{ _('textmod.ocr.callstring') }}:<br/>
-                <textarea name="ocr_callstring" style="width:99%;height:100px;">{{ params['callstring'] }}</textarea><br/>
+                <textarea name="ocr_callstring" style="width:100%;height:100px;margin-bottom:2px">{{ params['callstring'] }}</textarea>
+                <p style="text-align:right"><span id="testresult"></span><button type="button" onclick="return testparams()" style="margin-left:150px">{{ _('textmod.ocr.starttest') }}</button></p>
                 {{ _('textmod.ocr.callstringinfo') }}
             </label>
-        </p>
         <p>
             <button type="submit" name="action" value="savereocrparams" class="save"><i class="fa fa-check"></i> {{ _('textmod.ocr.save') }}</button>
         </p>
