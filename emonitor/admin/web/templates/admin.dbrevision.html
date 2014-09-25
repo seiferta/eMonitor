@@ -4,10 +4,10 @@
 
     <h2>{{ _('admin.db.updatetitle') }}</h2>
 
-    {% if revisionname!='' %}
+    {%- if revisionname!='' %}
     <p>{{ _('admin.db.revision.created') }}: '{{ revisionname|safe }}'</p>
-    {% else %}
+    {%- else %}
     <p>{{  _('admin.db.revision.error') }}</p>
-    {% endif %}
+    {%- endif %}
 
 {% endblock %}

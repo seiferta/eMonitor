@@ -1,4 +1,5 @@
-{% from 'frontend.macro.html' import flashmessages with context %}
+{#- template of frontend area -#}
+{%- from 'frontend.macro.html' import flashmessages with context %}
 <!doctype html>
 <html>
     <head>
@@ -83,7 +84,7 @@
                     </a>
                 </div>
                 {% endif %}
-                <div style="position:absolute;top:10px;left:10px;right:10px;text-align:center;">{{ flashmessages(get_flashed_messages()) }}</div>
+                {# <div style="position:absolute;top:10px;left:10px;right:10px;text-align:center;">{{ flashmessages(get_flashed_messages()) }}</div> #}
             </div>
             <iframe class="pane ui-layout-west" style="padding:0 !important;margin:0 !important;border:0 !important" allowtransparency="true" scrolling="no" src="/{{ areas.west.module }}?area=west" id="{{ areas.west.module }}" name="{{ areas.west.module }}"> </iframe>
             <iframe class="pane ui-layout-east" style="padding:0 !important;margin:0 !important;border:0 !important" allowtransparency="true" scrolling="no" src="/{{ areas.east.module }}?area=east" id="{{ areas.east.module }}" name="{{ areas.east.module }}"> </iframe>

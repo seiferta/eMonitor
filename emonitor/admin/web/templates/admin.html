@@ -1,5 +1,6 @@
-{% from 'admin.macro.html' import subnavigation with context %}
-{% from 'admin.macro.html' import flashmessages with context %}
+{#- standard template of admin area -#}
+{%- from 'admin.macro.html' import subnavigation with context -%}
+{%- from 'admin.macro.html' import flashmessages with context -%}
 <!doctype html>
 <html lang="de">
     <head>
@@ -46,9 +47,9 @@
             <div class="pane ui-layout-center" style="margin:0 !important;padding:0;" id="subcontainer">
                 <div class="content" style="margin:0 !important;padding:0 !important">
                     {{ flashmessages(get_flashed_messages(category_filter=["admin"])) }}
-                    <div style="padding:20px;">{% block content %}{% endblock %}</div>
+                    <div style="padding:20px;">{%- block content %}{% endblock -%}</div>
                 </div>
-                {% block subnavigation %}{% endblock %}
+                {%- block subnavigation %}{% endblock -%}
             </div>
             <div class="pane ui-layout-north" onmouseover="layout.allowOverflow('north')" onmouseout="layout.resetOverflow(this)">
                 <h1 style="padding-left:10px;">{{ _('admin.titlemain') }}</h1>

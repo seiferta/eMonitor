@@ -1,16 +1,7 @@
-﻿{% extends "admin.html" %}
+﻿{#- template for startpage of admin area -#}
+{% extends "admin.html" %}
 
-{%  block subnavigation %}
-    {% if current_mod.getAdminSubNavigation()|count %}
-    <div class="subnavigation">
-        {% for sub in current_mod.getAdminSubNavigation() %}
-            <a href="{{ sub[0] }}" {% if path==sub[0] or (path.split('/')|count==3 and loop.first) or (path.split('/')|count==5 and sub[0] in path) %}class="selected"{% endif %}>{{ _(sub[1]) }}</a>
-        {% endfor %}
-    </div>
-    {% endif %}
-{%  endblock %}
-
-{%  block content %}
+{% block content %}
     <h2>eMonitor - Administrationsbereich</h2>
     <p>Hier können Sie alle Einstellungen der Software konfigurieren und überwachen. Die Software gliedert sich in unterschiedliche Bereiche:</p>
     

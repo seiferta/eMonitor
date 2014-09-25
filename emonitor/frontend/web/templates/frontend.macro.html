@@ -1,9 +1,9 @@
-{% macro flashmessages(messages) %}
-    {% if messages|count>0 %}
+{%- macro flashmessages(messages) %}
+    {%- if messages|count>0 %}
         <p class="error">
-            {% for msg in messages %}
+            {%- for msg in messages %}
                 {{ _(msg) }}<br/>
-            {% endfor %}
+            {%- endfor %}
         </p>
-    {% endif %}
-{% endmacro %}
+    {%- endif %}
+{%- endmacro %}
