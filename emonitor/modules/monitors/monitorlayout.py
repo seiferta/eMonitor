@@ -28,7 +28,7 @@ class MonitorLayout(db.Model):
 
     def _get_html_layout(self):
         ret = ""
-        items, max_x, max_y = self._evalLayout(self.layout)
+        items, max_x, max_y = MonitorLayout._evalLayout(self.layout)
         for l in items:
             _l = str(int(ceil((l[0] - 1) * (100.0 / max_x)))) + '%'
             _t = str(int(ceil((l[1] - 1) * (100.0 / max_y)))) + '%'
@@ -51,7 +51,8 @@ class MonitorLayout(db.Model):
         self.maxtime = maxtime
         self.nextid = nextid
 
-    def _evalLayout(self, text):
+    @staticmethod
+    def _evalLayout(text):
         ret = []
         max_x = max_y = 1
         if text is None:
@@ -79,7 +80,7 @@ class MonitorLayout(db.Model):
         import StringIO
 
         dimension = (12, 9)
-        ret, max_x, max_y = self._evalLayout(self.layout)
+        ret, max_x, max_y = MonitorLayout._evalLayout(self.layout)
 
         img = Image.new('RGB', (max_x * dimension[0] + 1, max_y * dimension[1] + 1), (171, 171, 171))
         draw = ImageDraw.Draw(img)
@@ -101,6 +102,9 @@ class MonitorLayout(db.Model):
             return db.session.query(MonitorLayout).filter_by(mid=mid).all()
         else:
             return db.session.query(MonitorLayout).order_by('mid').all()
+
+    def getTriggerNames(self):
+        return self.trigger.split(';')
 
 
 def _evalLayout(text):

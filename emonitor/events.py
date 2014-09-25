@@ -9,7 +9,7 @@ class Event:
     globalhandlers = {}
     app = None
 
-    def __init__(self, name, handlers=[], parameters=[]):
+    def __init__(self, name, handlers=list(), parameters=list()):
         self.name = name
         self.handlers = handlers
         self.parameters = parameters
@@ -42,7 +42,7 @@ class Event:
         return []
 
     @staticmethod
-    def addEvent(name, handlers=[], parameters=[]):
+    def addEvent(name, handlers=list(), parameters=list()):
         Event.events.append(Event(name, handlers, parameters))
 
     @staticmethod
@@ -76,10 +76,7 @@ class Event:
 class RunEvent(threading.Thread):
     """ event handler in threads """
     def __init__(self, eventhandler, kwargs, logger):
-
         threading.Thread.__init__(self)
-        # send message to monitor
-        #emonitor.monitorserver.handleEvent(eventhandler[0].name, kwargs)
         self.eventhandler = eventhandler
         self.kwargs = kwargs
         self.logger = logger

@@ -244,9 +244,10 @@ class MonitorLog(db.Model):
         try:
             db.session.add(MonitorLog(datetime.datetime.now(), clientid, direction, logtype, str(operation)))
             db.session.commit()
-            return None
         except:
-            return traceback.print_exc()
+            pass
+            #return traceback.print_exc()
+        return None
         
     @staticmethod
     def clearLog():  # not tested

@@ -35,7 +35,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         sections[u'Funkkan\xe4le'] = (u'remark2', u'')
         sections[u'Geforderte Einsatzmittel bzw. Ausr\xfcstung'] = (u'', u'')
         sections[u'(Alarmschreiben Ende)'] = (u'', u'')
-        return {u'keywords': [u'Alarmschreiben', u'Feuerwehreinsatzzentrale'], 'sections': sections}  # section: ('key', 'method')
+        translations = [u'_bab_', u'_train_', u'_street_', u'_default_city_', u'_interchange_', u'_kilometer_', u'_bma_', u'_bma_main_', u'_bma_key_', u'_train_identifier_']
+        return {u'keywords': [u'Alarmschreiben', u'Feuerwehreinsatzzentrale'], u'sections': sections, u'translations': translations}  # section: ('key', 'method')
 
     # eval methods for fax text recognition
     @staticmethod
@@ -331,11 +332,11 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             FezAlarmFaxChecker().fields[fieldname] = ('%s: %s' % (alarmtype.translation(u'_kilometer_'), part), 1)
             numbers = classes.get('street').getStreet(FezAlarmFaxChecker().fields['address'][1]).housenumbers
             hn = difflib.get_close_matches(part, [n.number for n in numbers], 1)
-            FezAlarmFaxChecker().fields['zoom'] = ((u'14', 1))
+            FezAlarmFaxChecker().fields['zoom'] = (u'14', 1)
             if len(hn) == 1:
                 nr = [n for n in numbers if n.number == hn[0]][0]
-                FezAlarmFaxChecker().fields['streetno'] = ((nr.number, nr.id))
-                FezAlarmFaxChecker().fields['id.streetno'] = ((nr.id, nr.id))
+                FezAlarmFaxChecker().fields['streetno'] = (nr.number, nr.id)
+                FezAlarmFaxChecker().fields['id.streetno'] = (nr.id, nr.id)
                 FezAlarmFaxChecker().fields['lat'] = (nr.points[0][0], nr.id)
                 FezAlarmFaxChecker().fields['lng'] = (nr.points[0][1], nr.id)
             return
@@ -347,11 +348,11 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
             for nr in numbers:
                 if part.startswith(nr.number):
-                    FezAlarmFaxChecker().fields['streetno'] = ((nr.number, nr.id))
-                    FezAlarmFaxChecker().fields['id.streetno'] = ((nr.id, nr.id))
+                    FezAlarmFaxChecker().fields['streetno'] = (nr.number, nr.id)
+                    FezAlarmFaxChecker().fields['id.streetno'] = (nr.id, nr.id)
                     FezAlarmFaxChecker().fields['lat'] = (nr.points[0][0], nr.id)
                     FezAlarmFaxChecker().fields['lng'] = (nr.points[0][1], nr.id)
-                    FezAlarmFaxChecker().fields['zoom'] = ((u'15', 1))
+                    FezAlarmFaxChecker().fields['zoom'] = (u'15', 1)
                     return
 
         else:

@@ -61,10 +61,12 @@ class Monitor(db.Model):
         else:  # deliver default layout
             return self.currentlayout
         
-    def getLayouts(self):
-        #return db.session.query(MonitorLayout).filter_by(mid=self.id).all()
-        return self.layouts.values()
-        
+    def getLayouts(self, triggername=""):
+        if triggername == "":
+            return sorted(self.layouts.values())
+        elif triggername != "":
+            return filter(lambda x: x.trigger.startswith(triggername), sorted(self.layouts.values()))
+
     @staticmethod
     def getMonitors(id=0, clientid=0):
         if id != 0:

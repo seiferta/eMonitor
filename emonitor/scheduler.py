@@ -32,6 +32,12 @@ class MyScheduler(ApScheduler):
         self.add_interval_job(observeFolder, seconds=app.config.get('OBSERVERINTERVAL', 2), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
         app.logger.info('scheduler: job added "observer"')
 
+    def get_jobs(self, name=""):
+        if name == "":
+            return super(MyScheduler, self).get_jobs()
+        else:
+            return [j for j in super(MyScheduler, self).get_jobs() if j.name == name]
+
     @staticmethod
     def mylogger(event):
         if event.exception:

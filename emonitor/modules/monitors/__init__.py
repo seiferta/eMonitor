@@ -62,8 +62,8 @@ class MonitorsModule(Module):
     def getAdminData(self):
         return getAdminData(self)
 
-    def getFrontendContent(self, params={}):
-        return getFrontendContent(self, params=params)
+    def getFrontendContent(self, **params):
+        return getFrontendContent(self, **params)
 
     def getFrontendData(self):
         return getFrontendData(self)

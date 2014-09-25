@@ -59,7 +59,7 @@ def getAdminContent(self, **params):
                         db.session.add(layout)
                         
                     layout.mid = request.form.get('edit_mid')
-                    layout.trigger = request.form.get('edit_trigger')
+                    layout.trigger = ";".join(sorted(request.form.getlist('edit_trigger')))
                     layout.layout = request.form.get('edit_layout')
                     layout.theme = request.form.get('edit_theme')
                     layout.mintime = request.form.get('edit_mintime')
@@ -74,7 +74,7 @@ def getAdminContent(self, **params):
                 for l in classes.get('monitorlayout').getLayouts(mid=layout.mid):
                     if l.id != layout.id:
                         layouts.append(l)
-                        usedtriggers.append(l.trigger)
+                        usedtriggers.extend(l.trigger.split(';'))
                 params.update({'monitors': classes.get('monitor').getMonitors(), 'layout': layout, 'layouts': layouts, 'triggers': events.getEvents(), 'usedtriggers': usedtriggers, 'monitor': classes.get('monitor').getMonitors(id=layout.mid), 'widgets': current_app.blueprints['widget'].modules})
                 return render_template('admin.monitors.layout_actions.html', **params)
 
@@ -122,7 +122,7 @@ def getAdminContent(self, **params):
     return "else"
 
     
-def getAdminData(self, params={}):
+def getAdminData(self):
     if request.args.get('action') == 'thumb':  # create dynamic thumbnail of layout
         layout = classes.get('monitorlayout').getLayouts(id=int(request.args.get('id')))
         return layout.getLayoutThumb()
@@ -136,4 +136,4 @@ def getAdminData(self, params={}):
     if request.args.get('action') == 'schedules':  # get active schedules
         return render_template('admin.monitors.actions_actions.html', schedjobs=scheduler.get_jobs())  # macro='schedjobs'
         
-    return "...data of monitors..."
+    return ""

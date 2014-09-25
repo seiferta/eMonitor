@@ -13,7 +13,7 @@ def tornado(args):
     from tornado import ioloop, wsgi, autoreload, web
 
     def t_reload():
-        print "before reload"
+        sys.exit(0)  # exit app
 
     webapp.logger.info('emonitor started with tornado server on port %s' % webapp.config.get('PORT'))
     _server = web.Application([(r'/ws', SocketHandler), (r'.*', web.FallbackHandler, {'fallback': wsgi.WSGIContainer(webapp)})])
@@ -40,7 +40,7 @@ def tornado(args):
 # run builtin server
 def builtin(args):
     webapp.logger.info('emonitor started with builtin server on port %s' % webapp.config.get('PORT'))
-    webapp.run(host=webapp.config.get('HOST'), port=webapp.config.get('PORT'), debug=webapp.config.get('DEBUG'))
+    webapp.run(host=webapp.config.get('HOST'), port=webapp.config.get('PORT'), debug=webapp.config.get('DEBUG'), threaded=True)
     webapp.logger.info('emonitor stopped')
 
 
