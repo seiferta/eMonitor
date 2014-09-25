@@ -4,6 +4,16 @@
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
+{% macro interpreterVariables(variables, alarmtype) %}
+    {%- for variable in variables %}
+        <label style="width:50%">
+            {{ _(variable) }}:<br/>
+            <input type="text" value="{{ alarmtype.translation(variable) }}" name="alarmtypetranslation" style="width:99%"/>
+            <input type="hidden" value="{{ variable }}" name="alarmtypevariables"/>
+        </label><br/>
+    {%- endfor %}
+{% endmacro %}
+
 {% block content %}
     <h2>{{ _('alarms.type.header.overview') }}</h2>
     <p><small>{{ _('alarms.type.info') }}</small></p>
@@ -17,9 +27,9 @@
         <p>
             <label style="width:99%">{{  _('alarms.type.interpreter') }}:<br/>
                 <select name="edit_interpreter" style="width:99%;">
-                    {% for i in interpreter %}
+                    {%- for i in interpreter %}
                     <option value="{{ i[0] }}"{% if i[0]==alarmtype.interpreter %} selected="selected"{% endif %}>{{ i[1].__name__ }}</option>
-                    {% endfor %}
+                    {%- endfor %}
                 </select>
             </label>
         </p>
@@ -31,14 +41,8 @@
         <p>
             {{ _('alarms.type.variables') }}:<br/>
             <small>{{ _('alarms.type.variableinfo') }}</small>
-            <fieldset>
-            {% for variable in alarmtype.getVariables() %}
-                <label style="width:50%">
-                    {{ _(variable) }} ({{ variable }}):<br/>
-                    <input type="text" value="{{ alarmtype.translation(variable) }}" name="alarmtypetranslation" style="width:99%"/>
-                    <input type="hidden" value="{{ variable }}" name="alarmtypevariables"/>
-                </label><br/>
-            {% endfor %}
+            <fieldset name="variables">
+            {{ interpreterVariables(alarmtype.interpreterStrings(), alarmtype) }}
             </fieldset>
         </p>
         <p>
@@ -50,15 +54,20 @@
     </form>
 {% endblock %}
 
-{%  block script_end %}
+{% block script_end %}
     {{ super() }}
 
     {%- if alarmtype.id == None %}
     $(document).ready(function(){
         $("select[name='edit_interpreter']").change(function() {
-            $.ajax({ type : "POST", url : "/admin/data/alarms?action=getkeywords&checker="+$("select[name='edit_interpreter']").val(),
+            $.ajax({ type : "POST", url : "/admin/data/alarms?action=getkeywords&checker="+$("select[name='edit_interpreter']").val()+'&format=json',
                 success: function(result) {
-                    $("textarea[name='edit_keywords']").val(result);
+                    $("textarea[name='edit_keywords']").val(result.keywords);
+                    var content = "";
+                    $.each(result.variables, function(index, value){
+                        content += '<label style="width:50%">'+value+':<br/><input type="text" value="" name="alarmtypetranslation" style="width:99%"/><input type="hidden" value="'+value+'" name="alarmtypevariables"/></label><br/>';
+                    });
+                    $("fieldset[name='variables']").html(content);
                     return false;
                 }
             });

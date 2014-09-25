@@ -147,5 +147,6 @@ def getAdminData(self):
         for f in [f for f in os.listdir('%s/emonitor/modules/alarms/inc/' % current_app.config.get('PROJECT_ROOT')) if f.endswith('.py')]:
             if f == request.args.get('checker'):
                 cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % f)
-                return "\n".join(getattr(cls, cls.__all__[0])().getDefaultConfig()['keywords'])
+                variables = getattr(cls, cls.__all__[0])().getDefaultConfig()[u'translations']
+                return {u'keywords': "\n".join(getattr(cls, cls.__all__[0])().getDefaultConfig()[u'keywords']), u'variables': variables}
         return ""

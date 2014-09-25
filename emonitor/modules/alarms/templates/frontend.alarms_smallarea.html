@@ -82,6 +82,34 @@
     </script>
 {% endblock %}
 
+{%- macro contextmenu(id, state, printdefs) %}
+                        <div class="btn-group options" style="position:absolute;top:2px;right:5px;">
+                            <span class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-gear fa-lg"></i>
+                            </span>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0)" onclick="editAlarm({{ id }})" id="editalarm_{{ id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('alarm.edit') }}</a></li>
+                                {%- if state==1 %}
+                                <li><a href="javascript:void(0)" onclick="return questionFinish({{ id }})"><i class="fa fa-flag-checkered fa-fw"></i> {{ _('alarm.finish') }}</a></li>
+                                {%- endif %}
+                                {%- if state==0 or state==2 %}
+                                <li><a href="javascript:void(0)" onclick="return questionActivate({{ id }})"><i class="fa fa-bell fa-fw"></i> {{ _('alarm.activate') }}</a></li>
+                                {%- endif %}
+                                {%- if state==2 %}
+                                <li><a href="javascript:void(0)" onclick="return questionArchive({{ id }})"><i class="fa fa-shield fa-fw"></i> {{ _('alarm.archive') }}</a></li>
+                                {%- endif %}
+                                <li><a href="javascript:void(0)" onclick="return questionDelete({{ id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="javascript:void(0)" onclick="return routeAlarm({{ id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
+                                <li><a href="javascript:void(0)" onclick="return showRoute({{ id }})"><i class="fa fa-fw" id="route_{{ id }}"></i> {{ _('alarm.route') }}</a></li>
+                                <li class="divider"></li>
+                                {%- for printdef in printdefs %}
+                                <li><a href="javascript:void(0)" id="printalarm" alarmid="{{ id }}" onclick="return printAlarm({{ id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
+                                {%- endfor %}
+                            </ul>
+                        </div>
+{%- endmacro  %}
+
 {% block content %}
     <div style="height:100%;width:100%;padding:0;margin:0;" id="alarmcontainer" class="alarmcontainer">
 
@@ -118,8 +146,7 @@
                     {%- for alarm in alarms %}
                     {%- if k==alarm.state|string %}
                     <div class="alarmrow" lat="{{ alarm.get('lat') }}" lng="{{ alarm.get('lng') }}" zoom="{{ alarm.get('zoom') }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}">
-
-                       <div style="overflow:hidden;">
+                         <div style="overflow:hidden;">
                             <div class="prio prio{{ alarm.priority }}" title="{{ _('alarms.prio'+alarm.priority|string) }}"> </div>
                             <span class="date">{{ alarm.timestamp|datetime }}</span><br/>
                             <b class="key">{%  if alarm.key.category!='' %}{{ alarm.key.category }}: {% endif %}{{ alarm.key.key }}</b>
@@ -137,41 +164,15 @@
                                 <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
                                 {%- endif %}
                             </div>
-                       </div>
-
-                        <div class="btn-group options" style="position:absolute;top:2px;right:5px;">
-                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-gear fa-lg"></i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="#" onclick="editAlarm({{ alarm.id }})" id="editalarm_{{ alarm.id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('alarm.edit') }}</a></li>
-                                {%- if alarm.state==1 %}
-                                <li><a href="#" onclick="return questionFinish({{ alarm.id }})"><i class="fa fa-flag-checkered fa-fw"></i> {{ _('alarm.finish') }}</a></li>
-                                {%- endif %}
-                                {%- if alarm.state==0 or alarm.state==2 %}
-                                <li><a href="#" onclick="return questionActivate({{ alarm.id }})"><i class="fa fa-bell fa-fw"></i> {{ _('alarm.activate') }}</a></li>
-                                {%- endif %}
-                                {%- if alarm.state==2 %}
-                                <li><a href="#" onclick="return questionArchive({{ alarm.id }})"><i class="fa fa-shield fa-fw"></i> {{ _('alarm.archive') }}</a></li>
-                                {%- endif %}
-                                <li><a href="#" onclick="return questionDelete({{ alarm.id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" onclick="return routeAlarm({{ alarm.id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
-                                <li><a href="#" onclick="return showRoute({{ alarm.id }})"><i class="fa fa-fw" id="route_{{ alarm.id }}"></i> {{ _('alarm.route') }}</a></li>
-                                <li class="divider"></li>
-                                {%- for printdef in printdefs %}
-                                <li><a href="#" id="printalarm" alarmid="{{ alarm.id }}" onclick="return printAlarm({{ alarm.id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
-                                {%- endfor %}
-                            </ul>
                         </div>
-
+                        {{ contextmenu(alarm.id, alarm.state, printdefs) }}
                     </div>
                     {%- endif %}
                     {%- endfor %}
                 </div>
                 {% endfor %}
             </div>
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(category_filter=["alarms"]) %}
                 {% if messages %}
                 <div style="position:absolute;top:50%;width:80%;left:10%;">
                 <div class="alert alert-info alert-dismissable" style="width:100%;">

@@ -1,5 +1,6 @@
 import os
 import time
+import imp
 from flask import send_from_directory, abort, Response
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
@@ -8,6 +9,7 @@ from emonitor.extensions import classes, db, events, scheduler, babel, signal
 from emonitor.modules.settings.settings import Settings
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
+from .alarmutils import AlarmFaxChecker
 
 
 class AlarmsModule(Module):
@@ -41,8 +43,16 @@ class AlarmsModule(Module):
         self.widgets = [MonitorWidget('alarms_income', size=(2, 2), template='widget.income.html'), MonitorWidget('alarms', size=(2, 1), template='widget.alarm.html'), MonitorWidget('alarms_timer', size=(1, 1), template='widget.timer.html'), MonitorWidget('alarms_remark', size=(2, 1), template="widget.alarm_comment.html")]
         
         # eventhandlers
-        events.addEvent('alarm_added', handlers=[], parameters=['out.alarmid'])
-        events.addEvent('alarm_changestate', handlers=[], parameters=['out.alarmid', 'out.state'])
+        for f in [f for f in os.listdir('%s/emonitor/modules/alarms/inc/' % app.config.get('PROJECT_ROOT')) if f.endswith('.py')]:
+            if not f.startswith('__'):
+                cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % f)
+                checker = getattr(cls, cls.__all__[0])()
+                if isinstance(checker, AlarmFaxChecker) and checker.getId() != 'Dummy':
+                    events.addEvent('alarm_added.%s' % checker.getId(), handlers=[], parameters=['out.alarmid'])
+                    events.addEvent('alarm_changestate.%s' % checker.getId(), handlers=[], parameters=['out.alarmid', 'out.state'])
+
+        events.addEvent('alarm_added', handlers=[], parameters=['out.alarmid'])  # for all checkers
+        events.addEvent('alarm_changestate', handlers=[], parameters=['out.alarmid', 'out.state'])  # for all checkers
         
         events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarm.Alarms', Alarm.handleEvent, ['in.text', 'out.id', 'out.fields'])
         events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarmtype.AlarmTypes', AlarmType.handleEvent, ['in.text', 'out.type'])
@@ -110,6 +120,9 @@ class AlarmsModule(Module):
         babel.gettext(u'trigger.alarm_added')
         babel.gettext(u'trigger.alarm_changestate')
 
+        babel.gettext(u'trigger.alarm_added_sub')
+        babel.gettext(u'trigger.alarm_changestate_sub')
+
         babel.gettext(u'alarms.print.slightleft')
         babel.gettext(u'alarms.print.slightright')
         babel.gettext(u'alarms.print.right')
@@ -158,9 +171,6 @@ class AlarmsModule(Module):
         
     def getFrontendData(self):
         return getFrontendData(self)
-
-    #def getPdf(self, **params):
-    #    return self.getPrint(getPrintData(self, **params))
 
 
 class frontendAlarmHandler(SocketHandler):

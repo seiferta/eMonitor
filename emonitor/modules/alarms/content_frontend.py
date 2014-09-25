@@ -101,7 +101,7 @@ def getFrontendContent(**params):
     elif request.args.get('action') == 'activatealarm':  # activate selected alarm
         ret = classes.get('alarm').changeState(int(request.args.get('alarmid')), 1)
         if len(ret) > 0:
-            flash(render_template_string("{{ _('alarms.carsinuse') }}</br><b>" + ", ".join([r.name for r in sorted(ret, key=attrgetter('name'))]) + "</b>"), 'alarms.info')
+            flash(render_template_string("{{ _('alarms.carsinuse') }}</br><b>" + ", ".join([r.name for r in sorted(ret, key=attrgetter('name'))]) + "</b>"), 'alarms')
         params['area'] = request.args.get('area')
 
     elif request.args.get('action') == 'deletealarm':  # delete selected alarm
@@ -132,7 +132,7 @@ def getFrontendContent(**params):
     return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), alarmfilter=session['alarmfilter'])
 
     
-def getFrontendData(self, *params):
+def getFrontendData(self):
     if request.args.get('action') == 'editalarm':
         
         if request.args.get('alarmid', '0') == '0':  # add new alarm

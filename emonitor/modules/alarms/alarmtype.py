@@ -33,8 +33,15 @@ class AlarmType(db.Model):
         self._translations = yaml.safe_dump(values, encoding='utf-8')
 
     def interpreterclass(self):
-        cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % self.interpreter)
-        return getattr(cls, cls.__all__[0])()
+        if self.interpreter:
+            cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % self.interpreter)
+            return getattr(cls, cls.__all__[0])()
+        return None
+
+    def interpreterStrings(self):
+        if self.interpreterclass():
+            return sorted(self.interpreterclass().getDefaultConfig()['translations'])
+        return []
 
     def translation(self, name):
         if name in self.translations:

@@ -20,6 +20,14 @@
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
+{%- macro triggerlabel(trigger) %}
+    {%- if '.' in trigger %}
+        {{ _('trigger.'+trigger.split('.')[0]+'_sub', sub=trigger.split('.')[-1]) }}
+    {%- else %}
+        {{ _('trigger.'+trigger) }}
+    {%- endif %}
+{%- endmacro %}
+
 {% block content %}
     <div style="padding:20px;border-width:0 !important;" id="subcenter">
         <h2>{{ _('monitorlayouts.edit.monitor') }}</h2>
@@ -55,8 +63,10 @@
                 <label>{{ _('monitorlayouts.trigger') }}:<br/>
                     {%- for trigger in triggers %}
                         <label>
-                            <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}"{%if trigger.name in layout.trigger %} checked="selected"{% endif %}{% if trigger.name in usedtriggers %} disabled="disabled"{%endif %}/>
-                            {{ _('trigger.'+trigger.name) }}{%- if trigger.name in usedtriggers %} <em>({{ _('monitorlayouts.triggerinuse') }})</em>{%- endif %}</label>
+                            <input type="checkbox" name="edit_trigger" value="{{ trigger.name }}"{%if trigger.name in layout.getTriggerNames() %} checked="selected"{% endif %}{% if trigger.name in usedtriggers %} disabled="disabled"{%endif %}/>
+                            {{ triggerlabel(trigger.name) }}
+                            {%- if trigger.name in usedtriggers %} <em>({{ _('monitorlayouts.triggerinuse') }})</em>{%- endif %}
+                        </label>
                         <br/>
                     {%- endfor %}
                 </label>
@@ -76,7 +86,7 @@
                     <select name="edit_nextid">
                         <option value="0">{{_('monitorlayouts.nonextlayout') }}</option>
                         {%- for l in layouts %}
-                        <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ _('trigger.'+l.trigger) }}</option>
+                        <option value="{{ l.id }} " {% if l.id==layout.nextid %}selected="selected"{% endif %}>{{ triggerlabel(l.trigger) }}</option>
                         {%- endfor %}
                     </select>
                     {{ _('monitorlayouts.nextidlabel') }}

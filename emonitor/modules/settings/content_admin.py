@@ -54,11 +54,9 @@ def getAdminContent(self, **params):
         elif module[1] == 'cars':
             if request.method == 'POST':
                 if request.form.get('action') == 'updatetypes':
-                    #cartypes = classes.get('settings').get_byType('cartypes')
                     cartypes = Settings.get_byType('cartypes')
                     if not cartypes:  # add cartype
                         cartypes = Settings.get('cartypes', [])
-                        #cartypes = classes.get('settings')('cartypes', '')
                         db.session.add(cartypes)
 
                     cartypes.value = [i for i in chunks(request.form.getlist('cartype'), 2) if i[0] != '']
@@ -94,8 +92,6 @@ def getAdminContent(self, **params):
                 classes.get('settings').set('alarms.autoclose', request.form.get('settings.autoclose'))
             elif request.form.get('action') == 'archivesettings':
                 classes.get('settings').set('alarms.autoarchive', request.form.get('settings.autoarchive'))
-            elif request.form.get('action') == 'alarmsevalfields':
-                classes.get('settings').set('alarms.evalfields', request.form.get('settings.alarmsevalfields'))
 
         paths = dict(pathdata=current_app.config.get('PATH_DATA'), pathtmp=current_app.config.get('PATH_TMP'), pathincome=current_app.config.get('PATH_INCOME'), pathdone=current_app.config.get('PATH_DONE'))
 

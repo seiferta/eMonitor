@@ -148,14 +148,16 @@ class Alarm(db.Model):
                 except:
                     current_app.logger.error('%s' % [a.id for a in Alarm.getActiveAlarms()])
             LASTALARM = time.time() + 2.0
-            j = scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added', {'alarmid': id}])
+
+            if alarm.get('alarmtype', '') != '':
+                scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added.%s' % alarm.get('alarmtype'), {'alarmid': id}])
+            else:
+                scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added', {'alarmid': id}])
 
             # close alarm after alarms.autoclose, default 30 minutes
             if alarm.state == 1:  # autoclose only automatic alarms
                 scheduler.add_date_job(Alarm.changeState, datetime.datetime.fromtimestamp(
                     LASTALARM + float(classes.get('settings').get('alarms.autoclose', 1800))), [id, 2])
-
-            #flash(babel.gettext(u'alarms.statechangeactivated'), 'alarms.activate')
             try:
                 flash(babel.gettext(u'alarms.statechangeactivated'), 'alarms.activate')
             except:
@@ -451,13 +453,12 @@ class Alarm(db.Model):
                 if len(set(str(alarm_fields['material'][1]).split(',')).intersection(set(l))) == 0:
                     alarm.set('k.cars1', '%s,%s' % (alarm_fields['material'][1], alarm.get('k.cars1')))
 
-            alarm.set('priority', '1')
+            alarm.set('priority', '1')  # set normal priority
+            alarm.set('alarmtype', alarmtype.name)  # set checker name
+            alarm.state = 1
             db.session.commit()
             signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
-
-            #copy file
-            #shutil.copy2(kwargs[0]['incomepath']+kwargs[0]['filename'], '%salarm_%s.%s' %(core.config.get('paths', 'done'), alarm.id, kwargs[0]['filename'].split('.')[-1]))
 
         if not 'time' in kwargs[0]:
             kwargs[0]['time'] = []

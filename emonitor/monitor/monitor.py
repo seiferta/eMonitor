@@ -10,14 +10,12 @@ monitor = Blueprint('monitor', __name__, template_folder="templates")
 @monitor.route('/monitor')
 @monitor.route('/monitor/')
 @monitor.route('/monitor/<int:clientid>')
-@monitor.route('/monitor/<int:clientid>')
 def monitorContent(clientid=0):
-    #print "clientid", clientid, request.args
     alarmid = None
     count = []
     pos = 0
 
-    if 'alarmid' in request.args:
+    if 'alarmid' in request.args:  # eval active alarms or defined id
         alarmid = int(request.args.get('alarmid'))
         if len(classes.get('alarm').getActiveAlarms()) > 0:
             count = classes.get('alarm').getActiveAlarms()
@@ -32,40 +30,36 @@ def monitorContent(clientid=0):
     except AttributeError:
         return render_template('monitor-test.html')
 
-    if 'layoutid' in request.args:
+    if 'layoutid' in request.args:  # eval current layout
         layout = defmonitor.layout(int(request.args.get('layoutid')))
-
-    if len(count) > 1:  # autochange layout after min-time of current layout
-        # load last active alarm - slider if more active alarms
-        for layout in [la for la in defmonitor.getLayouts() if la.trigger == 'alarm_added']:
-            nextalarm = count[0].id  # first alarmid
-
-            for c in count:
-                if c.id == alarmid:
-                    try:
-                        pos = count.index(c) + 1
-                        nextalarm = count[pos].id
-                        break
-                    except: pass
-
-                for j in [job for job in scheduler.get_jobs() if job.name == 'changeLayout']:
-                    if "'alarmid', %s" % c.id in str(j.args):  # layout changes for given alarm
-                        scheduler.unschedule_job(j)
-
-            scheduler.add_date_job(monitorserver.changeLayout, datetime.datetime.fromtimestamp(time.time() + float(layout.mintime)), [defmonitor.id, layout.id, [('alarmid', nextalarm), ('monitorid', defmonitor.id)]])
-
-    elif len(count) == 1:
-        try: layout = [la for la in defmonitor.getLayouts() if la.trigger == 'alarm_added'][0]
+    else:
+        try: layout = defmonitor.getLayouts(triggername='default')[0]
         except: pass
 
-    elif len(count) == 0:
-        # load default layout
-        if 'layoutid' not in request.args:
-            try: layout = [la for la in defmonitor.getLayouts() if la.trigger == 'default'][0]
-            except: pass
+    if len(count) > 0:  # eval layout for current and next alarm
+        nextalarm = currentalarm = count[0]
+        for c in count:
+            if c.id == alarmid:
+                pos = count.index(c) + 1
+                currentalarm = count[(pos - 1) % len(count)]
+                nextalarm = count[pos % len(count)]
+
+            for j in [job for job in scheduler.get_jobs(name='changeLayout') if "'alarmid', %s" % c.id in str(job.args)]:
+                scheduler.unschedule_job(j)  # layout changes for given alarm
+
+        for l in defmonitor.getLayouts(triggername='alarm_added'):
+            if ('.' in l.trigger and len(count) >= 1 and l.trigger.split('.')[-1] == currentalarm.get('alarmtype')) or ('.' not in l.trigger and currentalarm.get('alarmtype', '') == ""):
+                layout = l
+                break
+
+        if len(count) > 1:
+            for l in defmonitor.getLayouts(triggername='alarm_added'):
+                if ('.' in l.trigger and l.trigger.split('.')[-1] == nextalarm.get('alarmtype')) or ('.' not in l.trigger and nextalarm.get('alarmtype', '') == ""):
+                    if int(l.mintime) != 0:
+                        scheduler.add_date_job(monitorserver.changeLayout, datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), [defmonitor.id, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
 
     # render content for monitor
-    content = '<div id="content">' + layout.htmllayout + '</div>'
+    content = '<div id="content">%s</div>' % layout.htmllayout
     for w in re.findall('\[\[\s?(.+?)\s?\]\]', content):
         for widgets in current_app.blueprints['widget'].modules:
             for widget in widgets.getMonitorWidgets():

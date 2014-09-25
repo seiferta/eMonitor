@@ -6,6 +6,14 @@
     </style>
 {% endblock %}
 
+{%- macro eventName(event) %}
+    {% if '.' in event.name %}
+        {{ _('trigger.' + event.name.split('.')[0]+'_sub', sub=event.name.split('.')[-1]) }}
+    {% else %}
+        {{ _('trigger.' + event.name) }}
+    {% endif %}
+{%- endmacro %}
+
 {% block content %}
     <h2>{{ _('events.listtitle') }}</h2>
     <p><small>{{ _('events.info') }}</small></p>
@@ -17,27 +25,27 @@
             </div>
         </div>
         <div id="sortable">
-            {% for event in events %}
+            {%- for event in events %}
             <div class="row" style="height:26px;">
-                <a href="#" class="morelink" title="{{ _('event.detailtitle') }}" onclick="return details('{{ event.name }}', this)"> </a>
+                <a href="#" class="morelink" title="{{ _('event.detailtitle') }}" onclick="return details('{{ event.name|replace('.','') }}', this)"> </a>
                 <div style="margin-right:70px;margin-left:15px;">
-                    <div class="rowcell" style="width:80%;">{{ _('trigger.' + event.name) }}</div>
+                    <div class="rowcell" style="width:80%;">{{ eventName(event) }}</div>
                     <div class="rowcell" style="width:20%;text-align:right;">{{ event.getHandlers()|count}} / {{ event.getHandlerList()|count }}</div>
                 </div>
             </div>
-            <div class="details" style="display:none" id="details_{{ event.name }}">
+            <div class="details" style="display:none" id="details_{{ event.name|replace('.','') }}">
                 <div class="subheadrow">
                     <div style="margin-right:70px;margin-left:15px;">
                         <div class="subheadcell" style="width:10%;">&nbsp;</div>
                         <div class="subheadcell" style="width:40%;">{{ _('event.handler') }}</div>
                         <div class="subheadcell" style="width:50%;">{{ _('event.parameters') }}</div>
                     </div>
-                    {% if event.getHandlerList()|count>0 %}
+                    {%- if event.getHandlerList()|count>0 %}
                     <button class="add" type="submit" name="action" value="createhandler_{{ event.name }}" title="{{ _('event.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
-                    {% endif %}
+                    {%- endif %}
                 </div>
                 <div id="sortable_{{ event.name }}">
-                    {% for handler in event.getHandlers() %}
+                    {%- for handler in event.getHandlers() %}
                     <div class="subrow">
                         <div style="position:absolute;left:20px;top:7px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
                         <div style="margin-right:70px;margin-left:15px;">
@@ -49,15 +57,15 @@
                         <button type="submit" name="action" value="edithandler_{{ handler.id }}" title="{{ _('handler.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
                         <input type="hidden" value="{{ handler.id }} " name="position_{{ event.name }}"/>
                     </div>
-                    {% endfor %}
+                    {%- endfor %}
                 </div>
                 <div id="sortable">
-                    {% if events|count==0 %}
+                    {%- if events|count==0 %}
                     <div class="subrow" style="text-align:center;height:26px;">{{ _('handler.notdefined') }}</div>
-                    {% endif %}
+                    {%- endif %}
                 </div>
             </div>
-            {% endfor %}
+            {%- endfor %}
         </div>
         
         <div class="headrow" style="padding-left:20px">

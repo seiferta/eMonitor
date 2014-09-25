@@ -19,6 +19,16 @@
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
+{%- macro getTriggerNames(triggernames) %}
+    {%- for triggername in triggernames %}
+        {%- if '.' in triggername %}
+            {{  _('trigger.'+triggername.split('.')[0]+'_sub', sub=triggername.split('.')[-1]) }}{% if not loop.last %},<br/>{% endif %}
+        {%- else %}
+            {{  _('trigger.'+triggername) }}{% if not loop.last %},<br/>{% endif %}
+        {%- endif %}
+    {%- endfor %}
+{%- endmacro %}
+
 {% block content %}
     <h2>{{ _('monitors.header.overview') }}</h2>
     <p><small>{{ _('monitors.info') }}</small></p>
@@ -34,13 +44,13 @@
             </div>
             <button class="add" type="submit" name="action" value="createmonitor" title="{{ _('monitors.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
-        {% if monitors|count==0 %}
+        {%- if monitors|count==0 %}
         <div class="rownoentry">
             <p style="text-align:center">{{ _('monitors.nodata') }}</p>
         </div>
-        {% endif %}
+        {%- endif %}
         <div id="sortable">
-            {% for monitor in monitors %}
+            {%- for monitor in monitors %}
             <div class="row">
                 <a href="#" class="morelink" title="{{ _('monitors.detailtitle') }}" onclick="return details({{ monitor.id }}, this)"> </a>
                 <div style="margin-right:70px;margin-left:15px;">
@@ -63,16 +73,16 @@
                     </div>
                     <button class="add" type="submit" name="action" value="createlayout_{{ monitor.id }}" title="{{ _('monitorlayouts.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
                 </div>
-                {% if monitor.getLayouts()|count==0 %}
+                {%- if monitor.getLayouts()|count==0 %}
                 <div class="rownoentry">
                     <p style="text-align:center">{{ _('monitorlayouts.nodata') }}</p>
                 </div>
-                {% endif %}
-                {% for layout in monitor.getLayouts() %}
+                {%- endif %}
+                {%- for layout in monitor.getLayouts() %}
                 <div class="subrow">
                     <div style="margin-right:70px;margin-left:15px;">
                         <div class="subrowcell" style="width:10%;"> </div>
-                        <div class="subrowcell" style="width:25%;">{{ _('trigger.'+layout.trigger) }}</div>
+                        <div class="subrowcell" style="width:25%;">{{ getTriggerNames(layout.getTriggerNames()) }}</div>
                         <div class="subrowcell" style="width:35%;">
                             <img src="/admin/data/monitors?action=thumb&mimetype=image/png&id={{ layout.id }}" />
                         </div>
@@ -81,9 +91,9 @@
                     <button type="submit" name="action" value="deletemonitorlayout_{{ layout.id }}" title="{{ _('monitorlayouts.deletetitle') }}" onclick="return questionDelLayout()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="editmonitorlayout_{{ layout.id }}" title="{{ _('monitorlayouts.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
                 </div>
-                {% endfor %}
+                {%- endfor %}
             </div>
-            {% endfor %}
+            {%- endfor %}
         </div>
         
         <div class="headrow">

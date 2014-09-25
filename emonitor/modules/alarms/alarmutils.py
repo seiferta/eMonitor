@@ -2,6 +2,7 @@ import re
 import xml.etree.ElementTree as ET
 import datetime, time
 import requests
+from collections import OrderedDict
 from sqlalchemy import inspect
 from flask import current_app
 from emonitor.extensions import classes, events, signal, babel
@@ -138,15 +139,21 @@ def get_marker(self):  # deliver markerinfo: 0=no marker
 
 class AlarmFaxChecker:
     __name__ = "alarmfaxproto"
+    translations = [u'_bma_main_', u'_bma_key_', u'_bma_']  # default parameters needed for alarm generation
+    sections = OrderedDict()
+    keywords = {}
 
     def __init__(self):
         pass
+
+    def getId(self):
+        return self.__name__.replace('.', '').replace(' ', '')
 
     def getEvalMethods(self):
         return []
 
     def getDefaultConfig(self):
-        return {'keywords': [], 'sections': {}}  # section: ('key', 'method')
+        return {u'keywords': self.keywords, u'sections': self.sections, u'translations': self.translations}
 
     def buildAlarmFromText(self, alarmtype, rawtext):
         return dict()
