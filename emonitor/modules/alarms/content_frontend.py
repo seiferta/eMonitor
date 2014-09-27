@@ -114,9 +114,12 @@ def getFrontendContent(**params):
         signal.send('alarm', 'deleted', alarmid=request.args.get('alarmid'))
 
     elif request.args.get('action') == 'archivealarm':  # archive selected alarms, id=0 == all
-        if int(request.args.get('alarmid')) == 0:
+        if ";" in request.args.get('alarmid'):  # archive selected alarms
+            for alarmid in request.args.get('alarmid')[:-1].split(';'):
+                classes.get('alarm').changeState(int(alarmid), 3)
+        elif int(request.args.get('alarmid')) == 0:  # archive all alarms
             classes.get('alarm').changeStates(3)
-        else:
+        else:  # archive single selected alarm
             classes.get('alarm').changeState(int(request.args.get('alarmid')), 3)
         params['area'] = request.args.get('area')
 

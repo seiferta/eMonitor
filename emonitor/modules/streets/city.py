@@ -27,7 +27,11 @@ class City(db.Model):
         self.color = color
         self.osmid = osmid
         self.osmname = osmname
-    
+
+    @property
+    def serialize(self):
+        return dict(id=self.id, name=self.name)
+
     def getSubCityList(self):
         try:
             return [s for s in self.subcity.split("\r\n") if s.strip() != ""]
@@ -88,7 +92,3 @@ class City(db.Model):
     def getDefaultCity():
         city = db.session.query(City).filter_by(default=1).first()
         return city or None
-        #if city.first():
-        #    return city.first()
-        #else:
-        #    return None

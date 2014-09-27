@@ -39,7 +39,6 @@
                 togglerTip_closed: '{{ _('layout.closed') }}'
             });
         });
-
     </script>
 {% endblock %}
 
@@ -52,7 +51,6 @@
             <div class="smallmodulesarea">
                 <button type="button" onclick="return addMessage('{{ alarm.id }}')" style="min-width:50px;white-space: nowrap">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></button>
                 <button type="button" {%- if ([frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd)|length >1 %}style="margin-right:10px"{%- endif  %} onclick="return toggleDetails()" ><i class="fa fa-indent fa-lg" id="detailswitch"></i></button>
-
                 {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
                 {%- if mod != 'alarms' %} {# exclude current module #}
                 <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
@@ -65,14 +63,12 @@
 
             <form id="editForm_{{ frontendarea }}" method="post" style="height:100%;overflow:auto">
                 <div style="padding:5px;overflow:auto;height:100%;position:relative;border:1px solid silver">
-
-
                         <ul class="nav nav-tabs" id="myTab">
-                            <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
-                            <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
+                            <li{% if not alarm.object %} class="active"{%- endif %}><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('frontend.alarms.address') }}</a></li>
+                            <li{% if alarm.object %} class="active"{%- endif %}><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('frontend.alarms.object') }}</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tab0">
+                            <div class="tab-pane{%- if not alarm.object %} active{%- endif %}" id="tab0">
                                 <div style="width:100%;position:relative">
                                     <p style="width:75%;background-color:#fff;float:left;padding-right:5px;position:relative">
                                         <label style="width:99%">{{ _('alarms.address') }}:<br/>
@@ -106,7 +102,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="tab1">
+                            <div class="tab-pane{%- if alarm.object %} active{%- endif %}" id="tab1">
                                 <p>
                                     <label style="width:99%">{{ _('alarms.alarmobjects') }}:<br/>
                                         <select name="edit_object" id="edit_object" style="width:100%;height:20px;">
@@ -117,6 +113,7 @@
                                         </select>
                                     </label>
                                 </p>
+                                <p id="objectstreetname">{%- if alarm.object %}{{ alarm.object.street.name }} {{ alarm.object.streetno }}{%- endif %}</p>
                             </div>
                         </div>
                         <p style="clear:left">
@@ -299,24 +296,24 @@
                     $('#lat').val(street.lat);
                     $('#lng').val(street.lng);
                     $('#zoom').val(street.zoom);
-                    $('input[name=edit_cityname]').val(street.cityname);
-                    $('input[name=edit_city]').val(street.cityid);
+                    $("input[name='edit_cityname']").val(street.cityname);
+                    $("input[name='edit_city']").val(street.cityid);
                 }
             });
             return false;
         }
 
-        $('input[name=edit_cityname]').change(function(){
-            $('input[name=edit_city]').val('0');
+        $("input[name='edit_cityname']").change(function(){
+            $("input[name='edit_city']").val('0');
             for (c in cityarray) {
-                if(cityarray[c]==$('input[name=edit_cityname]').val()){
-                    $('input[name=edit_city]').val(c);
+                if(cityarray[c]==$("input[name='edit_cityname']").val()){
+                    $("input[name='edit_city']").val(c);
                 }
             }
         });
 
         function clearCars(){
-            $.each($('#cars1>li, #cars2>li, #material>li'), function(index, val){
+            $.each($("#cars1>li, #cars2>li, #material>li"), function(index, val){
                 $(val).detach().appendTo('#unused');
             });
             return false;
@@ -372,7 +369,7 @@
                 }
             });
 
-            $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
+            $("#cars1, #cars2, #material, #unused").sortable({connectWith: '.group'});
 
             // init autcomplete of streets
             $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
@@ -388,10 +385,23 @@
                         }
                     });
 
-                    $('input[name=edit_addressid]').change(function() {getMapPosition($(this).val());});
+                    $("input[name='edit_addressid']").change(function() {getMapPosition($(this).val());});
                 }
             });
-            getMapPosition($('input[name=edit_addressid]').val());
+            getMapPosition($("input[name='edit_addressid']").val());
+
+            $("select[name='edit_object']").change(function(){
+                $.ajax({ type: "POST", url: "/data/alarmobjects?action=alarmobject&id="+$(this).val()+"&format=json",
+                    success: function(aobject){
+                        $('#edit_address').val(aobject.street.name);
+                        $('#edit_addressid').val(aobject.street.id);
+                        $("input[name='edit_streetno']").val(aobject.streetno).change();
+                        $("input[name='edit_cityname']").val(aobject.street.city.name);
+                        $("input[name='edit_city']").val(aobject.street.city.id);
+                        $("#objectstreetname").html(aobject.street.name+' '+aobject.streetno);
+                    }
+                });
+            });
 
             // init autocomplete of alarmkeys
             $.ajax({ type : "POST", url : "/data/alarmkeys?action=keyslookup&format=json",
@@ -405,11 +415,11 @@
                              $('#edit_keyid').val(suggestion.data).change(); // id
                         }
                     });
-                    $('input[name=edit_keyid]').change(function() { getKeyCars($(this).val());});
+                    $("input[name='edit_keyid']").change(function() { getKeyCars($(this).val());});
                 }
             });
 
-            $('input[name=edit_streetno]').change(function(){
+            $("input[name='edit_streetno']").change(function(){
                 if(typeof parent.maps.map!="undefined") {
                     parent.maps.map.clearHouseNumbers();
                     $.ajax({ type: "POST", url: "/data/alarms?action=evalhouse&streetid=" + $('#edit_addressid').val() + "&housenumber=" + $(this).val() + "&format=json",
@@ -420,7 +430,7 @@
                 }
             });
 
-            $('button[value=cancel]').click(function(){
+            $("button[value='cancel']").click(function(){
                 parent.maps.map.clearHouseNumbers();
                 parent.maps.map.setView(new L.LatLng(parent.maps.startlat, parent.maps.startlng), parent.maps.startzoom);
                 parent.maps.map.off('click');

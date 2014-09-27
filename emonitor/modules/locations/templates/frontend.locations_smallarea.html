@@ -8,20 +8,27 @@
     #streetssubnorth{padding:0;background-color:#ddd;border-width:0 0 1px 0;width:100%;}
     #streetssubcenter{border-width:0!important;padding:0!important;overflow-y:hidden}
 
-    h3{font-size: 1.1em; background-color:#ababab;border-bottom:1px solid #ddd;margin:0;cursor:pointer;padding:10px 0 8px 10px;overflow:visible;}
+    h3{font-size: 1.1em; background-color:#ababab;border-bottom:1px solid #ddd;margin:0;cursor:pointer;padding:10px 0 8px 10px;overflow:visible;position:relative}
     h3:hover{background-color:silver!important}
     p.subcity{text-align:right;padding:5px 2px 0 0;font-size:10px;font-weight:lighter;color:#333;margin:0}
     span.char{margin:5px;font-size:10px}
     div.streetlist{position:relative;border:solid silver;border-width:0 1px}
-    a.street{width:100%;white-space: nowrap;padding:2px;display: block;border-bottom:1px dotted #ddd}
-    a.street small{color:black}
-    a.street:hover{background-color:#ddd;text-decoration: none}
-    div.streets{clear:left;padding:0 2px 20px 2px;display:block}
+    .street{width:100%;white-space: nowrap;padding:2px;display: block;border-bottom:1px dotted #ddd}
+    .street small{color:black}
+    .street:hover{background-color:#ddd;text-decoration: none;cursor:pointer}
+    div.streets{clear:left;padding:0 0 20px 0;display:block}
     div.char{border-bottom:1px solid silver;overflow:hidden;position:relative;min-height:30px;padding-top:15px;}
     p.charname{font-size:20px;font-weight:bold;color:silver;text-align:right;position:absolute;top:-5px; right:2px}
-    div.alarmobjects{border:solid silver;border-width: 0 1px}
-    div.alarmobject{margin-bottom:10px;padding-bottom:4px;border-bottom:1px dotted #ddd;width:99%}
+    div.alarmobjects{border:solid silver;border-width: 0 1px;}
+    div.alarmobjects select{font-size:10px;font-weight: lighter}
+    div.alarmobject{padding:2px 0 4px 2px;border-bottom:1px dotted #ddd;width:100%;position:relative}
     .form-control, .btn-default{border-color: #707070 !important;height:25px;border-radius: 0;padding:2px 12px}
+
+    .object_more{position:absolute;bottom:1px;right:2px;z-index:4}
+    .object_more i{color:#ddd}
+    .alarmobject .details{display:none;margin-left:5px;padding-left:2px;border-left:1px solid silver;}
+    .alarmobject:hover{display:block;cursor:pointer;background-color: #ddd}
+    .alarmobject:hover .object_more i{color: #636363}
     </style>
 {%  endblock %}
 
@@ -34,9 +41,9 @@
 {% block content %}
     <div id="locationscontainer" style="width:100%;height:100%">
         <div class="pane" id="streetssubnorth">
-            <input type="hidden" name="streetid" id="streetid"/>
+            <input type="hidden" name="locationid" id="locationid"/>
             <div class="input-group" style="padding:5px 0 0 1px">
-                <input type="text" name="street" id="autocomplete-street" class="form-control" placeholder="{{ _('streets.search.placeholder') }}" required>
+                <input type="text" name="location" id="autocomplete-location" class="form-control" placeholder="{{ _('streets.search.placeholder') }}" required>
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" title="{{ _('streets.search.button') }}"><i class="fa fa-search"></i></button>
                 </span>
@@ -59,20 +66,38 @@
                     <div class="char" >
                         <p class="charname" name="{{ city.id }}_{{ c[0] }}">{{ c[0] }}</p>
                         {%- for street in c[1] %}
-                        <a class="street" id="{{ city.name|e }}_{{ street.subcity|e }}" href="#" onclick="return getMapPositionStreet('{{ street.id }}')">{{ street.name }} {%- if street.subcity %} <small>({{ street.subcity}})</small>{%- endif %}</a>
+                        <span onclick="return getMapPositionStreet('{{ street.id }}')" class="street" id="{{ city.name|e }}_{{ street.subcity|e }}">{{ street.name }}{%- if street.subcity %} <small>({{ street.subcity}})</small>{%- endif %}</span>
                         {%- endfor %}
                     </div>
                     {%- endfor %}
                 </div>
             {%- endfor %}
             {%- if alarmobjects %}
-                <h3 c_name="alarmobjects">{{ _('frontend.alarmobject.header') }}</h3>
+                <h3 c_name="alarmobjects">{{ _('frontend.alarmobject.header') }}<br/>
+                    <p style="font-size:10px;font-weight:lighter;text-align:right;margin:0">{{ _('frontend.location.filter') }}: <select onchange="filterobjecttype($(this))" style="font-size:10px!important;font-weight:lighter!important;background-color: silver;border:1px solid #636363;width:50%;margin-bottom:5px">
+                        <option value="">{{ _('frontend.location.filterall') }}</option>
+                        {%- for alarmobjecttype in alarmobjecttypes %}
+                        <option value="{{ alarmobjecttype.id }}">{{ alarmobjecttype.name }}</option>
+                        {%- endfor %}
+                    </select>
+                    </p>
+                </h3>
                 <div class="streets alarmobjects">
-                   {%- for alarmobject in alarmobjects %}
-                     <div class="alarmobject">
-                       <a href="#"  onclick="return getMapPositionObject('{{ alarmobject.id }}')">{{ alarmobject.name }}</a><br/>
-                         <span style="padding-left:10px;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</span>
-                     </div>
+                    {%- for alarmobject in alarmobjects %}
+                    <div class="alarmobject" id="alarmobject_{{ alarmobject.objecttype.id }}">
+                        <div onclick="return getMapPositionObject('{{ alarmobject.id }}')">
+                            <b>{{ alarmobject.name }}</b><br/>
+                            <span style="padding-left:5px;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</span>
+                            <div class="details" id="object_{{ alarmobject.id }}">
+                                <em>{{ alarmobject.objecttype.name }}</em><br/>
+                                {{- alarmobject.remark -}}
+                            </div>
+                        </div>
+                        <div class="object_more" onclick="return toggleObjectDetails({{ alarmobject.id }})" id="detailbutton_{{ alarmobject.id }}" title="{{ _('frontend.alamobject.details') }}">
+                            <i id="detailbutton_{{ alarmobject.id }}" class="fa fa-chevron-down"></i>
+                        </div>
+
+                    </div>
                     {%- endfor %}
                 </div>
             {%- endif %}
@@ -82,6 +107,12 @@
     </div>
     <script>
         var streetslookup = null;
+
+        function toggleObjectDetails(id){
+            $("#detailbutton_"+id).find('i').toggleClass('fa-chevron-up fa-chevron-down');
+            $("#object_"+ id).toggle();
+            return false;
+        }
 
         function filtersubcity(city, subcity){
             $(".street").show().filter(function() {
@@ -95,9 +126,20 @@
             }).show();
         }
 
+        function filterobjecttype(obj) {
+            if($(obj).val() == ''){
+                $(".alarmobject").show();
+            }else {
+                $(".alarmobject").show().filter(function () {
+                    return $(this).attr('id') != 'alarmobject_' + $(obj).val();
+                }).hide();
+            }
+        }
+
         function getMapPositionStreet(streetid){
             $.ajax({ type : "POST", url : "/data/streets?action=streetcoords&id="+streetid+"&format=json",
                  success: function(street) {
+                     parent.maps.map.clearHouseNumbers();
                      parent.maps.map.setView(new L.LatLng(street.lat, street.lng), street.zoom);
                 }
             });
@@ -107,7 +149,13 @@
         function getMapPositionObject(aobjectid){
             $.ajax({ type : "POST", url : "/data/alarmobjects?action=streetcoords&id="+aobjectid+"&format=json",
                  success: function(aobject) {
-                     parent.maps.map.setView(new L.LatLng(aobject.lat, aobject.lng), aobject.zoom);
+                     parent.maps.map.clearHouseNumbers();
+                     if (aobject.type=="point"){
+                         parent.maps.map.setView(new L.LatLng(aobject.lat, aobject.lng), aobject.zoom);
+                     }
+                     if (aobject.type=="house"){
+                        parent.maps.map.addHouseNumber(aobject);
+                     }
                 }
             });
             return false;
@@ -130,22 +178,25 @@
 
             $("#streetaccordion").accordion({ heightStyle: "fill", activate: function(event, ui){selectall(ui.newHeader.attr('c_name'));}});
 
-            $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
+            $.ajax({ type : "POST", url : "/data/locations?action=locationslookup&format=json",
                 success: function(streets) {
-                    var alarmstreetsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
-                    alarmstreets = $.map(streets, function (value) { return value; });
+                    var alarmlocationsArray = $.map(streets, function (value, key) { return { value: value, data: key }; }),
+                    alarmlocation = $.map(streets, function (value) { return value; });
 
-                    $('#autocomplete-street').autocomplete({
-                        lookup: alarmstreetsArray,
-                        onSelect: function(suggestion) {
-                             $('#streetid').val(suggestion.data).change(); // id
+                    $('#autocomplete-location').autocomplete({
+                        lookup: alarmlocationsArray,
+                        onSelect: function(suggestion) { $('#locationid').val(suggestion.data).change(); }
+                    });
+                    $('input[name=locationid]').change(function() {
+                        if ($(this).val().indexOf('s') == 0) {
+                            getMapPositionStreet($(this).val().substring(1));
+                        }else if($(this).val().indexOf('o') == 0){
+                            getMapPositionObject($(this).val().substring(1));
                         }
                     });
-
-                    $('input[name=streetid]').change(function() { getMapPositionStreet($(this).val());});
                 }
             });
-
+            $('input[name=location]').focus(function() {$('input[name=location]').val('');});
         });
     </script>
 {% endblock %}

@@ -19,10 +19,19 @@ def getFrontendContent(**params):
                     streets[c.id][s.name[0]] = []
                 streets[c.id][s.name[0]].append(s)
             streets[c.id] = sorted(streets[c.id].items(), key=lambda t: t[0])
-        return render_template('frontend.locations_smallarea.html', cities=cities, streets=streets, alarmobjects=classes.get('alarmobject').getAlarmObjects(), frontendarea=params['area'])
+        return render_template('frontend.locations_smallarea.html', cities=cities, streets=streets, alarmobjects=classes.get('alarmobject').getAlarmObjects(), alarmobjecttypes=classes.get('alarmobjecttype').getAlarmObjectTypes(), frontendarea=params['area'])
 
     return ""
     
     
 def getFrontendData(self):
+
+    if request.args.get('action') == 'locationslookup':  # load locations lookup
+        locations = {}
+        for street in classes.get('street').getAllStreets():  # load streets
+            locations["s%s" %street.id] = '%s (%s)' % (street.name, street.city.name)
+        for aobj in classes.get('alarmobject').getAlarmObjects():  # load alarmobjects
+            locations["o%s" % aobj.id] = '%s <em>(%s)</em>' % (aobj.name, aobj.objecttype.name)
+        return locations
+
     return ""

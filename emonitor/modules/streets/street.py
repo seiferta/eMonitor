@@ -35,6 +35,10 @@ class Street(db.Model):
     def __repr__(self):
         return '<Street %r - %r>' % (self.id, self.name)
 
+    @property
+    def serialize(self):
+        return dict(id=self.id, name=self.name, city=self.city.serialize, subcity=self.subcity, lat=self.lat, lng=self.lng, zoom=self.zoom, active=self.active)
+
     def addHouseNumber(self, number, points):
         if number not in [hn.number for hn in self.housenumbers]:
             db.session.add(Housenumber(self.id, number, yaml.dump(points)))

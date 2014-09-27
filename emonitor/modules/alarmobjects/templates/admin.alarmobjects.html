@@ -12,17 +12,22 @@
     </script>
 {% endblock %}
 
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
 {% block content %}
     <h2>{{ _('alarmobjects.header.overview') }}</h2>
     <p><small>{{ _('alarmobjects.info') }}</small></p>
 
     <form method="post">
         <div class="headrow">
-            <div style="margin-right:50px;margin-left:15px;">
-                <div class="headcell" style="width:50%;">{{ _('alarmobjects.name') }}</div>
-                <div class="headcell" style="width:50%;">{{ _('alarmobjects.street') }}</div>
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:40%;">{{ _('alarmobjects.name') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('alarmobjects.type') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('alarmobjects.street') }}</div>
             </div>
-            <button type="submit" name="action" value="createalarmobject" title="{{ _('alarmobjects.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+            <button type="submit" name="action" class="add" value="createalarmobject" title="{{ _('alarmobjects.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         
         {% if alarmobjects|count==0 %}
@@ -34,8 +39,9 @@
             {% for alarmobject in alarmobjects %}
             <div class="row">
                 <div style="margin-right:70px;margin-left:15px;">
-                    <div class="rowcell" style="width:50%;">{{ alarmobject.name }}</div>
-                    <div class="rowcell" style="width:50%;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</div>
+                    <div class="rowcell" style="width:40%;">{{ alarmobject.name }}{%- if alarmobject.active!=1 %} <small><em>({{ _('alarmobject.inactive') }})</em></small>{%- endif %}</div>
+                    <div class="rowcell" style="width:30%;">{{ alarmobject.objecttype.name or '-' }}</div>
+                    <div class="rowcell" style="width:30%;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</div>
                 </div>
                 {% if alarmobject.lat!=0.0 %}
                 <i class="fa fa-map-marker" style="color:#adadad" title="{{ _('alarmobjects.mapset') }}"> </i>

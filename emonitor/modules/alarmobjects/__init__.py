@@ -1,7 +1,7 @@
 from emonitor.utils import Module
 from emonitor.extensions import classes, db, babel
 from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendContent, getFrontendData
+from .content_frontend import getFrontendData
 
 
 class AlarmobjectsModule(Module):
@@ -16,22 +16,26 @@ class AlarmobjectsModule(Module):
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/alarmobjects/templates" % app.config.get('PROJECT_ROOT'))
 
+        # subnavigation
+        self.adminsubnavigation = [('/admin/alarmobjects', 'module.alarmobjects.base'), ('/admin/alarmobjects/types', 'module.alarmobjects.types')]
+
         # create database tables
         from .alarmobject import AlarmObject
+        from .alarmobjecttype import AlarmObjectType
         classes.add('alarmobject', AlarmObject)
+        classes.add('alarmobjecttype', AlarmObjectType)
         db.create_all()
 
         # translations
         babel.gettext(u'module.alarmobjects')
+        babel.gettext(u'module.alarmobjects.base')
+        babel.gettext(u'module.alarmobjects.types')
 
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 
     def getAdminData(self):
         return getAdminData(self)
-
-    def getFrontendContent(self, params={}):
-        return getFrontendContent(self, params)
 
     def getFrontendData(self):
         return getFrontendData(self)

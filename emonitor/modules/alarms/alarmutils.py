@@ -57,7 +57,7 @@ def get_object(self):
         return objs.filter_by(id=int(self.get('id.object'))).first()
     else:
         if self.get('object'):
-            return classes.get('alarmobject')(self.get('object'), 0, '', '', '', '', self.get('alarmplan'), 0)
+            return classes.get('alarmobject')(self.get('object'), 0, '', '', '', '', self.get('alarmplan'), 0, '', 0, 0)
         return None
 
 

@@ -1,0 +1,51 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('alarmobjects.type.delquestion') }}');
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarmobjects.types.listtitle') }}</h2>
+    <p><small>{{ _('alarmobjects.types.info') }}</small></p>
+
+    <form method="post" name="alarmobjecttypelist" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:40%;">{{ _('alarmobjects.types.name') }}</div>
+                <div class="headcell" style="width:60%;">{{ _('alarmobjects.types.remark') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createalarmobjecttype" title="{{ _('alarmobjects.types.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        {%- if not alarmobjecttypes|length %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('alarmobjects.types.nodata') }}</p>
+        </div>
+        {% else %}
+        <div id="sortable">
+            {%- for alarmobjecttype in alarmobjecttypes %}
+            <div class="row">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:40%;">{{ alarmobjecttype.name }}</div>
+                    <div class="rowcell" style="width:60%;">{{ alarmobjecttype.remark }}</div>
+                </div>
+                <input type="hidden" name="alarmobjecttypeids" value="{{ alarmobjecttype.id}}"/>
+                <button type="submit" name="action" value="deleteobjecttype_{{ alarmobjecttype.id }}" title="{{ _('alarmobjects.types.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detailobjecttype_{{ alarmobjecttype.id }}" title="{{ _('alarmobjects.types.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {%- endfor %}
+        </div>
+        {%- endif %}
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('alarmobjects.type.itemscount', count=alarmobjecttypes|length) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.alarmobjects.type.overview"/>
+    </form>
+{% endblock %}
