@@ -138,7 +138,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         else:  # other city
             if len(_str) == 2:  # streetname + no
                 FezAlarmFaxChecker().fields[fieldname] = ('%s' % _str[0], 0)
-                FezAlarmFaxChecker().fields['streetno'] = (_str[1], 0)
+                if not re.match(alarmtype.translation(u'_street_').encode('utf-8'), _str[1]):  # ignore 'street' value
+                    FezAlarmFaxChecker().fields['streetno'] = (_str[1], 0)
             else:
                 FezAlarmFaxChecker().fields[fieldname] = (" ".join(_str), 0)
             return
@@ -248,7 +249,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             for k in classes.get('alarmkey').getAlarmkeys():
                 keys[k.key] = k.id
 
-            repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1)
+            repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1, cutoff=0.7)  # default cutoff 0.6
             if len(repl) > 0:
                 k = classes.get('alarmkey').getAlarmkeys(int(keys[repl[0]]))
                 FezAlarmFaxChecker().fields[fieldname] = ('%s: %s' % (k.category, k.key), k.id)
@@ -272,7 +273,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         cities = classes.get('city').getCities()
         for city in cities:  # test first word with defined subcities of cities
             try:
-                repl = difflib.get_close_matches(_str.split()[0], city.getSubCityList() + [city.name], 1)
+                repl = difflib.get_close_matches(_str.split()[0], city.getSubCityList() + [city.name], 1, cutoff=0.7)
                 if len(repl) > 0:
                     FezAlarmFaxChecker().fields[fieldname] = (repl[0], city.id)
                     return
@@ -287,7 +288,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
         for s in _str.split():
             for c in cities:
-                repl = difflib.get_close_matches(s, [c.name], 1)
+                repl = difflib.get_close_matches(s, [c.name], 1, cutoff=0.7)
                 if len(repl) == 1:
                     FezAlarmFaxChecker().fields[fieldname] = (repl[0], c.id)
                     return
