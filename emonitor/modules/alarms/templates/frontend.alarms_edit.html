@@ -121,7 +121,7 @@
                         </div>
                         <p style="clear:left">
                            <label style="width:99%">{{ _('alarms.key') }}:<br/>
-                                <input type="text" name="edit_key" id="edit_key" value="{% if alarm.id!=None %}{{ alarm.key.category }}: {% endif %}{%  if alarm.key %}{{ alarm.key.key }}{% endif %}" style="width:100%;"/>
+                                <input type="text" name="edit_key" id="edit_key" value="{%- if alarm.id!='None' %}{%- if alarm.key.id != 0 %}{{ alarm.key.category }}: {%- endif %}{{ alarm.key.key }}{%- endif %}" style="width:100%;"/>
                             </label>
                             <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
 
