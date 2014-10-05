@@ -15,7 +15,7 @@ class TextmodModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/textmod/templates" % app.config.get('PROJECT_ROOT'))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/textmod', 'textmod.replace'), ('/admin/textmod/ocr', 'textmod.ocr'), ('/admin/textmod/ocrcustom', 'textmod.ocrcustom'), ('/admin/textmod/convert', 'textmod.convert')]
+        self.adminsubnavigation = [('/admin/textmod', 'module.textmod.replace'), ('/admin/textmod/ocr', 'module.textmod.ocr'), ('/admin/textmod/ocrcustom', 'module.textmod.ocrcustom'), ('/admin/textmod/convert', 'module.textmod.convert')]
         
         # create database tables
         from .replace import Replace
@@ -30,10 +30,10 @@ class TextmodModule(Module):
         
         # translations
         babel.gettext(u'module.textmod')
-        babel.gettext(u'textmod.replace')
-        babel.gettext(u'textmod.ocr')
-        babel.gettext(u'textmod.ocrcustom')
-        babel.gettext(u'textmod.convert')
+        babel.gettext(u'module.textmod.replace')
+        babel.gettext(u'module.textmod.ocr')
+        babel.gettext(u'module.textmod.ocrcustom')
+        babel.gettext(u'module.textmod.convert')
         babel.gettext(u'emonitor.modules.textmod.ocr.Ocr')
         babel.gettext(u'emonitor.modules.textmod.replace.Replace')
 

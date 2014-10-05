@@ -21,7 +21,7 @@ class MonitorsModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/monitors/templates" % app.config.get('PROJECT_ROOT'))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/monitors', 'monitors.definition'), ('/admin/monitors/style', 'monitors.style'), ('/admin/monitors/current', 'monitors.current'), ('/admin/monitors/actions', 'monitors.actions')]
+        self.adminsubnavigation = [('/admin/monitors', 'monitors.definition'), ('/admin/monitors/style', 'module.monitors.style'), ('/admin/monitors/current', 'module.monitors.current'), ('/admin/monitors/actions', 'module.monitors.actions')]
 
         self.widgets = [MonitorWidget('placeholder', size=(1, 1), template='widget.placeholder.html')]
         
@@ -42,9 +42,9 @@ class MonitorsModule(Module):
         # translations
         babel.gettext(u'module.monitors')
         babel.gettext(u'monitors.definition')
-        babel.gettext(u'monitors.style')
-        babel.gettext(u'monitors.current')
-        babel.gettext(u'monitors.actions')
+        babel.gettext(u'module.monitors.style')
+        babel.gettext(u'module.monitors.current')
+        babel.gettext(u'module.monitors.actions')
         babel.gettext(u'monitors.landscape')
         babel.gettext(u'monitors.portrait')
         babel.gettext(u'monitors.orientation.0')

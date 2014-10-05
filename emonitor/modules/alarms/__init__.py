@@ -25,7 +25,7 @@ class AlarmsModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/alarms/templates" % app.config.get('PROJECT_ROOT'))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/alarms', 'alarms.base'), ('/admin/alarms/types', 'alarms.types'), ('/admin/alarms/test', 'alarms.test')]
+        self.adminsubnavigation = [('/admin/alarms', 'alarms.base'), ('/admin/alarms/types', 'module.alarms.types'), ('/admin/alarms/test', 'module.alarms.test')]
         
         # create database tables
         from .alarm import Alarm
@@ -89,8 +89,8 @@ class AlarmsModule(Module):
         # translations
         babel.gettext(u'module.alarms')
         babel.gettext(u'alarms.base')
-        babel.gettext(u'alarms.types')
-        babel.gettext(u'alarms.test')
+        babel.gettext(u'module.alarms.types')
+        babel.gettext(u'module.alarms.test')
         babel.gettext(u'alarms_income')
         babel.gettext(u'alarms_timer')
         babel.gettext(u'alarms_remark')

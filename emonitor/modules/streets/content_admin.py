@@ -108,7 +108,6 @@ def getAdminContent(self, **params):
                         city = [ct for ct in classes.get('city').getCities() if str(ct.id) == c[0]][0]
                         city.addStreet(Street(request.form.get('edit_name'), request.form.get('edit_navigation'), int(c[0]), c[1], request.form.get('edit_lat'), request.form.get('edit_lng'), request.form.get('edit_zoom'), request.form.get('edit_active'), ''))
                         db.session.commit()
-                    print cache.__dict__
                     cache.clear()
 
             try:

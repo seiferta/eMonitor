@@ -1,3 +1,4 @@
+import re
 from flask import send_from_directory
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
@@ -10,7 +11,7 @@ from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendData
 
 
-class StreetsModule(Module):
+class StreetsModule(object, Module):
     info = dict(area=['admin', 'frontend', 'widget'], name='streets', path='streets', icon='fa-road', version='0.1')
     
     def __repr__(self):
@@ -45,6 +46,7 @@ class StreetsModule(Module):
             
         # translations
         babel.gettext(u'module.streets')
+        babel.gettext(u'module.streets.0')
         babel.gettext(u'streets_street')  # widget name
 
     def updateAdminSubNavigation(self):
@@ -53,7 +55,13 @@ class StreetsModule(Module):
         for c in City.getCities():
             self.adminsubnavigation.append(('/admin/streets/%s' % c.id, c.name))
         self.adminsubnavigation.append(('/admin/streets/0', babel.gettext('admin.streets.cities.edit...')))
-        
+
+    def getHelp(self, area="frontend", name=""):  # frontend help template
+        name = name.replace('help/', '').replace('/', '.')
+        if not name.endswith('.0'):
+            name = re.sub(".\d+", "", name)
+        return super(StreetsModule, self).getHelp(area=area, name=name)
+
    # @cache.cached(timeout=8000, key_prefix='streets')
     #def getFrontendContent(self, params={}):
     #    return getFrontendContent(self, params=params)

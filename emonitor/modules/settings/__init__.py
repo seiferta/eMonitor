@@ -17,7 +17,7 @@ class SettingsModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/settings/templates" % app.config.get('PROJECT_ROOT'))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'settings.department'), ('/admin/settings/cars', 'settings.cars'), ('/admin/settings/start', 'settings.start')]
+        self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'module.settings.department'), ('/admin/settings/cars', 'module.settings.cars'), ('/admin/settings/start', 'module.settings.start')]
        
         # create database tables
         from .settings import Settings
@@ -34,9 +34,9 @@ class SettingsModule(Module):
         # translations
         babel.gettext(u'module.settings')
         babel.gettext(u'settings.main')
-        babel.gettext(u'settings.department')
-        babel.gettext(u'settings.cars')
-        babel.gettext(u'settings.start')
+        babel.gettext(u'module.settings.department')
+        babel.gettext(u'module.settings.cars')
+        babel.gettext(u'module.settings.start')
 
         babel.gettext(u'settings.pathtype.pathdone')
         babel.gettext(u'settings.pathtype.pathtmp')

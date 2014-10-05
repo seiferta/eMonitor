@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-08 16:05+0200\n"
-"PO-Revision-Date: 2014-09-10 15:11+0100\n"
+"POT-Creation-Date: 2014-10-01 10:46+0200\n"
+"PO-Revision-Date: 2014-10-01 10:46+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -44,32 +44,36 @@ msgstr ""
 "Fehler bei der Erstellung der neuen Revision, Parameter 'revisionname' wurde "
 "nicht über die URL mit angegeben."
 
-#: emonitor/admin/web/templates/admin.html:14
-#: emonitor/admin/web/templates/admin.html:54
+#: emonitor/admin/web/templates/admin.html:15
+#: emonitor/admin/web/templates/admin.html:57
 msgid "admin.titlemain"
 msgstr "eMonitor - Administrationsbereich"
 
-#: emonitor/admin/web/templates/admin.html:55
+#: emonitor/admin/web/templates/admin.html:59
 msgid "admin.frontendlink"
 msgstr "Eingabeoberfläche"
 
-#: emonitor/admin/web/templates/admin.html:63
+#: emonitor/admin/web/templates/admin.html:60
+msgid "admin.helptitle"
+msgstr "eMonitor-Onlinehilfe öffnen"
+
+#: emonitor/admin/web/templates/admin.html:69
 msgid "admin.logout"
 msgstr "abmelden"
 
-#: emonitor/admin/web/templates/admin.html:82
+#: emonitor/admin/web/templates/admin.html:88
 msgid "admin.moduleinitneeded"
 msgstr "Definition unvollständig oder fehlerhaft"
 
-#: emonitor/admin/web/templates/admin.html:113
+#: emonitor/admin/web/templates/admin.html:122
 msgid "layout.resize"
 msgstr "Verschieben"
 
-#: emonitor/admin/web/templates/admin.html:114
+#: emonitor/admin/web/templates/admin.html:123
 msgid "layout.open"
 msgstr "Schließen"
 
-#: emonitor/admin/web/templates/admin.html:115
+#: emonitor/admin/web/templates/admin.html:124
 msgid "layout.closed"
 msgstr "Öffnen"
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head lang="de">
+        <meta charset="UTF-8">
+        <title>{{ _('onlinehelp.title') }}</title>
+        <link rel="stylesheet" href="/help/css/onlinehelp.css" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet" />
+        <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
+    </head>
+    <body>
+
+        <div class="content">{{ helpcontent|markdown }}</div>
+        {%- if index|length>0 %}
+        <div class="content">
+            <p><b>Folgende Bereiche bieten eine Hilfe:</b></p>
+            <ul>
+            {%- for mod in index %}
+                <li>{{ _('module.'+mod.info['name']) }}
+                    <ul>
+                    {% for p in mod.getHelpPaths('admin') %}
+                    <li><a href="/help/admin/{{ p }}">{{ _('module.'+p|replace('/','.')) }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {%- endfor %}
+            </ul>
+        </div>
+        {%- endif %}
+        <i class="fa fa-chevron-right close" title="{{ _('onlinehelp.close') }}"></i>
+        <script>
+            $(document).ready(function () {
+                $(document.links).filter(function(){
+                    return $(this).attr('href').indexOf('/help/')!=0;
+                }).attr('target', '_parent');
+
+                $(".close").click(function () {
+                    event.preventDefault();
+                    parent.layout.close('east');
+                });
+            });
+        </script>
+    </body>
+</html>

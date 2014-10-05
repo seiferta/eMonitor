@@ -52,7 +52,7 @@ def adminContent(module=''):
         current_mod = [admin.modules[m] for m in admin.modules if admin.modules[m].info['path'] == module.split('/')[0]][0]
     except IndexError:
         current_mod = admin.modules['startpages']
-    return current_mod.getAdminContent(modules=admin.modules, current_mod=current_mod, user=User.getUsers(login.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), path='/admin/' + module)
+    return current_mod.getAdminContent(modules=admin.modules, current_mod=current_mod, user=User.getUsers(login.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), path='/admin/' + module, help='')
 
 
 @admin.route('/admin/data/', methods=['GET', 'POST'])

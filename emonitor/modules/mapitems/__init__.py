@@ -1,3 +1,4 @@
+import re
 from flask import send_from_directory
 from emonitor.utils import Module
 from emonitor.modules.settings.settings import Settings
@@ -5,7 +6,7 @@ from emonitor.extensions import classes, db, babel
 from emonitor.modules.mapitems.content_admin import getAdminContent, getAdminData
 
 
-class MapitemsModule(Module):
+class MapitemsModule(object, Module):
     info = dict(area=['admin'], name='mapitems', path='mapitems', icon='fa-bullseye', version='0.1')
 
     def __repr__(self):
@@ -32,6 +33,7 @@ class MapitemsModule(Module):
 
         # translations
         babel.gettext(u'module.mapitems')
+        babel.gettext(u'module.mapitems.definition')
         babel.gettext(u'mapitems.definition')
 
     def updateAdminSubNavigation(self):
@@ -39,6 +41,13 @@ class MapitemsModule(Module):
         for maptype in Settings.get('mapitemdefinition'):
             self.adminsubnavigation.append(('/admin/mapitems/%s' % maptype['name'], '%s' % maptype['name']))
         self.adminsubnavigation.append(('/admin/mapitems/definition', 'mapitems.definition'))
+
+    def getHelp(self, area="frontend", name=""):  # frontend help template
+        name = name.replace('help/', '').replace('/', '.')
+        if not name.endswith('definition'):
+            name = name.split('.')[0]
+        name = re.sub(".\d+", "", name)
+        return super(MapitemsModule, self).getHelp(area=area, name=name)
 
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)

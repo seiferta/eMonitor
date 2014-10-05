@@ -6,7 +6,7 @@ from .content_admin import getAdminContent, getAdminData
 
 
 class PrintersModule(Module):
-    info = dict(area=['admin'], name='printer', path='printers', icon='fa-print', version='0.1')
+    info = dict(area=['admin'], name='printers', path='printers', icon='fa-print', version='0.1')
 
     def __repr__(self):
         return "printer"
@@ -25,17 +25,17 @@ class PrintersModule(Module):
         events.addHandlerClass('*', 'emonitor.modules.printers.printers.Printers', Printers.handleEvent, ['in.printerid'])
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/printers', 'printers.main'), ('/admin/printers/settings', 'printers.settings')]
+        self.adminsubnavigation = [('/admin/printers', 'printers.main'), ('/admin/printers/settings', 'module.printers.settings')]
 
         # static folders
         @app.route('/printer/inc/<path:filename>')
         def printer_static(filename):
-            return send_from_directory("%s/emonitor/modules/printer/inc/" % app.config.get('PROJECT_ROOT'), filename)
+            return send_from_directory("%s/emonitor/modules/printers/inc/" % app.config.get('PROJECT_ROOT'), filename)
 
         # translations
-        babel.gettext(u'module.printer')
+        babel.gettext(u'module.printers')
         babel.gettext(u'printers.main')
-        babel.gettext(u'printers.settings')
+        babel.gettext(u'module.printers.settings')
         babel.gettext(u'emonitor.modules.printers.printers.Printers')
         babel.gettext(u'template.alarm_sum')
         babel.gettext(u'template.alarm_original')

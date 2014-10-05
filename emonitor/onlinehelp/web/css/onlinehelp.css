@@ -1,0 +1,8 @@
+body, html{position:relative;height:100%;color: #000000; background-color:#ddd; font-family:Verdana, Arial, Helvetica, sans-serif; font-weight:normal; text-decoration:none; text-align:left; font-size:11px;margin:0;padding:0;}
+.content{padding:5px;}
+.close{position:absolute;left:2px;top:2px;cursor:pointer}
+.content h1{border-bottom:1px solid silver;padding:0 10px 5px 10px;}
+.content a{color:#97070B; text-decoration: none}
+.content a:hover{color:#97070B; text-decoration: underline}
+.content ul{padding-left:10px}
+.content li{margin-left:5px;margin-top:5px;}

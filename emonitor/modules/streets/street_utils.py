@@ -42,7 +42,7 @@ def centroid_of_polygon(points):
 URL = 'http://overpass-api.de/api/interpreter'
 
 
-def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given city
+def loadStreetsFromOsm(city=None, _format="html"):  # load all streets of given city
     global URL
     
     if not city:
@@ -52,7 +52,7 @@ def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given c
 
     SEARCHSTRING = 'area[name~"%s"];way(%s,%s,%s,%s)(area)[highway][name];(._;>;);out;' % (city.name, map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all streets for given city
     r = requests.post(URL, data={'data': SEARCHSTRING})
-    xmldoc = minidom.parseString(r._content)
+    xmldoc = minidom.parseString(r.content)
     nodes = xmldoc.getElementsByTagName('node') 
     ways = xmldoc.getElementsByTagName('way')
 
@@ -89,7 +89,7 @@ def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given c
             streets[name]['indb'] = True
 
     streets = OrderedDict(sorted(streets.items(), key=lambda t: t[0]))
-    if format == "html":  # html output
+    if _format == "html":  # html output
         return render_template('admin.streets_osm.html', streets=streets, city=city)
     else:  # data output
         for name in streets:

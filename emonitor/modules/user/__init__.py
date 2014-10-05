@@ -4,7 +4,8 @@ from .content_admin import getAdminContent
 
 
 class UserModule(Module):
-    info = dict(area=['admin'], name='usermodule', path='users', icon='fa-users', version='0.1')
+    info = dict(area=['admin'], name='users', path='users', icon='fa-users', version='0.1')
+    helppath = '/emonitor/modules/user/help/'
     
     def __repr__(self):
         return "usermodule"
@@ -14,7 +15,7 @@ class UserModule(Module):
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/user/templates" % app.config.get('PROJECT_ROOT'))
         
-        babel.gettext(u'module.usermodule')
+        babel.gettext(u'module.users')
         babel.gettext(u'userlevel.notset')
         babel.gettext(u'userlevel.admin')
         babel.gettext(u'userlevel.user')

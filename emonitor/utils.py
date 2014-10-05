@@ -1,4 +1,5 @@
 import os
+import codecs
 from flask import current_app
 from math import ceil
 from xhtml2pdf import pisa
@@ -50,6 +51,7 @@ class Module:
     INITNEEDED = 1
 
     info = {}
+    helppath = ""
     
     def __repr__(self):
         return Module.info['name']
@@ -71,7 +73,42 @@ class Module:
     @property
     def getPath(self):
         return Module.info['path']
-        
+
+    def hasHelp(self, area="frontend"):
+        _dir = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
+        if self.helppath != "":
+            _dir = '%s%s' % (current_app.config.get('PROJECT_ROOT'), self.helppath)
+        if os.path.exists(_dir):
+            return len([fn for fn in os.listdir(_dir) if fn.startswith(area)]) > 0
+        else:
+            return 0
+
+    def getHelp(self, area="frontend", name=""):  # frontend help template
+        name = name.replace('help/', '').replace('/', '.')
+        if self.helppath == "":
+            filename = '%s/emonitor/modules/%s/help/%s.%s.%s.md' % (current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
+        else:
+            filename = '%s%s%s.%s.%s.md' % (current_app.config.get('PROJECT_ROOT'), self.helppath, area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
+
+        if os.path.exists(filename):
+            with codecs.open(filename, 'r', encoding="utf-8") as helpcontent:
+                return helpcontent.read()
+        else:
+            current_app.logger.info('help: missing help template %s' % filename)
+        return ""
+
+    def getHelpPaths(self, area="frontend"):
+        ret = []
+        fn = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
+        if self.helppath != "":
+            fn = '%s/%s' % (current_app.config.get('PROJECT_ROOT'), self.helppath)
+        for f in [fn for fn in os.listdir(fn) if fn.startswith(area)]:
+            ret.append("/".join(f.split('.')[2:-1]))
+        return sorted(ret)
+
+    def getAdminHelp(self, name=""):
+        return self.getHelp('admin', name=name)
+
     def doInit(self):
         pass
 

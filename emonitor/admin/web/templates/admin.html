@@ -28,13 +28,15 @@
             span.initneed{position:absolute;top:2px;right:2px}
             span.initneed i{color:#97070B!important;cursor:pointer}
             .navigation li{position:relative}
-
+            .helpwindow{padding-top:0;margin-left:10px;}
+            .helpwindow i:hover{color:#97070B!important;cursor:pointer}
         </style>
         {% block style %}{% endblock %}
         <script type="text/javascript" language="javascript" src="/js/jquery-1.11.0.min.js"> </script>
         <script type="text/javascript" language="javascript" src="/js/jquery-ui-1.10.1.min.js"> </script>
         <script type="text/javascript" language="javascript" src="/js/jquery.layout.min.js"> </script>
         <script type="text/javascript" language="javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.layout.pseudoClose.min-1.1.js"></script>
         <script>
             var ws;
         </script>
@@ -53,9 +55,12 @@
             </div>
             <div class="pane ui-layout-north" onmouseover="layout.allowOverflow('north')" onmouseout="layout.resetOverflow(this)">
                 <h1 style="padding-left:10px;">{{ _('admin.titlemain') }}</h1>
-                <div class="header_links"><a href="/">{{ _('admin.frontendlink') }}</a></div>
-                
-                <div class="user usermenu" style="text-align:right;z-index:30;overflow:visible;">
+                <div class="header_links">
+                    <a href="/">{{ _('admin.frontendlink') }}</a>
+                    <a href="/help{{ request.path }}" class="helpwindow" title="{{ _('admin.helptitle') }}"><i class="fa fa-question fa-lg"></i></a>
+                </div>
+
+                <div class="user usermenu" style="text-align:right;z-index:30;overflow:visible;padding-top:1px">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="fa fa-user fa-lg" style="color:#333" title="{{ user.username }}"></span>
                     </a>
@@ -76,16 +81,18 @@
             </div>
             <div class="pane ui-layout-west">
                 <div class="navigation">
-                <ul>
-                    {%- for module in modules %}
-                    <li>
-                        <a href="/admin/{{ modules[module].info.path }}" {% if module==current_mod.info.name %} class="active" {% endif %}><i class="fa {{ modules[module].info.icon }} fa-lg"></i> {{ _('module.'+module) }}</a>
-                        {%- if modules[module].checkDefinition()==1 %} <span class="initneed" title="{{ _('admin.moduleinitneeded') }}"><i class="fa fa-exclamation-triangle"></i></span>{%- endif %}
-                    </li>
-                    {%- endfor %}
-                </ul>
+                    <ul>
+                        {%- for module in modules %}
+                        <li>
+                            <a href="/admin/{{ modules[module].info.path }}" {% if module==current_mod.info.name %} class="active" {% endif %}><i class="fa {{ modules[module].info.icon }} fa-lg"></i> {{ _('module.'+module) }}</a>
+                            {%- if modules[module].checkDefinition()==1 %} <span class="initneed" title="{{ _('admin.moduleinitneeded') }}"><i class="fa fa-exclamation-triangle"></i></span>{%- endif %}
+                        </li>
+                        {%- endfor %}
+                    </ul>
                 </div>
-            </div><div class="version"> </div>
+            </div>
+            <iframe class="pane ui-layout-east" style="padding:0 !important;margin:0 !important;" src="/help/admin/default" name="onlinehelp"> </iframe>
+            <div class="version"> </div>
         </div>
         <div class="overlay">
         <div class="overlay_back"> </div>
@@ -97,12 +104,15 @@
         <script>
             {% block script_end %}
             var layout;
+            var helpWindowSizeArray = ["width=300,height=400,scrollbars=yes,resizable=1" ];
+
             $(document).ready(function () {
 
                 layout = $('#maincontainer').layout({
                     north: {closable:false, resizable:false, spacing_open: 0, spacing_closed: 0, size:54},
                     south: {closable:false, resizable:false, spacing_open: 0, spacing_closed: 0, size:20},
                     west:  {closable:true, resizable:true, spacing_open: 5, spacing_closed: 5, size:200},
+                    east: {size:250, initClosed:1, resizable:false, spacing_open: 0, spacing_closed: 0, pseudoClose:{hideObject: "object"}, onclose_start:$.layout.callbacks.pseudoClose},
                     center:{paneSelector: ".ui-layout-center",
                             childOptions: {
                                 spacing_open: 0,
@@ -114,6 +124,19 @@
                     resizerTip:'{{ _('layout.resize') }}',
                     togglerTip_open: '{{ _('layout.open') }}',
                     togglerTip_closed: '{{ _('layout.closed') }}'
+                });
+
+
+                $('.helpwindow').click(function (event){
+                     //var url = $(this).attr("href");
+                     //window.open(url, "helpPopup", helpWindowSizeArray[0]);
+                     event.preventDefault();
+                     if (layout.state.east.isClosed) {
+                        layout.east.pane.attr('src', $(this).attr("href"));
+                        layout.open('east');
+                    }else{
+                        layout.close('east');
+                    }
                 });
             });
 

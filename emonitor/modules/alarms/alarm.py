@@ -122,6 +122,8 @@ class Alarm(db.Model):
     def changeState(id, state):
         global LASTALARM
         alarm = classes.get('alarm').getAlarms(id)
+        if not alarm:
+            return []
         alarm.state = state
         try:
             alarm.addHistory('autochangeState', Alarm.ALARMSTATES[str(state)])

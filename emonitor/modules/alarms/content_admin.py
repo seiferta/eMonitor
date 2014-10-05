@@ -113,7 +113,7 @@ def getAdminContent(self, **params):
         stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], int(0))
         for alarm in alarms:
             stats[str(alarm.state)] += 1
-        params.update({'alarms': alarms, 'stats': stats, 'alarmstates': classes.get('alarm').ALARMSTATES})
+        params.update({'alarms': alarms, 'stats': stats, 'alarmstates': classes.get('alarm').ALARMSTATES, 'help': self.hasHelp('admin')})
         return render_template('admin.alarms.html', **params)
 
 

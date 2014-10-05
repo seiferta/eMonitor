@@ -9,6 +9,7 @@ from emonitor.widget.widget import widget
 from emonitor.frontend.frontend import frontend
 from emonitor.modules import modules
 from emonitor.admin.admin import admin
+from emonitor.onlinehelp.onlinehelp import onlinehelp
 from emonitor.login.login import login
 from emonitor.tileserver.tileserver import tileserver
 from emonitor.monitor.monitor import monitor
@@ -20,6 +21,7 @@ DEFAULT_BLUEPRINTS = (
     admin,
     monitor,
     frontend,
+    onlinehelp,
     login,
     modules,
     tileserver,
@@ -143,7 +145,15 @@ def configure_extensions(app):
     login_manager.login_message = "admin.login.needed"
     login_manager.unauthorized_handler = "frontend.login_page"
     login_manager.init_app(app)
-    
+
+    # jinja2 filters
+    from flask import Markup
+    from markdown import markdown
+
+    def getmarkdown(text):
+        return Markup(markdown(text))
+    app.jinja_env.filters['markdown'] = getmarkdown
+
     # user
     if User.count() == 0:
         User.getUsers(1)

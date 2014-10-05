@@ -9,6 +9,7 @@ Flask-SQLAlchemy==1.0
 Flask-Script==2.0.5
 Jinja2==2.7.3
 Mako==1.0.0
+Markdown==2.5.1
 MarkupSafe==0.23
 Pillow==2.5.3
 PyPDF2==1.23
