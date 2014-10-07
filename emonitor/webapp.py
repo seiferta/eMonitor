@@ -44,6 +44,7 @@ class DEFAULT_CONFIG(object):
     LANGUAGE_DIR = 'emonitor/web/translations'            # relative path of default templates
     DEFAULTZOOM = 12                                      # used for map-data
     LANGUAGES = {'de': 'Deutsch'}
+    ALEMBIC = {'script_location': 'alembic'}             # alembic base path
     DB_VERSION = 'a35c7dbf502'                           # version of database
 
     # monitorserver

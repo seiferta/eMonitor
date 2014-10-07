@@ -31,6 +31,11 @@ class AlarmobjectsModule(Module):
         babel.gettext(u'module.alarmobjects.base')
         babel.gettext(u'module.alarmobjects.types')
 
+    def checkDefinition(self):
+        if db.session.query(classes.get('alarmobjecttype')).count() == 0:
+            return Module.INITNEEDED
+        return Module.CHECKOK
+
     def getAdminContent(self, **params):
         return getAdminContent(self, **params)
 
