@@ -51,7 +51,7 @@ class Ocr(Settings):
 
                 i += 1
                 t = time.time() - stime
-                if ext in ['.jpg', '.tif', 'png']:  # tif and jpg with only one page
+                if ext[1:] in ['jpg', 'jpeg', 'tif', 'tiff', 'png']:  # tif and jpg with only one page
                     break
                     
             except:
