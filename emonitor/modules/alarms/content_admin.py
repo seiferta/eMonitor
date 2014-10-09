@@ -106,6 +106,7 @@ def getAdminContent(self, **params):
             return render_template('admin.alarms.type.html', **params)
 
         elif module[1] == 'test':
+            params.update({'uploadfileformat': classes.get('settings').get('ocr.inputformat')})
             return render_template('admin.alarms.test.html', **params)
 
     else:

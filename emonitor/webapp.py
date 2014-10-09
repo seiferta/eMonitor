@@ -39,7 +39,7 @@ class DEFAULT_CONFIG(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 60
     SECRET_KEY = 'secret key'                             # default key, overwrite in cfg
-    APP_VERSION = '0.3.1'                                  # current version
+    APP_VERSION = '0.3.2'                                  # current version
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     LANGUAGE_DIR = 'emonitor/web/translations'            # relative path of default templates
     DEFAULTZOOM = 12                                      # used for map-data

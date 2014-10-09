@@ -21,7 +21,7 @@
     <h2>{{ _('alarms.test.header') }}</h2>
     <p>{{ _('alarms.test.info') }}</p>
 
-    <h3>{{ _('alarms.test.step1') }}</h3>
+    <h3>{{ _('alarms.test.step1') }} ({%- for f in uploadfileformat %}*.{{ f }}{% if not loop.last %}, {% endif %}{%- endfor %})</h3>
     <form name="form" id="requestForm" action="/admin/data/alarms?action=upload" method="post" enctype="multipart/form-data">
         <p>
             {{ _('alarms.test.file') }}:<br/>
@@ -41,7 +41,7 @@
     $(document).ready(function(){
         $('#requestForm').ajaxForm({
             beforeSubmit: function() {
-                if($.inArray($('#uploadfile').val().split('.').pop(), ['pdf', 'jpg', 'tif'])>=0){
+                if($.inArray($('#uploadfile').val().split('.').pop(), [{%- for f in uploadfileformat %}'{{ f }}', {%- endfor %}])>=0){
                     testsocket.send('send.alarm.testupload_start');
                     $('#state').show();
                     $('#result').html('<div id="vtab"><ul></ul></div>');

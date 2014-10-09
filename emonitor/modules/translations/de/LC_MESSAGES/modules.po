@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-10-05 12:23+0200\n"
-"PO-Revision-Date: 2014-10-05 12:24+0100\n"
+"PO-Revision-Date: 2014-10-09 07:22+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -855,7 +855,7 @@ msgstr ""
 
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:24
 msgid "alarms.test.step1"
-msgstr "Beispieldatei hochladen (*.jpg, *.tif, *.pdf)"
+msgstr "Beispieldatei hochladen"
 
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:27
 msgid "alarms.test.file"
