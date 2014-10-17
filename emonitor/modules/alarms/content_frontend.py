@@ -123,18 +123,18 @@ def getFrontendContent(**params):
             classes.get('alarm').changeState(int(request.args.get('alarmid')), 3)
         params['area'] = request.args.get('area')
 
-    alarms = classes.get('alarm').getAlarms(days=int(session['alarmfilter']))
     stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], 0)
-    for alarm in alarms:
-        stats[str(alarm.state)] += 1
+    for s, c in classes.get('alarm').getAlarmCount():  # s=state, c=count(ids of state)
+        if str(s) in stats.keys():
+            stats[str(s)] = c
 
     if 'area' not in params:
         params['area'] = 'center'
     if 'activeacc' not in params:
         params['activeacc'] = 0
-    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, alarms=alarms, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), alarmfilter=session['alarmfilter'])
+    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), alarmfilter=session['alarmfilter'])
 
-    
+
 def getFrontendData(self):
     if request.args.get('action') == 'editalarm':
         
@@ -202,4 +202,8 @@ def getFrontendData(self):
                     return {'lat': map(lambda x: x[0], hn.points), 'lng': map(lambda x: x[1], hn.points)}
         return {}
 
+    elif request.args.get('action') == 'alarmsforstate':  # render alarms for given state
+        if 'alarmfilter' not in session:
+            session['alarmfilter'] = 0
+        return render_template('frontend.alarms_alarm.html', alarms=classes.get('alarm').getAlarms(days=int(session['alarmfilter']), state=int(request.args.get('state', '-1'))), printdefs=classes.get('printer').getActivePrintersOfModule('alarms'))
     return ""

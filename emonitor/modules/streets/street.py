@@ -57,8 +57,11 @@ class Street(db.Model):
 
     @staticmethod
     #@cache.memoize()
-    def getAllStreets():
-        return db.session.query(Street).all()
+    def getAllStreets(cityid=0):
+        if cityid == 0:
+            return db.session.query(Street).all()
+        else:
+            return db.session.query(Street).filter_by(cityid=cityid).all()
             
     @staticmethod
     def getStreetsDict():

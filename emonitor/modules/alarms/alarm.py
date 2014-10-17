@@ -9,6 +9,7 @@ import yaml
 from flask import current_app, flash, render_template, abort
 from emonitor.extensions import babel, db, classes, events, monitorserver, scheduler, signal
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.sql.functions import count
 import emonitor.modules.alarms.alarmutils as alarmutils
 from emonitor.modules.alarms.alarmhistory import AlarmHistory
 from emonitor.modules.alarms.alarmattribute import AlarmAttribute
@@ -90,13 +91,23 @@ class Alarm(db.Model):
         return classes.get('map').getDefaultMap()
 
     @staticmethod
-    def getAlarms(id=0, days=0):
+    def getAlarms(id=0, days=0, state=-1):
         if id != 0:
             return db.session.query(Alarm).filter_by(id=id).first()
         elif days != 0:  # filter last days, 0 = all days
-            return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').all()
+            if int(state) == -1:
+                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').all()
+            else:
+                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days)), Alarm.state == state).order_by('alarms.timestamp desc').all()
         else:
-            return db.session.query(Alarm).order_by('alarms.timestamp desc').all()
+            if int(state) == -1:  # all states
+                return db.session.query(Alarm).order_by('alarms.timestamp desc').all()
+            else:
+                return db.session.query(Alarm).filter(Alarm.state == state).order_by('alarms.timestamp desc').all()
+
+    @staticmethod
+    def getAlarmCount():
+        return db.session.query(Alarm.state, count(Alarm.id)).group_by(Alarm.state).all()
 
     @staticmethod
     def getActiveAlarms():

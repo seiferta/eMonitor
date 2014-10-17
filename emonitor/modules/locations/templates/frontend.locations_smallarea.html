@@ -52,7 +52,7 @@
         <div id="streetssubcenter">
             <div id="streetaccordion">
             {%- for city in cities %}
-                <h3 c_name="{{ city.name }}_{{ city.name }}">
+                <h3 c_name="{{ city.name }}_{{ city.name }}" onclick="loadStreets({{ city.id }}, '{{ city.name }}')">
                     <span onclick="selectall('{{ city.name|e }}_')">{{ city.name }}</span><br/>
                     {%- set subcities = city.getSubCityList() %}
                     <p class="subcity">
@@ -61,16 +61,7 @@
                         {%- endfor %}
                     </p>
                 </h3>
-                <div class="streets streetlist" id="streetlist_{{ city.name }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px">
-                    {%- for c in streets[city.id] %}
-                    <div class="char" >
-                        <p class="charname" name="{{ city.id }}_{{ c[0] }}">{{ c[0] }}</p>
-                        {%- for street in c[1] %}
-                        <span onclick="return getMapPositionStreet('{{ street.id }}')" class="street" id="{{ city.name|e }}_{{ street.subcity|e }}">{{ street.name }}{%- if street.subcity %} <small>({{ street.subcity}})</small>{%- endif %}</span>
-                        {%- endfor %}
-                    </div>
-                    {%- endfor %}
-                </div>
+                <div class="streets streetlist" id="streetlist_{{ city.name }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px"></div>
             {%- endfor %}
             {%- if alarmobjects %}
                 <h3 c_name="alarmobjects">{{ _('frontend.alarmobject.header') }}<br/>
@@ -167,6 +158,17 @@
             return false;
         }
 
+        function loadStreets(cityid, cityname){
+            if($('#streetlist_'+cityname).html() == '') {
+                $('#streetlist_'+cityname).html('<p style="padding-top:20px;text-align:center"><img src="/img/loading.gif"/></p>');
+                $.ajax({ type: "POST", url: "/data/locations?action=streetsofcity&cityid=" + cityid,
+                    success: function (streets) {
+                        $('#streetlist_' + cityname).html(streets);
+                    }
+                })
+            }
+        }
+
         $(document).ready(function() {
             var innerLayout = $('#locationscontainer').layout({
                 center:{paneSelector: "#streetssubcenter",onresize: $.layout.callbacks.resizePaneAccordions,spacing_open: 0},
@@ -175,6 +177,10 @@
                 togglerTip_open: '{{ _('layout.open') }}',
                 togglerTip_closed: '{{ _('layout.closed') }}'
             });
+
+            {%- for city in cities %}
+            loadStreets({{ city.id }}, '{{ city.name }}');
+            {%- endfor %}
 
             $("#streetaccordion").accordion({ heightStyle: "fill", activate: function(event, ui){selectall(ui.newHeader.attr('c_name'));}});
 

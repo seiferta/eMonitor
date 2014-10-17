@@ -1,0 +1,8 @@
+{%- for c in streets %}
+<div class="char" >
+    <p class="charname" name="{{ cityid }}_{{ c }}">{{ c }}</p>
+    {%- for street in streets[c] %}
+    <span onclick="return getMapPositionStreet('{{ street.id }}')" class="street" id="{{ street.city.name|e }}_{{ street.subcity|e }}">{{ street.name }}{%- if street.subcity %} <small>({{ street.subcity}})</small>{%- endif %}</span>
+    {%- endfor %}
+</div>
+{%- endfor %}

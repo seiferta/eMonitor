@@ -49,6 +49,8 @@
     <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
     <script>
+        var states = ['0', '0', '0', '0'];
+
         if (typeof parent.maps != "undefined"){
             parent.maps.alarmHouses = L.layerGroup();
         }
@@ -77,12 +79,6 @@
                     }
             );
 
-            $('.options').hover(function() {
-                if ($(this).find('span').attr('disabled') == undefined) {
-                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-                }}, function() {
-                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-            });
         });
 
         parent.ws.onmessage=function(e){
@@ -97,34 +93,6 @@
         }
     </script>
 {% endblock %}
-
-{%- macro contextmenu(id, state, printdefs) %}
-                        <div class="btn-group options" style="position:absolute;top:2px;right:5px;">
-                            <span class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-gear fa-lg"></i>
-                            </span>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0)" onclick="editAlarm({{ id }})" id="editalarm_{{ id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('alarm.edit') }}</a></li>
-                                {%- if state==1 %}
-                                <li><a href="javascript:void(0)" onclick="return questionFinish({{ id }})"><i class="fa fa-flag-checkered fa-fw"></i> {{ _('alarm.finish') }}</a></li>
-                                {%- endif %}
-                                {%- if state==0 or state==2 %}
-                                <li><a href="javascript:void(0)" onclick="return questionActivate({{ id }})"><i class="fa fa-bell fa-fw"></i> {{ _('alarm.activate') }}</a></li>
-                                {%- endif %}
-                                {%- if state==2 %}
-                                <li><a href="javascript:void(0)" onclick="return questionArchive({{ id }})"><i class="fa fa-shield fa-fw"></i> {{ _('alarm.archive') }}</a></li>
-                                {%- endif %}
-                                <li><a href="javascript:void(0)" onclick="return questionDelete({{ id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
-                                <li class="divider"></li>
-                                <li><a href="javascript:void(0)" onclick="return routeAlarm({{ id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
-                                <li><a href="javascript:void(0)" onclick="return showRoute({{ id }})"><i class="fa fa-fw" id="route_{{ id }}"></i> {{ _('alarm.route') }}</a></li>
-                                <li class="divider"></li>
-                                {%- for printdef in printdefs %}
-                                <li><a href="javascript:void(0)" id="printalarm" alarmid="{{ id }}" onclick="return printAlarm({{ id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
-                                {%- endfor %}
-                            </ul>
-                        </div>
-{%- endmacro  %}
 
 {% block content %}
     <div style="height:100%;width:100%;padding:0;margin:0;" id="alarmcontainer" class="alarmcontainer">
@@ -158,33 +126,7 @@
                 </h3>
 
                 <div id="alarmstate_{{ k }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px" class="selectable">
-                    {%- if stats[k]==0 %}<p class="noalarms">{{ _('alarms.noactive') }}</p>{%- endif %}
-                    {%- for alarm in alarms %}
-                    {%- if k==alarm.state|string %}
-                    <div class="alarmrow" lat="{{ alarm.get('lat') }}" lng="{{ alarm.get('lng') }}" zoom="{{ alarm.get('zoom') }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}">
-                         <div style="overflow:hidden;">
-                            <div class="prio prio{{ alarm.priority }}" title="{{ _('alarms.prio'+alarm.priority|string) }}"> </div>
-                            <span class="date">{{ alarm.timestamp|datetime }}</span><br/>
-                            <b class="key">{%  if alarm.key.category!='' %}{{ alarm.key.category }}: {% endif %}{{ alarm.key.key }}</b>
-                            <br/>
-                            <span class="address">
-                                {{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }} <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
-                                {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
-                            </span>
-                            <div class="alarmdetails">
-                                {%- if alarm.type==1 %}<a href="/file/fax/{{ alarm.get('filename') }}" target="blank"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{%- endif %}
-                                <a href="#" onclick="return addMessage({{ alarm.id }})" title="{{ _('alarms.messagestitle', number=alarm.history|count) }}">{{ alarm.history|count }}<i class="fa fa-comment-o" style="padding-left:2px;"></i></a>
-                                {%- if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{%- endif %}
-                                {%- if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{%- endif %}
-                                {%- if alarm.get('lat', '0')!='' %}
-                                <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
-                                {%- endif %}
-                            </div>
-                        </div>
-                        {{ contextmenu(alarm.id, alarm.state, printdefs) }}
-                    </div>
-                    {%- endif %}
-                    {%- endfor %}
+                    <p class="noalarms">{{ _('alarms.noactive') }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -203,6 +145,11 @@
 
         </div>
             <script>
+
+                function openPDF(path) {
+                    window.open(path, '_blank');
+                    return false;
+                }
 
                 $('button[name="filter"]').click(function(){
                     $('#filterdiv').toggle();
@@ -337,9 +284,6 @@
                     parent.maps.map.clearMarkers();
                     parent.maps.map.clearRoute();
 
-                    //$('.alarmrow').removeClass('selected');
-                    //$(obj).addClass('selected');
-
                     if ($(obj).attr('lat')!="") {
                         var m = parent.maps.map.addMarker($(obj).attr('lat'), $(obj).attr('lng'), $(obj).attr('priority'), false);
                         if(m) {
@@ -362,6 +306,16 @@
                 }
 
                 function showMappoints(state) {
+                    if(states[state]=='0') {
+                        $('#alarmstate_' + state).html('<p class="noalarms"><img src="/img/loading.gif"/></p>');
+                        $.ajax({ type: "POST", url: "/data/alarms?action=alarmsforstate&state=" + state,
+                            success: function (alarms) {
+                                $('#alarmstate_' + state).html(alarms);
+                            }
+                        });
+                        states[state] = 1;
+                    }
+
                     if (typeof parent.maps.map != "undefined") {
                         $('.alarmrow').removeClass('selected');
                         parent.maps.map.clearMarkers();

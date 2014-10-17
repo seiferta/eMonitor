@@ -1,0 +1,66 @@
+{%- macro contextmenu(id, state, printdefs) %}
+    <div class="btn-group options" style="position:absolute;top:2px;right:5px;">
+        <span class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-gear fa-lg"></i>
+        </span>
+        <ul class="dropdown-menu pull-right">
+            <li><a href="javascript:void(0)" onclick="editAlarm({{ id }})" id="editalarm_{{ id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('alarm.edit') }}</a></li>
+            {%- if state==1 %}
+            <li><a href="javascript:void(0)" onclick="return questionFinish({{ id }})"><i class="fa fa-flag-checkered fa-fw"></i> {{ _('alarm.finish') }}</a></li>
+            {%- endif %}
+            {%- if state==0 or state==2 %}
+            <li><a href="javascript:void(0)" onclick="return questionActivate({{ id }})"><i class="fa fa-bell fa-fw"></i> {{ _('alarm.activate') }}</a></li>
+            {%- endif %}
+            {%- if state==2 %}
+            <li><a href="javascript:void(0)" onclick="return questionArchive({{ id }})"><i class="fa fa-shield fa-fw"></i> {{ _('alarm.archive') }}</a></li>
+            {%- endif %}
+            <li><a href="javascript:void(0)" onclick="return questionDelete({{ id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('alarm.delete') }}</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:void(0)" onclick="return routeAlarm({{ id }})"><i class="fa fa-info-circle fa-fw"></i> {{ _('alarm.route.info') }}</a></li>
+            <li><a href="javascript:void(0)" onclick="return showRoute({{ id }})"><i class="fa fa-fw" id="route_{{ id }}"></i> {{ _('alarm.route') }}</a></li>
+            <li class="divider"></li>
+            {%- for printdef in printdefs %}
+            <li><a href="javascript:void(0)" id="printalarm" alarmid="{{ id }}" onclick="return printAlarm({{ id }}, {{ printdef.id }})"><i class="fa fa-print fa-fw"></i> {{ printdef.name }} {{ _('alarm.print') }}</a></li>
+            {%- endfor %}
+        </ul>
+    </div>
+{%- endmacro  %}
+
+{%- if alarms|count == 0 %}
+    <p class="noalarms">{{ _('alarms.noactive') }}</p>
+{%- else %}
+    {%- for alarm in alarms %}
+    <div class="alarmrow" lat="{{ alarm.get('lat') }}" lng="{{ alarm.get('lng') }}" zoom="{{ alarm.get('zoom') }}" priority="{{ alarm.priority }}" onclick="mapPanTo(this)" alarmid="{{ alarm.id }}">
+         <div style="overflow:hidden;">
+            <div class="prio prio{{ alarm.priority }}" title="{{ _('alarms.prio'+alarm.priority|string) }}"> </div>
+            <span class="date">{{ alarm.timestamp|datetime }}</span><br/>
+            <b class="key">{%  if alarm.key.category!='' %}{{ alarm.key.category }}: {% endif %}{{ alarm.key.key }}</b>
+            <br/>
+            <span class="address">
+                {{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }} <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
+                {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
+            </span>
+            <div class="alarmdetails">
+                {%- if alarm.type==1 %}<a href="javascript:void(0)" onclick="return openPDF('/file/fax/{{ alarm.get('filename') }}')" class="alarmfax"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{%- endif %}
+                <a href="javascript:void(0)" onclick="return addMessage({{ alarm.id }})" title="{{ _('alarms.messagestitle', number=alarm.history|count) }}">{{ alarm.history|count }}<i class="fa fa-comment-o" style="padding-left:2px;"></i></a>
+                {%- if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{%- endif %}
+                {%- if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{%- endif %}
+                {%- if alarm.get('lat', '0')!='' %}
+                <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
+                {%- endif %}
+            </div>
+        </div>
+        {{ contextmenu(alarm.id, alarm.state, printdefs) }}
+    </div>
+    {%- endfor %}
+    <script>
+        $(document).ready(function(){
+            $('.options').hover(function() {
+                if ($(this).find('span').attr('disabled') == undefined) {
+                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+                }}, function() {
+                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+            });
+        });
+    </script>
+{%- endif %}
