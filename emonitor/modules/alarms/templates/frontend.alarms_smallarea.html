@@ -101,7 +101,7 @@
             <button type="button" name="action" value="addalarm" onclick="window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'" title="{{ _('alarms.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
             <button type="button" name="action" value="activatealarm" title="{{ _('alarms.autorefresh') }}" onclick="window.location.href='/alarms?area={{ frontendarea }}'"><i class="fa fa-refresh fa-lg"></i></button>
             <button type="button" name="archive" title="{{ _('alarms.archivetitle') }}" onclick="questionArchive(0)"><i class="fa fa-shield fa-lg"></i></button>
-            <button type="button" name="filter" class="filter" title="{%- if alarmfilter=="0" %}{{ _('alarms.filter.title') }}{% else %}{{ _('alarms.filter.activetitle')}}: {{ _('alarms.filter.'+alarmfilter) }} {%- endif %}"><i class="fa fa-filter fa-lg"{%- if alarmfilter!="0" %} style="color:black;"{%- endif %}></i></button>
+            <button type="button" name="filter" class="filter" title="{%- if alarmfilter=="0" %}{{ _('alarms.filter.title') }}{% else %}{{ _('alarms.filter.activetitle')}}: {{ _('alarms.filter.'+alarmfilter|string) }} {%- endif %}"><i class="fa fa-filter fa-lg"{%- if alarmfilter!="0" %} style="color:black;"{%- endif %}></i></button>
             <div id="filterdiv" class="filterdiv">
                 {%- for d in ["0", "1", "7", "31"] %}
                     <a {%- if d == alarmfilter %} class="selected"{%- endif %} onclick="filteralarms({{ d }})" href="#">{{ _('alarms.filter.'+d) }}</a>
