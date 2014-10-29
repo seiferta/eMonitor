@@ -61,7 +61,7 @@ def getAdminContent(self, **params):
                         hdl = classes.get('eventhandler').getEventhandlers(id=int(_id))
                         hdl.position = ids.index(_id) + 1
                 db.session.commit()
-        params.update({'events': events.getEvents()})
+        params.update({'events': events.getEvents(), 'definitions': len(classes.get('eventhandler').getEventhandlers())})
         return render_template('admin.events.html', **params)
 
     

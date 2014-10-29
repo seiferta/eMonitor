@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-29 12:48+0100\n"
-"PO-Revision-Date: 2014-10-29 13:11+0100\n"
+"POT-Creation-Date: 2014-10-29 14:40+0100\n"
+"PO-Revision-Date: 2014-10-29 14:45+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2050,80 +2050,86 @@ msgstr ""
 "Module arrangiert werden, die Inhalte auf Bildschirme zugeschnitten "
 "darstellen."
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:39
+#: emonitor/modules/monitors/templates/admin.monitors.html:37
+msgid "monitors.nodefinitionfound"
+msgstr ""
+"Keine Defintion vorhanden: Mindestens eine Monitordefinition ist "
+"erforderlich, wenn eingehende Events verarbeitet dargestellt werden sollen."
+
+#: emonitor/modules/monitors/templates/admin.monitors.html:43
 msgid "monitors.client"
 msgstr "Client-ID"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:40
+#: emonitor/modules/monitors/templates/admin.monitors.html:44
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:16
 msgid "monitors.name"
 msgstr "Name"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:41
+#: emonitor/modules/monitors/templates/admin.monitors.html:45
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:20
 msgid "monitors.orientation"
 msgstr "Monitorausrichtung"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:42
+#: emonitor/modules/monitors/templates/admin.monitors.html:46
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:29
 msgid "monitors.resolution"
 msgstr "Auflösung <small>(Breite x Höhe in Pixel)</small>"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:43
+#: emonitor/modules/monitors/templates/admin.monitors.html:47
 msgid "monitors.grid"
 msgstr "Raster"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:45
+#: emonitor/modules/monitors/templates/admin.monitors.html:49
 msgid "monitors.addtitle"
 msgstr "Monitor-Definition hinzufügen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:49
+#: emonitor/modules/monitors/templates/admin.monitors.html:53
 msgid "monitors.nodata"
 msgstr "- keine Monitore definiert -"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:55
+#: emonitor/modules/monitors/templates/admin.monitors.html:59
 msgid "monitors.detailtitle"
 msgstr "Layouts anzeigen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:63
+#: emonitor/modules/monitors/templates/admin.monitors.html:67
 msgid "monitors.deletetitle"
 msgstr "Monitor-Definition löschen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:64
+#: emonitor/modules/monitors/templates/admin.monitors.html:68
 msgid "monitors.edittitle"
 msgstr "Monitor-Definition bearbeiten"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:70
+#: emonitor/modules/monitors/templates/admin.monitors.html:74
 #: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:63
 msgid "monitorlayouts.trigger"
 msgstr "Trigger"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:71
+#: emonitor/modules/monitors/templates/admin.monitors.html:75
 msgid "monitorlayouts.layout"
 msgstr "Layout"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:72
+#: emonitor/modules/monitors/templates/admin.monitors.html:76
 #: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:54
 msgid "monitorlayouts.theme"
 msgstr "Theme"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:74
+#: emonitor/modules/monitors/templates/admin.monitors.html:78
 msgid "monitorlayouts.addtitle"
 msgstr "Layout hinzufügen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:78
+#: emonitor/modules/monitors/templates/admin.monitors.html:82
 msgid "monitorlayouts.nodata"
 msgstr "- keine Layouts definiert -"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:91
+#: emonitor/modules/monitors/templates/admin.monitors.html:95
 msgid "monitorlayouts.deletetitle"
 msgstr "Layout löschen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:92
+#: emonitor/modules/monitors/templates/admin.monitors.html:96
 msgid "monitorlayouts.edittitle"
 msgstr "Layout bearbeiten"
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:100
+#: emonitor/modules/monitors/templates/admin.monitors.html:104
 msgid "monitors.itemscount"
 msgstr "(%(count)s Monitor-Definitionen vorhanden)"
 
@@ -2484,49 +2490,55 @@ msgstr ""
 "Standardeinheit genutzt, die Reihenfolge kann per Drag&Drop geändert werden."
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:25
+msgid "settings.nodepartmentdefinition"
+msgstr ""
+"Definition fehlerhaft: Mindestens eine Einheit muss definiert werden, dass "
+"eMonitor korrekt arbeiten kann."
+
+#: emonitor/modules/settings/templates/admin.settings.department.html:29
 msgid "settings.department.delquestion"
 msgstr "Soll die gewählte Einheit wirklich gelöscht werden?"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:31
+#: emonitor/modules/settings/templates/admin.settings.department.html:35
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:20
 msgid "settings.department.name"
 msgstr "Einheitsname"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:32
+#: emonitor/modules/settings/templates/admin.settings.department.html:36
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
 msgid "settings.department.defaultcity"
 msgstr "Standardort"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:33
+#: emonitor/modules/settings/templates/admin.settings.department.html:37
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
 msgid "settings.department.color"
 msgstr "Farbe der Einheit"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:35
+#: emonitor/modules/settings/templates/admin.settings.department.html:39
 msgid "settings.department.addtitle"
 msgstr "Einheit hinzufügen"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:39
+#: emonitor/modules/settings/templates/admin.settings.department.html:43
 msgid "settings.department.nodata"
 msgstr "- keine Einheiten definiert -"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:49
+#: emonitor/modules/settings/templates/admin.settings.department.html:53
 msgid "settings.department.defaultdep"
 msgstr "(Standardeinheit)"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:59
+#: emonitor/modules/settings/templates/admin.settings.department.html:63
 msgid "settings.department.deletetitle"
 msgstr "Einheit löschen"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:60
+#: emonitor/modules/settings/templates/admin.settings.department.html:64
 msgid "settings.department.detailtitle"
 msgstr "Einheit bearbeiten"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:65
+#: emonitor/modules/settings/templates/admin.settings.department.html:69
 msgid "settings.department.ordersave"
 msgstr "Reihenfolge speichern"
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:66
+#: emonitor/modules/settings/templates/admin.settings.department.html:70
 msgid "settings.department.itemscount"
 msgstr "(%(count)s Einheiten vorhanden)"
 
@@ -2762,22 +2774,22 @@ msgstr ""
 "zugeordnet werden."
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:32
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:46
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:50
 msgid "streets.city.name"
 msgstr "Ortsname"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:37
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:47
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
 msgid "streets.city.subname"
 msgstr "Ortsteile"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:42
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:48
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:52
 msgid "streets.city.dept"
 msgstr "Zuständige Einheit"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:51
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:49
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:53
 msgid "streets.city.map"
 msgstr "Standardkarte"
 
@@ -2786,7 +2798,7 @@ msgid "streets.city.color"
 msgstr "Ortsfarbe"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:65
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:63
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:67
 msgid "streets.city.default"
 msgstr "Standardort"
 
@@ -2826,52 +2838,59 @@ msgstr "Soll der gewählte Ort wirklich gelöscht werden?"
 msgid "streets.city.listtitle"
 msgstr "Ortsliste"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:44
+#: emonitor/modules/streets/templates/admin.streets.html:51
+msgid "streets.nocitydef"
+msgstr ""
+"Definition des Ortes unvollständig: Es muss mindestens ein Ort/eine Stadt "
+"angelegt sein, dass eMonitor korrekt arbeiten kann."
+
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:55
 msgid "streets.city.addtitle"
 msgstr "Ort hinzufügen"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:56
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:60
 msgid "streets.city.nodata"
 msgstr "- keine Orte definiert -"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:69
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:73
 msgid "streets.city.deletetitle"
 msgstr "Ort löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:70
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:74
 msgid "streets.city.detailtitle"
 msgstr "Ort bearbeiten"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:76
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:80
 msgid "streets.city.itemscount"
 msgstr "(%(count)s Orte vorhanden)"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:78
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:82
 msgid "streets.city.housnumber.header"
 msgstr "Hausnummern von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:80
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:84
 msgid "streets.city.housnumber.info"
 msgstr ""
 "Von OpenStreetMap können alle Hausnummern der konfigurierten Städte geladen "
 "werden. Dabei werden die Hausnummern je Straße verfügbar."
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:83
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:87
 msgid "streets.city.loadnumbersbutton"
 msgstr "Hausnummern aller Städte/Orte laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:88
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:92
 msgid "streets.city.loadtitle"
 msgstr "Städte/Orte von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:89
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:93
 msgid "streets.city.load.info"
 msgstr ""
 "Über OpenStreetMap können automatisch alle Städte/Orte geladen werden, die "
 "innerhalb des definierten Kartenausschnitts liegen. Anschließend können "
 "einzelne Städte/Orte ins System eingespielt werden."
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:90
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:94
 msgid "streets.city.loadbutton"
 msgstr "Städte/Orte laden"
 
@@ -2908,73 +2927,73 @@ msgstr ""
 "jede Straße kann ein Kartenausschnitt definiert werden, der standardmäßig "
 "verwendet werden soll. Jeder Straße muss ein Ort zugeordnet werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:52
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.filterlabel"
 msgstr "Filtern nach"
 
-#: emonitor/modules/streets/templates/admin.streets.html:52
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.filterall"
 msgstr "Alle"
 
-#: emonitor/modules/streets/templates/admin.streets.html:59
+#: emonitor/modules/streets/templates/admin.streets.html:63
 msgid "streets.name"
 msgstr "Straßenname"
 
-#: emonitor/modules/streets/templates/admin.streets.html:60
+#: emonitor/modules/streets/templates/admin.streets.html:64
 msgid "streets.cityid"
 msgstr "Zugeordnet zu Ort"
 
-#: emonitor/modules/streets/templates/admin.streets.html:61
+#: emonitor/modules/streets/templates/admin.streets.html:65
 msgid "streets.subcity"
 msgstr "Ortsteil"
 
-#: emonitor/modules/streets/templates/admin.streets.html:62
+#: emonitor/modules/streets/templates/admin.streets.html:66
 #: emonitor/modules/streets/templates/admin.streets_edit.html:65
 msgid "streets.housenumbers"
 msgstr "# Haus-Nr."
 
-#: emonitor/modules/streets/templates/admin.streets.html:64
+#: emonitor/modules/streets/templates/admin.streets.html:68
 msgid "streets.addtitle"
 msgstr "Straße hinzufügen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:69
+#: emonitor/modules/streets/templates/admin.streets.html:73
 msgid "streets.nodata"
 msgstr "- keine Straßen definiert -"
 
-#: emonitor/modules/streets/templates/admin.streets.html:75
+#: emonitor/modules/streets/templates/admin.streets.html:79
 msgid "streets.inactive"
 msgstr ""
 "Straße ist nicht als 'aktiv' markiert und taucht somit auch nicht in der "
 "Suche auf"
 
-#: emonitor/modules/streets/templates/admin.streets.html:82
+#: emonitor/modules/streets/templates/admin.streets.html:86
 msgid "streets.mapset"
 msgstr "Kartenposition gesetzt"
 
-#: emonitor/modules/streets/templates/admin.streets.html:84
+#: emonitor/modules/streets/templates/admin.streets.html:88
 msgid "streets.deletetitle"
 msgstr "Straße löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:85
+#: emonitor/modules/streets/templates/admin.streets.html:89
 msgid "streets.edittitle"
 msgstr "Straße bearbeiten"
 
-#: emonitor/modules/streets/templates/admin.streets.html:92
+#: emonitor/modules/streets/templates/admin.streets.html:96
 msgid "streets.itemscount"
 msgstr "(%(count)s Straßen vorhanden)"
 
-#: emonitor/modules/streets/templates/admin.streets.html:97
+#: emonitor/modules/streets/templates/admin.streets.html:101
 msgid "streets.loadtitle"
 msgstr "Straßen von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.html:98
+#: emonitor/modules/streets/templates/admin.streets.html:102
 msgid "streets.load.info"
 msgstr ""
 "Über OpenStreetMap können automatisch alle Straßen geladen werden, die dem "
 "akutellen Ort zugeordnet sind. Anschließend können einzelne Straßen ins "
 "System eingespielt werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:99
+#: emonitor/modules/streets/templates/admin.streets.html:103
 msgid "streets.loadbutton"
 msgstr "Straßen laden"
 

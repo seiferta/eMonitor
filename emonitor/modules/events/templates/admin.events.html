@@ -17,6 +17,10 @@
 {% block content %}
     <h2>{{ _('events.listtitle') }}</h2>
     <p><small>{{ _('events.info') }}</small></p>
+
+    {%- if definitions==0 %}
+    <p class="error">{{ _('events.nodefinitionfound') }}</p>
+    {%- endif %}
     <form method="post" action="">
         <div class="headrow">
             <div style="margin-right:50px;margin-left:15px;">

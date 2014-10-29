@@ -47,6 +47,10 @@
     <h2>{{ _('streets.header.overview') }}</h2>
     <p><small>{{ _('streets.info') }}</small></p>
 
+    {% if not city %}
+    <p class="error">{{ _('streets.nocitydef') }}</p>
+    {% endif %}
+
     <form method="post">
         <div class="headrow" style="border-bottom:1px solid black;">
             {{ _('streets.filterlabel') }}: <a href="#" onclick="return filter('')">{{ _('streets.filterall') }}</a>

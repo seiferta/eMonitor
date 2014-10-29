@@ -20,6 +20,10 @@
     <h2>{{ _('alarmobjects.header.overview') }}</h2>
     <p><small>{{ _('alarmobjects.info') }}</small></p>
 
+    {%- if alarmobjecttypes|count==0 %}
+    <p class="error">{{ _('alarmobjects.notypesfound') }}</p>
+    {%- endif %}
+
     <form method="post">
         <div class="headrow">
             <div style="margin-right:70px;margin-left:15px;">

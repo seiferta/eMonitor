@@ -20,6 +20,10 @@
 
     <h2>{{ _('settings.department.listtitle') }}</h2>
     <p><small>{{ _('settings.department.info') }}</small></p>
+
+    {%- if departments|length == 0 %}
+    <p class="error">{{ _('settings.nodepartmentdefinition') }}</p>
+    {%- endif %}
     <script>
         function questionDel(){
             return confirm('{{ _('settings.department.delquestion') }}');

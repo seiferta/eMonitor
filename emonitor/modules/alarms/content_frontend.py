@@ -197,9 +197,12 @@ def getFrontendData(self):
     elif request.args.get('action') == 'evalhouse':  # try to eval housenumer
         street = classes.get('street').getStreet(request.args.get('streetid'))
         if street:
+            points = dict(lat=[], lng=[])
             for hn in street.housenumbers:
                 if str(hn.number) == request.args.get('housenumber').strip():
-                    return {'lat': map(lambda x: x[0], hn.points), 'lng': map(lambda x: x[1], hn.points)}
+                    points['lat'].extend(map(lambda x: x[0], hn.points))
+                    points['lng'].extend(map(lambda x: x[1], hn.points))
+            return points
         return {}
 
     elif request.args.get('action') == 'alarmsforstate':  # render alarms for given state

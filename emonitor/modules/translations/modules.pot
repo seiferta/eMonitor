@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-29 12:48+0100\n"
+"POT-Creation-Date: 2014-10-29 14:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1941,80 +1941,84 @@ msgstr ""
 msgid "monitors.info"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:39
+#: emonitor/modules/monitors/templates/admin.monitors.html:37
+msgid "monitors.nodefinitionfound"
+msgstr ""
+
+#: emonitor/modules/monitors/templates/admin.monitors.html:43
 msgid "monitors.client"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:40
+#: emonitor/modules/monitors/templates/admin.monitors.html:44
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:16
 msgid "monitors.name"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:41
+#: emonitor/modules/monitors/templates/admin.monitors.html:45
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:20
 msgid "monitors.orientation"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:42
+#: emonitor/modules/monitors/templates/admin.monitors.html:46
 #: emonitor/modules/monitors/templates/admin.monitors_actions.html:29
 msgid "monitors.resolution"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:43
+#: emonitor/modules/monitors/templates/admin.monitors.html:47
 msgid "monitors.grid"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:45
+#: emonitor/modules/monitors/templates/admin.monitors.html:49
 msgid "monitors.addtitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:49
+#: emonitor/modules/monitors/templates/admin.monitors.html:53
 msgid "monitors.nodata"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:55
+#: emonitor/modules/monitors/templates/admin.monitors.html:59
 msgid "monitors.detailtitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:63
+#: emonitor/modules/monitors/templates/admin.monitors.html:67
 msgid "monitors.deletetitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:64
+#: emonitor/modules/monitors/templates/admin.monitors.html:68
 msgid "monitors.edittitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:70
+#: emonitor/modules/monitors/templates/admin.monitors.html:74
 #: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:63
 msgid "monitorlayouts.trigger"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:71
+#: emonitor/modules/monitors/templates/admin.monitors.html:75
 msgid "monitorlayouts.layout"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:72
+#: emonitor/modules/monitors/templates/admin.monitors.html:76
 #: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:54
 msgid "monitorlayouts.theme"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:74
+#: emonitor/modules/monitors/templates/admin.monitors.html:78
 msgid "monitorlayouts.addtitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:78
+#: emonitor/modules/monitors/templates/admin.monitors.html:82
 msgid "monitorlayouts.nodata"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:91
+#: emonitor/modules/monitors/templates/admin.monitors.html:95
 msgid "monitorlayouts.deletetitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:92
+#: emonitor/modules/monitors/templates/admin.monitors.html:96
 msgid "monitorlayouts.edittitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.html:100
+#: emonitor/modules/monitors/templates/admin.monitors.html:104
 msgid "monitors.itemscount"
 msgstr ""
 
@@ -2356,49 +2360,53 @@ msgid "settings.department.info"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:25
+msgid "settings.nodepartmentdefinition"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.department.html:29
 msgid "settings.department.delquestion"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:31
+#: emonitor/modules/settings/templates/admin.settings.department.html:35
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:20
 msgid "settings.department.name"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:32
+#: emonitor/modules/settings/templates/admin.settings.department.html:36
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
 msgid "settings.department.defaultcity"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:33
+#: emonitor/modules/settings/templates/admin.settings.department.html:37
 #: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
 msgid "settings.department.color"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:35
+#: emonitor/modules/settings/templates/admin.settings.department.html:39
 msgid "settings.department.addtitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:39
+#: emonitor/modules/settings/templates/admin.settings.department.html:43
 msgid "settings.department.nodata"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:49
+#: emonitor/modules/settings/templates/admin.settings.department.html:53
 msgid "settings.department.defaultdep"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:59
+#: emonitor/modules/settings/templates/admin.settings.department.html:63
 msgid "settings.department.deletetitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:60
+#: emonitor/modules/settings/templates/admin.settings.department.html:64
 msgid "settings.department.detailtitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:65
+#: emonitor/modules/settings/templates/admin.settings.department.html:69
 msgid "settings.department.ordersave"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:66
+#: emonitor/modules/settings/templates/admin.settings.department.html:70
 msgid "settings.department.itemscount"
 msgstr ""
 
@@ -2612,22 +2620,22 @@ msgid "streets.city.info"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:32
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:46
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:50
 msgid "streets.city.name"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:37
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:47
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
 msgid "streets.city.subname"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:42
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:48
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:52
 msgid "streets.city.dept"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:51
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:49
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:53
 msgid "streets.city.map"
 msgstr ""
 
@@ -2636,7 +2644,7 @@ msgid "streets.city.color"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:65
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:63
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:67
 msgid "streets.city.default"
 msgstr ""
 
@@ -2676,47 +2684,52 @@ msgstr ""
 msgid "streets.city.listtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:44
+#: emonitor/modules/streets/templates/admin.streets.html:51
+msgid "streets.nocitydef"
+msgstr ""
+
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:55
 msgid "streets.city.addtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:56
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:60
 msgid "streets.city.nodata"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:69
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:73
 msgid "streets.city.deletetitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:70
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:74
 msgid "streets.city.detailtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:76
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:80
 msgid "streets.city.itemscount"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:78
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:82
 msgid "streets.city.housnumber.header"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:80
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:84
 msgid "streets.city.housnumber.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:83
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:87
 msgid "streets.city.loadnumbersbutton"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:88
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:92
 msgid "streets.city.loadtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:89
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:93
 msgid "streets.city.load.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:90
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:94
 msgid "streets.city.loadbutton"
 msgstr ""
 
@@ -2748,68 +2761,68 @@ msgstr ""
 msgid "streets.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:52
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.filterlabel"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:52
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.filterall"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:59
+#: emonitor/modules/streets/templates/admin.streets.html:63
 msgid "streets.name"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:60
+#: emonitor/modules/streets/templates/admin.streets.html:64
 msgid "streets.cityid"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:61
+#: emonitor/modules/streets/templates/admin.streets.html:65
 msgid "streets.subcity"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:62
+#: emonitor/modules/streets/templates/admin.streets.html:66
 #: emonitor/modules/streets/templates/admin.streets_edit.html:65
 msgid "streets.housenumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:64
+#: emonitor/modules/streets/templates/admin.streets.html:68
 msgid "streets.addtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:69
+#: emonitor/modules/streets/templates/admin.streets.html:73
 msgid "streets.nodata"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:75
+#: emonitor/modules/streets/templates/admin.streets.html:79
 msgid "streets.inactive"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:82
+#: emonitor/modules/streets/templates/admin.streets.html:86
 msgid "streets.mapset"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:84
+#: emonitor/modules/streets/templates/admin.streets.html:88
 msgid "streets.deletetitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:85
+#: emonitor/modules/streets/templates/admin.streets.html:89
 msgid "streets.edittitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:92
+#: emonitor/modules/streets/templates/admin.streets.html:96
 msgid "streets.itemscount"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:97
+#: emonitor/modules/streets/templates/admin.streets.html:101
 msgid "streets.loadtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:98
+#: emonitor/modules/streets/templates/admin.streets.html:102
 msgid "streets.load.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:99
+#: emonitor/modules/streets/templates/admin.streets.html:103
 msgid "streets.loadbutton"
 msgstr ""
 

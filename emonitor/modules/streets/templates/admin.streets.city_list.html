@@ -40,6 +40,10 @@
     <h2>{{ _('streets.city.listtitle') }}</h2>
     <p><small>{{ _('streets.city.info') }}</small></p>
 
+    {% if not cities|count %}
+    <p class="error">{{ _('streets.nocitydef') }}</p>
+    {% endif %}
+
     <form method="post" name="citylist" action="">
         <div class="headrow">
             <div style="margin-right:70px;margin-left:15px;">
