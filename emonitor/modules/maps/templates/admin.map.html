@@ -10,6 +10,10 @@
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
 {% endblock %}
 
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
 {% block content %}
     <style>
         div.row:hover{cursor:pointer !important;}
@@ -49,47 +53,14 @@
         </div>
         <div class="headrow">
             <button type="submit" name="action" value="ordersetting" id="orderchange" style="display:none;">{{ _('settings.map.ordersave') }}</button>
-            <small style="float:right;margin-right:50px"><i class="fa fa-check"></i> {{ _('settings.map.itemscount', count=maps|length) }}</small><br/>
+            <small style="float:right;margin-right:50px"> {{ _('settings.map.itemscount', count=maps|length) }}</small><br/>
         </div>
         <input type="hidden" name="form_id" value="admin.settings.department.overview"/>
-    </form>
-
-    <h2>{{ _('settings.map.positiontitle') }}</h2>
-    <p><small>{{ _('settings.map.positioninfo') }}</small></p>
-    {%- if maps|count==0 %}
-    <p>{{ _('settings.map.positionerror') }}</p>
-    {%- endif %}
-
-    <form name="mapposition" method="post" action="">
-
-        <div class="osm_div" id="map" style="margin-bottom:20px;"> </div>
-
-        <div id="startposition" style="width:50%;float:left">
-            <p>{{ _('settings.map.startposition') }}:</p>
-            <label>{{ _('settings.map.lat') }}:<br/><input type="text" name="default_lat" id="lat" value="{{ settings.get('defaultLat', '48.115970') }}" style="width:40%"/></label>
-            <label>{{ _('settings.map.lng') }}:<br/><input type="text" name="default_lng" id="lng" value="{{ settings.get('defaultLng', '11.727390') }}" style="width:40%"/></label>
-            <label>{{ _('settings.map.zoom') }}:<br/><input type="text" name="default_zoom" id="zoom" value="{{ settings.get('defaultZoom', '14') }}" size="2" maxlength="2" style="width:40%"/></label>
-        </div>
-
-        <div id="homeposition" style="width:50%;float:left">
-            <p>{{ _('settings.map.homeposition') }}:</p>
-            <label>{{ _('settings.map.homelat') }}:<br/><input type="text" name="home_lat" id="home_lat" value="{{ settings.get('homeLat', '') }}" style="width:40%"/></label>
-            <label>{{ _('settings.map.homelng') }}:<br/><input type="text" name="home_lng" id="home_lng" value="{{ settings.get('homeLng', '') }}" style="width:40%"/></label>
-            <small>{{ _('settings.map.homeinfo') }}</small>
-        </div>
-
-
-        <p style="text-align:center;padding-top:30px;clear:left">
-            <button type="submit" name="action" value="saveposition" class="save"><i class="fa fa-check"></i> {{ _('settings.map.saveposition') }}</button>
-        </p>
     </form>
 {% endblock %}
 
 {% block script_end %}
     {{ super() }}
-    var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
-    var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
-    var startzoom = "{{ settings.get('defaultZoom', '14') }}";
     {%- if maps|count > 0 %}
     var maptype = "{{ maps[0].name }}";
     {%- else %}
@@ -100,72 +71,8 @@
         return confirm('{{ _('settings.map.delquestion') }}');
     }
 
-    var map = null;
-    var home = null;
-    var homemarker = null;
-    var MyMarker = L.Icon.extend({options: {shadowUrl:'/img/marker-shadow.png', iconAnchor: [12, 41], popupAnchor: [0, -42]}});
-    var redmarker = new MyMarker({iconUrl:'/img/marker_red.png'});
-
-    function onMapDblClick(e){
-        $('#home_lat').val(e.latlng.lat);
-        $('#home_lng').val(e.latlng.lng);
-
-        if (homemarker==null){
-            homemarker = new L.Marker(e.latlng, {icon:redmarker, draggable:true}).addTo(map);
-            homemarker.bindPopup('{{ _('settings.map.startmarker.info') }}');
-            homemarker.on('mouseover', onAlarmMarkerMouseOver);
-            homemarker.on('mouseout', onAlarmMarkerMouseOut);
-        }else{
-            homemarker.setLatLng(e.latlng);
-        }
-
-        homemarker.on('dragend', function(e){
-            $('#home_lat').val(homemarker.getLatLng().lat);
-            $('#home_lng').val(homemarker.getLatLng().lng);
-        });
-    }
-
-    function setPosition(){
-        var pos = map.getCenter();
-        $('#lat').val(pos.lat);
-        $('#lng').val(pos.lng);
-        $('#zoom').val(map.getZoom());
-    }
-
     $(document).ready( function() {
         $( "#sortable" ).sortable({update: function(event, ui){$('#orderchange').show()}});
-
-        map = new L.Map('map', {zoom:12, doubleClickZoom: false});
-
-        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 12, maxZoom: 18});
-        map.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
-        //map.on('click', onMapClick);
-        map.on('click', function(e) {});
-        map.on('dblclick', onMapDblClick);
-        map.on('moveend', function(e) {setPosition()});
-
-        setPosition();
-
-        if ($('#home_lat').val()!=''){
-            if (homemarker==null){
-                homemarker = new L.Marker(new L.LatLng($('#home_lat').val(), $('#home_lng').val()), {icon:redmarker, draggable:true}).addTo(map);
-                homemarker.bindPopup('{{ _('settings.map.startmarker.info') }}');
-                homemarker.on('dragend', function(e){
-                    $('#home_lat').val(homemarker.getLatLng().lat);
-                    $('#home_lng').val(homemarker.getLatLng().lng);
-                });
-                homemarker.on('mouseover', onAlarmMarkerMouseOver);
-                homemarker.on('mouseout', onAlarmMarkerMouseOut);
-            }
-        }
-
     });
 
-    function onAlarmMarkerMouseOver(e){
-        this.openPopup();
-    }
-
-    function onAlarmMarkerMouseOut(e){
-        this.closePopup();
-    }
 {% endblock %}

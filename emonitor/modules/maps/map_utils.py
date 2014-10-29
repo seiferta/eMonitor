@@ -2,6 +2,8 @@ import os
 import urllib2
 import math
 import re
+import requests
+from xml.dom import minidom
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
 
@@ -178,6 +180,18 @@ def deg2num(lat_deg, lon_deg, zoom):
     ytile = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
     y = (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n
     return [xtile, ytile, int(x % 1 * 256), int(y % 1 * 256)]
+
+
+def loadPositionOfCity(name):
+    SEARCHSTRING = 'node["name"~"%s"]["place"~"town|village"];(._;>;);out;' % name  # search all cities with given name
+    r = requests.post('http://overpass-api.de/api/interpreter', data={'data': SEARCHSTRING})
+    cities = []
+    xmldoc = minidom.parseString(r.content)
+    for node in xmldoc.getElementsByTagName('node'):
+        for tag in node.childNodes:
+            if tag.nodeName == "tag" and tag.attributes['k'].value == 'name':
+                cities.append(dict(name=tag.attributes['v'].value, lat=node.attributes['lat'].value, lon=node.attributes['lon'].value))
+    return dict(result=sorted(cities, key=lambda k: k['name']))
 
 
 if __name__ == "__main__":

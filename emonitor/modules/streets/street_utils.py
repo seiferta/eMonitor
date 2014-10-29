@@ -34,15 +34,18 @@ def centroid_of_polygon(points):
         cross = (x0 * y1) - (x1 * y0)
         result_x += (x0 + x1) * cross
         result_y += (y0 + y1) * cross
-    result_x /= (area * 6.0)
-    result_y /= (area * 6.0)
+    try:
+        result_x /= (area * 6.0)
+        result_y /= (area * 6.0)
+    except:
+        pass
     return result_x, result_y
 
     
 URL = 'http://overpass-api.de/api/interpreter'
 
 
-def loadStreetsFromOsm(city=None, _format="html"):  # load all streets of given city
+def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given city
     global URL
     
     if not city:
@@ -89,7 +92,7 @@ def loadStreetsFromOsm(city=None, _format="html"):  # load all streets of given 
             streets[name]['indb'] = True
 
     streets = OrderedDict(sorted(streets.items(), key=lambda t: t[0]))
-    if _format == "html":  # html output
+    if format == "html":  # html output
         return render_template('admin.streets_osm.html', streets=streets, city=city)
     else:  # data output
         for name in streets:

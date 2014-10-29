@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-05 12:23+0200\n"
-"PO-Revision-Date: 2014-10-09 07:22+0100\n"
+"POT-Creation-Date: 2014-10-29 12:48+0100\n"
+"PO-Revision-Date: 2014-10-29 13:11+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -23,23 +23,19 @@ msgstr ""
 msgid "module.startpages"
 msgstr "Startseite"
 
-#: emonitor/modules/alarmkeys/__init__.py:40
+#: emonitor/modules/alarmkeys/__init__.py:39
 msgid "module.alarmkeys"
 msgstr "Ausrückeordnung"
 
-#: emonitor/modules/alarmkeys/__init__.py:41
-msgid "module.alarmkeys.upload"
-msgstr "Ausrückeordnung hochladen"
-
-#: emonitor/modules/alarmkeys/__init__.py:42
+#: emonitor/modules/alarmkeys/__init__.py:40
 msgid "alarmkeys.upload.states0"
 msgstr "Definitionen unverändert"
 
-#: emonitor/modules/alarmkeys/__init__.py:43
+#: emonitor/modules/alarmkeys/__init__.py:41
 msgid "alarmkeys.upload.states1"
 msgstr "Definitionen verändert"
 
-#: emonitor/modules/alarmkeys/__init__.py:44
+#: emonitor/modules/alarmkeys/__init__.py:42
 msgid "alarmkeys.upload.states-1"
 msgstr "Definitionen neu"
 
@@ -388,43 +384,50 @@ msgstr ""
 "Für spezielle Einsatzobjekte können Zusatzinformationen hinterlegt werden. "
 "Hier ist dann eine eigene Kartendarstellung mit Zusatzdaten möglich."
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:26
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:24
+msgid "alarmobjects.notypesfound"
+msgstr ""
+"Definition unvollständig: Einsatzobjekte müssen immer einen Typ hinterlegt "
+"haben. Der Typ kann <a href=\"/admin/alarmobjects/types\">hier</a> angelegt "
+"werden."
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:30
 msgid "alarmobjects.name"
 msgstr "Objektname"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:27
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:31
 msgid "alarmobjects.type"
 msgstr "Einsatzobjekt-Typ"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:28
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:32
 msgid "alarmobjects.street"
 msgstr "Straße"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:30
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:34
 msgid "alarmobjects.addtitle"
 msgstr "Einsatzobjekt hinzufügen"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:35
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:39
 msgid "alarmobjects.nodata"
 msgstr "- keine Einsatzobjekte definiert -"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:42
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:46
 msgid "alarmobject.inactive"
 msgstr "deaktiviert"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:47
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:51
 msgid "alarmobjects.mapset"
 msgstr "Kartenposition gesetzt"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:49
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:53
 msgid "alarmobjects.deletetitle"
 msgstr "Einsatzobjekt löschen"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:50
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:54
 msgid "alarmobjects.edittitle"
 msgstr "Einsatzobjekt bearbeiten"
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:56
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:60
 msgid "alarmobjects.itemscount"
 msgstr "(%(count)s Einsatzobjekte vorhanden)"
 
@@ -646,7 +649,7 @@ msgid "archive"
 msgstr "archiviert"
 
 #: emonitor/modules/alarms/__init__.py:113
-#: emonitor/modules/alarms/alarm.py:164
+#: emonitor/modules/alarms/alarm.py:175
 msgid "alarms.statechangeactivated"
 msgstr "Einsatz aktiviert"
 
@@ -754,7 +757,7 @@ msgstr "Einsätze eine Woche"
 msgid "alarms.filter.31"
 msgstr "Einsätze ein Monat"
 
-#: emonitor/modules/alarms/alarm.py:118
+#: emonitor/modules/alarms/alarm.py:129
 msgid "alarms.routingerror"
 msgstr "Fehler bei der Anfahrtsberechnung"
 
@@ -775,7 +778,7 @@ msgstr "Auf"
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
-#: emonitor/modules/alarms/content_admin.py:143
+#: emonitor/modules/alarms/content_admin.py:144
 #, fuzzy
 msgid "admin.alarms.checkernotvalid"
 msgstr "Name"
@@ -1018,21 +1021,80 @@ msgstr "Speichern"
 msgid "alarms.type.cancel"
 msgstr "Abbrechen"
 
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:7
+msgid "alarm.edit"
+msgstr "bearbeiten"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:9
+msgid "alarm.finish"
+msgstr "abschließen"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:12
+msgid "alarm.activate"
+msgstr "aktivieren"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:15
+msgid "alarm.archive"
+msgstr "archivieren"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:17
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:17
+msgid "alarm.delete"
+msgstr "löschen"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:19
+#: emonitor/modules/alarms/templates/frontend.alarms_routing.html:9
+msgid "alarm.route.info"
+msgstr "Anfahrt-Information"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:20
+msgid "alarm.route"
+msgstr "Route anzeigen/ausblenden"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:23
+msgid "alarm.print"
+msgstr "Drucken..."
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:129
+msgid "alarms.noactive"
+msgstr "keine Einsätze"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:44
+msgid "alarms.showfax"
+msgstr "Alarmfax anzeigen (pdf)"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:45
+msgid "alarms.messagestitle"
+msgstr "%(number)s Meldungen vorhanden"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:46
+msgid "alarms.typeautomatic"
+msgstr "Einsatz aus Fax erzeugt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:47
+msgid "alarms.typemanual"
+msgstr "Einsatz manuell erzeugt"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:49
+msgid "alarms.titlemap"
+msgstr "Kartenposition gesetzt"
+
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:37
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:60
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:174
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:176
 msgid "layout.resize"
 msgstr "Größe ändern"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:61
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:175
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:63
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:177
 msgid "layout.open"
 msgstr "Öffnen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:176
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:64
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:178
 msgid "layout.closed"
 msgstr "Schließen"
 
@@ -1171,11 +1233,6 @@ msgstr "Abbrechen"
 msgid "alarms.messagetitles"
 msgstr "Vorhandene Meldungen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:17
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:117
-msgid "alarm.delete"
-msgstr "löschen"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:24
 msgid "alarms.addmessage"
 msgstr "Mitteilung hinzufügen"
@@ -1188,102 +1245,49 @@ msgstr "Meldungstyp"
 msgid "alarms.messagetext"
 msgstr "Text"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_routing.html:9
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:119
-msgid "alarm.route.info"
-msgstr "Anfahrt-Information"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:95
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:91
 msgid "alarm.addedalert"
 msgstr "Alarmeingang: Ein neuer Einsatz wurde angelegt oder aktiviert!"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:107
-msgid "alarm.edit"
-msgstr "bearbeiten"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:109
-msgid "alarm.finish"
-msgstr "abschließen"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:112
-msgid "alarm.activate"
-msgstr "aktivieren"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:115
-msgid "alarm.archive"
-msgstr "archivieren"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:120
-msgid "alarm.route"
-msgstr "Route anzeigen/ausblenden"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:123
-msgid "alarm.print"
-msgstr "Drucken..."
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:133
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:101
 msgid "alarms.addtitle"
 msgstr "Einsatz erstellen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:134
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:102
 msgid "alarms.autorefresh"
 msgstr "Einsätze automatisch aktualisieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:135
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:103
 msgid "alarms.archivetitle"
 msgstr "Ausgewählte Einsätze archivieren"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:104
 msgid "alarms.filter.title"
 msgstr "Einsätze filtern"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:136
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:104
 msgid "alarms.filter.activetitle"
 msgstr "Einsatzfilter aktiv"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:161
-msgid "alarms.noactive"
-msgstr "keine Einsätze"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:175
-msgid "alarms.showfax"
-msgstr "Alarmfax anzeigen (pdf)"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:176
-msgid "alarms.messagestitle"
-msgstr "%(number)s Meldungen vorhanden"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:177
-msgid "alarms.typeautomatic"
-msgstr "Einsatz aus Fax erzeugt"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:178
-msgid "alarms.typemanual"
-msgstr "Einsatz manuell erzeugt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:180
-msgid "alarms.titlemap"
-msgstr "Kartenposition gesetzt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:231
 msgid "alarms.finishquestion"
 msgstr "Soll die gewählte Einsatz abgeschlossen werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:243
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:190
 msgid "alarms.activatequestion"
 msgstr "Soll die gewählte Einsatz aktiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:257
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:204
 msgid "alarms.archivequestion"
 msgstr "Sollen die gewählten Einsätze wirklich archiviert werden?"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:270
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:217
 msgid "alarms.archivequestionnoselection"
 msgstr ""
 "Kein Einsatz zum Archivieren ausgewählt. Auswahl mehrerer Einsätze mit "
 "gehaltener <STRG> Taste möglich."
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:276
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:223
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
 
@@ -1404,48 +1408,55 @@ msgstr ""
 "Reihenfolge nacheinander ausgeführt werden, wenn ein Systemevent eintritt. "
 "Die Reihenfolge der Handler kann per Drag&Drop geändert werden."
 
-#: emonitor/modules/events/templates/admin.events.html:23
+#: emonitor/modules/events/templates/admin.events.html:22
+msgid "events.nodefinitionfound"
+msgstr ""
+"Keine Definition vorhanden: Wenn eine Display-Steuerung erfolgen soll, muss "
+"mindestens für ein Event ein Handler definiert werden. Details und "
+"Beispielkonfigurationen sind in der Hilfe (oben rechts) zu finden."
+
+#: emonitor/modules/events/templates/admin.events.html:27
 msgid "events.name"
 msgstr "Eventname"
 
-#: emonitor/modules/events/templates/admin.events.html:24
+#: emonitor/modules/events/templates/admin.events.html:28
 msgid "events.possible"
 msgstr "definiert / möglich"
 
-#: emonitor/modules/events/templates/admin.events.html:30
+#: emonitor/modules/events/templates/admin.events.html:34
 msgid "event.detailtitle"
 msgstr "Details anzeigen"
 
-#: emonitor/modules/events/templates/admin.events.html:40
+#: emonitor/modules/events/templates/admin.events.html:44
 #: emonitor/modules/events/templates/admin.events_actions.html:13
 msgid "event.handler"
 msgstr "Event-Handler"
 
-#: emonitor/modules/events/templates/admin.events.html:41
+#: emonitor/modules/events/templates/admin.events.html:45
 msgid "event.parameters"
 msgstr "Parameter"
 
-#: emonitor/modules/events/templates/admin.events.html:44
+#: emonitor/modules/events/templates/admin.events.html:48
 msgid "event.addtitle"
 msgstr "Event-Handler hinzufügen"
 
-#: emonitor/modules/events/templates/admin.events.html:56
+#: emonitor/modules/events/templates/admin.events.html:60
 msgid "event.deletetitle"
 msgstr "Event-Handler löschen"
 
-#: emonitor/modules/events/templates/admin.events.html:57
+#: emonitor/modules/events/templates/admin.events.html:61
 msgid "handler.edittitle"
 msgstr "Event-Handler bearbeiten"
 
-#: emonitor/modules/events/templates/admin.events.html:64
+#: emonitor/modules/events/templates/admin.events.html:68
 msgid "handler.notdefined"
 msgstr "- nicht definiert -"
 
-#: emonitor/modules/events/templates/admin.events.html:72
+#: emonitor/modules/events/templates/admin.events.html:76
 msgid "events.updateorder"
 msgstr "Reihenfolge speichern"
 
-#: emonitor/modules/events/templates/admin.events.html:81
+#: emonitor/modules/events/templates/admin.events.html:85
 msgid "events.delete"
 msgstr "Soll der gewählte Handler des Events wirklich gelöscht werden?"
 
@@ -1502,19 +1513,19 @@ msgstr "Straßenname..."
 msgid "streets.search.button"
 msgstr "Suche starten..."
 
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:76
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:67
 msgid "frontend.alarmobject.header"
 msgstr "Einsatzobjekte"
 
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:77
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:68
 msgid "frontend.location.filter"
 msgstr "Filter"
 
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:78
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:69
 msgid "frontend.location.filterall"
 msgstr "- kein Filter -"
 
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:96
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:87
 msgid "frontend.alamobject.details"
 msgstr "Details anzeigen/ausblenden"
 
@@ -1692,27 +1703,35 @@ msgstr "(%(count)s OpenStreetMap-Objekte vorhanden)"
 msgid "admin.itemtypes.osmload"
 msgstr "Objekte von OpenStreetMap laden"
 
-#: emonitor/modules/maps/__init__.py:33
+#: emonitor/modules/maps/__init__.py:36
 msgid "module.maps"
 msgstr "Straßenkarte"
 
-#: emonitor/modules/maps/__init__.py:34
+#: emonitor/modules/maps/__init__.py:37
 msgid "maps_map"
 msgstr "Karte"
 
-#: emonitor/modules/maps/content_admin.py:95
+#: emonitor/modules/maps/__init__.py:38
+msgid "maps.base"
+msgstr "Straßenkarte"
+
+#: emonitor/modules/maps/__init__.py:39
+msgid "module.maps.position"
+msgstr "Startposition"
+
+#: emonitor/modules/maps/content_admin.py:103
 msgid "settings.map.loadinginprogress"
 msgstr "Download gestartet"
 
-#: emonitor/modules/maps/content_admin.py:97
+#: emonitor/modules/maps/content_admin.py:105
 msgid "settings.map.loadingstarted"
 msgstr "Tile-Download in Bearbeitung..."
 
-#: emonitor/modules/maps/templates/admin.map.html:18
+#: emonitor/modules/maps/templates/admin.map.html:22
 msgid "settings.map.listtitle"
 msgstr "Vorhandene Karten"
 
-#: emonitor/modules/maps/templates/admin.map.html:19
+#: emonitor/modules/maps/templates/admin.map.html:23
 #: emonitor/modules/maps/templates/admin.map_actions.html:26
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:18
 msgid "settings.map.info"
@@ -1722,109 +1741,113 @@ msgstr ""
 "standardmäßig als default angenommen, über Drag&Drop kann die Reihenfolge "
 "geändert werden."
 
-#: emonitor/modules/maps/templates/admin.map.html:23
+#: emonitor/modules/maps/templates/admin.map.html:27
 #: emonitor/modules/maps/templates/admin.map_actions.html:29
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:21
 msgid "settings.map.name"
 msgstr "Kartenname"
 
-#: emonitor/modules/maps/templates/admin.map.html:24
+#: emonitor/modules/maps/templates/admin.map.html:28
 #: emonitor/modules/maps/templates/admin.map_actions.html:34
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:26
 msgid "settings.map.path"
 msgstr "Datenpfad"
 
-#: emonitor/modules/maps/templates/admin.map.html:26
+#: emonitor/modules/maps/templates/admin.map.html:30
 msgid "settings.map.addtitle"
 msgstr "Karte hinzufügen"
 
-#: emonitor/modules/maps/templates/admin.map.html:31
+#: emonitor/modules/maps/templates/admin.map.html:35
 msgid "settings.maps.nodata"
 msgstr "- keine Karten definiert -"
 
-#: emonitor/modules/maps/templates/admin.map.html:40
+#: emonitor/modules/maps/templates/admin.map.html:44
 msgid "settings.map.defaultmap"
 msgstr "(Standardkarte)"
 
-#: emonitor/modules/maps/templates/admin.map.html:45
+#: emonitor/modules/maps/templates/admin.map.html:49
 msgid "settings.map.deletetitle"
 msgstr "Karte löschen"
 
-#: emonitor/modules/maps/templates/admin.map.html:46
+#: emonitor/modules/maps/templates/admin.map.html:50
 msgid "settings.map.detailtitle"
 msgstr "Karte bearbeiten"
 
-#: emonitor/modules/maps/templates/admin.map.html:51
+#: emonitor/modules/maps/templates/admin.map.html:55
 msgid "settings.map.ordersave"
 msgstr "Reihenfolge speichern"
 
-#: emonitor/modules/maps/templates/admin.map.html:52
+#: emonitor/modules/maps/templates/admin.map.html:56
 msgid "settings.map.itemscount"
 msgstr "(%(count)s Karten vorhanden)"
 
-#: emonitor/modules/maps/templates/admin.map.html:57
+#: emonitor/modules/maps/templates/admin.map.html:71
+msgid "settings.map.delquestion"
+msgstr "Soll die gewählte Karte wirklich gelöscht werden?"
+
+#: emonitor/modules/maps/templates/admin.map.position.html:24
 msgid "settings.map.positiontitle"
 msgstr "Standardkartenposition"
 
-#: emonitor/modules/maps/templates/admin.map.html:58
+#: emonitor/modules/maps/templates/admin.map.position.html:25
 msgid "settings.map.positioninfo"
 msgstr ""
 "Wenn für eine Kartenanzeige keine Koordinaten definiert worden sind, wird "
 "die Standardposition verwendet. Richten Sie die Mitte der Karte auf den "
 "gewünschten Punkt aus und bestätigen Sie mit 'Position speichern'."
 
-#: emonitor/modules/maps/templates/admin.map.html:60
-msgid "settings.map.positionerror"
-msgstr "Positionsfehler"
+#: emonitor/modules/maps/templates/admin.map.position.html:29
+msgid "settings.map.searchcity"
+msgstr "Ort/Stadt in OpenStreetMap suchen"
 
-#: emonitor/modules/maps/templates/admin.map.html:68
+#: emonitor/modules/maps/templates/admin.map.position.html:31
+msgid "settings.map.search"
+msgstr "Suche starten"
+
+#: emonitor/modules/maps/templates/admin.map.position.html:41
 msgid "settings.map.startposition"
 msgstr "Karten-Mittelpunkt"
 
-#: emonitor/modules/maps/templates/admin.map.html:69
+#: emonitor/modules/maps/templates/admin.map.position.html:42
 #: emonitor/modules/maps/templates/admin.map_actions.html:75
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:66
 msgid "settings.map.lat"
 msgstr "Latitude"
 
-#: emonitor/modules/maps/templates/admin.map.html:70
+#: emonitor/modules/maps/templates/admin.map.position.html:43
 #: emonitor/modules/maps/templates/admin.map_actions.html:76
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:67
 msgid "settings.map.lng"
 msgstr "Longitude"
 
-#: emonitor/modules/maps/templates/admin.map.html:71
+#: emonitor/modules/maps/templates/admin.map.position.html:44
 msgid "settings.map.zoom"
 msgstr "Zoomfaktor"
 
-#: emonitor/modules/maps/templates/admin.map.html:75
+#: emonitor/modules/maps/templates/admin.map.position.html:48
 msgid "settings.map.homeposition"
 msgstr "Start-Position für Navigation (Gerätehaus)"
 
-#: emonitor/modules/maps/templates/admin.map.html:76
+#: emonitor/modules/maps/templates/admin.map.position.html:49
 msgid "settings.map.homelat"
 msgstr "Latitude"
 
-#: emonitor/modules/maps/templates/admin.map.html:77
+#: emonitor/modules/maps/templates/admin.map.position.html:50
 msgid "settings.map.homelng"
 msgstr "Longitude"
 
-#: emonitor/modules/maps/templates/admin.map.html:78
+#: emonitor/modules/maps/templates/admin.map.position.html:51
 msgid "settings.map.homeinfo"
 msgstr ""
 "Durch Doppleklick auf die Karte kann die Startposition für die Navigation "
 "gewählt werden. in der Regel wird das der Standort des Gerätehauses sein."
 
-#: emonitor/modules/maps/templates/admin.map.html:83
+#: emonitor/modules/maps/templates/admin.map.position.html:56
 msgid "settings.map.saveposition"
 msgstr "Position speichern"
 
-#: emonitor/modules/maps/templates/admin.map.html:100
-msgid "settings.map.delquestion"
-msgstr "Soll die gewählte Karte wirklich gelöscht werden?"
-
-#: emonitor/modules/maps/templates/admin.map.html:115
-#: emonitor/modules/maps/templates/admin.map.html:152
+#: emonitor/modules/maps/templates/admin.map.position.html:84
+#: emonitor/modules/maps/templates/admin.map.position.html:138
 msgid "settings.map.startmarker.info"
 msgstr "Standort Gerätehaus"
 
@@ -2120,48 +2143,48 @@ msgstr "Layoutkonfiguration der Anzeige"
 msgid "monitorlayouts.triggerinuse"
 msgstr "Trigger wird bereits verwendet"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:75
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:74
 msgid "monitorlayouts.mintime"
 msgstr "Mindestanzeigezeit"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:76
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:75
 msgid "monitorlayouts.mintimelabel"
 msgstr "(in Sekunden, 0 für kein Limit) "
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:80
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:79
 msgid "monitorlayouts.maxtime"
 msgstr "Maximalanzeigezeit"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:81
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:80
 msgid "monitorlayouts.maxtimelabel"
 msgstr "(in Sekunden, 0 für kein Limit) "
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:85
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:84
 msgid "monitorlayouts.nextid"
 msgstr "Folgelayout"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:87
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:86
 msgid "monitorlayouts.nonextlayout"
 msgstr "- keines -"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:92
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:91
 msgid "monitorlayouts.nextidlabel"
 msgstr ""
 "Nach der Maximalanzeigezeit wird automatisch in das Folgelayout gewechselt. "
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:96
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:95
 msgid "monitorlayouts.save"
 msgstr "Speichern"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:97
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:96
 msgid "monitorlayouts.cancel"
 msgstr "Abbrechen"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:105
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:104
 msgid "monitorlayouts.modules"
 msgstr "Widgets"
 
-#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:118
+#: emonitor/modules/monitors/templates/admin.monitors.layout_actions.html:117
 msgid "monitorlayouts.modulesinfo"
 msgstr "Folgende Module bieten Widgets für die Monitoranzeige."
 
@@ -3242,19 +3265,19 @@ msgstr "Speichern"
 msgid "textmod.replace.cancel"
 msgstr "Abbrechen"
 
-#: emonitor/modules/user/__init__.py:17
+#: emonitor/modules/user/__init__.py:18
 msgid "module.users"
 msgstr "Benutzerverwaltung"
 
-#: emonitor/modules/user/__init__.py:18
+#: emonitor/modules/user/__init__.py:19
 msgid "userlevel.notset"
 msgstr "- nicht gesetzt -"
 
-#: emonitor/modules/user/__init__.py:19
+#: emonitor/modules/user/__init__.py:20
 msgid "userlevel.admin"
 msgstr "Administrator"
 
-#: emonitor/modules/user/__init__.py:20
+#: emonitor/modules/user/__init__.py:21
 msgid "userlevel.user"
 msgstr "Benutzer"
 
@@ -3435,3 +3458,9 @@ msgstr "Abbrechen"
 
 #~ msgid "module.usermodule"
 #~ msgstr "Benutzerverwaltung"
+
+#~ msgid "module.alarmkeys.upload"
+#~ msgstr "Ausrückeordnung hochladen"
+
+#~ msgid "settings.map.positionerror"
+#~ msgstr "Positionsfehler"

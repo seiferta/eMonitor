@@ -17,6 +17,9 @@ class MapsModule(Module):
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/maps/templates" % app.config.get('PROJECT_ROOT'))
 
+        # subnavigation
+        self.adminsubnavigation = [('/admin/maps', 'maps.base'), ('/admin/maps/position', 'module.maps.position')]
+
         # create database tables
         from .map import Map
         classes.add('map', Map)
@@ -32,6 +35,8 @@ class MapsModule(Module):
         # translations
         babel.gettext(u'module.maps')
         babel.gettext(u'maps_map')
+        babel.gettext(u'maps.base')
+        babel.gettext(u'module.maps.position')
 
     def checkDefinition(self):
         if db.session.query(classes.get('map')).count() == 0:

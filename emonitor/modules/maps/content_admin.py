@@ -9,54 +9,62 @@ OBSERVERACTIVE = 1
 
 
 def getAdminContent(self, **params):
+    module = request.view_args['module'].split('/')
 
-    if request.method == 'POST':
-        if request.form.get('action') == 'savemap':  # save map
-            if request.form.get('map_id') != 'None':  # update
-                _map = classes.get('map').getMaps(request.form.get('map_id'))
-                _map.name = request.form.get('map_name')
-                _map.path = request.form.get('map_path')
-                _map.maptype = int(request.form.get('map_type'))
-                _map.tileserver = request.form.get('map_tileserver')
-                _map.default = request.form.get('map_default')
-            else:  # add map
-                _map = Map(request.form.get('map_name'), request.form.get('map_path'), int(request.form.get('map_type')), request.form.get('map_tileserver'), int(request.form.get('map_default')))
-                db.session.add(_map)
-            db.session.commit()
+    if len(module) > 1:
+        if module[1] == 'position':
+            if request.method == 'POST':
+                if request.form.get('action') == 'saveposition':  # safe default map position and home position
+                    classes.get('settings').set('defaultLat', request.form.get('default_lat', ''))
+                    classes.get('settings').set('defaultLng', request.form.get('default_lng', ''))
+                    classes.get('settings').set('defaultZoom', request.form.get('default_zoom', ''))
 
-        elif request.form.get('action') == 'createmap':  # add map
-            params.update({'map': Map('', '', 0, '', 0), 'progress': map_utils.LOADINPROGRESS, 'tilebase': current_app.config.get('PATH_TILES'), 'settings': classes.get('settings')})
-            return render_template('admin.map_actions.html', **params)
+                    classes.get('settings').set('homeLat', request.form.get('home_lat', ''))
+                    classes.get('settings').set('homeLng', request.form.get('home_lng', ''))
 
-        elif request.form.get('action').startswith('detailmap_'):  # edit map
-            params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': classes.get('settings'), 'tilebase': current_app.config.get('PATH_TILES'), 'progress': map_utils.LOADINPROGRESS, 'tiles': '\', \''.join(classes.get('settings').getMapTiles(int(request.form.get('action').split('_')[-1])))})
-            return render_template('admin.map_actions.html', **params)
+                    db.session.commit()
 
-        elif request.form.get('action').startswith('deletemap_'):  # delete map
-            db.session.delete(Map.getMaps(int(request.form.get('action').split('_')[-1])))
-            db.session.commit()
+            params.update({'settings': classes.get('settings')})
+            return render_template('admin.map.position.html', **params)
 
-        elif request.form.get('action') == 'ordersetting':  # change map order
-            maps = []
-            for _id in request.form.getlist('mapids'):
-                _map = Map.getMaps(int(_id))
-                maps.append(dict(name=_map.__dict__['name'], path=_map.__dict__['path'], maptype=_map.__dict__['maptype'], tileserver=_map.__dict__['tileserver'], default=_map.__dict__['default']))
-            db.session.query(Map).delete()  # delete all maps
-            for _map in maps:  # add maps in new order
-                db.session.add(Map(_map['name'], _map['path'], _map['maptype'], _map['tileserver'], _map['default']))
-            db.session.commit()
+    else:
+        if request.method == 'POST':
+            if request.form.get('action') == 'savemap':  # save map
+                if request.form.get('map_id') != 'None':  # update
+                    _map = classes.get('map').getMaps(request.form.get('map_id'))
+                    _map.name = request.form.get('map_name')
+                    _map.path = request.form.get('map_path')
+                    _map.maptype = int(request.form.get('map_type'))
+                    _map.tileserver = request.form.get('map_tileserver')
+                    _map.default = request.form.get('map_default')
+                else:  # add map
+                    _map = Map(request.form.get('map_name'), request.form.get('map_path'), int(request.form.get('map_type')), request.form.get('map_tileserver'), int(request.form.get('map_default')))
+                    db.session.add(_map)
+                db.session.commit()
 
-        elif request.form.get('action') == 'saveposition':  # safe default map position and home position
-            classes.get('settings').set('defaultLat', request.form.get('default_lat', ''))
-            classes.get('settings').set('defaultLng', request.form.get('default_lng', ''))
-            classes.get('settings').set('defaultZoom', request.form.get('default_zoom', ''))
+            elif request.form.get('action') == 'createmap':  # add map
+                params.update({'map': Map('', '', 0, '', 0), 'progress': map_utils.LOADINPROGRESS, 'tilebase': current_app.config.get('PATH_TILES'), 'settings': classes.get('settings')})
+                return render_template('admin.map_actions.html', **params)
 
-            classes.get('settings').set('homeLat', request.form.get('home_lat', ''))
-            classes.get('settings').set('homeLng', request.form.get('home_lng', ''))
+            elif request.form.get('action').startswith('detailmap_'):  # edit map
+                params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': classes.get('settings'), 'tilebase': current_app.config.get('PATH_TILES'), 'progress': map_utils.LOADINPROGRESS, 'tiles': '\', \''.join(classes.get('settings').getMapTiles(int(request.form.get('action').split('_')[-1])))})
+                return render_template('admin.map_actions.html', **params)
 
-            db.session.commit()
+            elif request.form.get('action').startswith('deletemap_'):  # delete map
+                db.session.delete(Map.getMaps(int(request.form.get('action').split('_')[-1])))
+                db.session.commit()
 
-    params.update({'maps': classes.get('map').getMaps(), 'settings': classes.get('settings')})
+            elif request.form.get('action') == 'ordersetting':  # change map order
+                maps = []
+                for _id in request.form.getlist('mapids'):
+                    _map = Map.getMaps(int(_id))
+                    maps.append(dict(name=_map.__dict__['name'], path=_map.__dict__['path'], maptype=_map.__dict__['maptype'], tileserver=_map.__dict__['tileserver'], default=_map.__dict__['default']))
+                db.session.query(Map).delete()  # delete all maps
+                for _map in maps:  # add maps in new order
+                    db.session.add(Map(_map['name'], _map['path'], _map['maptype'], _map['tileserver'], _map['default']))
+                db.session.commit()
+
+    params.update({'maps': classes.get('map').getMaps()})
     return render_template('admin.map.html', **params)
 
 
@@ -125,5 +133,8 @@ def getAdminData(self, **params):
         #scheduler.add_date_job(parseOsmData, datetime.datetime.fromtimestamp(time.time() + 2), kwargs={'lat': lat, 'lng': lng, 'path': current_app.config.get('PATH_DATA')})
         scheduler.add_single_job(parseOsmData, {'lat': lat, 'lng': lng, 'path': current_app.config.get('PATH_DATA')})
         return {'job': 'started'}
+
+    elif request.args.get('action') == 'findcity':  # search citystring and deliver position
+        return map_utils.loadPositionOfCity(request.args.get('cityname'))
 
     return ""
