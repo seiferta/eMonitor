@@ -1,6 +1,8 @@
+import os, imp
 import requests, yaml
 from xml.dom import minidom
 from emonitor.extensions import db
+from flask import current_app
 
 
 class MapItem(db.Model):
@@ -46,27 +48,72 @@ class MapItem(db.Model):
             return db.session.query(MapItem).filter_by(osmid='%s' % osmid).first()
 
     @staticmethod
-    def loadFromOSM(itemtype, area={}):
-        SEARCHSTRING = 'node(%s,%s,%s,%s)[%s];(._;>;);out;' % (area['min_latdeg'], area['min_lngdeg'], area['max_latdeg'], area['max_lngdeg'], itemtype['filter'])  # search all objects
+    def loadFromOSM(itemtype, city):
+        SEARCHSTRING = 'area["name"="%s"];%s(area)%s;(._;>;);out;' % (city, itemtype['itemtype'], itemtype['filter'])  # search all objects
 
         r = requests.post(MapItem.URL, data={'data': SEARCHSTRING})
         xmldoc = minidom.parseString(r._content)
         items = []
-        for node in xmldoc.getElementsByTagName('node'):
-            data = {}
+        if itemtype['itemtype'] == 'node':
+            for node in xmldoc.getElementsByTagName('node'):
+                data = {}
 
-            for attr in [a for a in node.attributes.keys() if a in itemtype['attributes']]:
-                data[attr] = node.attributes[attr].value
+                for attr in [a for a in node.attributes.keys() if a in itemtype['attributes']]:
+                    data[attr] = node.attributes[attr].value
 
-            for c in node.childNodes:
-                if c.nodeType == minidom.Node.ELEMENT_NODE:
-                    _t = ''
-                    for attr in c.attributes.keys():
-                        if attr == 'k' and c.attributes[attr].value in itemtype['attributes']:
-                            _t = c.attributes[attr].value
-                        elif attr == 'v' and _t != '':
-                            data[_t] = c.attributes[attr].value
-            items.append(data)
+                for c in node.childNodes:
+                    if c.nodeType == minidom.Node.ELEMENT_NODE:
+                        _t = ''
+                        for attr in c.attributes.keys():
+                            if attr == 'k' and c.attributes[attr].value in itemtype['attributes']:
+                                _t = c.attributes[attr].value
+                            elif attr == 'v' and _t != '':
+                                data[_t] = c.attributes[attr].value
+                items.append(data)
+
+        elif itemtype['itemtype'] == 'way':
+            nodes = {}
+            for node in xmldoc.getElementsByTagName('node'):  # get nodes
+                nodes[node.attributes['id'].value] = {}
+                for attr in [a for a in node.attributes.keys() if a in itemtype['attributes']]:
+                    nodes[node.attributes['id'].value][attr] = node.attributes[attr].value
+
+            for way in xmldoc.getElementsByTagName('way'):  # build ways from nodes
+                i = dict(id=way.attributes['id'].value, nodes=[])
+                for p in [p for p in way.childNodes if p.nodeName == 'nd']:
+                    i['nodes'].append(nodes[p.attributes['ref'].value])
+                items.append(i)
 
         return items
 
+    @staticmethod
+    def getLayouters():  # get all layouters
+        ret = []
+        for f in [f for f in os.listdir('%s/emonitor/modules/mapitems/inc/' % current_app.config.get('PROJECT_ROOT')) if f.endswith('.py') and f.startswith('layout_')]:
+            cls = imp.load_source('emonitor.modules.mapitems.inc', 'emonitor/modules/mapitems/inc/%s' % f)
+            layouter = getattr(cls, cls.__all__[0])()
+            if isinstance(layouter, ItemLayout):
+                ret.append(layouter)
+        return ret
+
+    @staticmethod
+    def _buildTiles(items, definition):  # build tiles with layouter
+        for layouter in MapItem.getLayouters():
+            if layouter.getName() == definition['parameters']['layout']:
+                layouter.buildTiles(items, definition['attributes'])
+                break
+
+
+class ItemLayout:
+    __name__ = "defaultlayout"
+    __version__ = '0.0'
+
+    itemtype = ''  # definition node|way
+    filter = ''
+    attributes = []
+
+    def getName(self):
+        return self.__name__
+
+    def buildTiles(self, items, attributes):
+        pass

@@ -1,56 +1,73 @@
 {% extends "admin.html" %}
 
+{% block style %}
+<style>
+    fieldset { border: 1px solid silver; padding: 5px; margin-bottom: 20px; }
+    legend { font-size: 14px; border-width: 0; padding: 5px; width: auto; }
+</style>
+{% endblock %}
+
 {%  block subnavigation %}
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
 {% block content %}
-    <h2>{{ _('mapitems.header.edit') }}</h2>
+    <h2 xmlns="http://www.w3.org/1999/html">{{ _('mapitems.header.edit') }}</h2>
     <form method="post">
         <p>
             <label>{{ _('mapitems.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ itemtype.name }}" style="width:99%"/>
+                <input type="text" name="edit_name" value="{{ itemtype.name }}" style="width:100%"/>
             </label>
         </p>
         <p>
-            <label>{{ _('mapitems.filter') }}:<br/>
-                <input type="text" name="edit_filter" value="{{ itemtype.filter }}" style="width:99%"/><br/>
-                <small>{{ _('mapitems.filter.info') }}</small>
+            {{ _('mapitems.cities') }}:<br/>
+            {%- for city in cities %}
+            <label>
+                <input type="checkbox" name="edit_cityid" value="{{ city.id }}"{% if city.id in itemtype.cities %} checked="checked"{% endif %}/> {{ city.name }}
             </label>
-        </p>
-        <p>
-            <label>{{ _('mapitems.attributes') }}:<br/>
-                <textarea name="edit_attributes" style="width:99%;min-height:200px;">{{ itemtype.attributes|join("\r\n") }}</textarea><br/>
-                <small>{{ _('mapitems.attributes.info') }}</small>
-            </label>
+            {%- endfor %}
         </p>
         <p>
             <label>{{ _('mapitems.keys') }}:<br/>
-                <textarea name="edit_keys" style="width:99%;min-height:200px;">{{ itemtype.key|join("\r\n") }}</textarea><br/>
+                <textarea name="edit_keys" style="width:100%; min-height:100px;">{{ itemtype.key|join("\r\n") }}</textarea><br/>
                 <small>{{ _('mapitems.keys.info') }}</small>
             </label>
         </p>
         <p>
+            <label style="width: auto;padding-right:40px;">
+                <input type="checkbox" name="edit_tileserver" value="1" {% if itemtype.parameters.tileserver=='1' %} checked="checked"{% endif %}/>
+                {{ _('mapitems.tileserver') }}
+            </label><button type="button" name="action" onclick="buildTiles()"><i class="fa fa-picture-o"></i> {{ _('mapitems.tileserver.build') }}</button>
+            <br/>
+            <small>{{ _('mapitems.tileserver.info') }}</small><br/>
+        </p>
+        <p>
             <label>{{ _('mapitems.parameter') }}:<br/>
-            <!--<textarea name="edit_parameters" style="width:99%;min-height:200px;">{{ itemtype.parameters }}</textarea><br/>-->
-            <select name="edit_layout">
+            <select name="edit_layout" onchange="changeDefinition()" style="width: 50%;">
                 <option value="">{{ _('itemtype.noparams') }}</option>
-                <option value="hydrant" {% if itemtype.parameters.layout=='hydrant' %}selected="selected"{% endif %}>{{ _('mapitems.params.hydrant') }}</option>
-                <option value="ffentry" {% if itemtype.parameters.layout=='ffentry' %}selected="selected"{% endif %}>{{ _('mapitems.params.ffentry') }}</option>
+                {%- for layouter in layouters %}
+                <option value="{{ layouter.getName() }}"{% if itemtype.parameters.layout==layouter.getName() %} selected="selected"{% endif %}>{{ _('mapitems.params.'+layouter.getName()) }}</option>
+                {%- endfor %}
             </select><br/>
             <small>{{ _('mapitems.parameters.info') }}</small>
             </label>
         </p>
-        <p style="margin-bottom:20px">
-            <label>
-                <input type="checkbox" name="edit_tileserver" value="1" {% if itemtype.parameters.tileserver=='1' %} checked="checked"{% endif %}/>
-                {{ _('mapitems.tileserver') }}<br/>
-            </label>
-            <br/>
-            <small>{{ _('mapitems.tileserver.info') }}</small><br/>
-            <button type="button" name="action" onclick="buildTiles()"><i class="fa fa-picture-o"></i> {{ _('mapitems.tileserver.build') }}</button>
-        </p>
-
+        <fieldset>
+            <legend>{{ _('mapitems.definitionparams') }}</legend>
+            <p>
+                <label>{{ _('mapitems.filter') }}:<br/>
+                    <input type="text" name="edit_filter" value="{{ itemtype.filter }}" style="width:100%"/><br/>
+                    <small>{{ _('mapitems.filter.info') }}</small>
+                </label>
+            </p>
+            <p>
+                <label>{{ _('mapitems.attributes') }}:<br/>
+                    <textarea name="edit_attributes" style="width:100%;min-height:100px;">{{ itemtype.attributes|join("\r\n") }}</textarea><br/>
+                    <small>{{ _('mapitems.attributes.info') }}</small>
+                </label>
+            </p>
+            <input type="hidden" name="edit_itemtype" value="{{ itemtype.itemtype }}"/>
+        </fieldset>
         <p>
             <button type="submit" name="action" value="updateitemtypes" class="save"><i class="fa fa-check"></i> {{ _('mapitems.save') }}</button>
             <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('mapitems.cancel') }}</button>
@@ -67,5 +84,18 @@
                 console.log(result);
             }
         });
+    }
+
+    var layouter = [];
+    layouter[''] = {"itemtype": '', "filter": '', "attributes": ""};
+    {%- for layouter in layouters %}
+    layouter['{{ layouter.getName() }}'] = {"itemtype": '{{ layouter.itemtype|safe }}', "filter": '{{ layouter.filter|safe }}', "attributes": "{{ layouter.attributes|join('\\n') }}"};
+    {%- endfor %}
+
+    function changeDefinition(){
+        n = $('select[name=edit_layout]').val()
+        $('input[name=edit_itemtype]').val(layouter[n].itemtype);
+        $('input[name=edit_filter]').val(layouter[n].filter);
+        $('textarea[name=edit_attributes]').val(layouter[n].attributes);
     }
 {% endblock %}

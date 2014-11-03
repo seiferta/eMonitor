@@ -1,5 +1,11 @@
 {% extends "admin.html" %}
 
+{% block style %}
+    <style>
+        .pagination{ margin: 0; }
+        #osmstate{min-height: 10px; padding-bottom: 5px; }
+    </style>
+{% endblock %}
 {% block script %}
      <script>
         function questionDel(){
@@ -12,9 +18,13 @@
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
+
 {% block content %}
     <h2>{{ _('admin.mapitems.overview') }} - {{ itemdefinition.name }}</h2>
     <p><small>{{ _('admin.mapitems.definitioninfo') }}</small></p>
+
+    <button type="button" onclick="loadHydrants()">{{ _('admin.itemtypes.osmload') }}</button>
+    <div id="osmstate"></div>
 
     {% macro render_pagination(pagination) %}
       <ul class="pagination">
@@ -24,7 +34,7 @@
           {% if page %}
             <a href="/admin/mapitems/{{ itemdefinition.name }}/{{ page }}">{{ page }}</a>
         {% else %}
-          <span class=ellipsis>…</span>
+          <span class="ellipsis">…</span>
         {% endif %}
         </li>
       {%- endfor %}
@@ -34,7 +44,7 @@
       </ul>
     {% endmacro %}
 
-    {{ render_pagination(pagination) }}
+
 
     <form method="post" action="" style="padding-bottom:20px;">
         <div class="headrow">
@@ -43,7 +53,9 @@
                 <div class="headcell" style="width:90%;">{{ _('mapitems.parameter') }}</div>
             </div>
         </div>
-
+        <div class="headrow">
+            {{ render_pagination(pagination) }}
+        </div>
         {% if itemtypes|count==0 %}
         <div class="rownoentry">
             <p style="text-align:center">{{ _('mapitmes.nodata') }}</p>
@@ -71,9 +83,6 @@
         </div>
         <input type="hidden" name="form_id" value="admin.itemtypes.overview"/>
     </form>
-
-    <button type="button" onclick="loadHydrants()">{{ _('admin.itemtypes.osmload') }}</button>
-    <div id="osmstate"></div>
 {% endblock %}
 
 {% block script_end %}

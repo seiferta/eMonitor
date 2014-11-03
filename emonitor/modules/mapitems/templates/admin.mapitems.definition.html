@@ -6,6 +6,7 @@
             return confirm('{{ _('mapitems.delquestion') }}');
         }
     </script>
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
 {% endblock %}
 
 {%  block subnavigation %}
@@ -17,34 +18,85 @@
     <p><small>{{ _('admin.mapitems.definitioninfo') }}</small></p>
     <form method="post" action="">
         <div class="headrow">
-            <div style="margin-right:75px;margin-left:15px;">
-                <div class="headcell" style="width:20%;">{{ _('mapitems.itemtypename') }}</div>
-                <div class="headcell" style="width:40%;">{{ _('mapitems.itemtypefilter') }}</div>
-                <div class="headcell" style="width:40%;">{{ _('mapitems.itemtypeattributes') }}</div>
+            <div style="margin-right:40px;margin-left:15px;">
+                <div class="headcell" style="width:40%;">{{ _('mapitems.itemtypename') }}</div>
+                <div class="headcell" style="width:60%;">{{ _('mapitems.itemtypefilter') }}</div>
             </div>
             <button name="action" value="edititemtype_" title="{{ _('mapitems.add') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         <div id="sortable">
             {% for itemtype in itemtypes %}
             <div class="row">
-                <div style="margin-right:75px;margin-left:15px;">
-                    <div class="rowcell" style="width:20%;">
-                        {{ itemtype.name }}
-                    </div>
-                    <div class="rowcell" style="width:40%;">
-                        {{ itemtype.filter }}
-                    </div>
-                    <div class="rowcell" style="width:40%;">
-                        {{ itemtype.attributes|join(', ') }}
-                    </div>
+                <div style="margin-right:40px;margin-left:15px;">
+                    <div class="rowcell" style="width:40%;">{{ itemtype.name }}</div>
+                    <div class="rowcell" style="width:40%;">{{ itemtype.filter }}</div>
                 </div>
                 <button type="submit" name="action" value="deleteitemtype_{{ itemtype.name }}" title="{{ _('mapitems.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="edititemtype_{{ itemtype.name }}" title="{{ _('mapitems.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                <button type="button" name="action" onclick="return buildTiles('{{ itemtype.name }}')" style="margin-right:20px;" title="{{ _('mapitems.tileserver.build') }}"><i class="fa fa-picture-o"></i></button>
             </div>
             {% endfor %}
         </div>
         <div class="headrow">
-            <button type="submit" name="action" value="updateitemtypes" class="save"><i class="fa fa-check"></i> {{ _('itemtype.definition.save') }}</button>
+            <small style="float:right;margin-right:50px">{{ _('mapitems.itemscount', count=itemtypes|count) }}</small><br/>
         </div>
     </form>
+
+    <h2>{{ _('admin.mapitems.layouters.title') }}</h2>
+    <p><small>{{ _('admin.mapitems.layouters.title.info') }}</small></p>
+
+    <div class="headrow">
+        <div style="margin-right:60px;margin-left:15px;">
+            <div class="headcell" style="width:40%;">{{ _('mapitems.layouter.name') }}</div>
+            <div class="headcell" style="width:10%;text-align:right;padding-right:10px;">{{ _('mapitems.layouter.version') }}</div>
+            <div class="headcell" style="width:50%;">{{ _('mapitems.layouter.path') }}</div>
+        </div>
+    </div>
+
+    {%- for layouter in layouters %}
+    <div class="row">
+        <div style="margin-right:60px;margin-left:15px;">
+            <div class="rowcell" style="width:40%;">{{ layouter.__name__ }}</div>
+            <div class="rowcell" style="width:10%;text-align:right;padding-right:10px;">{{ layouter.__version__ }}</div>
+            <div class="rowcell" style="width:50%;">{{ layouter.__class__ }}</div>
+        </div>
+    </div>
+    {%- endfor %}
+    <p> </p>
+    <form name="form" id="requestForm" action="/admin/data/mapitems?action=uploadlayouter" method="post" enctype="multipart/form-data">
+        <p>
+            {{ _('mapitems.layouterfile') }}:<br/>
+            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
+            <input type="hidden" name="filename" id="filename"/><br/>
+            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('mapitems.test.layouterstart') }}</button>
+        </p>
+    </form>
+
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    function buildTiles(name){
+        $.ajax({ type : "POST", url : "/admin/data/mapitems?action=buildtiles&type="+name,
+            success: function(result) {
+                alert('{{ _('mapitems.tilecreation.started') }}');
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        $('#requestForm').ajaxForm({
+            success: function(result){
+                if(result == "ok"){
+                     window.location.href='/admin/mapitems/definition';
+                }else if (result!=""){
+                    alert(result);
+                    $('#requestForm').resetForm();
+                }else{
+                    $('#requestForm').resetForm();
+                    return false;
+                }
+            }
+        });
+    });
 {% endblock %}
