@@ -49,16 +49,16 @@ L.EmonitorMarkers = L.Class.extend({
             var markers_route = this._alarmroute.addTo(this._map);
         }
 
-        map.emomitoroptions = this.options;
+        map.emonitoroptions = this.options;
 
         /* marker section */
         map.addMarker=function(lat, lng, prio, moveable){
             var m;
             if(lat && lng){
                 if (prio){
-                    m = new L.Marker(new L.LatLng(lat, lng), {icon:this.emomitoroptions.colorcode[prio],draggable:moveable});
+                    m = new L.Marker(new L.LatLng(lat, lng), {icon:this.emonitoroptions.colorcode[parseInt(prio)],draggable:moveable});
                 }else{
-                    m = new L.Marker(new L.LatLng(lat, lng), {icon:this.emomitoroptions.redmarker,draggable:moveable});
+                    m = new L.Marker(new L.LatLng(lat, lng), {icon:this.emonitoroptions.redmarker,draggable:moveable});
                 }
                 markers_alarm.addLayer(m);
             }
