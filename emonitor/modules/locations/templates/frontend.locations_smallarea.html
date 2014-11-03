@@ -2,33 +2,35 @@
 
 {% block style %}
     <style>
-    ::-webkit-input-placeholder {color: #636363}
-    :-ms-input-placeholder {color: #636363}
-    :-moz-placeholder {color: #636363}
+    ::-webkit-input-placeholder {color: #636363;}
+    :-ms-input-placeholder {color: #636363;}
+    :-moz-placeholder {color: #636363;}
     #streetssubnorth{padding:0;background-color:#ddd;border-width:0 0 1px 0;width:100%;}
-    #streetssubcenter{border-width:0!important;padding:0!important;overflow-y:hidden}
+    #streetssubcenter{border-width:0!important;padding:0!important;overflow-y:hidden;}
 
-    h3{font-size: 1.1em; background-color:#ababab;border-bottom:1px solid #ddd;margin:0;cursor:pointer;padding:10px 0 8px 10px;overflow:visible;position:relative}
-    h3:hover{background-color:silver!important}
-    p.subcity{text-align:right;padding:5px 2px 0 0;font-size:10px;font-weight:lighter;color:#333;margin:0}
-    span.char{margin:5px;font-size:10px}
-    div.streetlist{position:relative;border:solid silver;border-width:0 1px}
-    .street{width:100%;white-space: nowrap;padding:2px;display: block;border-bottom:1px dotted #ddd}
-    .street small{color:black}
-    .street:hover{background-color:#ddd;text-decoration: none;cursor:pointer}
-    div.streets{clear:left;padding:0 0 20px 0;display:block}
+    h3{font-size: 1.1em; background-color:#ababab;border-bottom:1px solid #ddd;margin:0;cursor:pointer;padding:10px 0 8px 10px;overflow:visible;position:relative;}
+    h3:hover{background-color:silver!important;}
+    p.subcity{text-align:right;padding:5px 2px 0 0;font-size:10px;font-weight:lighter;color:#333;margin:0;}
+    span.char{margin:5px;font-size:10px;}
+    div.streetlist{position:relative;border:solid silver;border-width:0 1px;}
+    .street{width:100%;white-space: nowrap;padding:2px;display: block;border-bottom:1px dotted #ddd;}
+    .street small{color:black;}
+    .street:hover{background-color:#ddd;text-decoration: none;cursor:pointer;}
+    div.streets{clear:left;padding:0 0 20px 0;display:block;}
     div.char{border-bottom:1px solid silver;overflow:hidden;position:relative;min-height:30px;padding-top:15px;}
-    p.charname{font-size:20px;font-weight:bold;color:silver;text-align:right;position:absolute;top:-5px; right:2px}
+    p.charname{font-size:20px;font-weight:bold;color:silver;text-align:right;position:absolute;top:-5px; right:2px;}
     div.alarmobjects{border:solid silver;border-width: 0 1px;}
-    div.alarmobjects select{font-size:10px;font-weight: lighter}
+    div.alarmobjects select{font-size:10px;font-weight: lighter;}
     div.alarmobject{padding:2px 0 4px 2px;border-bottom:1px dotted #ddd;width:100%;position:relative}
-    .form-control, .btn-default{border-color: #707070 !important;height:25px;border-radius: 0;padding:2px 12px}
+    .form-control, .btn-default{border-color: #707070 !important;height:25px;border-radius: 0;padding:2px 12px;}
 
-    .object_more{position:absolute;bottom:1px;right:2px;z-index:4}
-    .object_more i{color:#ddd}
+    .object_more{position:absolute;bottom:1px;right:2px;z-index:4;}
+    .object_more i{color:#ddd;}
     .alarmobject .details{display:none;margin-left:5px;padding-left:2px;border-left:1px solid silver;}
-    .alarmobject:hover{display:block;cursor:pointer;background-color: #ddd}
-    .alarmobject:hover .object_more i{color: #636363}
+    .alarmobject:hover{display:block;cursor:pointer;background-color: #ddd;}
+    .alarmobject:hover .object_more i{color: #636363;}
+    .alarmobject ul.files {padding-left:5px;}
+    .alarmobject ul.files li{white-space: nowrap; }
     </style>
 {%  endblock %}
 
@@ -76,12 +78,13 @@
                 <div class="streets alarmobjects">
                     {%- for alarmobject in alarmobjects %}
                     <div class="alarmobject" id="alarmobject_{{ alarmobject.objecttype.id }}">
-                        <div onclick="return getMapPositionObject('{{ alarmobject.id }}')">
-                            <b>{{ alarmobject.name }}</b><br/>
+                        <div>
+                            <b onclick="return getMapPositionObject('{{ alarmobject.id }}')">{{ alarmobject.name }}</b><br/>
                             <span style="padding-left:5px;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</span>
                             <div class="details" id="object_{{ alarmobject.id }}">
                                 <em>{{ alarmobject.objecttype.name }}</em><br/>
                                 {{- alarmobject.remark -}}
+                                {% include 'frontend.alarmobject.file.html' ignore missing %}
                             </div>
                         </div>
                         <div class="object_more" onclick="return toggleObjectDetails({{ alarmobject.id }})" id="detailbutton_{{ alarmobject.id }}" title="{{ _('frontend.alamobject.details') }}">

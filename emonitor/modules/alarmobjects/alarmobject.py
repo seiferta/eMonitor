@@ -1,7 +1,9 @@
 import yaml
 from emonitor.modules.streets.street import Street
 from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
+from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.orm import relationship
 from emonitor.extensions import db
 
 
@@ -23,6 +25,8 @@ class AlarmObject(db.Model):
     active = db.Column(db.Integer)
     street = db.relationship(Street, collection_class=attribute_mapped_collection('id'))
     objecttype = db.relationship(AlarmObjectType, collection_class=attribute_mapped_collection('id'))
+    files = db.relationship(AlarmObjectFile, collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
+    #files = relationship(AlarmObjectFile.__name__, backref="alarmobjectfiles", lazy='joined', order_by=AlarmObjectFile.filetype)
 
     def __init__(self, name, streetid, remark, lat, lng, zoom, alarmplan, streetno, bma, active, objecttype):
         self.name = name

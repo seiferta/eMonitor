@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-29 14:40+0100\n"
+"POT-Creation-Date: 2014-11-03 09:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -344,16 +344,20 @@ msgstr ""
 msgid "alarmkey.cancel"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/__init__.py:30
+#: emonitor/modules/alarmobjects/__init__.py:33
 msgid "module.alarmobjects"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/__init__.py:31
+#: emonitor/modules/alarmobjects/__init__.py:34
 msgid "module.alarmobjects.base"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/__init__.py:32
+#: emonitor/modules/alarmobjects/__init__.py:35
 msgid "module.alarmobjects.types"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobject.file.html:7
+msgid "admin.alarmobjects.delfiletitle"
 msgstr ""
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:6
@@ -400,15 +404,19 @@ msgstr ""
 msgid "alarmobjects.mapset"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:53
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:54
+msgid "alarmobjects.files"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:56
 msgid "alarmobjects.deletetitle"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:54
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:57
 msgid "alarmobjects.edittitle"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:60
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.html:63
 msgid "alarmobjects.itemscount"
 msgstr ""
 
@@ -476,56 +484,76 @@ msgstr ""
 msgid "alarmobjects.type.cancel"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:26
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:32
 msgid "admin.alarmobjects.header.edit"
-msgstr ""
-
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:30
-msgid "admin.alarmobjects.name"
 msgstr ""
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:37
 msgid "admin.alarmobjects.mapinfo"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:41
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:39
+msgid "admin.alarmobject.file"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:40
+msgid "admin.alarmobject.filename"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:45
+msgid "admin.alarmobject.filestart"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:50
+msgid "admin.alarmobjects.name"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:55
 msgid "admin.alarmobjects.street_no"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:53
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:67
 msgid "admin.alarmobjects.objecttype"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:62
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:76
 msgid "admin.alarmobjects.alarmplan"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:63
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:77
 msgid "admin.alarmobjects.alarmplaninfo"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:68
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:81
 msgid "admin.alarmobjects.active"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:73
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:86
 msgid "admin.alarmobjects.bma"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:78
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:91
 msgid "admin.alarmobjects.remark"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:86
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:97
 msgid "admin.alarmobjects.updateposition"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:94
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:101
+msgid "admin.alarmobjects.files"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:111
 msgid "admin.alarmobjects.save"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:95
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:112
 msgid "admin.alarmobjects.cancel"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:152
+msgid "admin.alarmobjects.delfilequestion"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:90
@@ -897,7 +925,7 @@ msgid "alarms.sections.nodata"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:75
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:122
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:121
 msgid "alarms.sections.ignore"
 msgstr ""
 
@@ -921,31 +949,31 @@ msgstr ""
 msgid "alarms.type.types.info"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:99
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:98
 msgid "alarms.type.checkername"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:100
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:99
 msgid "alarms.type.checkerversion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:101
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:100
 msgid "alarms.type.checkerkeywords"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:102
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:101
 msgid "alarms.type.checkersections"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:128
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:127
 msgid "alarms.type.deletecheckertitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:135
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:133
 msgid "alarms.upload.checkerfile"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.type.html:138
+#: emonitor/modules/alarms/templates/admin.alarms.type.html:136
 msgid "alarms.test.checkerstart"
 msgstr ""
 
@@ -1030,19 +1058,19 @@ msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:37
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:176
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:177
 msgid "layout.resize"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:63
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:177
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:178
 msgid "layout.open"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:64
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:178
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:179
 msgid "layout.closed"
 msgstr ""
 
@@ -1459,7 +1487,7 @@ msgstr ""
 msgid "frontend.location.filterall"
 msgstr ""
 
-#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:87
+#: emonitor/modules/locations/templates/frontend.locations_smallarea.html:88
 msgid "frontend.alamobject.details"
 msgstr ""
 
@@ -1475,150 +1503,191 @@ msgstr ""
 msgid "mapitems.definition"
 msgstr ""
 
+#: emonitor/modules/mapitems/content_admin.py:124
+msgid "admin.mapitems.layouternotvalid"
+msgstr ""
+
+#: emonitor/modules/mapitems/inc/layout_ffentry.py:10
+msgid "mapitems.params.ffentry"
+msgstr ""
+
+#: emonitor/modules/mapitems/inc/layout_hydrant.py:10
+msgid "mapitems.params.hydrant"
+msgstr ""
+
 #: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:6
 msgid "mapitems.delquestion"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:16
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:17
 msgid "admin.mapitems.definition"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:17
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:17
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:18
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:24
 msgid "admin.mapitems.definitioninfo"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:21
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:22
 msgid "mapitems.itemtypename"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:22
-msgid "mapitems.itemtypefilter"
-msgstr ""
-
 #: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:23
-msgid "mapitems.itemtypeattributes"
+msgid "mapitems.itemtypefilter"
 msgstr ""
 
 #: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:25
 msgid "mapitems.add"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:41
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:34
 msgid "mapitems.deletetitle"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:42
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:35
 msgid "mapitems.edittitle"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:47
-msgid "itemtype.definition.save"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:8
-msgid "mapitems.header.edit"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:11
-msgid "mapitems.name"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:16
-msgid "mapitems.filter"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:18
-msgid "mapitems.filter.info"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:22
-msgid "mapitems.attributes"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:24
-msgid "mapitems.attributes.info"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:28
-msgid "mapitems.keys"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:30
-msgid "mapitems.keys.info"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:34
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:43
-msgid "mapitems.parameter"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:37
-msgid "itemtype.noparams"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:38
-msgid "mapitems.params.hydrant"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:39
-msgid "mapitems.params.ffentry"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:41
-msgid "mapitems.parameters.info"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:47
-msgid "mapitems.tileserver"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:50
-msgid "mapitems.tileserver.info"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:51
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:36
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:40
 msgid "mapitems.tileserver.build"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:55
-msgid "mapitems.save"
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:41
+msgid "mapitems.itemscount"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:45
+msgid "admin.mapitems.layouters.title"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:46
+msgid "admin.mapitems.layouters.title.info"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:50
+msgid "mapitems.layouter.name"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:51
+msgid "mapitems.layouter.version"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:52
+msgid "mapitems.layouter.path"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:68
+msgid "mapitems.layouterfile"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:71
+msgid "mapitems.test.layouterstart"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition.html:82
+msgid "mapitems.tilecreation.started"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:15
+msgid "mapitems.header.edit"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:18
+msgid "mapitems.name"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:23
+msgid "mapitems.cities"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:31
+msgid "mapitems.keys"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:33
+msgid "mapitems.keys.info"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:39
+msgid "mapitems.tileserver"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:42
+msgid "mapitems.tileserver.info"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:45
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:53
+msgid "mapitems.parameter"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:47
+msgid "itemtype.noparams"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:52
+msgid "mapitems.parameters.info"
 msgstr ""
 
 #: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:56
+msgid "mapitems.definitionparams"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:58
+msgid "mapitems.filter"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:60
+msgid "mapitems.filter.info"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:64
+msgid "mapitems.attributes"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:66
+msgid "mapitems.attributes.info"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:72
+msgid "mapitems.save"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.definition_actions.html:73
 msgid "mapitems.cancel"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:6
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:12
 msgid "admin.itemtypes.delquestion"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:16
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:23
 msgid "admin.mapitems.overview"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:42
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:26
+msgid "admin.itemtypes.osmload"
+msgstr ""
+
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:52
 msgid "mapitems.osmid"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:49
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:61
 msgid "mapitmes.nodata"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:63
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:75
 msgid "itemtype.deletetitle"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:64
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:76
 msgid "itemtype.edittitle"
 msgstr ""
 
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:70
+#: emonitor/modules/mapitems/templates/admin.mapitems.html:82
 msgid "itemtype.itemscount"
-msgstr ""
-
-#: emonitor/modules/mapitems/templates/admin.mapitems.html:75
-msgid "admin.itemtypes.osmload"
 msgstr ""
 
 #: emonitor/modules/maps/__init__.py:36
@@ -1840,7 +1909,7 @@ msgstr ""
 msgid "settings.map.loadtiles"
 msgstr ""
 
-#: emonitor/modules/maps/templates/frontend.map.html:84
+#: emonitor/modules/maps/templates/frontend.map.html:82
 msgid "maps.nodefaultposition"
 msgstr ""
 

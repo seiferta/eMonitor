@@ -31,8 +31,6 @@
         var map;
         var cloudmade;
         var marker = null;
-        var HydrantMarker = L.Icon.extend({options:{shadowUrl: '/img/hydrant.png', iconAnchor:[12, 41], popupAnchor:[0, -42]}});
-        var hydrant = new HydrantMarker({iconUrl:'/img/hydrant.png'});
 
         $(document).ready(function () {
             {%- for map in maps | reverse %}
@@ -44,7 +42,7 @@
             {%- endif %}
             {%- endfor %}
             {%- for tiledef in tiledefs %}
-            var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.name|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
+            var l_{{ tiledef.name|safe }} = new L.TileLayer('/tileserver/{{ tiledef.parameters.layout|safe }}/{z}/{x}/{y}', {minZoom: 12, maxZoom: 18, trackResize:true});
             {%- endfor %}
 
             map = new L.Map('map', {zoom:12, doubleClickZoom: false, trackResize: true, zoomControl: false, layers:[{% for map in maps | reverse %}l_{{map.id}}{% if not loop.last %}, {% endif %}{% endfor %}]});

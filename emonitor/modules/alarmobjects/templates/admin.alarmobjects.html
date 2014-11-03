@@ -47,9 +47,12 @@
                     <div class="rowcell" style="width:30%;">{{ alarmobject.objecttype.name or '-' }}</div>
                     <div class="rowcell" style="width:30%;">{{ alarmobject.street.name }} {{ alarmobject.streetno }}</div>
                 </div>
-                {% if alarmobject.lat!=0.0 %}
+                {%- if alarmobject.lat!=0.0 %}
                 <i class="fa fa-map-marker" style="color:#adadad" title="{{ _('alarmobjects.mapset') }}"> </i>
-                {% endif %}
+                {%- endif %}
+                {%- if alarmobject.files|count %}
+                <i class="fa fa-file-image-o" style="color:#adadad" title="{{ _('alarmobjects.files') }}"> </i>
+                {%- endif %}
                 <button type="submit" name="action" value="deletealarmobject_{{ alarmobject.id }}" title="{{ _('alarmobjects.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
                 <button type="submit" name="action" value="editalarmobject_{{ alarmobject.id }}" title="{{ _('alarmobjects.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
             </div>

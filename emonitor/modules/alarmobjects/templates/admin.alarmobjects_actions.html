@@ -5,9 +5,14 @@
     <link rel="stylesheet" href="/streets/inc/streets.css" />
 
     <style>
-        .autocomplete-suggestions{background-color:#fff;border:solid #000;border-width:0 1px 1px 1px;}
-        .autocomplete-suggestion:hover{cursor:pointer;background-color: #dddddd}
-        .leaflet-right{display:none}
+        .autocomplete-suggestions{ background-color:#fff; border:solid #000; border-width:0 1px 1px 1px; }
+        .autocomplete-suggestion:hover{ cursor:pointer; background-color: #dddddd; }
+        .leaflet-right{ display:none; }
+        ul.files{ width:100%; margin-bottom:20px; }
+        ul.files li{ width:100%; position:relative; margin:3px; padding:3px;}
+        ul.files li:hover{ background-color: #dddddd; }
+        ul.files a:hover{ color:#000; text-decoration:none; }
+        ul.files a.delete{ position:absolute; right:3px; }
     </style>
 {%  endblock %}
 
@@ -16,6 +21,7 @@
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.emonitormarkers.js"> </script>
+    <script type="text/javascript" language="javascript" src="/alarms/inc/jquery.form.js"> </script>
 {% endblock %}
 
 {%  block subnavigation %}
@@ -25,67 +31,78 @@
 {% block content %}
     <h2>{{ _('admin.alarmobjects.header.edit') }}</h2>
 
-    <form method="post">
+    <form name="form" id="requestForm" action="/admin/data/alarmobjects?action=uploadfile" method="post" enctype="multipart/form-data" style="width:50%; float:right;">
+        <div style="width:100%;padding-bottom:20px;">
+            <div class="osm_div" id="map" style="margin-top:14px;min-height:450px!important;"> </div>
+            {{ _('admin.alarmobjects.mapinfo') }}
+        </div>
+        <h4>{{ _('admin.alarmobject.file') }}</h4>
+        <label>{{ _('admin.alarmobject.filename') }}:<br>
+            <input type="text" name="name" style="width:100%;"/>
+        </label>
+        <input id="uploadfile" type="file" size="45" name="uploadfile" class="input" style="width:100%;">
+        <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/><br/>
+        <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('admin.alarmobject.filestart') }}</button>
+    </form>
+
+    <form method="post" style="width:50%;float:left;padding-right:20px;">
         <p>
             <label>{{ _('admin.alarmobjects.name') }}:<br/>
                 <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
             </label>
         </p>
-        <div style="width:99%;position:relative;">
-            <div style="float:right;width:50%;">
-                <div class="osm_div" id="map" style="margin-top:14px;min-height:450px!important;"> </div>
-                {{ _('admin.alarmobjects.mapinfo') }}
-            </div>
-            <div style="width:49%;">
-                <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
-                    <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
-                        <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
-                        <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.street.id }}"/>
-                    </label>
-                </p>
-                <p style="width:20%;float:left">
-                    <br/>
-                    <label>
-                        <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
-                    </label>
-                </p>
-                <p style="clear:left;">
-                    <label>{{ _('admin.alarmobjects.objecttype') }}:<br/>
-                        <select name="edit_objecttype" style="width:100%">
-                            {%- for alarmobjecttype in alarmobjecttypes %}
-                            <option value="{{ alarmobjecttype.id }}"{%- if alarmobject.objecttype.id==alarmobjecttype.id %} selected="selected"{%- endif %}>{{ alarmobjecttype.name }}</option>
-                            {%- endfor %}
-                        </select>
-                    </label>
-                </p>
-                <p style="clear:left;width:70%;float:left;padding-right:5px">
-                    <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
-                        <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}" style="width:50%"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
-                    </label>
-                </p>
-
-                <p style="width:30%;float:left">
-                    <label>{{ _('admin.alarmobjects.active') }}:<br/>
-                        <input type="checkbox" name="edit_active" value="1"{%- if alarmobject.active==1 %} checked="checked" {%- endif %}/>
-                    </label>
-                </p>
-                <p style="clear:left;width:100%">
-                    <label>{{ _('admin.alarmobjects.bma') }}:<br/>
-                        <input type="text" name="edit_bma" value="{{ alarmobject.bma }}" style="width:100%"/>
-                    </label>
-                </p>
-                <p style="clear:left">
-                    <label style="width:100%;">{{ _('admin.alarmobjects.remark') }}:<br/>
-                        <textarea class="navigation" name="edit_remark" style="width:100%;min-height:248px!important">{{ alarmobject.remark }}</textarea>
-                    </label>
-                </p>
-            </div>
-        </div>
-        <p style="margin-top:30px;">
+        <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
+            <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
+                <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
+                <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.street.id }}"/>
+            </label>
+        </p>
+        <p style="width:20%;float:left">
+            <br/>
+            <label>
+                <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
+            </label>
+        </p>
+        <p style="clear:left;">
+            <label>{{ _('admin.alarmobjects.objecttype') }}:<br/>
+                <select name="edit_objecttype" style="width:100%">
+                    {%- for alarmobjecttype in alarmobjecttypes %}
+                    <option value="{{ alarmobjecttype.id }}"{%- if alarmobject.objecttype.id==alarmobjecttype.id %} selected="selected"{%- endif %}>{{ alarmobjecttype.name }}</option>
+                    {%- endfor %}
+                </select>
+            </label>
+        </p>
+        <p style="clear:left;width:70%;float:left;padding-right:5px">
+            <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
+                <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}" style="width:50%"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
+            </label>
+        </p>
+        <p style="width:30%;float:left">
+            <label>{{ _('admin.alarmobjects.active') }}:<br/>
+                <input type="checkbox" name="edit_active" value="1"{%- if alarmobject.active==1 %} checked="checked" {%- endif %}/>
+            </label>
+        </p>
+        <p style="clear:left;width:100%">
+            <label>{{ _('admin.alarmobjects.bma') }}:<br/>
+                <input type="text" name="edit_bma" value="{{ alarmobject.bma }}" style="width:100%"/>
+            </label>
+        </p>
+        <p style="clear:left">
+            <label style="width:100%;">{{ _('admin.alarmobjects.remark') }}:<br/>
+                <textarea class="navigation" name="edit_remark" style="width:100%;min-height:200px!important">{{ alarmobject.remark }}</textarea>
+            </label>
+        </p>
+        <p style="margin-top:10px;padding-bottom:15px;">
             <label>
                 <input type="checkbox" name="edit_position" value="1" id="edit_position"/> {{ _('admin.alarmobjects.updateposition') }}
             </label>
         </p>
+
+        <h4>{{ _('admin.alarmobjects.files') }}</h4>
+        <span id="objectfiles" style="width:100%;height:150px;overflow:auto;">
+            {% include 'admin.alarmobject.file.html' ignore missing %}
+        </span>
+
         <div style="width:100%;clear:both;"> </div>
         <input type="hidden" name="edit_lat" id="lat" value="{{ alarmobject.lat }}"/>
         <input type="hidden" name="edit_lng" id="lng" value="{{ alarmobject.lng }}"/>
@@ -130,6 +147,17 @@
         });
         return false;
     }
+
+    function deleteFile(id){
+        if(confirm('{{ _('admin.alarmobjects.delfilequestion') }}')){
+            $.ajax({ type : "POST", url : "/admin/data/alarmobjects?action=deletefile&id="+id,
+                 success: function(result) {
+                    $('#objectfiles').html(result);
+                }
+            });
+        }
+        return false;
+    }
     
     $(document).ready(function() {
         var alarmstreetsArray = new Array();
@@ -149,6 +177,19 @@
                 $('input[name=streetid]').change(function() { getMapPosition($(this).val());});
             }
         });
+
+        $('#requestForm').ajaxForm({
+            success: function(result){
+                if (result!=""){
+                    $('#objectfiles').html(result);
+                    $('#requestForm').resetForm();
+                }else{
+                    $('#requestForm').resetForm();
+                    return false;
+                }
+            }
+        });
+
     });
     $("input[name='edit_streetno']").change(function(){
         $.ajax({ type: "POST", url: "/data/alarms?action=evalhouse&streetid=" + $('#streetid').val() + "&housenumber=" + $(this).val() + "&format=json",

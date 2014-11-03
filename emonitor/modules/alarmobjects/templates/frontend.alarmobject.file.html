@@ -1,0 +1,9 @@
+<ul class="files">
+{%- for k, file in alarmobject.files.items() %}
+    <li>
+        <a href="/alarmobjects/file/{{ file.object_id }}-{{ file.filename }}" target="_blank">
+            {{ file.filetype }} <small>({{ file.filesize }})</small>
+        </a>
+    </li>
+{%- endfor %}
+</ul>

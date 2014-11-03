@@ -1,4 +1,6 @@
-from flask import render_template, request
+import os
+import random
+from flask import render_template, request, current_app
 from emonitor.extensions import classes, db
 
 
@@ -75,5 +77,29 @@ def getAdminContent(self, **params):
 
     
 def getAdminData(self, params={}):
-    
+
+    if request.args.get('action') == 'uploadfile':  # add file for alarmobject
+        ufile = request.files['uploadfile']
+        filetype = request.form.get('name')
+        alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+        filename = '%s%s' % (str(random.random())[2:], os.path.splitext(ufile.filename)[1])
+
+        if not os.path.exists('%salarmobjects/%s/' % (current_app.config.get('PATH_DATA'), alarmobject.id)):  # create base directory
+            os.makedirs('%salarmobjects/%s/' % (current_app.config.get('PATH_DATA'), alarmobject.id))
+
+        ufile.save('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), alarmobject.id, filename))
+        alarmobject.files.set(classes.get('alarmobjectfile')(alarmobject.id, filename, filetype))
+        db.session.commit()
+        return render_template('admin.alarmobject.file.html', alarmobject=alarmobject)
+
+    elif request.args.get('action') == 'deletefile':  # delete file with id
+        objectfile = classes.get('alarmobjectfile').getFile(id=request.args.get('id'))
+        oid = objectfile.object_id
+        if os.path.exists('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), oid, objectfile.filename)):
+            os.remove('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), oid, objectfile.filename))
+        db.session.delete(objectfile)
+        db.session.commit()
+        alarmobject = classes.get('alarmobject').getAlarmObjects(id=oid)
+        return render_template('admin.alarmobject.file.html', alarmobject=alarmobject)
+
     return ""

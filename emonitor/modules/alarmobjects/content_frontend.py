@@ -14,7 +14,8 @@ def getFrontendData(self):
                     if str(hn.number) == aobject.streetno.strip():
                         points['lat'].extend(map(lambda x: x[0], hn.points))
                         points['lng'].extend(map(lambda x: x[1], hn.points))
-                return points
+                if len(points['lat']) > 0:  # house number found
+                    return points
             return dict(lat=aobject.lat, lng=aobject.lng, zoom=aobject.zoom, type='point')
 
     elif request.args.get('action') == 'alarmobject':  # get alarm object
