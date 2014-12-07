@@ -124,7 +124,7 @@ def getFrontendContent(**params):
         params['area'] = request.args.get('area')
 
     stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], 0)
-    for s, c in classes.get('alarm').getAlarmCount():  # s=state, c=count(ids of state)
+    for s, c in classes.get('alarm').getAlarmCount(days=int(session['alarmfilter'])):  # s=state, c=count(ids of state)
         if str(s) in stats.keys():
             stats[str(s)] = c
 

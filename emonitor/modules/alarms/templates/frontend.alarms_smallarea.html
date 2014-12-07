@@ -120,7 +120,7 @@
         <div id="alarmssubcenter">
             <div id="alarmaccordion">
                 {%- for k in alarmstates.keys() %}
-                <h3 a_name="alarmstate__{{ k }}" class="btn-default" style="background-color:#adadad;padding-right:5px;border-bottom:1px solid #ddd;" onclick="return showMappoints({{ k }})" key="{{ k }}">
+                <h3 a_name="alarmstate__{{ k }}" class="btn-default" style="background-color:#adadad;padding-right:5px;border-bottom:1px solid #ddd;" onclick="return showMappoints({{ k }}, {{ stats[k] }})" key="{{ k }}">
                     {{ _('alarmstate.'+alarmstates[k]) }}
                     <span class="badge badge-info pull-right">{{ stats[k] }}</span>
                 </h3>
@@ -305,8 +305,8 @@
                     });
                 }
 
-                function showMappoints(state) {
-                    if(states[state]=='0') {
+                function showMappoints(state, s_count) {
+                    if(states[state]=='0' && s_count != 0) {
                         $('#alarmstate_' + state).html('<p class="noalarms"><img src="/img/loading.gif"/></p>');
                         $.ajax({ type: "POST", url: "/data/alarms?action=alarmsforstate&state=" + state,
                             success: function (alarms) {
