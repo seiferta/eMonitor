@@ -7,6 +7,9 @@ from emonitor.extensions import classes, db
 def getAdminContent(self, **params):
     module = request.view_args['module'].split('/')
 
+    def chunks(l, n):
+        return [l[i:i + n] for i in range(0, len(l), n)]
+
     if len(module) > 1:  # type definition
         if module[1] == 'types':
             if request.method == 'POST':
@@ -36,6 +39,15 @@ def getAdminContent(self, **params):
             params.update({'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes()})
             return render_template('admin.alarmobjects.types.html', **params)
 
+        elif module[1] == 'fields':
+            if request.method == 'POST':
+                if request.form.get('action') == 'updatefield':  # update fields
+                    classes.get('settings').set('alarmobjectfields', [i for i in chunks(request.form.getlist('fieldname'), 2) if i[0] != ''])
+                    db.session.commit()
+
+            params.update({'fields': classes.get('settings').get('alarmobjectfields', [])})
+            return render_template('admin.alarmobjects.fields.html', **params)
+
     else:  # base view
         if request.method == 'POST':
             streets = classes.get('street').getAllStreets()
@@ -61,11 +73,24 @@ def getAdminContent(self, **params):
                 alarmobject.alarmplan = request.form.get('edit_alarmplan')
                 alarmobject.bma = request.form.get('edit_bma')
                 alarmobject.active = int(request.form.get('edit_active', '0'))
+
+            elif request.form.get('action') == 'savealarmobjectattributes':  # save attributes
+                alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+                for field in classes.get('settings').get('alarmobjectfields', []):  # store attributes
+                    if 'edit_%s' % field[0] in request.form:
+                        alarmobject.set(field[0], request.form.get('edit_%s' % field[0]))
+                db.session.commit()
+
+            elif request.form.get('action') == 'savealarmobjectaao':  # save aao
+                alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+                alarmobject.set('cars1', request.form.get('cars1').split(';'))
+                alarmobject.set('cars2', request.form.get('cars2').split(';'))
+                alarmobject.set('material', request.form.get('material').split(';'))
                 db.session.commit()
 
             elif request.form.get('action').startswith('editalarmobject_'):  # edit alarmobject
                 alarmobject = classes.get('alarmobject').getAlarmObjects(id=int(request.form.get('action').split('_')[-1]))
-                params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': '%s (%s)' % (alarmobject.street.name, alarmobject.street.city.name), 'map': classes.get('map').getDefaultMap(), 'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes()})
+                params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': '%s (%s)' % (alarmobject.street.name, alarmobject.street.city.name), 'map': classes.get('map').getDefaultMap(), 'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes(), 'fields': classes.get('settings').get('alarmobjectfields', []), 'cars': classes.get('car').getCars(deptid=classes.get('department').getDefaultDepartment().id)})
                 return render_template('admin.alarmobjects_actions.html', **params)
 
             elif request.form.get('action').startswith('deletealarmobject_'):  # delete alarmobject
@@ -76,7 +101,7 @@ def getAdminContent(self, **params):
         return render_template('admin.alarmobjects.html', **params)
 
     
-def getAdminData(self, params={}):
+def getAdminData(self):
 
     if request.args.get('action') == 'uploadfile':  # add file for alarmobject
         ufile = request.files['uploadfile']
@@ -90,7 +115,7 @@ def getAdminData(self, params={}):
         ufile.save('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), alarmobject.id, filename))
         alarmobject.files.set(classes.get('alarmobjectfile')(alarmobject.id, filename, filetype))
         db.session.commit()
-        return render_template('admin.alarmobject.file.html', alarmobject=alarmobject)
+        return render_template('admin.alarmobjects.file.html', alarmobject=alarmobject)
 
     elif request.args.get('action') == 'deletefile':  # delete file with id
         objectfile = classes.get('alarmobjectfile').getFile(id=request.args.get('id'))
@@ -100,6 +125,6 @@ def getAdminData(self, params={}):
         db.session.delete(objectfile)
         db.session.commit()
         alarmobject = classes.get('alarmobject').getAlarmObjects(id=oid)
-        return render_template('admin.alarmobject.file.html', alarmobject=alarmobject)
+        return render_template('admin.alarmobjects.file.html', alarmobject=alarmobject)
 
     return ""

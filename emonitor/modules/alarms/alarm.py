@@ -106,8 +106,11 @@ class Alarm(db.Model):
                 return db.session.query(Alarm).filter(Alarm.state == state).order_by('alarms.timestamp desc').all()
 
     @staticmethod
-    def getAlarmCount():
-        return db.session.query(Alarm.state, count(Alarm.id)).group_by(Alarm.state).all()
+    def getAlarmCount(days=0):
+        if days != 0:
+            return db.session.query(Alarm.state, count(Alarm.id)).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').group_by(Alarm.state).all()
+        else:
+            return db.session.query(Alarm.state, count(Alarm.id)).group_by(Alarm.state).all()
 
     @staticmethod
     def getActiveAlarms():
@@ -400,6 +403,7 @@ class Alarm(db.Model):
                 alarm.set('alarmplan', alarm_fields['alarmplan'][0])
 
             # alarmobject
+            _ao = None
             if alarm_fields['object'][0] != '':
                 alarm.set('object', alarm_fields['object'][0])
                 alarm.set('id.object', alarm_fields['object'][1])
@@ -465,6 +469,11 @@ class Alarm(db.Model):
                 l = ('%s,%s,%s' % (alarm.get('k.cars1'), alarm.get('k.cars2'), alarm.get('k.material'))).split(',')
                 if len(set(str(alarm_fields['material'][1]).split(',')).intersection(set(l))) == 0:
                     alarm.set('k.cars1', '%s,%s' % (alarm_fields['material'][1], alarm.get('k.cars1')))
+
+            if _ao and len(_ao.getCars1()) > 1:  # use aao of current object
+                alarm.set('k.cars1', ",".join([str(c.id) for c in _ao.getCars1()]))
+                alarm.set('k.cars2', ",".join([str(c.id) for c in _ao.getCars2()]))
+                alarm.set('k.material', ",".join([str(c.id) for c in _ao.getMaterial()]))
 
             alarm.set('priority', '1')  # set normal priority
             alarm.set('alarmtype', alarmtype.name)  # set checker name

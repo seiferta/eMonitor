@@ -18,7 +18,7 @@ class AlarmobjectsModule(Module):
         app.jinja_loader.searchpath.append("%s/emonitor/modules/alarmobjects/templates" % app.config.get('PROJECT_ROOT'))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/alarmobjects', 'module.alarmobjects.base'), ('/admin/alarmobjects/types', 'module.alarmobjects.types')]
+        self.adminsubnavigation = [('/admin/alarmobjects', 'module.alarmobjects.base'), ('/admin/alarmobjects/types', 'module.alarmobjects.types'), ('/admin/alarmobjects/fields', 'module.alarmobjects.fields')]
 
         # create database tables
         from .alarmobject import AlarmObject
@@ -33,6 +33,7 @@ class AlarmobjectsModule(Module):
         babel.gettext(u'module.alarmobjects')
         babel.gettext(u'module.alarmobjects.base')
         babel.gettext(u'module.alarmobjects.types')
+        babel.gettext(u'module.alarmobjects.fields')
 
         @app.route('/alarmobjects/file/<path:filename>')  # filename = [id]-[filensme].ext
         def objectfile_static(filename):

@@ -1,6 +1,7 @@
 {%  extends "admin.html" %}
 
 {% block style %}
+    {{ super() }}
     <link rel="stylesheet" href="/streets/inc/leaflet.css" />
     <link rel="stylesheet" href="/streets/inc/streets.css" />
 
@@ -13,6 +14,17 @@
         ul.files li:hover{ background-color: #dddddd; }
         ul.files a:hover{ color:#000; text-decoration:none; }
         ul.files a.delete{ position:absolute; right:3px; }
+        div.tab-pane{ margin-top:15px; }
+
+        .lists div{overflow:hidden;}
+        .lists .group{min-height:50px;border:1px solid #ddd;padding-left:5px;width:99%;}
+        .lists ul { list-style: none; float:left  }
+        .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width: 60px; height:40px; float:left; border:2px solid #333;}
+        .lists li:hover { background:#bbb; }
+        .lists li:active { background:#999; }
+        .cars0{background:#ddd !important;}
+        .cars1{background:#fff !important;}
+        .cars2{background:#f6cece !important;}
     </style>
 {%  endblock %}
 
@@ -31,89 +43,187 @@
 {% block content %}
     <h2>{{ _('admin.alarmobjects.header.edit') }}</h2>
 
-    <form name="form" id="requestForm" action="/admin/data/alarmobjects?action=uploadfile" method="post" enctype="multipart/form-data" style="width:50%; float:right;">
-        <div style="width:100%;padding-bottom:20px;">
-            <div class="osm_div" id="map" style="margin-top:14px;min-height:450px!important;"> </div>
-            {{ _('admin.alarmobjects.mapinfo') }}
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('admin.alarmobjects.basedata') }}</a></li>
+        <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('admin.alarmobjects.extended') }}</a></li>
+        <li><a href="#tab2" onclick="$('#myTab li:eq(2) a').tab('show');return false;">{{ _('admin.alarmobjects.aao') }}</a></li>
+        <li><a href="#tab3" onclick="$('#myTab li:eq(3) a').tab('show');return false;">{{ _('admin.alarmobjects.files') }}</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="tab0">
+            <form method="post" style="width:100%;float:left;padding-right:20px;">
+                <div style="width:50%; float:right;">
+                    <div style="width:100%;padding-bottom:20px;">
+                        <div class="osm_div" id="map" style="margin-top:14px;min-height:450px!important;"> </div>
+                        {{ _('admin.alarmobjects.mapinfo') }}
+                    </div>
+                </div>
+                <div style="width:50%;float:left;padding-right:20px;">
+                    <p>
+                        <label>{{ _('admin.alarmobjects.name') }}:<br/>
+                            <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
+                        </label>
+                    </p>
+                    <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
+                        <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
+                            <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
+                            <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.street.id }}"/>
+                        </label>
+                    </p>
+                    <p style="width:20%;float:left">
+                        <br/>
+                        <label>
+                            <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
+                        </label>
+                    </p>
+                    <p style="clear:left;">
+                        <label>{{ _('admin.alarmobjects.objecttype') }}:<br/>
+                            <select name="edit_objecttype" style="width:100%">
+                                {%- for alarmobjecttype in alarmobjecttypes %}
+                                <option value="{{ alarmobjecttype.id }}"{%- if alarmobject.objecttype.id==alarmobjecttype.id %} selected="selected"{%- endif %}>{{ alarmobjecttype.name }}</option>
+                                {%- endfor %}
+                            </select>
+                        </label>
+                    </p>
+                    <p style="clear:left;width:70%;float:left;padding-right:5px">
+                        <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
+                            <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}" style="width:50%"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
+                        </label>
+                    </p>
+                    <p style="width:30%;float:left">
+                        <label>{{ _('admin.alarmobjects.active') }}:<br/>
+                            <input type="checkbox" name="edit_active" value="1"{%- if alarmobject.active==1 %} checked="checked" {%- endif %}/>
+                        </label>
+                    </p>
+                    <p style="clear:left;width:100%">
+                        <label>{{ _('admin.alarmobjects.bma') }}:<br/>
+                            <input type="text" name="edit_bma" value="{{ alarmobject.bma }}" style="width:100%"/>
+                        </label>
+                    </p>
+                    <p style="clear:left">
+                        <label style="width:100%;">{{ _('admin.alarmobjects.remark') }}:<br/>
+                            <textarea class="navigation" name="edit_remark" style="width:100%;min-height:200px!important">{{ alarmobject.remark }}</textarea>
+                        </label>
+                    </p>
+                    <p style="margin-top:10px;padding-bottom:15px;">
+                        <label>
+                            <input type="checkbox" name="edit_position" value="1" id="edit_position"/> {{ _('admin.alarmobjects.updateposition') }}
+                        </label>
+                    </p>
+
+                    <div style="width:100%;clear:both;"> </div>
+                    <input type="hidden" name="edit_lat" id="lat" value="{{ alarmobject.lat }}"/>
+                    <input type="hidden" name="edit_lng" id="lng" value="{{ alarmobject.lng }}"/>
+                    <input type="hidden" name="edit_zoom" id="zoom" value="{{ alarmobject.zoom }}"/>
+                    <p>
+                        <button type="submit" name="action" value="savealarmobject" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
+                        <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                    </p>
+                    <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
+                    <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
+                </div>
+            </form>
         </div>
-        <h4>{{ _('admin.alarmobject.file') }}</h4>
-        <label>{{ _('admin.alarmobject.filename') }}:<br>
-            <input type="text" name="name" style="width:100%;"/>
-        </label>
-        <input id="uploadfile" type="file" size="45" name="uploadfile" class="input" style="width:100%;">
-        <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/><br/>
-        <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('admin.alarmobject.filestart') }}</button>
-    </form>
 
-    <form method="post" style="width:50%;float:left;padding-right:20px;">
-        <p>
-            <label>{{ _('admin.alarmobjects.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
-            </label>
-        </p>
-        <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
-            <label style="width:99%;">{{ _('admin.alarmobjects.street_no') }}:<br/>
-                <input type="text" value="{{ selectedstreet }}" name="edit_streetid" id="autocomplete-street" style="width:99%"/>
-                <input type="hidden" name="streetid" id="streetid" value="{{ alarmobject.street.id }}"/>
-            </label>
-        </p>
-        <p style="width:20%;float:left">
-            <br/>
-            <label>
-                <input type="text" name="edit_streetno" value="{{ alarmobject.streetno }}" style="width:99%"/>
-            </label>
-        </p>
-        <p style="clear:left;">
-            <label>{{ _('admin.alarmobjects.objecttype') }}:<br/>
-                <select name="edit_objecttype" style="width:100%">
-                    {%- for alarmobjecttype in alarmobjecttypes %}
-                    <option value="{{ alarmobjecttype.id }}"{%- if alarmobject.objecttype.id==alarmobjecttype.id %} selected="selected"{%- endif %}>{{ alarmobjecttype.name }}</option>
-                    {%- endfor %}
-                </select>
-            </label>
-        </p>
-        <p style="clear:left;width:70%;float:left;padding-right:5px">
-            <label>{{ _('admin.alarmobjects.alarmplan') }}:<br/>
-                <input type="text" name="edit_alarmplan" value="{{ alarmobject.alarmplan }}" style="width:50%"/> {{ _('admin.alarmobjects.alarmplaninfo') }}
-            </label>
-        </p>
-        <p style="width:30%;float:left">
-            <label>{{ _('admin.alarmobjects.active') }}:<br/>
-                <input type="checkbox" name="edit_active" value="1"{%- if alarmobject.active==1 %} checked="checked" {%- endif %}/>
-            </label>
-        </p>
-        <p style="clear:left;width:100%">
-            <label>{{ _('admin.alarmobjects.bma') }}:<br/>
-                <input type="text" name="edit_bma" value="{{ alarmobject.bma }}" style="width:100%"/>
-            </label>
-        </p>
-        <p style="clear:left">
-            <label style="width:100%;">{{ _('admin.alarmobjects.remark') }}:<br/>
-                <textarea class="navigation" name="edit_remark" style="width:100%;min-height:200px!important">{{ alarmobject.remark }}</textarea>
-            </label>
-        </p>
-        <p style="margin-top:10px;padding-bottom:15px;">
-            <label>
-                <input type="checkbox" name="edit_position" value="1" id="edit_position"/> {{ _('admin.alarmobjects.updateposition') }}
-            </label>
-        </p>
+        <div class="tab-pane" id="tab1">
+            <form method="post" style="width:100%;">
+                {%- for field in fields %}
+                    <p>
+                        <label style="width:100%">{{ field[1] }}:<br/>
+                            <textarea class="navigation" name="edit_{{ field[0] }}" style="width:100%;min-height:100px!important">{{ alarmobject.get(field[0]) }}</textarea>
+                        </label>
+                    </p>
+                {%- endfor %}
+                <p>
+                    <button type="submit" name="action" value="savealarmobjectattributes" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
+                    <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                </p>
+                <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
+                <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
+            </form>
+        </div>
 
-        <h4>{{ _('admin.alarmobjects.files') }}</h4>
-        <span id="objectfiles" style="width:100%;height:150px;overflow:auto;">
-            {% include 'admin.alarmobject.file.html' ignore missing %}
-        </span>
+        <div class="tab-pane" id="tab2">
+            <p>{{ _('admin.alarmobject.aaoinfo') }}</p>
+            <form method="post">
+                <div class="lists">
+                    <div>
+                        <small>{{ _('admin.alarmobject.cars1') }}:</small><br/>
+                        <ul id="cars1" class="group" style="width:99%;">
+                            {%- for car in alarmobject.getCars1() %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.name }}<br/>{{ car.name }}
+                            </li>
+                            {%- endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <small>{{ _('admin.alarmobject.cars2') }}:</small><br/>
+                        <ul id="cars2" class="group" style="width:99%;">
+                            {%- for car in alarmobject.getCars2() %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                            </li>
+                            {%- endfor %}
+                        </ul>
+                    </div>
+                        <small>{{ _('admin.alarmobject.material') }}:</small><br/>
+                        <ul id="material" class="group" style="width:99%;">
+                            {%- for car in alarmobject.getMaterial() %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                            </li>
+                            {%- endfor %}
+                        </ul>
 
-        <div style="width:100%;clear:both;"> </div>
-        <input type="hidden" name="edit_lat" id="lat" value="{{ alarmobject.lat }}"/>
-        <input type="hidden" name="edit_lng" id="lng" value="{{ alarmobject.lng }}"/>
-        <input type="hidden" name="edit_zoom" id="zoom" value="{{ alarmobject.zoom }}"/>
-        <p>
-            <button type="submit" name="action" value="savealarmobject" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
-        </p>
-        <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
-        <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
-    </form>
+                    <small>{{ _('admin.alarmobject.allcars') }}:</small><br/>
+                    <ul id="unused" class="group" style="width:99%;">
+                        {% set aocars = alarmobject.getCars1()+alarmobject.getCars2()+alarmobject.getMaterial() %}
+                        {%- for car in cars %}
+                            {%- if car not in aocars %}
+                            <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                            </li>
+                            {%- endif %}
+                        {%- endfor %}
+                    </ul>
+                </div>
+                <input type="hidden" name="cars1" id="val_cars1"/>
+                <input type="hidden" name="cars2" id="val_cars2"/>
+                <input type="hidden" name="material" id="val_material"/>
+                <p>
+                    <button type="submit" name="action" value="savealarmobjectaao" class="save" onclick="getCars()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
+                    <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                </p>
+                <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
+                <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="tab3">
+            <div style="width:50%;float:left;padding-right:20px;">
+                 <h4>{{ _('admin.alarmobjects.files') }}</h4>
+                <span id="objectfiles" style="width:100%;height:150px;overflow:auto;">
+                    {% include 'admin.alarmobjects.file.html' %}
+                </span>
+            </div>
+            <div style="width:50%;float:left;">
+                <form name="form" id="requestForm" action="/admin/data/alarmobjects?action=uploadfile" method="post" enctype="multipart/form-data">
+                    <h4>{{ _('admin.alarmobject.file') }}</h4>
+                    <label>{{ _('admin.alarmobject.filename') }}:<br>
+                        <input type="text" name="name" style="width:100%;"/>
+                    </label>
+                    <input id="uploadfile" type="file" size="45" name="uploadfile" class="input" style="width:100%;">
+                    <input type="hidden" name="action" value="savealarmobject"/>
+                    <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/><br/>
+                    <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('admin.alarmobject.filestart') }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block script_end %}
@@ -190,18 +300,25 @@
             }
         });
 
+        $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
     });
     $("input[name='edit_streetno']").change(function(){
         $.ajax({ type: "POST", url: "/data/alarms?action=evalhouse&streetid=" + $('#streetid').val() + "&housenumber=" + $(this).val() + "&format=json",
                 success: function (coords) {
+                    map.clearHouseNumbers();
                     if (coords.lat){
                         map.addHouseNumber(coords);
-                    }else{
-                        map.clearHouseNumbers();
                     }
                }
         });
     });
     $("input[name='edit_streetno']").change();
+
+    function getCars(){
+        $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        return true;
+    }
 
 {% endblock %}

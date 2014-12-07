@@ -1,9 +1,9 @@
 import yaml
+from emonitor.extensions import classes
 from emonitor.modules.streets.street import Street
 from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
 from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from sqlalchemy.orm import relationship
 from emonitor.extensions import db
 
 
@@ -23,10 +23,9 @@ class AlarmObject(db.Model):
     streetno = db.Column(db.String(10), default='')
     bma = db.Column(db.String(10), default='')
     active = db.Column(db.Integer)
-    street = db.relationship(Street, collection_class=attribute_mapped_collection('id'))
-    objecttype = db.relationship(AlarmObjectType, collection_class=attribute_mapped_collection('id'))
-    files = db.relationship(AlarmObjectFile, collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
-    #files = relationship(AlarmObjectFile.__name__, backref="alarmobjectfiles", lazy='joined', order_by=AlarmObjectFile.filetype)
+    street = db.relationship(Street, collection_class=attribute_mapped_collection('id'), lazy='subquery')
+    objecttype = db.relationship(AlarmObjectType, collection_class=attribute_mapped_collection('id'), lazy='subquery')
+    files = db.relationship(AlarmObjectFile, collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan", lazy='subquery')
 
     def __init__(self, name, streetid, remark, lat, lng, zoom, alarmplan, streetno, bma, active, objecttype):
         self.name = name
@@ -46,13 +45,31 @@ class AlarmObject(db.Model):
         return dict(id=self.id, name=self.name, lat=self.lat, lng=self.lng, zoom=self.zoom, alarmplan=self.alarmplan, street=self.street.serialize, streetno=self.streetno)
 
     def get(self, attribute):
-        values = yaml.load(self._attributes)
-        return "" or values[attribute]
+        try:
+            values = yaml.load(self._attributes)
+            return values[attribute]
+        except:
+            return ""
 
     def set(self, attribute, val):
-        values = yaml.load(self._attributes)
+        try:
+            values = yaml.load(self._attributes)
+        except:
+            values = {}
         values[attribute] = val
         self._attributes = yaml.safe_dump(values, encoding='utf-8')
+
+    def getCars1(self):
+        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('cars1') or [])]
+
+    def getCars2(self):
+        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('cars2') or [])]
+
+    def getMaterial(self):
+        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('material') or [])]
+
+    def hasOwnAAO(self):
+        return len(self.get('cars1') + self.get('cars2') + self.get('material')) > 0
 
     @staticmethod
     def getAlarmObjectsDict():
