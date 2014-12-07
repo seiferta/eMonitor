@@ -1,0 +1,55 @@
+{% extends "admin.html" %}
+
+{%  block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('alarmobjects.field.delquestion') }}');
+        }
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+     <h2>{{ _('alarmobjects.fields.listtitle') }}</h2>
+    <p><small>{{ _('alarmobjects.fields.info') }}</small></p>
+
+    <form method="post" name="alarmobjectfieldlist" action="">
+        <div class="headrow">
+            <div style="margin-right:50px;margin-left:15px;">
+                <div class="headcell" style="width:100%;">{{ _('alarmobjects.field.name') }}</div>
+            </div>
+        </div>
+
+        <div id="sortable">
+            {%- for field in fields %}
+            <div class="row">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:40%;">
+                        <label><input type="text" name="fieldname" value="{{ field[0] }}" style="width:99%"/></label>
+                    </div>
+                    <div class="rowcell" style="width:60%;">
+                        <label><input type="text" name="fieldname" value="{{ field[1] }}" style="width:99%"/></label>
+                    </div>
+                </div>
+            </div>
+            {%- endfor %}
+            <div class="row">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="rowcell" style="width:40%;">
+                        <label><input type="text" name="fieldname" style="width:99%"/></label>
+                    </div>
+                    <div class="rowcell" style="width:60%;">
+                        <label><input type="text" name="fieldname" style="width:99%"/></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="headrow" style="padding-left:20px">
+            <button type="submit" name="action" value="updatefield" class="save"><i class="fa fa-check"></i> {{ _('alarmobjects.fields.save') }}</button>
+        </div>
+        <input type="hidden" name="form_id" value="admin.alarmobjects.fields.overview"/>
+    </form>
+{% endblock %}
