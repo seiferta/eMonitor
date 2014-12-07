@@ -31,7 +31,7 @@ class Department(db.Model):
         
     @staticmethod
     def getDefaultDepartment():
-        return db.session.query(Department).order_by('orderpost').first()
+        return db.session.query(Department).order_by('orderpos').first()
         
     @staticmethod
     def getDepartments(id=0):
