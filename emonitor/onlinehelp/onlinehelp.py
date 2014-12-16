@@ -29,6 +29,7 @@ def favicon():
 def helpContent(module=u''):
     helpcontent = ''
     index = []
+    path = module
     if module.startswith('admin'):  # admin area
         area = "admin"
         module = ".".join(module.split('/')[1:])
@@ -40,15 +41,20 @@ def helpContent(module=u''):
         area = ""
         module = ""
 
-    if module.split('.')[0] in current_app.blueprints[area].modules.keys():  # load module help text
-        helpcontent = current_app.blueprints[area].modules[module.split('.')[0]].getHelp(area=area, name=module)
+    try:
+        if module.split('.')[0] in current_app.blueprints[area].modules.keys():  # load module help text
+            helpcontent = current_app.blueprints[area].modules[module.split('.')[0]].getHelp(area=area, name=module)
 
-    if helpcontent == '':  # use default content + index
-        with codecs.open('%s/web/templates/%s.de.default.md' % (onlinehelp.root_path, area), 'r', encoding="utf-8") as content:
-            helpcontent = content.read()
-        # load index
-        index = [m for m in admin.admin.modules.values()if m.hasHelp('admin')]
-    return render_template('onlinehelp.html', helpcontent=helpcontent, index=index)
+        if helpcontent == '':  # use default content + index
+            with codecs.open('%s/web/templates/%s.de.default.rst' % (onlinehelp.root_path, area), 'r', encoding="utf-8") as content:
+                helpcontent = content.read()
+            # load index
+            index = [m for m in admin.admin.modules.values()if m.hasHelp('admin')]
+        return render_template('onlinehelp.html', helpcontent=helpcontent, index=index)
+    except KeyError:
+        if '.' not in path:
+            path += 'index.html'
+        return send_from_directory("%s/docs/output/html/" % current_app.config.get('PROJECT_ROOT'), path)
 
 
 # static folders

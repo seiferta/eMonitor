@@ -1,4 +1,5 @@
-# Online Hilfe
+Online Hilfe
+============
 
 Für den Administrationsbereich stehen für die verschiedenen Module Hilfetexte zur Verfügung.
 

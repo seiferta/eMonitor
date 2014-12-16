@@ -1,4 +1,5 @@
-# Text-Ersetzung
+Text-Ersetzung
+==============
 
 Falsch erkannte Texte können automatisch korrigiert werden, wenn sie durch die OCR-Software immer falsch erkannt werden.
 
