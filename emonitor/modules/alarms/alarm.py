@@ -236,7 +236,7 @@ class Alarm(db.Model):
         stime = time.time()
         alarmtype = None
         for t in classes.get('alarmtype').getAlarmTypes():
-            if re.match(t.keywords.replace('\r\n', '|'), unicode(kwargs[0]['text'], errors='ignore')):
+            if re.search(t.keywords.replace('\r\n', '|'), unicode(kwargs[0]['text'], errors='ignore')):
                 alarm_fields = t.interpreterclass().buildAlarmFromText(t, kwargs[0]['text'])
                 if u'error' in alarm_fields.keys():
                     kwargs[0]['error'] = alarm_fields['error']
