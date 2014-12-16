@@ -1,3 +1,14 @@
+"""
+Basic framework for frontend area (blueprint).
+Modules can register a frontend area that will be loaded automaticaly into the area with an own menu entry.
+
+Use the info parameter of the module implementation:
+::
+
+    info = dict(area=['frontend'], name='modulename', path='modulepath', ...)
+
+This example will add the module 'modulename' in frontend area with url `server/modulepath`
+"""
 from collections import OrderedDict
 from flask import Blueprint, current_app, render_template, send_from_directory, request, jsonify
 from flask.ext import login
@@ -26,7 +37,12 @@ def favicon():
 @frontend.route('/', methods=['GET', 'POST'])
 @frontend.route('/<module>', methods=['GET', 'POST'])
 def frontendContent(module=u''):
+    """
+    Frontend area is reachable under *http://[servername]:[port]/[module]*
 
+    :param module: module name as string
+    :return: renderd HTML-outpu of module or startpage
+    """
     if module != "":
         if module == 'none':
             return render_template('frontend.area.html')
@@ -41,6 +57,15 @@ def frontendContent(module=u''):
 
 @frontend.route('/data/<path:module>', methods=['GET', 'POST'])
 def getData(module=u''):
+    """
+    Frontend area is reachable unter `http://[servername]:[port]/data/[module]`
+
+    This path is used to run background operations (e.g. ajax calls) and delivers the result of the `getFrontendData`
+    method of the module. If **format=json** in the url the result will be formated as json
+
+    :param module: module name as string
+    :return: return value of `getFrontendData` method of `module`
+    """
     current_mod = frontend.modules['startpages']
 
     try:
@@ -57,30 +82,54 @@ def getData(module=u''):
 # static folders
 @frontend.route('/img/<path:filename>')
 def imagebase_static(filename):
+    """
+    Register url path *http://[servername]:[port]/img/[filename]* for static files
+
+    :param filename: filename as string
+    """
     return send_from_directory(frontend.root_path + '/web/img/', filename)
 
 
 @frontend.route('/js/<path:filename>')
 def jsbase_static(filename):
+    """
+    Register url path *http://[servername]:[port]/js/[filename]* for static files
+
+    :param filename: filename as string
+    """
     return send_from_directory(frontend.root_path + '/web/js/', filename)
 
 
 @frontend.route('/css/<path:filename>')
 def cssbase_static(filename):
+    """
+    Register url path *http://[servername]:[port]/css/[filename]* for static files
+
+    :param filename: filename as string
+    """
     return send_from_directory(frontend.root_path + '/web/css/', filename)
 
 
 @frontend.route('/file/<path:filename>')
 def filebase_static(filename):
+    """
+    Register url path *http://[servername]:[port]/file/[filename]* for static files
+
+    :param filename: filename as string
+    """
     if filename.startswith('fax/'):
         filename = filename[4:]
         fpath = current_app.config.get('PATH_DONE')
     else:
         fpath = frontend.root_path + filename
     return send_from_directory(fpath, filename)
-    #return send_from_directory(frontend.root_path + '/web/css/', filename)
 
 
 @frontend.route('/fonts/<path:filename>')
 def fontbase_static(filename):
+    """
+    Register url path *http://[servername]:[port]/fonts/[filename]* for static files
+
+    :param filename: filename as string
+    """
     return send_from_directory(frontend.root_path + '/web/fonts/', filename)
