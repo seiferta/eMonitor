@@ -54,7 +54,14 @@ class DEFAULT_CONFIG(object):
 
 
 def create_app(config=None, app_name=None, blueprints=None):
+    """
+    Create app with given configuration and add blueprints
 
+    :param config: configuration from :py:class:`emonitor.webapp.DEFAULT_CONFIG` and config file
+    :param app_name: name of app as string
+    :param blueprints: list of blueprints to init
+    :return: app object :py:class:`Flask`
+    """
     if not app_name:
         app_name = DEFAULT_CONFIG.PROJECT
 
@@ -79,7 +86,7 @@ def configure_app(app, config=None):
         app.config.from_object(DEFAULT_CONFIG)
     else:
         app.config.from_object(config)
-    app.config.from_pyfile('emonitor.cfg', silent=False)
+    app.config.from_pyfile('emonitor.cfg', silent=True)
 
     # create missing directories of config
     for p in [path for path in app.config.keys() if path.startswith('PATH')]:
@@ -90,6 +97,11 @@ recorded = []
 
 
 def configure_extensions(app):
+    """
+    Confgure all extensions with current app object
+
+    :param app: :py:class:`Flask`
+    """
     # alembic
     alembic.init_app(app)
 
@@ -149,11 +161,26 @@ def configure_extensions(app):
 
     # jinja2 filters
     from flask import Markup
-    from markdown import markdown
 
     def getmarkdown(text):
-        return Markup(markdown(text))
+        try:
+            from markdown import markdown
+            return Markup(markdown(text))
+        except:
+            return text
+
+    def getreStructuredText(text):
+        try:
+            from docutils.core import publish_string
+            from docutils.writers.html4css1 import Writer as HisWriter
+
+            overrides = {'input_encoding': 'utf-8', 'output_encoding': 'unicode'}
+            return Markup(publish_string(source=text, writer=HisWriter(), settings_overrides=overrides))
+        except:
+            return text
+
     app.jinja_env.filters['markdown'] = getmarkdown
+    app.jinja_env.filters['rst'] = getreStructuredText
 
     # user
     if User.count() == 0:
@@ -165,8 +192,12 @@ def configure_extensions(app):
 
 
 def configure_blueprints(app, blueprints):
-    """Configure blueprints in views."""
+    """
+    Configure blueprints with app configuration
 
+    :param app: :py:class:`Flask`
+    :param blueprints: list of blueprints
+    """
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
         if hasattr(blueprint, 'init_app'):
@@ -174,7 +205,11 @@ def configure_blueprints(app, blueprints):
 
 
 def configure_logging(app):
-    """Configure file(info)"""
+    """
+    Configure logging
+
+    :param app: :py:class:`Flask`
+    """
 
     #if app.debug or app.testing:
     #    # Skip debug and test mode. Just check standard output.
