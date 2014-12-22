@@ -5,6 +5,7 @@ from emonitor.extensions import db
 
 
 class AlarmObjectFile(db.Model):
+    """Files for alarmobjects"""
     __tablename__ = 'alarmobjectfile'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -33,6 +34,13 @@ class AlarmObjectFile(db.Model):
 
     @staticmethod
     def getFile(id, filename=""):
+        """
+        Get file(s) for alarmobject
+
+        :param id: objectid as integer
+        :param filename: filename as string
+        :return: :py:class:`emonitor.modules.alarmobjects.alarmobjectfile.AlarmObjectFile`
+        """
         if filename == "":
             return db.session.query(AlarmObjectFile).filter_by(id=id).first()
         else:
@@ -40,6 +48,12 @@ class AlarmObjectFile(db.Model):
 
     @staticmethod
     def getAlarmObjectTypes(objectid=0):
+        """
+        Get all possible alarmobject types
+
+        :param objectid: objectid as integer
+        :return: list of :py:mod:`emonitor.modules.alarmobjects.alarmobjectfile.AlarmObjectFile`
+        """
         if id != 0:
             return db.session.query(AlarmObjectFile).filter_by(id=id).all()
         else:

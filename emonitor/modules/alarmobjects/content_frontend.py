@@ -3,7 +3,11 @@ from emonitor.extensions import classes
 
 
 def getFrontendData(self):
-    
+    """
+    Deliver frontend content of module alarmobjects (ajax)
+
+    :return: data of alarmobjects
+    """
     if request.args.get('action') == 'streetcoords':  # get map parameter for given alarmobjectid
 
         if request.args.get('id') != '':

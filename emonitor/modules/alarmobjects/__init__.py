@@ -6,7 +6,9 @@ from .content_frontend import getFrontendData
 
 
 class AlarmobjectsModule(Module):
-    
+    """
+    Definition of alarmobjects module with frontend and admin area
+    """
     info = dict(area=['admin', 'frontend'], name='alarmobjects', path='alarmobjects', icon='fa-building', version='0.1')
     
     def __repr__(self):
@@ -48,10 +50,21 @@ class AlarmobjectsModule(Module):
         return Module.CHECKOK
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of alarmobjects class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.alarmobjects.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self):
+        """
+        Call *getAdminData* of alarmobjects class
+        """
         return getAdminData(self)
 
     def getFrontendData(self):
+        """
+        Call *getFrontendData* of alarmobjects class
+        """
         return getFrontendData(self)

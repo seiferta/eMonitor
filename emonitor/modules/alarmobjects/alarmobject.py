@@ -8,6 +8,7 @@ from emonitor.extensions import db
 
 
 class AlarmObject(db.Model):
+    """AlarmObject class"""
     __tablename__ = 'alarmobjects'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +46,12 @@ class AlarmObject(db.Model):
         return dict(id=self.id, name=self.name, lat=self.lat, lng=self.lng, zoom=self.zoom, alarmplan=self.alarmplan, street=self.street.serialize, streetno=self.streetno)
 
     def get(self, attribute):
+        """
+        Getter for attribute names
+
+        :param attribute: name of attribute as string
+        :return: value of attribute
+        """
         try:
             values = yaml.load(self._attributes)
             return values[attribute]
@@ -52,6 +59,12 @@ class AlarmObject(db.Model):
             return ""
 
     def set(self, attribute, val):
+        """
+        Setter for attributes
+
+        :param attribute: attribute name as string
+        :param val: value as string
+        """
         try:
             values = yaml.load(self._attributes)
         except:
@@ -80,6 +93,13 @@ class AlarmObject(db.Model):
     
     @staticmethod
     def getAlarmObjects(id=0, active=1):
+        """
+        Get list of alarmobjects with given params
+
+        :param id: id of alarmobject or *0* for all objects
+        :param active: *1* for active objects or *0* for all objects
+        :return: list of :py:class:`emonitor.modules.alarmobjects.alarmobject.AlarmObject`
+        """
         if id != 0:
             return db.session.query(AlarmObject).filter_by(id=id).first()
         else:
