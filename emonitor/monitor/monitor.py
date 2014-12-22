@@ -1,3 +1,14 @@
+"""
+Basic framework for monitor area (blueprint).
+This area will be used by the client part of eMonitor
+
+Use the info parameter of the module implementation:
+::
+
+    info = dict(area=['widget'], name='modulename', path='modulepath', ...)
+
+Widgets are parts of the monitor area to display information about the module
+"""
 import re
 import datetime, time
 from flask import Blueprint, current_app, render_template, request, send_from_directory
@@ -11,6 +22,11 @@ monitor = Blueprint('monitor', __name__, template_folder="templates")
 @monitor.route('/monitor/')
 @monitor.route('/monitor/<int:clientid>')
 def monitorContent(clientid=0):
+    """
+    Create monitor area under url */monitor*
+
+    :return: rendered template */emonitor/monitor/templates/monitor.html*
+    """
     alarmid = None
     count = []
     pos = 0
@@ -48,15 +64,17 @@ def monitorContent(clientid=0):
                 scheduler.unschedule_job(j)  # layout changes for given alarm
 
         for l in defmonitor.getLayouts(triggername='alarm_added'):
-            if ('.' in l.trigger and len(count) >= 1 and l.trigger.split('.')[-1] == currentalarm.get('alarmtype')) or ('.' not in l.trigger and currentalarm.get('alarmtype', '') == ""):
-                layout = l
-                break
+            for tr in l.trigger.split(';'):  # support more than one trigger for layout
+                if ('.' in tr and len(count) >= 1 and tr.split('.')[-1] == currentalarm.get('alarmtype')) or ('.' not in tr and currentalarm.get('alarmtype', '') == ""):
+                    layout = l
+                    break
 
         if len(count) > 1:
             for l in defmonitor.getLayouts(triggername='alarm_added'):
-                if ('.' in l.trigger and l.trigger.split('.')[-1] == nextalarm.get('alarmtype')) or ('.' not in l.trigger and nextalarm.get('alarmtype', '') == ""):
-                    if int(l.mintime) != 0:
-                        scheduler.add_date_job(monitorserver.changeLayout, datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), [defmonitor.id, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
+                for tr in l.trigger.split(';'):  # support more than one trigger for layout
+                    if ('.' in tr and tr.split('.')[-1] == nextalarm.get('alarmtype')) or ('.' not in tr and nextalarm.get('alarmtype', '') == ""):
+                        if int(l.mintime) != 0:
+                            scheduler.add_date_job(monitorserver.changeLayout, datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), [defmonitor.id, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
 
     # render content for monitor
     content = '<div id="content">%s</div>' % layout.htmllayout
