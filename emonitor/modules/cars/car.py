@@ -3,6 +3,7 @@ from emonitor.extensions import db, classes
 
 
 class Car(db.Model):
+    """Car class"""
     __tablename__ = 'cars'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,11 @@ class Car(db.Model):
         self._dept = dept
         
     def getColor(self):
+        """
+        Get color of car, default *#ffffff*
+
+        :return: colorcode
+        """
         for t in classes.get("settings").getCarTypes():
             if t[0] == self.type:
                 return t[1]
@@ -34,6 +40,14 @@ class Car(db.Model):
 
     @staticmethod
     def getCars(id=0, deptid=0, params=[]):
+        """
+        Get list of cars filtered by given parameters
+
+        :param optional id: id of car or 0 for all cars
+        :param optional deptid: only cars of department with given id
+        :param optional params: *onlyactive*
+        :return: list of :py:class:`emonitor.modules.cars.car.Car`
+        """
         if id != 0:
             return db.session.query(Car).filter_by(id=int(id)).first()
         elif int(deptid) != 0:
@@ -46,6 +60,11 @@ class Car(db.Model):
 
     @staticmethod
     def getCarsDict():
+        """
+        Get dict of cars, id as key
+
+        :return: dict with :py:class:`emonitor.modules.cars.car.Car`
+        """
         ret = {}
         for car in db.session.query(Car):
             ret[car.id] = car

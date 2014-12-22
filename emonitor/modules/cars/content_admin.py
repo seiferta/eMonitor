@@ -3,6 +3,12 @@ from emonitor.extensions import db, classes
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module cars
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
     
     if len(module) < 2:
