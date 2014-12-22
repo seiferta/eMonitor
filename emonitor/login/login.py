@@ -12,6 +12,11 @@ gettext(u'admin.login.needed')
 
 @login.route("/login", methods=["GET", "POST"])
 def loginform():
+    """
+    Create login form under url */login* with username and password field.
+
+    :return: rendered template */emonitor/login/templates/login.html*
+    """
     if request.method == "POST":
         user = User.getUserByName(request.form.get('username'))
 
@@ -30,6 +35,9 @@ def loginform():
 @login.route("/logout")
 @login_required
 def logout():
+    """
+    Register url */logout* to logout current user. Redirect to frontend base url */*
+    """
     flasklogin.logout_user()
     return redirect(url_for('frontend.frontendContent'))
 
@@ -38,6 +46,11 @@ def logout():
 @login.route("/user", methods=["GET", "POST"])
 @login_required
 def usersettings():
+    """
+    Register url */user* for user settings
+
+    :return: rendered template */emonitor/login/templates/login_settings.html*
+    """
     if request.method == "POST":
         user = User.getUsers(flasklogin.current_user.get_id() or -1)
         if not user.check_password(request.form.get('curpwd')):
