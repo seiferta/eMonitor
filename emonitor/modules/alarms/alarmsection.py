@@ -4,6 +4,9 @@ from .alarmtype import AlarmType
 
     
 class AlarmSection(db.Model):
+    """
+    AlarmSection class for sections of alarm type :py:class:`emonitor.modules.alarms.alarmtype.AlarmType`
+    """
     __tablename__ = 'alarmsections'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +44,13 @@ class AlarmSection(db.Model):
 
     @staticmethod
     def getSections(id=0, tid=0):
+        """
+        Get list of sections of current alarmtype
+
+        :param optional id: section id, 0 for all sections
+        :param optional tid: type id, 0 for all types
+        :return: list of :py:class:`emonitor.modules.alarms.alarmsection.AlarmSection`
+        """
         if id != 0:
             return db.session.query(AlarmSection).filter_by(id=id).first()
         elif tid != 0:

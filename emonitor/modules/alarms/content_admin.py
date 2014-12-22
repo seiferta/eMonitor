@@ -7,6 +7,12 @@ from .alarmutils import AlarmFaxChecker, processFile
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module alarms
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
 
     if len(module) > 1:
@@ -119,7 +125,11 @@ def getAdminContent(self, **params):
 
 
 def getAdminData(self):
+    """
+    Deliver admin content of module alarms (ajax)
 
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'upload':
         if request.files:
             ufile = request.files['uploadfile']

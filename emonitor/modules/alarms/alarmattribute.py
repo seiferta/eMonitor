@@ -2,6 +2,7 @@ from emonitor.extensions import db
 
 
 class AlarmAttribute(db.Model):
+    """AlarmAttribute class, used in :py:class:`emonitor.modules.alarms.alarm.Alarm`"""
     __tablename__ = 'alarmattributes'
     
     id = db.Column(db.Integer, primary_key=True)

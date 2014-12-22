@@ -13,13 +13,20 @@ from .alarmutils import AlarmFaxChecker
 
 
 class AlarmsModule(Module):
-    
+    """
+    Definition of alarms module with frontend, admin and widget area
+    """
     info = dict(area=['admin', 'frontend', 'widget'], messages=['add', 'info', 'activate', 'close'], name='alarms', path='alarms', icon='fa-fire', version='0.2')
     
     def __repr__(self):
         return "alarms"
 
     def __init__(self, app):
+        """
+        Add specific parameters and configuration to app object
+
+        :param app: flask wsgi application
+        """
         Module.__init__(self, app)
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/alarms/templates" % app.config.get('PROJECT_ROOT'))
@@ -161,25 +168,61 @@ class AlarmsModule(Module):
         return 1
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of alarms class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.alarms.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self):
+        """
+        Call *getAdminData* method of alarms class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self)
 
     def getFrontendContent(self, **params):
+        """
+        Call *getFrontendContent* of alarms class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.alarms.content_frontend.getFrontendContent`
+        """
         return getFrontendContent(**params)
         
     def getFrontendData(self):
+        """
+        Call *getFrontendData* of alarms class
+        """
         return getFrontendData(self)
 
 
 class frontendAlarmHandler(SocketHandler):
+    """
+    Handler class for frontend socked events of alarms
+    """
     @staticmethod
     def handleAlarmChanges(sender, **extra):
+        """
+        Implementation of changes in alarm states
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
         SocketHandler.send_message(sender, **extra)
 
 
 class adminAlarmHandler(SocketHandler):
+    """
+    Handler class for admin socked events of alarms
+    """
     @staticmethod
     def handleAlarmTestUpload(sender, **extra):
+        """
+        Implementation of test upload of alarm files
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
         SocketHandler.send_message(extra)

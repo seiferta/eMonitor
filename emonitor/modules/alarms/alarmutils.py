@@ -138,6 +138,9 @@ def get_marker(self):  # deliver markerinfo: 0=no marker
 
 
 class AlarmFaxChecker:
+    """
+    Prototype for fax checkers
+    """
     __name__ = "alarmfaxproto"
     translations = [u'_bma_main_', u'_bma_key_', u'_bma_']  # default parameters needed for alarm generation
     sections = OrderedDict()
@@ -147,15 +150,35 @@ class AlarmFaxChecker:
         pass
 
     def getId(self):
+        """
+        Get attributename *__name__* of faxchecker class
+
+        .. note:: removes *space* and *.*
+        """
         return self.__name__.replace('.', '').replace(' ', '')
 
     def getEvalMethods(self):
+        """
+        Get list of all eval methods of current faxchecker
+
+        :return: list of methods
+        """
         return []
 
     def getDefaultConfig(self):
+        """
+        Get dict with default configuration of faxchecker
+
+        :return: dict
+        """
         return {u'keywords': self.keywords, u'sections': self.sections, u'translations': self.translations}
 
     def buildAlarmFromText(self, alarmtype, rawtext):
+        """
+        Build attributes from text input
+
+        :return: dict with alarm fields/values
+        """
         return dict()
 
 

@@ -20,11 +20,25 @@ LASTALARM = 0.0  # timestamp ini millies
 
 
 class Alarm(db.Model):
+    """Alarm class"""
     __tablename__ = 'alarms'
 
-    ALARMSTATES = {'0': 'created', '1': 'active', '2': 'done'}  # 3:archived (not in list)
+    ALARMSTATES = {'0': 'created', '1': 'active', '2': 'done'}
+    """
+    - 0: alarm *created*
+    - 1: alarm *active*
+    - 2: alarm *done*
+    - 3: alarm *archived* (not in list, only for admin area)
+    """
     ALARMTYPES = {'1': 'fax', '2': 'manual'}
+    """
+    - 1: alarm by *fax* created
+    - 2: alarm *manual* created
+    """
     ROUTEURL = "http://www.yournavigation.org/api/1.0/gosmore.php"
+    """
+    URL for routing webservice
+    """
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DATETIME)
@@ -63,20 +77,46 @@ class Alarm(db.Model):
         self.state = state  # 1: active, 0:created, 2:done, 3:archived
 
     def get(self, attrname, default=''):
+        """
+        Getter for attribute names
+
+        :param attrname: name of attribute
+        :param optional default: deliver default value if not stored in database
+        :return: value of attribute
+        """
         if attrname in self.attributes:
             return self.attributes[attrname].value
         return default
 
     def set(self, attrname, value):
+        """
+        Setter for attributes
+
+        :param attrname: attribute name
+        :param val: value
+        """
         if attrname in self.attributes:
             self.attributes[attrname].value = value
         else:
             self.attributes[attrname] = AlarmAttribute(attrname, value)
 
     def addHistory(self, name, value, dtime=datetime.datetime.now()):
+        """
+        Add history entry for alarm to store actions of alarm using
+        :py:class:`emonitor.modules.alarms.alarmhistory.AlarmHistory`
+
+        :param name: name of event
+        :param value: value of history entry
+        :param optional dtime: timestamp of history entry (now)
+        """
         self.history.append(AlarmHistory(name, value, dtime))
 
     def getAdditionalLayers(self):
+        """
+        Get additional layers of default map definition of current alarm
+
+        :return: list of :py:class:`emonitor.modules.mapitems.mapitem.MapItem` objects
+        """
         cat = self.key.category
         items = []
         for itemtype in self.getMap().getMapItemDefinitions():
@@ -88,10 +128,23 @@ class Alarm(db.Model):
 
     @staticmethod
     def getMap():
+        """
+        Returns default map defined in eMonitor
+
+        :return: :py:class:`emonitor.modules.maps.map.Map`
+        """
         return classes.get('map').getDefaultMap()
 
     @staticmethod
     def getAlarms(id=0, days=0, state=-1):
+        """
+        Get list of alarm objects filtered by parameters
+
+        :param optional id: id of alarm or 0 for all alarms
+        :param optional days: number of days since alarmdate
+        :param optional state: -1 for alarms of all states, see :py:attr:`emonitor.modules.alarms.alarm.Alarm.ALARMSTATES` for value definition
+        :return: list or single object :py:class:`emonitor.modules.alarms.alarm.Alarm`
+        """
         if id != 0:
             return db.session.query(Alarm).filter_by(id=id).first()
         elif days != 0:  # filter last days, 0 = all days
@@ -107,6 +160,12 @@ class Alarm(db.Model):
 
     @staticmethod
     def getAlarmCount(days=0):
+        """
+        Get number of alarms, grouped by state
+
+        :param optional days: 0 for all alarms, since days else
+        :return: list grouped by state
+        """
         if days != 0:
             return db.session.query(Alarm.state, count(Alarm.id)).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').group_by(Alarm.state).all()
         else:
@@ -114,10 +173,20 @@ class Alarm(db.Model):
 
     @staticmethod
     def getActiveAlarms():
+        """
+        Get list of all active alarms
+
+        :return: list or :py:class:`emonitor.modules.alarms.alarm.Alarm`
+        """
         return db.session.query(Alarm).filter_by(state=1).order_by('alarms.timestamp desc').all()
 
     @staticmethod
     def changeStates(state):
+        """
+        Set states of ALL alarms to given state
+
+        :param state: state as :py:attr:`emonitor.modules.alarms.alarm.Alarm.ALARMSTATES`
+        """
         for alarm in classes.get('alarm').getAlarms(0):
             Alarm.changeState(alarm.id, state)
 
@@ -134,6 +203,12 @@ class Alarm(db.Model):
 
     @staticmethod
     def changeState(id, state):
+        """
+        Change state of alarm with given id. Adds entry in alarmhistory and sends signal
+
+        :param id: id of alarm
+        :param state: new state as :py:attr:`emonitor.modules.alarms.alarm.Alarm.ALARMSTATES`
+        """
         global LASTALARM
         alarm = classes.get('alarm').getAlarms(id)
         if not alarm:
@@ -206,6 +281,17 @@ class Alarm(db.Model):
 
     @staticmethod
     def getExportData(exportformat, **params):
+        """
+        Export alarm to given format
+
+        :param exportformat: *.html*, *.png*
+        :param params:
+          - style: exportstyle: *alarmmap*, *routemap*
+
+          - filename: name of exportfile
+
+        :return: alarm in correct format
+        """
         if params['id'] and params:
             alarm = Alarm.getAlarms(params['id'])
             if alarm:
@@ -229,6 +315,13 @@ class Alarm(db.Model):
 
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """
+        Eventhandler for alarm class
+
+        :param eventname: name of event
+        :param kwargs: parameter list: error, fields, filename, id, incomepath, mode, time
+        :return: all kwargs
+        """
         import emonitor.webapp as wa
         global LASTALARM
 
@@ -482,7 +575,7 @@ class Alarm(db.Model):
             signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
 
-        if not 'time' in kwargs[0]:
+        if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
         kwargs[0]['time'].append('alarm: field detection done in %s sec.' % (time.time() - stime))
         if alarm:

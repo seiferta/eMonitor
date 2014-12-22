@@ -4,6 +4,7 @@ __all__ = ['DummyAlarmFaxChecker']
 
 
 class DummyAlarmFaxChecker(AlarmFaxChecker):
+    """Dummy FaxCehcker"""
     __name__ = "Dummy"
     __version__ = '0.1'
 

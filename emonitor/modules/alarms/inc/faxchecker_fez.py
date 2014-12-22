@@ -8,6 +8,9 @@ __all__ = ['FezAlarmFaxChecker']
 
 
 class FezAlarmFaxChecker(AlarmFaxChecker):
+    """
+    fax checker implementation for Feuerwehreinsatzzentrale Muenchen Land (FEZ) with special layout
+    """
     __name__ = "FEZ"
     __version__ = '0.1'
 
@@ -34,6 +37,10 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     translations = AlarmFaxChecker.translations + [u'_bab_', u'_train_', u'_street_', u'_default_city_', u'_interchange_', u'_kilometer_', u'_train_identifier_']
 
     def getEvalMethods(self):
+        """get all eval methods of fax checker
+
+        :return: list of names of eval methods
+        """
         return [m for m in self.__class__.__dict__.keys() if m.startswith('eval')]
 
     # eval methods for fax text recognition

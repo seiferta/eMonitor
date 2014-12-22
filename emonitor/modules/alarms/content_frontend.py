@@ -1,17 +1,22 @@
 import datetime
 from operator import attrgetter
-from flask import render_template, request, flash, session, render_template_string, jsonify
+from flask import render_template, request, flash, session, render_template_string, jsonify, redirect
 from emonitor.extensions import classes, monitorserver, scheduler, db, signal
 from emonitor.frontend import frontend
 
 
 def getFrontendContent(**params):
+    """
+    Deliver frontend content of module alarms
+
+    :return: data of alarms
+    """
     alarmstates = classes.get('alarm').ALARMSTATES
 
-    if request.args.get('alarmfilter', '-1') != '-1':  # filter for alarms last x days, -1 no filter set
-        session['alarmfilter'] = request.args.get('alarmfilter', '-1')
-    elif 'alarmfilter' not in session:
-        session['alarmfilter'] = '0'
+    if 'alarmfilter' not in session:
+        session['alarmfilter'] = '7'
+    if request.args.get('alarmfilter', '7') != '7':  # filter for alarms last x days, -1 no filter set
+        session['alarmfilter'] = request.args.get('alarmfilter', '7')
 
     if 'area' in request.args:
         params['area'] = request.args.get('area')
@@ -25,6 +30,7 @@ def getFrontendContent(**params):
             d = datetime.datetime.strptime('%s %s' % (request.form.get('edit_timestamp_date'), request.form.get('edit_timestamp_time')), "%d.%m.%Y %H:%M:%S")
             alarm = classes.get('alarm')(d, request.form.get('edit_keyid'), 2, 0)
             db.session.add(alarm)
+            params['activeacc'] = 1
 
         alarm.timestamp = datetime.datetime.strptime('%s %s' % (request.form.get('edit_timestamp_date'), request.form.get('edit_timestamp_time')), "%d.%m.%Y %H:%M:%S")
         alarm._key = request.form.get('edit_key')
@@ -79,8 +85,10 @@ def getFrontendContent(**params):
         signal.send('alarm', 'updated', alarmid=alarm.id)
         if request.form.get('alarm_id') == u'None':  # create new
             classes.get('alarm').changeState(alarm.id, 0)  # prepare alarm
-        #else:
-        #    classes.get('alarm').changeState(alarm.id, 1)  # activate alarm
+            return redirect('/alarms?area=%s&state=1' % params['area'])
+        elif alarm.state == 1:  # active alarm update
+            monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
+        return redirect('/alarms?area=%s&state=0' % params['area'])
 
     elif request.args.get('action') == 'editalarm':
         if request.args.get('alarmid', '0') == '0':  # add new alarm
@@ -103,6 +111,7 @@ def getFrontendContent(**params):
         if len(ret) > 0:
             flash(render_template_string("{{ _('alarms.carsinuse') }}</br><b>" + ", ".join([r.name for r in sorted(ret, key=attrgetter('name'))]) + "</b>"), 'alarms')
         params['area'] = request.args.get('area')
+        params['activeacc'] = 0
 
     elif request.args.get('action') == 'deletealarm':  # delete selected alarm
         alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
@@ -136,6 +145,11 @@ def getFrontendContent(**params):
 
 
 def getFrontendData(self):
+    """
+    Deliver frontend content of module alarms (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'editalarm':
         
         if request.args.get('alarmid', '0') == '0':  # add new alarm
