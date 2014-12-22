@@ -3,6 +3,8 @@ from emonitor.extensions import db, classes
 
 
 class AlarmkeyCars(db.Model):
+    """AlarmkeyCars class"""
+
     __tablename__ = 'alarmkeycars'
     
     kid = db.Column(db.Integer, primary_key=True)
@@ -86,16 +88,15 @@ class AlarmkeyCars(db.Model):
             self.defaultcars2 = []
             self.defaultmaterial = []
 
-    def defaultUsed(self, cartype='cars1'):
-        if cartype == 'cars1':
-            return self._cars1 == ''
-        elif cartype == 'cars2':
-            return self._cars2 == ''
-        else:
-            return self._material == ''
-
     @staticmethod
     def getAlarmkeyCars(kid=0, dept=''):
+        """
+        Get a list of all car objects with given parameters
+
+        :param kid: (optional) id of alarmkey, default = *0*
+        :param dept: (optional) id of department, default = *''*
+        :return: list of :py:class:`emonitor.modules.alarmkeys.alarmkeycar.AlarmkeyCars`
+        """
         if int(kid) != 0 and dept != '':
             return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
         elif int(kid) == 0 and dept != '':  # default aao cars for dept

@@ -4,20 +4,35 @@ from flask import current_app
 from emonitor.extensions import classes
 
 
-def u(s):
-    return unicode(s)
-
-
 class XLSFile:
+    """
+    XLSX-file object uploaded with alarmkeys, cars, material, ...
+    """
 
     def __init__(self, filename):
+        """
+        Init object with given filename
+
+        :param filename:
+        """
         self.book = xlrd.open_workbook(filename, encoding_override="cp1252")
         self.headerrow = 0
         
     def getSheets(self):
+        """
+        Deliver sheet list of current xlsx file
+
+        :return: list with names of sheets
+        """
         return self.book.sheet_names()
         
     def getCols(self, sheet):
+        """
+        Read columns of given sheet
+
+        :param sheet: sheet as integer
+        :return: list of columns
+        """
         ret = []
         worksheet = self.book.sheet_by_name(self.book.sheet_names()[int(sheet)])
         num_rows = worksheet.nrows - 1
@@ -50,7 +65,7 @@ class XLSFile:
         notfound = {}
         states = {'-1': 0, '0': 0, '1': 0}
         for c in classes.get('car').getCars(deptid=coldefinition['dept']):
-            cars[u(c.name)] = c
+            cars[unicode(c.name)] = c
 
         keys = classes.get('alarmkey').getAlarmkeys()
         worksheet = self.book.sheet_by_name(self.book.sheet_names()[int(coldefinition['sheet'])])
@@ -80,21 +95,21 @@ class XLSFile:
             for field in ['cars1', 'cars2', 'material']:
                 for c in coldefinition[field]:
                     cell_val = evalValue(row, getPosForCol(c))
-                    if u(cell_val) in cars.keys():
-                        item[field].append(cars[u(cell_val)])
-                        item[field + '_ids'].append(str(cars[u(cell_val)].id))
+                    if unicode(cell_val) in cars.keys():
+                        item[field].append(cars[unicode(cell_val)])
+                        item[field + '_ids'].append(str(cars[unicode(cell_val)].id))
                     elif cell_val.strip() != '':
-                        if u(cell_val) not in notfound.keys():
+                        if unicode(cell_val) not in notfound.keys():
                             n_c = classes.get('car')('<em style="color:#ff0000">%s</em>' % cell_val, '', '', 0, 'new', coldefinition['dept'])
-                            notfound[u(cell_val)] = n_c
+                            notfound[unicode(cell_val)] = n_c
                         else:
-                            n_c = notfound[u(cell_val)]
+                            n_c = notfound[unicode(cell_val)]
                         item[field].append(n_c)
                         item[field + '_ids'].append(-1)
 
             # check if key exists
             for k in keys:
-                if u(k.category) == u(item['category']) and u(k.key) == u(item['key']):
+                if unicode(k.category) == unicode(item['category']) and unicode(k.key) == unicode(item['key']):
                     item['dbid'] = k.id
                     if k.getCars1(coldefinition['dept']) != item['cars1'] or k.getCars2(coldefinition['dept']) != item['cars2'] or k.getMaterial(coldefinition['dept']) != item['material']:
                         item['cars1'] = k.getCars1(coldefinition['dept'])
@@ -112,6 +127,13 @@ class XLSFile:
         
         
 def buildDownloadFile(department, dtype=0):
+    """
+    Create XLSX file with definition of given department and store file in tmp directory with filename *aao.xlsx*
+
+    :param department: department object
+    :param dtype: 0|1: add default definition if no material definition found for keyword
+    :return: filename of created file, on error ''
+    """
     alarmkeys = classes.get('alarmkey').getAlarmkeys()
     
     header = ['dbid', 'category', 'key', 'key internal']

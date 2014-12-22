@@ -2,6 +2,7 @@ from emonitor.extensions import db, classes
 
 
 class Alarmkey(db.Model):
+    """Alarmkey class"""
     __tablename__ = 'alarmkeys'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +18,13 @@ class Alarmkey(db.Model):
         self.remark = remark
 
     def _getCars(self, cartype, department):
+        """
+        Prototype method for car or material lists
+
+        :param cartype: 1|2|3: cars1, cars2, material as integer
+        :param department: id of department as integer
+        :return: list of cars, material
+        """
         alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first()
 
         if not alarmcars:
@@ -34,6 +42,15 @@ class Alarmkey(db.Model):
             return []
 
     def setCars(self, department, **kwargs):
+        """
+        Set carlist of department
+
+        :param department: id of department as integer
+        :param kwargs:
+            - *cars1*: list of :py:class:`emonitor.modules.cars.car.Car` objects for cars1
+            - *cars2*: list of :py:class:`emonitor.modules.cars.car.Car` objects for cars2
+            - *material*: list of :py:class:`emonitor.modules.cars.car.Car` objects for material
+        """
         alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id, dept=department).first()
         if not alarmcars:
             alarmcars = classes.get('alarmkeycar')(self.id, department, '', '', '')
@@ -46,19 +63,49 @@ class Alarmkey(db.Model):
             alarmcars._material = kwargs['material']
 
     def getCars1(self, department):
+        """
+        Get list of Car objects for cars1 of current alarmkey definition of given department
+
+        :param department: id of department as integer
+        :return: list of :py:class:`emonitor.modules.cars.car.Car` objects
+        """
         return self._getCars(1, department)
 
     def getCars2(self, department):
+        """
+        Get list of Car objects for cars2 of current alarmkey definition of given department
+
+        :param department: id of department as integer
+        :return: list of :py:class:`emonitor.modules.cars.car.Car` objects
+        """
         return self._getCars(2, department)
 
     def getMaterial(self, department):
+        """
+        Get list of Car objects for material of current alarmkey definition of given department
+
+        :param department: id of department as integer
+        :return: list of :py:class:`emonitor.modules.cars.car.Car` objects
+        """
         return self._getCars(3, department)
 
     def hasDefinition(self, department):
+        """
+        Get definition for current alarmkey of given department
+
+        :param department: id of department
+        :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` or *None*
+        """
         return db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first() is None
 
     @staticmethod
     def getAlarmkeys(id=''):
+        """
+        Get all alarmkey definitions or single definition with given 'id'
+
+        :param id: id of alarmkey
+        :return: list of defintions or single definition
+        """
         if id not in ['', 'None']:
             return db.session.query(classes.get('alarmkey')).filter_by(id=int(id)).first()
         else:
@@ -66,14 +113,30 @@ class Alarmkey(db.Model):
 
     @staticmethod
     def getAlarmkeysByName(name):
+        """
+        Get Alarmkey object with given name
+
+        :param name: name as string (like)
+        :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object
+        """
         return db.session.query(classes.get('alarmkey')).filter(classes.get('alarmkey').key.like('%' + name + '%')).all()
 
     @staticmethod
     def getAlarmkeysByCategory(category):
+        """
+        Get all alarmkey definitions of given category
+
+        :param category: category as string
+        :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object list
+        """
         return db.session.query(classes.get('alarmkey')).filter_by(category=category).all()
 
     @staticmethod
     def getAlarmkeysDict():
+        """
+        Get dict of all alarmkeys with alarmkey.id as dict key
+        :return: dict of alarmkeys
+        """
         ret = {}
         for k in db.session.query(classes.get('alarmkey')):
             ret[k.id] = k
@@ -81,5 +144,11 @@ class Alarmkey(db.Model):
 
     @staticmethod
     def getDefault(department):
+        """
+        Get default alarmkey definition of given department
+
+        :param department: id as integer
+        :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object
+        """
         return db.session.query(classes.get('alarmkeycar')).filter_by(kid=0, dept=department).first() or classes.get(
             'alarmkeycar')(0, department, '', '', '')

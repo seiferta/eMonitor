@@ -11,6 +11,12 @@ uploadfiles = {}
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module alarmkeys
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
 
     if len(module) < 2:
@@ -101,6 +107,11 @@ def getAdminContent(self, **params):
 
 
 def getAdminData(self):
+    """
+    Deliver admin content of module alarmkeys (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'loaddetails':  # details for given key
         return render_template('admin.alarmkeys.detail.html', keys=classes.get('alarmkey').getAlarmkeysByCategory(request.args.get('category').replace('__', ' ')), department=request.args.get('department'))  # macro='detail_row' TODO
 

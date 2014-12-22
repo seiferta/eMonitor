@@ -17,20 +17,17 @@ Hierfür sind folgende Schritte notwendig:
 Karteireiter *Daten hochladen*
 ------------------------------
 
-Schritt 1
-^^^^^^^^^
+- **Schritt 1:**
 
-Excel-Datei auswählen und hochladen
+  Excel-Datei auswählen und hochladen
 
-Schritt 2
-^^^^^^^^^
+- **Schritt 2:**
 
-Tabellenblatt auswählen, es wird eine Liste der in der Datei gefundenen Tabellenblätter angezeigt.
+  Tabellenblatt auswählen, es wird eine Liste der in der Datei gefundenen Tabellenblätter angezeigt.
 
-Schritt 3
-^^^^^^^^^
+- **Schritt 3:**
 
-Spalten aus der Datei den Spalten der Definition in eMonitor zuordnen. Anschließend **Daten ermitteln** anklicken.
+  Spalten aus der Datei den Spalten der Definition in eMonitor zuordnen. Anschließend **Daten ermitteln** anklicken.
 
 Karteireiter *Ergebnis anzeigen*
 --------------------------------
@@ -47,6 +44,7 @@ Karteireiter *Export*
 Die bereits eingegebene Definition der AAO kann exportiert werden. Dabei besteht die Auswahl zwischen:
 
 - Alle Datensätze exportieren
+
 - Nur Datensätze ohne eigene Ausrückedefinition
 
 Die zweite Möglichkeit ist nur bei der Nutzung mehrerer Einheiten erforderlich, da sonst immer für alle Stichworte auch 

@@ -3,6 +3,12 @@ from emonitor.extensions import classes
 
 
 def getFrontendData(self, params={}):
+    """
+    Deliver frontend content of module alarmkeys
+
+    :param params: given parameters of current request
+    :return: data of alarmkeys
+    """
     if request.args.get('action') == 'keyslookup':
         keys = {}
         
