@@ -8,7 +8,7 @@ from emonitor import sockethandler
 
 
 class Classes:
-    """ load all modules from module folder in global classes cache """
+    """Load all modules from module folder in global classes cache"""
     classes = {}
     dependencies = {}
     classcache = {}
@@ -18,27 +18,51 @@ class Classes:
 
     @staticmethod
     def get(classname):
+        """
+        Get class object from class cache
+
+        :param classname: name of class as string
+
+        :return: class object if classname is defined in classes cache
+        """
         if classname in Classes.classes:
-           # cache classes
+            # cache classes
             if classname not in Classes.classcache:  # init class once
                 Classes.classcache[classname] = Classes.classes[classname]
             return Classes.classcache[classname]
-           # classcache end
-            #return self.classes[classname]() # deliver new instance
+            # classcache end
+            # return self.classes[classname]() # deliver new instance
         return None
         
     @staticmethod
     def add(classname, cls):
+        """
+        Add class to class cache
+
+        :param classname: name of class as string
+        :param cls: class object
+        """
         Classes.classes[classname] = cls
     
     @staticmethod
-    def addDependency(classname, dependon):  # classname->depends on
-        if not dependon in Classes.dependencies:
+    def addDependency(classname, dependon):
+        """
+        Add dependency for class: Each class can depend on other classes. Be sure all dependencies are present.
+
+        :param classname: name of class as string
+        :param dependon: name of class as string
+        """
+        if dependon not in Classes.dependencies:
             Classes.dependencies[dependon] = []
         Classes.dependencies[dependon].append(classname)
         
     @staticmethod
-    def changes(classname):  # propagate changes in dependent classes
+    def changes(classname):
+        """
+        Inform all classes of changes in class
+
+        :param classname: name of changing class as string
+        """
         if classname in Classes.dependencies:
             for cls in Classes.dependencies[classname]:
                 if hasattr(Classes.classes[cls], 'dependencyChanged'):
@@ -86,7 +110,7 @@ class Module:
     def getHelp(self, area="frontend", name=""):  # frontend help template
         name = name.replace('help/', '').replace('/', '.')
         if self.helppath == "":
-            filename = '%s/emonitor/modules/%s/help/%s.%s.%s.md' % (current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
+            filename = '%s/emonitor/modules/%s/help/%s.%s.%s.rst' % (current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
         else:
             filename = '%s%s%s.%s.%s.md' % (current_app.config.get('PROJECT_ROOT'), self.helppath, area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
 
@@ -185,15 +209,15 @@ def serialize(root):
     return xml
 
 
-def u(s):
-    try:
-        return s.encode("utf-8")
-    except:
-        try:
-            s = unicode(s)
-            return s.decode("latin-1").encode("utf-8")
-        except:
-            return s
+#def u(s):
+#    try:
+#        return s.encode("utf-8")
+#    except:
+#        try:
+#            s = unicode(s)
+#            return s.decode("latin-1").encode("utf-8")
+#        except:
+#            return s
 
 
 class Pagination(object):

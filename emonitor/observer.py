@@ -13,6 +13,10 @@ FILES = []
 
 
 def observeFolder(**kwargs):
+    """
+    Observer method to observe given folder
+    :param kwargs:
+    """
     global BEFORE, AFTER, FILES, ERROR_RAISED
 
     if OBSERVERACTIVE == 0:
