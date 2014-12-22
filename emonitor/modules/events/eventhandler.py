@@ -2,6 +2,7 @@ from emonitor.extensions import db, events
 
 
 class Eventhandler(db.Model):
+    """Eventhandler class"""
     __tablename__ = 'eventhandlers'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,18 +18,41 @@ class Eventhandler(db.Model):
         self.parameters = parameters
         
     def getParameterValue(self, parameter):
+        """
+        Get parameter value of given parameter
+
+        :param parameter: name of parameter as string
+        :return: value of parameter, '' if not found
+        """
         for p in self.parameters.split("\r\n"):
             if p.startswith(parameter + "="):
                 return p.split('=')[-1]
         return ""
         
     def getParameterList(self, t='out'):
+        """
+        Get list of parameter names
+
+        :param optional t: type of parameters (default *out*)
+        :return: list of parameter names
+        """
         return [param.split('=')[0] for param in self.parameters.split('\r\n') if param.startswith(t + '.')]
         
     def getParameterValues(self, t='out'):
+        """
+        Get list of parameter values
+
+        :param optional t: type of parameters (default *out*)
+        :return: list of all values
+        """
         return [param.split('=') for param in self.parameters.split('\r\n') if param.startswith(t + '.')]
         
     def getInParameters(self):
+        """
+        Get list of all input-parameters of eventhandler
+
+        :return: handler list
+        """
         event = events.getEvents(self.event)
         if self.position < 2:
             return event.parameters
@@ -51,6 +75,13 @@ class Eventhandler(db.Model):
 
     @staticmethod
     def getEventhandlers(id="", event=""):
+        """
+        Get list of eventhandlers stored in database
+
+        :param optional id: id of eventhander or 0 for all eventhandlers
+        :param optional event: name of event
+        :return: list or single object :py:class:`emonitor.modules.events.eventhandler.Eventhandler`
+        """
         if id != '':
             return db.session.query(Eventhandler).filter_by(id=id).first()
         elif event != '':

@@ -3,6 +3,12 @@ from emonitor.extensions import classes, db, events
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module events
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
     
     if len(module) > 1:
@@ -66,7 +72,11 @@ def getAdminContent(self, **params):
 
     
 def getAdminData(self, **params):
-    
+    """
+    Deliver admin content of module events (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'getparams':  # event handler parameter sub form
         event = events.getEvents(name=request.args.get('event'))
         if request.args.get('handler') != '':
