@@ -4,13 +4,13 @@ from emonitor.modules.mapitems.mapitem import ItemLayout
 from emonitor.modules.mapitems.mapitem_utils import deg2num
 from emonitor.extensions import babel
 from PIL import Image, ImageDraw
-from pprint import pprint
 
 __all__ = ['LayoutFFEntry']
 babel.gettext('mapitems.params.ffentry')
 
 
 class LayoutFFEntry(ItemLayout):
+    """LayoutFFEntry"""
 
     __name__ = 'ffentry'
     __version__ = '0.2'
@@ -25,6 +25,12 @@ class LayoutFFEntry(ItemLayout):
     LINECOLOR = (255, 0, 0)  # yellow
 
     def buildTiles(self, items, attributes):
+        """
+        Build tiles of given items
+
+        :param items: list of items to build
+        :param attributes: attributes for layout
+        """
         matrix = {}
 
         def addItem(tx, ty, px, py, **itemparams):
@@ -44,7 +50,7 @@ class LayoutFFEntry(ItemLayout):
                 for node in item.parameters['nodes']:
                     coord = deg2num(float(node['lat']), float(node['lon']), zoom)
 
-                    if not _last is None:
+                    if _last is not None:
 
                         if _last[0] <= coord[0]:  # eval tiles in x direction
                             dx = range(_last[0], coord[0] + 1)

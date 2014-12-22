@@ -6,6 +6,7 @@ from flask import current_app
 
 
 class MapItem(db.Model):
+    """MapItems class"""
     __tablename__ = "mapitems"
 
     URL = 'http://overpass-api.de/api/interpreter'
@@ -105,15 +106,28 @@ class MapItem(db.Model):
 
 
 class ItemLayout:
+    """ItemLayout prototype class"""
     __name__ = "defaultlayout"
+    """name as identifier"""
     __version__ = '0.0'
 
-    itemtype = ''  # definition node|way
+    itemtype = ''
     filter = ''
     attributes = []
 
     def getName(self):
+        """
+        Get name of layout
+
+        :return: :py:attr:`emonitor.modules.mapitems.mapitem.ItemLayout.__name__`
+        """
         return self.__name__
 
     def buildTiles(self, items, attributes):
+        """
+        Build tiles from definition
+
+        :param items: list of items to build
+        :param attributes: attributes to build tiles
+        """
         pass

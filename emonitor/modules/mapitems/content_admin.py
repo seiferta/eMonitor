@@ -8,7 +8,12 @@ PER_PAGE = 25
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module mapitems
 
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
     if len(module) < 2:
         module.append(current_app.blueprints['admin'].modules['mapitems'].adminsubnavigation[0][0].split('/')[-1])  # get first submenuitem
@@ -91,6 +96,11 @@ def getAdminContent(self, **params):
 
 
 def getAdminData(self):
+    """
+    Deliver admin content of module mapitems (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'loadfromosm':  # load all objects from osm
         itemdefinition = [t for t in classes.get('settings').get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
         dbodmids = [int(i.osmid) for i in MapItem.getMapitems(itemtype=itemdefinition['name'])]

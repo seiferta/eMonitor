@@ -7,12 +7,20 @@ from emonitor.modules.mapitems.content_admin import getAdminContent, getAdminDat
 
 
 class MapitemsModule(object, Module):
+    """
+    Definition of mapitems module with admin area
+    """
     info = dict(area=['admin'], name='mapitems', path='mapitems', icon='fa-bullseye', version='0.1')
 
     def __repr__(self):
         return "mapitems"
 
     def __init__(self, app):
+        """
+        Add specific parameters and configuration to app object
+
+        :param app: flask wsgi application
+        """
         Module.__init__(self, app)
 
         # add template path
@@ -37,12 +45,21 @@ class MapitemsModule(object, Module):
         babel.gettext(u'mapitems.definition')
 
     def updateAdminSubNavigation(self):
+        """
+        Add submenu entries for admin area
+        """
         self.adminsubnavigation = []
         for maptype in Settings.get('mapitemdefinition'):
             self.adminsubnavigation.append(('/admin/mapitems/%s' % maptype['name'], '%s' % maptype['name']))
         self.adminsubnavigation.append(('/admin/mapitems/definition', 'mapitems.definition'))
 
-    def getHelp(self, area="frontend", name=""):  # frontend help template
+    def getHelp(self, area="frontend", name=""):
+        """
+        Get special html content for mapitems module
+
+        :param optional area: *frontend*, *admin*
+        :param name: name of help template
+        """
         name = name.replace('help/', '').replace('/', '.')
         if not name.endswith('definition'):
             name = name.split('.')[0]
@@ -50,7 +67,17 @@ class MapitemsModule(object, Module):
         return super(MapitemsModule, self).getHelp(area=area, name=name)
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of mapitems class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.mapitems.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
-    def getAdminData(self,):
+    def getAdminData(self):
+        """
+        Call *getAdminData* method of mapitems class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self)

@@ -1,7 +1,6 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 from emonitor import webapp
-from flask import flash
 from emonitor.modules.mapitems.mapitem import ItemLayout
 from emonitor.modules.mapitems.mapitem_utils import deg2num
 from emonitor.extensions import babel
@@ -11,6 +10,7 @@ babel.gettext('mapitems.params.hydrant')
 
 
 class LayoutHydrant(ItemLayout):
+    """LayoutHydrant"""
 
     __name__ = 'hydrant'
     __version__ = '0.1'
@@ -26,16 +26,11 @@ class LayoutHydrant(ItemLayout):
     HALFY = 14  # half icon height in pixels
 
     def buildTiles(self, items, attributes):
-        """Build tiles for given configuration
+        """
+        Build tiles for given configuration
 
-        :param items: mapitems with
-        :param attributes: list of attributes
-        matrix coords:
-             1 | 2 | 3
-            ___|___|___
-             4 | 5 | 6
-            ___|___|___
-             7 | 8 | 9
+        :param items: list of items to build
+        :param attributes: parameters
         """
         font = ImageFont.truetype("emonitor/modules/mapitems/inc/font.ttf", 12)
 
