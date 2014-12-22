@@ -3,6 +3,7 @@ import os, argparse
 from emonitor import webapp
 from emonitor.sockethandler import SocketHandler
 
+__all__ = ['main', 'tornado', 'builtin']
 
 f = __file__
 _PATH = os.path.realpath(__file__)[:os.path.realpath(__file__).rfind(os.sep)]
@@ -10,6 +11,11 @@ os.environ['TESSDATA_PREFIX'] = _PATH + '/bin/tesseract'
 
 
 def tornado(args):
+    """
+    Start application with tornado webserver
+
+    :param args: start parameters from command line
+    """
     from tornado import ioloop, wsgi, autoreload, web
 
     def t_reload():
@@ -37,14 +43,27 @@ def tornado(args):
         tornadoloop.stop()
 
 
-# run builtin server
 def builtin(args):
+    """
+    Start application with flask webserver
+
+    :param args: start parameters from command line
+    """
     webapp.logger.info('emonitor started with builtin server on port %s' % webapp.config.get('PORT'))
     webapp.run(host=webapp.config.get('HOST'), port=webapp.config.get('PORT'), debug=webapp.config.get('DEBUG'), threaded=True)
     webapp.logger.info('emonitor stopped')
 
 
 def main():
+    """
+    Start eMonitor application
+
+    :argument:
+        -   -t --tornado: use tornado webserver
+        -   -b --builtin: use flask webserver (only for test)
+        -   -p --port: define port for webserver
+        -   -d: start in debug mode
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--tornado', help='use tornado webserver (default)', default=None, action='store_true')
     parser.add_argument('-b', '--builtin', help='use builtin flask webserver', default=None, action='store_true')

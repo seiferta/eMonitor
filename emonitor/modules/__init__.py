@@ -12,7 +12,7 @@ modules = Blueprint('modules', __name__, template_folder="web/templates")
 
 class StartModule(Module):
     """
-        startpage for admin area
+        startpage for admin and frontend area
     """
     info = dict(area=['admin', 'frontend'], name='startpages', path='default', icon='fa-home', version='0.1')
 
@@ -21,7 +21,6 @@ class StartModule(Module):
 
     def __init__(self, app):
         Module.__init__(self, app)
-        
         babel.gettext(u'module.startpages')
 
     def frontendContent(self):
@@ -29,8 +28,15 @@ class StartModule(Module):
 
     def getAdminContent(self, **params):
         return render_template('admin_start.html', **params)
-        
+
     def getFrontendContent(self, **params):
+        """
+        Get frontend content with areas (west, center, east) to hold modules.
+        Areas can be configured in :py:class:`emonitor.modules.settings.settings.Settings`
+
+        :param params: dict with key `area`
+        :return: rendered HTML-template of module
+        """
         if 'area' in params:
             defaultarea = dict()
             defaultarea['center'] = classes.get('settings').getFrontendSettings('center')
@@ -53,14 +59,18 @@ class StartModule(Module):
 
 
 def init_app(app):
+    """
+    Load all modules of folder `emonitor/modules` into app
 
+    :param app: :py:class:`Flask`
+    """
     _count = 0
     #startpage
     m = StartModule(app)
     for area in m.info['area']:
         if area in app.blueprints:
             app.blueprints[area].addModule(m)
-    
+
     for _, name, _ in pkgutil.iter_modules([os.path.join(app.config.get('PROJECT_ROOT'), 'emonitor/modules')]):
         m = importlib.import_module('emonitor.modules.%s' % name, '%sModule' % str(name).title())
         m = eval('m.%sModule' % str(name).title())(app)
