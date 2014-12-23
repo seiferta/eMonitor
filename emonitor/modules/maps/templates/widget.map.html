@@ -27,7 +27,11 @@
 
     cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
     mml = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 10, maxZoom: 14});
-    map.setView(new L.LatLng({{ alarm.get('lat') }}, {{ alarm.get('lng') }}), startzoom).addLayer(cloudmade);
+    {%- if alarm.get('id.object')!= '' %}
+        map.setView(new L.LatLng({{ alarm.object.lat }}, {{ alarm.object.lng }}), startzoom).addLayer(cloudmade);
+    {%- else %}
+        map.setView(new L.LatLng({{ alarm.get('lat') }}, {{ alarm.get('lng') }}), startzoom).addLayer(cloudmade);
+    {%- endif %}
     new L.Control.MiniMap(mml, { toggleDisplay: true,  zoomLevelFixed: 14}).addTo(map); /* minimap extension*/
 
     {%- for item in alarm.getAdditionalLayers() %}
@@ -44,9 +48,9 @@
         coord['lng'].push({{ p[1] }});
     {%- endfor %}
     map.addHouseNumber(coord);
-{%- else %}
-    if({{ alarm.get('marker') }}==1){
-        map.addMarker({{ alarm.get('lat') }}, {{ alarm.get('lng') }}, 1, false);
-    }
+{%- elif alarm.get('marker')==1 %}
+    map.addMarker({{ alarm.get('lat') }}, {{ alarm.get('lng') }}, 1, false);
+{%- elif alarm.street.lat %}
+    map.addMarker({{ alarm.street.lat }}, {{ alarm.street.lng }}, 1, false);
 {%- endif %}
 </script>
