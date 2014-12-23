@@ -45,7 +45,7 @@
             <ul class="dropdown-menu pull-right">
 
                 {% for l in layouts[id] %}
-                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {{ _('trigger.'+l.trigger) }}</a></li>
+                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {%for tr in l.trigger.split(';') %}{{ _('trigger.'+tr) }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
                 {% endfor %}
                 <li><a href="#" onclick="return changeLayout({{ id }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
             </ul>
