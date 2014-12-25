@@ -9,6 +9,9 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 
 class MonitorsModule(Module):
+    """
+    Definition of monitor module with frontend, admin and widget area
+    """
     info = dict(area=['admin', 'frontend', 'widget'], name='monitors', path='monitors', icon='fa-desktop', version='0.1')
 
     def __repr__(self):
@@ -57,19 +60,38 @@ class MonitorsModule(Module):
         return Module.CHECKOK
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of monitor class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.monitors.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self):
+        """
+        Call *getAdminData* method of monitors class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self)
 
     def getFrontendContent(self, **params):
+        """
+        Call *getFrontendContent* of monitors class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.monitors.content_frontend.getFrontendContent`
+        """
         return getFrontendContent(self, **params)
 
     def getFrontendData(self):
+        """
+        Call *getFrontendData* of monitors class
+        """
         return getFrontendData(self)
    
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """DEPRECATED test method"""
         kwargs[0]['monitors_ret'] = 'yyy'
         from time import sleep
         
@@ -78,6 +100,8 @@ class MonitorsModule(Module):
 
 
 class frontendMonitorHandler(SocketHandler):
+    """Event handler for frontend events of monitor class"""
     @staticmethod
     def handleClientSearch(sender, **extra):
+        """Deliver result of client search"""
         SocketHandler.send_message(extra)

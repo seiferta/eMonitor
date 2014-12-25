@@ -4,6 +4,12 @@ from emonitor.extensions import classes, db, events, scheduler, monitorserver
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module monitors
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
     
     if len(module) == 1:  # monitor definition
@@ -123,6 +129,11 @@ def getAdminContent(self, **params):
 
     
 def getAdminData(self):
+    """
+    Deliver admin content of module monitors (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'thumb':  # create dynamic thumbnail of layout
         layout = classes.get('monitorlayout').getLayouts(id=int(request.args.get('id')))
         return layout.getLayoutThumb()

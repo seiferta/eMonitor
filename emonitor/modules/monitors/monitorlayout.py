@@ -2,11 +2,13 @@ import os
 from PIL import Image, ImageDraw
 from math import ceil
 from flask import current_app
+from StringIO import StringIO
 
 from emonitor.extensions import db
 
 
 class MonitorLayout(db.Model):
+    """MonitorLayout class"""
     __tablename__ = 'monitorlayouts'
     __table_args__ = {'extend_existing': True}
 
@@ -78,8 +80,11 @@ class MonitorLayout(db.Model):
         return ret + '});'
 
     def getLayoutThumb(self):
-        import StringIO
+        """
+        Calculate the thumbnail of the layout on-the-fly
 
+        :return: stream of image file
+        """
         dimension = (12, 9)
         ret, max_x, max_y = MonitorLayout._evalLayout(self.layout)
 
@@ -89,14 +94,19 @@ class MonitorLayout(db.Model):
             draw.rectangle([((l[0] - 1) * dimension[0], (l[1] - 1) * dimension[1]),
                             ((l[2]) * dimension[0], (l[3]) * dimension[1])], fill="white", outline='black')
 
-        output = StringIO.StringIO()
-        img.save(output, 'PNG')
-        contents = output.getvalue()
-        output.close()
-        return contents
+        output = StringIO()
+        img.save(output, format="PNG", dpi=(300, 300))
+        return output.getvalue()
 
     @staticmethod
     def getLayouts(id=0, mid=0):
+        """
+        Get list of layout definitions filtered by parameters
+
+        :param optional id: filter only layout with id, *0* for all layouts
+        :param optional mid: monitorid as integer
+        :return: list of :py:class:`emonitor.modules.monitors.monitorlyout.MonitorLayout`
+        """
         if id != 0:
             return db.session.query(MonitorLayout).filter_by(id=id).first()
         elif mid != 0:

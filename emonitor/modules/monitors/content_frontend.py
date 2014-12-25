@@ -3,11 +3,20 @@ from emonitor.extensions import classes, monitorserver, scheduler
 
 
 def getFrontendContent(self, params={}):
-    pass
+    """
+    Deliver frontend content of module monitors
+
+    :return: data of monitors
+    """
+pass
 
 
 def getFrontendData(self):
+    """
+    Deliver frontend content of module monitors (ajax)
 
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'monitoroverview':
         monitors = []
         return render_template('frontend.monitors.html', monitors=monitors)

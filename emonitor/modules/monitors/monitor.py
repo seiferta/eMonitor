@@ -4,6 +4,7 @@ from emonitor.modules.monitors.monitorlayout import MonitorLayout
 
 
 class Monitor(db.Model):
+    """Monitor class"""
     __tablename__ = 'monitors'
     __table_args__ = {'extend_existing': True}
 
@@ -56,6 +57,11 @@ class Monitor(db.Model):
         self.formaty = formaty
         
     def layout(self, layoutid):
+        """
+        Get MonitorLayout for given id
+        :param layoutid: id as integer
+        :return: :py:class:`emonitor.modules.monitors.monitorlayout.MonitorLayout`
+        """
         l = db.session.query(MonitorLayout).filter_by(id=int(layoutid))
         if l.first():
             return l.first()
@@ -63,6 +69,11 @@ class Monitor(db.Model):
             return self.currentlayout
         
     def getLayouts(self, triggername=""):
+        """
+        Get list of all MonitorLayouts defined for *triggername* or all
+        :param optional triggername: triggername as filter
+        :return: list of :py:class:`emonitor.modules.monitors.monitorlayout.MonitorLayout`
+        """
         if triggername == "":
             return sorted(self.layouts.values())
         elif triggername != "":
@@ -70,6 +81,13 @@ class Monitor(db.Model):
 
     @staticmethod
     def getMonitors(id=0, clientid=0):
+        """
+        Get list of monitor definitions filtered by parameters
+
+        :param optional id:
+        :param optional clientid:
+        :return:
+        """
         if id != 0:
             return db.session.query(Monitor).filter_by(id=id).first()
         elif clientid != 0:
