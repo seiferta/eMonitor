@@ -5,6 +5,7 @@ from emonitor.extensions import db
 class AlarmObjectType(db.Model):
     """Type definition for AlarmObjects"""
     __tablename__ = 'alarmobjecttypes'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))

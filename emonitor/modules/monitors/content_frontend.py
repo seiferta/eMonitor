@@ -14,7 +14,7 @@ def getFrontendData(self):
 
     elif request.args.get('action') == 'ping':  # search from monitors
         if request.args.get('refresh') == '1':  # force refresh
-            scheduler.add_single_job(monitorserver.getClients)  # use scheduler for search
+            scheduler.add_job(monitorserver.getClients)  # use scheduler for search
         else:
             clients = monitorserver.clients['clients']
             layouts = {}

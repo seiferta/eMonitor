@@ -5,6 +5,7 @@ from emonitor.modules.monitors.monitorlayout import MonitorLayout
 
 class Monitor(db.Model):
     __tablename__ = 'monitors'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     clientid = db.Column(db.Integer)

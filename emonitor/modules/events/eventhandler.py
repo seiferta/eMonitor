@@ -4,6 +4,7 @@ from emonitor.extensions import db, events
 class Eventhandler(db.Model):
     """Eventhandler class"""
     __tablename__ = 'eventhandlers'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     event = db.Column(db.String(32))

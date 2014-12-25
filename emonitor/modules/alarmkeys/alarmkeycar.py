@@ -6,6 +6,7 @@ class AlarmkeyCars(db.Model):
     """AlarmkeyCars class"""
 
     __tablename__ = 'alarmkeycars'
+    __table_args__ = {'extend_existing': True}
     
     kid = db.Column(db.Integer, primary_key=True)
     dept = db.Column(db.String(30), primary_key=True)

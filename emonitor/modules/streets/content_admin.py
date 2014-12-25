@@ -170,7 +170,7 @@ def getAdminData(self):
         else:
             streets = classes.get('street').getAllStreets()
 
-        return str(scheduler.add_single_job(loadHousenumbersFromOsm, [streets]))
+        return str(scheduler.add_job(loadHousenumbersFromOsm, args=[streets]))
 
     elif request.args.get('action') == 'loadhnumbers':  # load all housenumbers for street
         street = Street.getStreet(int(request.args.get('streetid')))

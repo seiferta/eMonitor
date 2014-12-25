@@ -6,6 +6,7 @@ DEFAULTZOOM = 12
 
 class Map(db.Model):
     __tablename__ = 'maps'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))

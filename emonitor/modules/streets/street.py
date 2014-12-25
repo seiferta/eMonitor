@@ -6,6 +6,7 @@ from emonitor.modules.streets.housenumber import Housenumber
 
 class Street(db.Model):
     __tablename__ = 'streets'
+    __table_args__ = {'extend_existing': True}
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))

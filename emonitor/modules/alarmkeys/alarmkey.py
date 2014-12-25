@@ -4,6 +4,7 @@ from emonitor.extensions import db, classes
 class Alarmkey(db.Model):
     """Alarmkey class"""
     __tablename__ = 'alarmkeys'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(40), default='')

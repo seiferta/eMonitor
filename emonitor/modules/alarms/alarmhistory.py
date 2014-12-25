@@ -5,6 +5,7 @@ from emonitor.extensions import db
 class AlarmHistory(db.Model):
     """AlarmHistory class user in :py:class:`emonitor.modules.alarms.alarm.Alarm`"""
     __tablename__ = 'alarmhistory'
+    __table_args__ = {'extend_existing': True}
 
     historytypes = ['autochangeState', 'message']
 

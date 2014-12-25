@@ -4,6 +4,7 @@ from emonitor.extensions import db, classes
 
 class Replace(db.Model):
     __tablename__ = 'replace'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)

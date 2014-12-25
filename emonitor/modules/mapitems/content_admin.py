@@ -136,7 +136,7 @@ def getAdminData(self):
         itemdefinition = [t for t in classes.get('settings').get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
         for layouter in MapItem.getLayouters():
             if layouter.getName() == itemdefinition['parameters']['layout']:
-                scheduler.add_single_job(layouter.buildTiles, [classes.get('mapitem').getMapitems(itemdefinition['name']), itemdefinition['attributes']])
+                scheduler.add_job(layouter.buildTiles, args=[classes.get('mapitem').getMapitems(itemdefinition['name']), itemdefinition['attributes']])
                 break
 
     return ""

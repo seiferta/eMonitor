@@ -4,6 +4,7 @@ from emonitor.extensions import db
 
 class Housenumber(db.Model):
     __tablename__ = 'housenumbers'
+    __table_args__ = {'extend_existing': True}
     
     id = db.Column(db.Integer, primary_key=True)
     streetid = db.Column(db.Integer, db.ForeignKey('streets.id'))

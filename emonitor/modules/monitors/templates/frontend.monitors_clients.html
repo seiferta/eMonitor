@@ -1,3 +1,11 @@
+{%- macro triggerlabel(trigger) %}
+    {%- if '.' in trigger %}
+        {{ _('trigger.'+trigger.split('.')[0]+'_sub', sub=trigger.split('.')[-1]) }}
+    {%- else %}
+        {{ _('trigger.'+trigger) }}
+    {%- endif %}
+{%- endmacro %}
+
 <style>
 
     div.client{background:url(/img/monitor.png) no-repeat 25px transparent;height:160px;position:relative;cursor:pointer;width:290px;float:left;}
@@ -45,7 +53,7 @@
             <ul class="dropdown-menu pull-right">
 
                 {% for l in layouts[id] %}
-                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {%for tr in l.trigger.split(';') %}{{ _('trigger.'+tr) }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
+                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {%for tr in l.trigger.split(';') %}{{ triggerlabel(tr) }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
                 {% endfor %}
                 <li><a href="#" onclick="return changeLayout({{ id }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
             </ul>

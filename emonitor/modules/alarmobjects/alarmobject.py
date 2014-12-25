@@ -10,6 +10,7 @@ from emonitor.extensions import db
 class AlarmObject(db.Model):
     """AlarmObject class"""
     __tablename__ = 'alarmobjects'
+    __table_args__ = {'extend_existing': True}
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))

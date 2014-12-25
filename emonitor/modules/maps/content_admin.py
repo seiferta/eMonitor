@@ -130,8 +130,7 @@ def getAdminData(self, **params):
             lng.append(lng[-1] + .05)
         lng.append(mapdata['max_lngdeg'])
 
-        #scheduler.add_date_job(parseOsmData, datetime.datetime.fromtimestamp(time.time() + 2), kwargs={'lat': lat, 'lng': lng, 'path': current_app.config.get('PATH_DATA')})
-        scheduler.add_single_job(parseOsmData, {'lat': lat, 'lng': lng, 'path': current_app.config.get('PATH_DATA')})
+        scheduler.add_job(parseOsmData, kwargs={'lat': lat, 'lng': lng, 'path': current_app.config.get('PATH_DATA')})
         return {'job': 'started'}
 
     elif request.args.get('action') == 'findcity':  # search citystring and deliver position

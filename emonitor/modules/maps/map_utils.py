@@ -161,7 +161,7 @@ def loadTiles(path, tilelist):
         return LOADINPROGRESS  # still in progress
 
     LOADINPROGRESS = [sum(map(lambda x:len(tilelist[x]), tilelist)), 0]  # init progress
-    scheduler.add_single_job(doLoadTiles, kwargs={'path': path, 'tilelist': tilelist})
+    scheduler.add_job(doLoadTiles, kwargs={'path': path, 'tilelist': tilelist})
     return 1  # loading started
 
 

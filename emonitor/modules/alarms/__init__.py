@@ -154,13 +154,13 @@ class AlarmsModule(Module):
         if aalarms:  # add active alarm and closing time
             try:
                 for aalarm in aalarms:
-                    scheduler.add_single_job(events.raiseEvent, ['alarm_added', dict({'alarmid': aalarm.id})])
+                    scheduler.add_job(events.raiseEvent, args=['alarm_added', dict({'alarmid': aalarm.id})])
                     closingtime = time.mktime(aalarm.timestamp.timetuple()) + float(Settings.get('alarms.autoclose', 1800))
 
                     if closingtime > time.time():  # add close event
-                        scheduler.add_single_job(Alarm.changeState, [aalarm.id, 2])
+                        scheduler.add_job(Alarm.changeState, args=[aalarm.id, 2])
                     else:
-                        scheduler.add_single_job(Alarm.changeState, [aalarm.id, 2])
+                        scheduler.add_job(Alarm.changeState, args=[aalarm.id, 2])
             except:
                 app.logger.error('alarms.__init__.py: aalarm error')
 

@@ -8,6 +8,7 @@ from emonitor.extensions import db
 
 class MonitorLayout(db.Model):
     __tablename__ = 'monitorlayouts'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     mid = db.Column(db.Integer, db.ForeignKey('monitors.id'))

@@ -136,7 +136,7 @@ def getAdminData(self):
             fname = os.path.join(current_app.config.get('PATH_TMP'), ufile.filename)
             ufile.save(fname)
 
-            scheduler.add_single_job(processFile, [current_app.config.get('PATH_TMP'), ufile.filename])  # schedule operation
+            scheduler.add_job(processFile, args=[current_app.config.get('PATH_TMP'), ufile.filename])  # schedule operation
         return ""
 
     elif request.args.get('action') == 'uploadchecker':

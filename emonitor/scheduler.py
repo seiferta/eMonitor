@@ -1,7 +1,8 @@
 import logging
 import random
 import datetime, time
-from apscheduler.scheduler import Scheduler as ApScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.pool import ThreadPoolExecutor
 from emonitor.extensions import signal
 from emonitor.sockethandler import SocketHandler
 
@@ -10,15 +11,14 @@ logger = logging.getLogger('apscheduler.scheduler')
 logger.setLevel(50)  # critical
 
 
-class MyScheduler(ApScheduler):
+class MyScheduler(BackgroundScheduler):
     
     app = None
 
     def __init__(self, gconfig=None, **options):
-        if not gconfig: gconfig = {}
-        ApScheduler.__init__(self, gconfig, **options)
-        self.misfire_grace_time = 10  # 10 seconds
-        self.coalesce = True
+        executors = {'default': ThreadPoolExecutor(5)}
+        job_defaults = {'coalesce': False, 'max_instances': 3, 'timezone': 'UTC'}
+        super(BackgroundScheduler, self).__init__(executors=executors, job_defaults=job_defaults)
 
         signal.connect('scheduler', 'process', handleScheduleSignals.doHandle)
     
@@ -29,7 +29,7 @@ class MyScheduler(ApScheduler):
         self.add_listener(MyScheduler.myDone, 64)  # 64: executed
 
         from emonitor.observer import observeFolder
-        self.add_interval_job(observeFolder, seconds=app.config.get('OBSERVERINTERVAL', 2), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
+        self.add_job(observeFolder, 'interval', seconds=app.config.get('OBSERVERINTERVAL', 2), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
         app.logger.info('scheduler: job added "observer"')
 
     def get_jobs(self, name=""):
@@ -51,8 +51,13 @@ class MyScheduler(ApScheduler):
         if event.job.id:
             signal.send('scheduler', 'process', jid=event.job.id, state='done')
 
-    # delete all future jobs for monitors with given id
     def deleteJobForMonitor(self, monitorid):
+        """
+        Delete all future jobs for monitors with given id
+
+        :param monitorid: id of monitor
+        :return:
+        """
         for j in self.get_jobs():
             if "'monitorid', %s" % monitorid in str(j.args):
                 self.unschedule_job(j)
@@ -72,7 +77,7 @@ class MyScheduler(ApScheduler):
 
     def deleteJobForEvent(self, event):
         """
-        delete all jobs for given event
+        Delete all jobs for given event
         :class:`~MyScheduler` class.
 
         :rtype: :int:1 if done

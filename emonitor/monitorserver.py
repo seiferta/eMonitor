@@ -157,13 +157,13 @@ class MonitorServer():
                         scheduler.deleteJobForEvent('changeLayout')
                         MonitorServer.changeLayout(monitorlayout.mid, monitorlayout.id, params)
                         if monitorlayout.nextid != 0:
-                            scheduler.add_date_job(MonitorServer.changeLayout, datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), [monitorlayout.mid, monitorlayout.nextid, params])
+                            scheduler.add_job(MonitorServer.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), args=[monitorlayout.mid, monitorlayout.nextid, params])
                 except:
                     #MonitorServer.app.logger.error('monitorserver.handleEvent: %s' %traceback.format_exc())
                     pass
                 finally: pass
         
-        if not 'time' in kwargs[0]:
+        if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
         kwargs[0]['time'].append('monitorserver: message sent')
         return kwargs

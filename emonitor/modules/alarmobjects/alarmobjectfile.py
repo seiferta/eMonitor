@@ -7,6 +7,7 @@ from emonitor.extensions import db
 class AlarmObjectFile(db.Model):
     """Files for alarmobjects"""
     __tablename__ = 'alarmobjectfile'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     object_id = db.Column(db.Integer, db.ForeignKey('alarmobjects.id'))

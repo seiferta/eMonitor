@@ -8,6 +8,7 @@ from flask import current_app
 class MapItem(db.Model):
     """MapItems class"""
     __tablename__ = "mapitems"
+    __table_args__ = {'extend_existing': True}
 
     URL = 'http://overpass-api.de/api/interpreter'
 

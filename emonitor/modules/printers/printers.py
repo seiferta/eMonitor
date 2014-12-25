@@ -10,6 +10,7 @@ from emonitor.utils import Module
 
 class Printers(db.Model):
     __tablename__ = 'printers'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))

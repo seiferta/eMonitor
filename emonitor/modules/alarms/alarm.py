@@ -22,6 +22,7 @@ LASTALARM = 0.0  # timestamp ini millies
 class Alarm(db.Model):
     """Alarm class"""
     __tablename__ = 'alarms'
+    __table_args__ = {'extend_existing': True}
 
     ALARMSTATES = {'0': 'created', '1': 'active', '2': 'done'}
     """
@@ -241,14 +242,14 @@ class Alarm(db.Model):
             LASTALARM = time.time() + 2.0
 
             if alarm.get('alarmtype', '') != '':
-                scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added.%s' % alarm.get('alarmtype'), {'alarmid': id}])
+                scheduler.add_job(events.raiseEvent, next_run_time=datetime.datetime.fromtimestamp(LASTALARM), args=['alarm_added.%s' % alarm.get('alarmtype'), {'alarmid': id}])
             else:
-                scheduler.add_date_job(events.raiseEvent, datetime.datetime.fromtimestamp(LASTALARM), ['alarm_added', {'alarmid': id}])
+                scheduler.add_job(events.raiseEvent, next_run_time=datetime.datetime.fromtimestamp(LASTALARM), args=['alarm_added', {'alarmid': id}])
 
             # close alarm after alarms.autoclose, default 30 minutes
             if alarm.state == 1:  # autoclose only automatic alarms
-                scheduler.add_date_job(Alarm.changeState, datetime.datetime.fromtimestamp(
-                    LASTALARM + float(classes.get('settings').get('alarms.autoclose', 1800))), [id, 2])
+                scheduler.add_job(Alarm.changeState, next_run_time=datetime.datetime.fromtimestamp(
+                    LASTALARM + float(classes.get('settings').get('alarms.autoclose', 1800))), args=[id, 2])
             try:
                 flash(babel.gettext(u'alarms.statechangeactivated'), 'alarms.activate')
             except:
@@ -263,9 +264,9 @@ class Alarm(db.Model):
 
             for j in scheduler.get_jobs():
                 if j.name == 'changeLayout' and "'alarmid', %s" % id in str(j.args):  # layout changes for given alarm
-                    scheduler.unschedule_job(j)
+                    scheduler.remove_job(j.id)
                 elif j.name == 'changeState' and j.args[0] == id:  # state changes for given alarm
-                    scheduler.unschedule_job(j)
+                    scheduler.remove_job(j.id)
 
             monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
 

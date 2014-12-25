@@ -8,6 +8,7 @@ class AlarmSection(db.Model):
     AlarmSection class for sections of alarm type :py:class:`emonitor.modules.alarms.alarmtype.AlarmType`
     """
     __tablename__ = 'alarmsections'
+    __table_args__ = {'extend_existing': True}
     
     id = db.Column(db.Integer, primary_key=True)
     tid = db.Column(db.Integer, db.ForeignKey('alarmtypes.id'))
