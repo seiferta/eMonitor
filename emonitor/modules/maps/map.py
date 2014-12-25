@@ -5,6 +5,7 @@ DEFAULTZOOM = 12
 
 
 class Map(db.Model):
+    """Maps class"""
     __tablename__ = 'maps'
     __table_args__ = {'extend_existing': True}
 
@@ -30,8 +31,17 @@ class Map(db.Model):
 
     @staticmethod
     def getMapBox(tilepath="", mappath="", zoom=DEFAULTZOOM):
+        """
+        Deliver a hashmap with the bounding box of current map definition
+
+        :param tilepath: path to tile images
+        :param mappath:
+        :param zoom: zoom level
+        :return: hashmap with parameters
+        """
         ret = dict(mappath=[], coord=[], min_lngtile=10000, min_lattile=10000, max_lngtile=0, max_lattile=0,
                    min_lngdeg=0.0, max_lngdeg=0.0, min_latdeg=0.0, max_latdeg=0.0)
+        """Default hashmap"""
 
         for path, dirs, files in os.walk('%s%s' % (tilepath, mappath)):
             if path.endswith('/%s' % zoom) or path.endswith('\\%s' % zoom):
@@ -63,6 +73,12 @@ class Map(db.Model):
 
     @staticmethod
     def getMaps(id=0):
+        """
+        Get list of map definitions filtered by parameters
+
+        :param optional id: id of map or 0 for all maps
+        :return: list or single object :py:class:`emonitor.modules.maps.map.Map`
+        """
         if id != 0:
             return db.session.query(Map).filter_by(id=id).first()
         else:
@@ -70,4 +86,8 @@ class Map(db.Model):
 
     @staticmethod
     def getDefaultMap():
+        """
+        Get default map defined in database, field default=1
+        :return: :py:class:`emonitor.modules.maps.map.Map`
+        """
         return db.session.query(Map).filter_by(default=1).first()

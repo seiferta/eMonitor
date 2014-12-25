@@ -11,6 +11,13 @@ LOADINPROGRESS = [0, 0]  # [_todo_, _done_]
 
 
 def getAlarmMap(alarm, tilepath):
+    """
+    Build map for alarm as png image stream
+
+    :param alarm: :py:class:`emonitor.modules.alarms.alarm.Alarm`
+    :param tilepath: path to tile images
+    :return: image as stream
+    """
     dimx = 5  # tiles in x dimension
     dimy = 3  # tiles in y dimension
     zoom = int(alarm.get('zoom', 18))
@@ -62,6 +69,13 @@ def getAlarmMap(alarm, tilepath):
 
 
 def getAlarmRoute(alarm, tilepath):
+    """
+    Build path for alarm as png image stream
+
+    :param alarm: :py:class:`emonitor.modules.alarms.alarm.Alarm`
+    :param tilepath: path to tile images
+    :return: image as stream
+    """
     from emonitor.tileserver.tileserver import getTileFromURL
     if alarm.city.id is None:
         zoom = 18  # initial max zoom
@@ -116,6 +130,13 @@ def getAlarmRoute(alarm, tilepath):
 
 
 def loadTiles(path, tilelist):
+    """
+    Load map tiles into path from given tilelist
+
+    :param path: path to store map tiles
+    :param tilelist: list of tiles to load from OSM
+    :return: progress information *[position, number of tiles to load]* as list
+    """
     from emonitor.extensions import scheduler
     global LOADINPROGRESS
 
@@ -183,6 +204,12 @@ def deg2num(lat_deg, lon_deg, zoom):
 
 
 def loadPositionOfCity(name):
+    """
+    Get position of city given by name
+
+    :param name: name of city as string
+    :return: dict with cities sorted by name
+    """
     SEARCHSTRING = 'node["name"~"%s"]["place"~"town|village"];(._;>;);out;' % name  # search all cities with given name
     r = requests.post('http://overpass-api.de/api/interpreter', data={'data': SEARCHSTRING})
     cities = []

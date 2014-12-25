@@ -7,12 +7,20 @@ from .content_frontend import getFrontendContent, getFrontendData
 
 
 class MapsModule(Module):
+    """
+    Definition of maps module with frontend, admin and widget area
+    """
     info = dict(area=['admin', 'frontend', 'widget'], name='maps', path='maps', icon='fa-globe', version='0.1')
 
     def __repr__(self):
         return "maps"
 
     def __init__(self, app):
+        """
+        Add specific parameters and configuration to app object
+
+        :param app: flask wsgi application
+        """
         Module.__init__(self, app)
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/maps/templates" % app.config.get('PROJECT_ROOT'))
@@ -53,13 +61,31 @@ class MapsModule(Module):
         return 1
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of maps class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.maps.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self, **params):
+        """
+        Call *getAdminData* method of maps class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self, **params)
 
     def getFrontendContent(self, **params):
+        """
+        Call *getFrontendContent* of maps class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.maps.content_frontend.getFrontendContent`
+        """
         return getFrontendContent(**params)
 
     def getFrontendData(self):
+        """
+        Call *getFrontendData* of maps class
+        """
         return getFrontendData(self)
