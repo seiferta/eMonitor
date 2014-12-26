@@ -14,6 +14,9 @@ class SocketHandler(WebSocketHandler):
             else:
                 client.write_message(sender, extra)
 
+    def data_received(self, chunk):
+        pass
+
     def open(self):
         SocketHandler.clients.add(self)
 
