@@ -6,7 +6,12 @@ from emonitor.extensions import classes, db
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module printers
 
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
 
     if len(module) == 2:
@@ -82,5 +87,10 @@ def getAdminContent(self, **params):
     return render_template('admin.printers.html', **params)
 
 
-def getAdminData(self, params={}):
+def getAdminData(self):
+    """
+    Deliver admin content of module printers (ajax)
+
+    :return: rendered template as string or json dict
+    """
     return ""

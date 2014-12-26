@@ -9,6 +9,7 @@ from emonitor.utils import Module
 
 
 class Printers(db.Model):
+    """Printers class"""
     __tablename__ = 'printers'
     __table_args__ = {'extend_existing': True}
 
@@ -52,6 +53,11 @@ class Printers(db.Model):
         return callstring
 
     def doPrint(self, **params):
+        """
+        Start printout of defined object
+
+        :param params: checks for *alarmid*
+        """
         import emonitor.webapp as wa
         tmpfilename = random.random()
         callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
@@ -62,13 +68,19 @@ class Printers(db.Model):
                     tmpfile.write(Module.getPdf(alarm.getExportData('.html', id=alarm.id, style=self.layout[6:-5])))
             try:
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
-                print '%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename)
                 os.remove('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
             except WindowsError:
                 pass
 
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """
+        Event handler for printer class, adds own processing time
+
+        :param eventname: *emonitor.modules.printers.printers.Printers*
+        :param kwargs: *mode*=*test*, *time*,
+        :return: kwargs
+        """
         stime = time.time()
         _printer = None
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.printers.printers.Printers'][0]
@@ -90,7 +102,7 @@ class Printers(db.Model):
         else:
             state = "with error 'no printer found' "
 
-        if not 'time' in kwargs[0]:
+        if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
         kwargs[0]['time'].append('printer: print done %sin %s sec.' % (state, time.time() - stime))
 
@@ -98,6 +110,12 @@ class Printers(db.Model):
 
     @staticmethod
     def getPrinters(pid=0):
+        """
+        Get list of printers definitions filtered by parameters
+
+        :param pid: id of printerdefinition or *0* for all definitions
+        :return: list of :py:class:`emonitor.modules.printers.printers.Printers`
+        """
         if pid == 0:
             return db.session.query(Printers).all()
         else:
@@ -105,4 +123,10 @@ class Printers(db.Model):
 
     @staticmethod
     def getActivePrintersOfModule(module):
-        return db.session.query(Printers).filter(and_(Printers.module==module, Printers.state=='1')).all()
+        """
+        Get list of active definitions for given modulename
+
+        :param module: modulename
+        :return: list of :py:class:`emonitor.modules.printers.printers.Printers`
+        """
+        return db.session.query(Printers).filter(and_(Printers.module == module, Printers.state == '1')).all()

@@ -6,6 +6,9 @@ from .content_admin import getAdminContent, getAdminData
 
 
 class PrintersModule(Module):
+    """
+    Definition of printers module with admin area
+    """
     info = dict(area=['admin'], name='printers', path='printers', icon='fa-print', version='0.1')
 
     def __repr__(self):
@@ -41,7 +44,25 @@ class PrintersModule(Module):
         babel.gettext(u'template.alarm_original')
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of printers class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.printers.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self, *params):
-        return getAdminData(self, *params)
+        """
+        Call *getAdminData* method of monitors class and return values
+
+        :return: return result of method
+        """
+        return getAdminData(self)
+
+    def getFrontendContent(self, **params):
+        """UNUSED"""
+        return getFrontendContent(self, **params)
+
+    def getFrontendData(self):
+        """UNUSED"""
+        return getFrontendData(self)
