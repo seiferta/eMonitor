@@ -2,13 +2,13 @@ from flask import render_template, request
 from emonitor.extensions import classes, monitorserver, scheduler
 
 
-def getFrontendContent(self, params={}):
+def getFrontendContent(self, **params):
     """
     Deliver frontend content of module monitors
 
     :return: data of monitors
     """
-pass
+    pass
 
 
 def getFrontendData(self):

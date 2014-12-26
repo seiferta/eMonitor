@@ -86,7 +86,7 @@ class Monitor(db.Model):
 
         :param optional id:
         :param optional clientid:
-        :return:
+        :return: list of :py:class:`emonitor.modules.monitors.monitor.Monitor`
         """
         if id != 0:
             return db.session.query(Monitor).filter_by(id=id).first()
