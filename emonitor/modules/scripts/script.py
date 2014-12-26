@@ -3,12 +3,19 @@ from emonitor.extensions import monitorserver, classes
 
 
 class Script:
-
+    """Script class"""
     def __init__(self):
         pass
 
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """
+        Event handler for scripts class, adds own processing time
+
+        :param eventname: *emonitor.modules.scripts.script.Script*
+        :param kwargs: *time*
+        :return: kwargs
+        """
         stime = time.time()
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.scripts.script.Script']
 
@@ -23,7 +30,7 @@ class Script:
                     if 'mode' in kwargs[0].keys() and kwargs[0]['mode'] != 'test':
                         monitorserver.sendMessage(str(m.id), 'execute|%s' % scriptname)  # execute script on client
 
-        if not 'time' in kwargs[0]:
+        if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
         kwargs[0]['time'].append('scripts: script "%s" done in %s sec.' % (scriptname, time.time() - stime))
         return kwargs
