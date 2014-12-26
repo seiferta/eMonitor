@@ -6,6 +6,9 @@ from emonitor.modules.settings import settings_utils
 
 
 class SettingsModule(Module):
+    """
+    Definition of settings module with admin area
+    """
     info = dict(area=['admin'], name='settings', path='settings', icon='fa-gears', version='0.1')
 
     def __repr__(self):
@@ -63,7 +66,17 @@ class SettingsModule(Module):
         pass
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of settings class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.settings.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self, **params):
+        """
+        Call *getAdminData* method of settings class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self, **params)

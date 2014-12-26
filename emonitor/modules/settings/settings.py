@@ -3,6 +3,7 @@ from emonitor.extensions import db, classes
 
 
 class Settings(db.Model):
+    """Settings class"""
     __tablename__ = 'settings'
     __table_args__ = {'extend_existing': True}
 
@@ -25,6 +26,14 @@ class Settings(db.Model):
 
     @staticmethod
     def num2deg(xtile, ytile, zoom=db.app.config.get('DEFAULTZOOM')):
+        """
+        Translate tile into coordinate (lat, lon)
+
+        :param xtile: x-coordinate of tile
+        :param ytile: y-coordinate of tile
+        :param zoom: zoom level
+        :return: lat, lon tuple
+        """
         n = 2.0 ** zoom
         lon_deg = xtile / n * 360.0 - 180.0
         lat_deg = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * ytile / n))))
@@ -66,14 +75,28 @@ class Settings(db.Model):
         return {'module': 'default', 'width': '.2', 'visible': '0', 'center': {'module': 'default'}, 'west': {'module': 'default', 'width': '.2'}, 'east': {'module': 'default', 'width': '.2'}}
 
     @staticmethod
-    def get(option, default=''):  # getter for settings
+    def get(option, default=''):
+        """
+        Getter for option values
+
+        :param option: name as string
+        :param optional default: default value if not found in database
+        :return: value of option
+        """
         s = db.session.query(Settings).filter_by(name=option)
         if s.count() == 1:  # update
             return s.first().value
         return default  # deliver default value
 
     @staticmethod
-    def set(option, val):  # setter for settings
+    def set(option, val):
+        """
+        Setter for option
+
+        :param option: name as string
+        :param val: value of option
+        :return: value of option
+        """
         s = db.session.query(Settings).filter_by(name=option).first()
         if s:  # update settings
             s.value = val

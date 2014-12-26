@@ -7,6 +7,12 @@ LOADINPROGRESS = [0, 0]  # [_todo_, _done_]
 
 
 def loadTiles(path, tilelist):
+    """
+    Load tiles from OpenStreetMap and store tiles in local directory
+
+    :param path: store path as string
+    :param tilelist: list of tiles to load
+    """
     global LOADINPROGRESS
     
     def doLoadTiles(**kwargs):

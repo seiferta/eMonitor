@@ -3,8 +3,8 @@ from emonitor.extensions import db, classes
 import emonitor.modules.cars.car
 
 
-# noinspection PyBroadException
 class Department(db.Model):
+    """Department class"""
     __tablename__ = 'departments'
     __table_args__ = {'extend_existing': True}
     
@@ -32,10 +32,17 @@ class Department(db.Model):
         
     @staticmethod
     def getDefaultDepartment():
+        """Get default department :py:class:`emonitor.modules.settings.department.Department`"""
         return db.session.query(Department).order_by('orderpos').first()
         
     @staticmethod
     def getDepartments(id=0):
+        """
+        Get department list filtered by criteria
+
+        :param optional id: id of department, *0* for all
+        :return: list of :py:class:`emonitor.modules.settings.department.Department`
+        """
         if id == 0:
             try:
                 return db.session.query(Department).order_by('orderpos').all()
@@ -46,6 +53,11 @@ class Department(db.Model):
 
     @staticmethod
     def getDeptsDict():
+        """
+        Get departements as dict
+
+        :return: dict of :py:class:`emonitor.modules.settings.department.Department`
+        """
         ret = {}
         for dept in db.session.query(Department).order_by('orderpos'):
             ret[dept.orderpos] = (dept.name, dept.color)
@@ -53,4 +65,9 @@ class Department(db.Model):
         
     @staticmethod
     def count():
+        """
+        Get number of departments as integer
+
+        :return: number of departments
+        """
         return db.session.query(Department).count()

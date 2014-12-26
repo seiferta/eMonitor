@@ -8,6 +8,12 @@ OBSERVERACTIVE = 1
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module settings
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
 
     def chunks(l, n):
@@ -101,6 +107,11 @@ def getAdminContent(self, **params):
 
 
 def getAdminData(self, **params):
+    """
+    Deliver admin content of module settings (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'checkpath':
         if os.path.exists(request.args.get('path')):
             return '1'
