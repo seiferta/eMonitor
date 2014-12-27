@@ -61,7 +61,7 @@ def monitorContent(clientid=0):
                 nextalarm = count[pos % len(count)]
 
             for j in [job for job in scheduler.get_jobs(name='changeLayout') if "'alarmid', %s" % c.id in str(job.args)]:
-                scheduler.unschedule_job(j)  # layout changes for given alarm
+                scheduler.remove_job(j.id)  # layout changes for given alarm
 
         for l in defmonitor.getLayouts(triggername='alarm_added'):
             for tr in l.trigger.split(';'):  # support more than one trigger for layout
