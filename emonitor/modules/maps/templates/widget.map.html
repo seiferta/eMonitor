@@ -27,7 +27,7 @@
 
     cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
     mml = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 10, maxZoom: 14});
-    {%- if alarm.get('id.object')!= '' %}
+    {%- if alarm.get('id.object') not in ['', '0'] %}
         map.setView(new L.LatLng({{ alarm.object.lat }}, {{ alarm.object.lng }}), startzoom).addLayer(cloudmade);
     {%- else %}
         map.setView(new L.LatLng({{ alarm.get('lat') }}, {{ alarm.get('lng') }}), startzoom).addLayer(cloudmade);
