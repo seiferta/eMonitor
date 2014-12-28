@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-16 14:18+0100\n"
+"POT-Creation-Date: 2014-12-28 10:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: emonitor/modules/__init__.py:25
+#: emonitor/modules/__init__.py:24
 msgid "module.startpages"
 msgstr ""
 
@@ -377,7 +377,11 @@ msgstr ""
 msgid "alarmobjects.field.name"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields.html:51
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields.html:23
+msgid "alarmobjects.field.remark"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields.html:52
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields_action.html:29
 msgid "alarmobjects.fields.save"
 msgstr ""
@@ -730,7 +734,7 @@ msgstr ""
 msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:120 emonitor/modules/alarms/alarm.py:178
+#: emonitor/modules/alarms/__init__.py:120 emonitor/modules/alarms/alarm.py:254
 msgid "alarms.statechangeactivated"
 msgstr ""
 
@@ -775,49 +779,49 @@ msgid "trigger.alarm_changestate_sub"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:133
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:219
 msgid "alarms.print.slightleft"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:134
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:219
 msgid "alarms.print.slightright"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:135
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:219
 msgid "alarms.print.right"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:136
-#: emonitor/modules/alarms/alarmutils.py:196
+#: emonitor/modules/alarms/alarmutils.py:219
 msgid "alarms.print.left"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:137
-#: emonitor/modules/alarms/alarmutils.py:196
-#: emonitor/modules/alarms/alarmutils.py:211
+#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/alarmutils.py:234
 msgid "alarms.print.straight"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:138
-#: emonitor/modules/alarms/alarmutils.py:196
-#: emonitor/modules/alarms/alarmutils.py:211
+#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/alarmutils.py:234
 msgid "alarms.print.exit"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:139
-#: emonitor/modules/alarms/alarmutils.py:195
+#: emonitor/modules/alarms/alarmutils.py:218
 msgid "alarms.print.bus"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:140
-#: emonitor/modules/alarms/alarmutils.py:213
+#: emonitor/modules/alarms/alarmutils.py:236
 msgid "alarms.print.positive"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:141
-#: emonitor/modules/alarms/alarmutils.py:214
+#: emonitor/modules/alarms/alarmutils.py:237
 msgid "alarms.print.negative"
 msgstr ""
 
@@ -837,28 +841,28 @@ msgstr ""
 msgid "alarms.filter.31"
 msgstr ""
 
-#: emonitor/modules/alarms/alarm.py:132
+#: emonitor/modules/alarms/alarm.py:202
 msgid "alarms.routingerror"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:205
-#: emonitor/modules/alarms/alarmutils.py:207
+#: emonitor/modules/alarms/alarmutils.py:228
+#: emonitor/modules/alarms/alarmutils.py:230
 msgid "alarms.print.highwaylong"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:207
+#: emonitor/modules/alarms/alarmutils.py:230
 msgid "alarms.print.highwayshort"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:211
+#: emonitor/modules/alarms/alarmutils.py:234
 msgid "alarms.print.exitstart"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:211
+#: emonitor/modules/alarms/alarmutils.py:234
 msgid "alarms.print.straightexit"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:144
+#: emonitor/modules/alarms/content_admin.py:154
 msgid "admin.alarms.checkernotvalid"
 msgstr ""
 
@@ -1345,7 +1349,7 @@ msgid "alarms.deletequestion"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:121
-#: emonitor/modules/printers/__init__.py:40
+#: emonitor/modules/printers/__init__.py:43
 msgid "template.alarm_sum"
 msgstr ""
 
@@ -1357,11 +1361,11 @@ msgstr ""
 msgid "alarms.object"
 msgstr ""
 
-#: emonitor/modules/cars/__init__.py:31
+#: emonitor/modules/cars/__init__.py:39
 msgid "module.cars"
 msgstr ""
 
-#: emonitor/modules/cars/__init__.py:32
+#: emonitor/modules/cars/__init__.py:40
 #: emonitor/modules/cars/templates/widget.cars.html:14
 msgid "cars"
 msgstr ""
@@ -1443,7 +1447,7 @@ msgstr ""
 msgid "cars.cancel"
 msgstr ""
 
-#: emonitor/modules/events/__init__.py:24
+#: emonitor/modules/events/__init__.py:32
 msgid "module.events"
 msgstr ""
 
@@ -1570,27 +1574,27 @@ msgstr ""
 msgid "frontend.alamobject.details"
 msgstr ""
 
-#: emonitor/modules/mapitems/__init__.py:35
+#: emonitor/modules/mapitems/__init__.py:43
 msgid "module.mapitems"
 msgstr ""
 
-#: emonitor/modules/mapitems/__init__.py:36
+#: emonitor/modules/mapitems/__init__.py:44
 msgid "module.mapitems.definition"
 msgstr ""
 
-#: emonitor/modules/mapitems/__init__.py:37
+#: emonitor/modules/mapitems/__init__.py:45
 msgid "mapitems.definition"
 msgstr ""
 
-#: emonitor/modules/mapitems/content_admin.py:122
+#: emonitor/modules/mapitems/content_admin.py:132
 msgid "admin.mapitems.layouternotvalid"
 msgstr ""
 
-#: emonitor/modules/mapitems/inc/layout_ffentry.py:10
+#: emonitor/modules/mapitems/inc/layout_ffentry.py:9
 msgid "mapitems.params.ffentry"
 msgstr ""
 
-#: emonitor/modules/mapitems/inc/layout_hydrant.py:10
+#: emonitor/modules/mapitems/inc/layout_hydrant.py:9
 msgid "mapitems.params.hydrant"
 msgstr ""
 
@@ -1769,27 +1773,27 @@ msgstr ""
 msgid "itemtype.itemscount"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:36
+#: emonitor/modules/maps/__init__.py:44
 msgid "module.maps"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:37
+#: emonitor/modules/maps/__init__.py:45
 msgid "maps_map"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:38
+#: emonitor/modules/maps/__init__.py:46
 msgid "maps.base"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:39
+#: emonitor/modules/maps/__init__.py:47
 msgid "module.maps.position"
 msgstr ""
 
-#: emonitor/modules/maps/content_admin.py:103
+#: emonitor/modules/maps/content_admin.py:114
 msgid "settings.map.loadinginprogress"
 msgstr ""
 
-#: emonitor/modules/maps/content_admin.py:105
+#: emonitor/modules/maps/content_admin.py:116
 msgid "settings.map.loadingstarted"
 msgstr ""
 
@@ -1996,43 +2000,43 @@ msgstr ""
 msgid "module.messages"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:43
+#: emonitor/modules/monitors/__init__.py:46
 msgid "module.monitors"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:44
+#: emonitor/modules/monitors/__init__.py:47
 msgid "monitors.definition"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:45
+#: emonitor/modules/monitors/__init__.py:48
 msgid "module.monitors.style"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:46
+#: emonitor/modules/monitors/__init__.py:49
 msgid "module.monitors.current"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:47
+#: emonitor/modules/monitors/__init__.py:50
 msgid "module.monitors.actions"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:48
+#: emonitor/modules/monitors/__init__.py:51
 msgid "monitors.landscape"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:49
+#: emonitor/modules/monitors/__init__.py:52
 msgid "monitors.portrait"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:50
+#: emonitor/modules/monitors/__init__.py:53
 msgid "monitors.orientation.0"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:51
+#: emonitor/modules/monitors/__init__.py:54
 msgid "monitors.orientation.1"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:52
+#: emonitor/modules/monitors/__init__.py:55
 msgid "placeholder"
 msgstr ""
 
@@ -2286,47 +2290,47 @@ msgstr ""
 msgid "monitor.loadingclients"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:13
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:21
 msgid "monitor.ping.header"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:29
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:37
 msgid "monitor.nodefinition"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:36
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:44
 msgid "monitor.notconnected"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:50
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:58
 msgid "monitor.testpage"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:57
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
 msgid "monitor.clienttime"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:63
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:71
 msgid "monitor.layout.changed"
 msgstr ""
 
-#: emonitor/modules/printers/__init__.py:36
+#: emonitor/modules/printers/__init__.py:39
 msgid "module.printers"
 msgstr ""
 
-#: emonitor/modules/printers/__init__.py:37
+#: emonitor/modules/printers/__init__.py:40
 msgid "printers.main"
 msgstr ""
 
-#: emonitor/modules/printers/__init__.py:38
+#: emonitor/modules/printers/__init__.py:41
 msgid "module.printers.settings"
 msgstr ""
 
-#: emonitor/modules/printers/__init__.py:39
+#: emonitor/modules/printers/__init__.py:42
 msgid "emonitor.modules.printers.printers.Printers"
 msgstr ""
 
-#: emonitor/modules/printers/__init__.py:41
+#: emonitor/modules/printers/__init__.py:44
 msgid "template.alarm_original"
 msgstr ""
 
@@ -2434,47 +2438,47 @@ msgstr ""
 msgid "printers.cancel"
 msgstr ""
 
-#: emonitor/modules/scripts/__init__.py:19
+#: emonitor/modules/scripts/__init__.py:27
 msgid "emonitor.modules.scripts.script.Script"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:35
+#: emonitor/modules/settings/__init__.py:38
 msgid "module.settings"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:36
+#: emonitor/modules/settings/__init__.py:39
 msgid "settings.main"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:37
+#: emonitor/modules/settings/__init__.py:40
 msgid "module.settings.department"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:38
+#: emonitor/modules/settings/__init__.py:41
 msgid "module.settings.cars"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:39
+#: emonitor/modules/settings/__init__.py:42
 msgid "module.settings.start"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:41
+#: emonitor/modules/settings/__init__.py:44
 msgid "settings.pathtype.pathdone"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:42
+#: emonitor/modules/settings/__init__.py:45
 msgid "settings.pathtype.pathtmp"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:43
+#: emonitor/modules/settings/__init__.py:46
 msgid "settings.pathtype.pathdata"
 msgstr ""
 
-#: emonitor/modules/settings/__init__.py:44
+#: emonitor/modules/settings/__init__.py:47
 msgid "settings.pathtype.pathincome"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:114
+#: emonitor/modules/settings/content_admin.py:125
 msgid "admin.settings.updatedberror"
 msgstr ""
 
@@ -2732,19 +2736,19 @@ msgstr ""
 msgid "settings.start.save"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:48
+#: emonitor/modules/streets/__init__.py:51
 msgid "module.streets"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:49
+#: emonitor/modules/streets/__init__.py:52
 msgid "module.streets.0"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:50
+#: emonitor/modules/streets/__init__.py:53
 msgid "streets_street"
 msgstr ""
 
-#: emonitor/modules/streets/__init__.py:57
+#: emonitor/modules/streets/__init__.py:63
 msgid "admin.streets.cities.edit..."
 msgstr ""
 

@@ -131,7 +131,7 @@
             <form method="post" style="width:100%;">
                 {%- for field in fields %}
                     <p>
-                        <label style="width:100%">{{ field[1] }}:<br/>
+                        <label style="width:100%">{{ field[0] }}:<br/>
                             <textarea class="navigation" name="edit_{{ field[0] }}" style="width:100%;min-height:100px!important">{{ alarmobject.get(field[0]) }}</textarea>
                         </label>
                     </p>

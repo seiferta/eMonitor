@@ -79,6 +79,7 @@ def getAdminContent(self, **params):
                 alarmobject.alarmplan = request.form.get('edit_alarmplan')
                 alarmobject.bma = request.form.get('edit_bma')
                 alarmobject.active = int(request.form.get('edit_active', '0'))
+                db.session.commit()
 
             elif request.form.get('action') == 'savealarmobjectattributes':  # save attributes
                 alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
