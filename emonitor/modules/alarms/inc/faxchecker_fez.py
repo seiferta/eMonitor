@@ -31,7 +31,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     sections[u'Meldebild'] = (u'key', u'evalKey')
     sections[u'Hinweis'] = (u'remark', u'')
     sections[u'Funkkan\xe4le'] = (u'remark2', u'')
-    sections[u'Geforderte Einsatzmittel bzw. Ausr\xfcstung'] = (u'', u'')
+    sections[u'Geforderte Einsatzmittel bzw. Ausr\xfcstung'] = (u'material', u'evalMaterial')
     sections[u'(Alarmschreiben Ende)'] = (u'', u'')
     keywords = [u'Alarmschreiben', u'Feuerwehreinsatzzentrale']
     translations = AlarmFaxChecker.translations + [u'_bab_', u'_train_', u'_street_', u'_default_city_', u'_interchange_', u'_kilometer_', u'_train_identifier_']
