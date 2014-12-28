@@ -26,17 +26,28 @@
     <h2>{{ _('textmod.ocr.header.overview') }}</h2>
     <p><small>{{ _('textmod.ocr.info') }}</small></p>
     <form method="post" action="">
-            <label>{{ _('textmod.ocr.inportformats') }}:<br/>
-                <textarea name="ocr_formats" style="width:100%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
-                {{ _('textmod.ocr.inputformatinfo') }}
-            </label>
+            <fieldset>
+                <legend>{{ _('textmod.ocr.objectformats') }}</legend>
+                <label>{{ _('textmod.ocr.inportformats') }}:<br/>
+                    <textarea name="ocr_formats" style="width:100%;height:100px;">{{ params['inputformat']|join('\n') }}</textarea><br/>
+                    {{ _('textmod.ocr.inputformatinfo') }}
+                </label>
 
-            <label>{{ _('textmod.ocr.callstring') }}:<br/>
-                <textarea name="ocr_callstring" style="width:100%;height:100px;margin-bottom:2px">{{ params['callstring'] }}</textarea>
-                <p style="text-align:right"><span id="testresult"></span><button type="button" onclick="return testparams()" style="margin-left:150px">{{ _('textmod.ocr.starttest') }}</button></p>
-                {{ _('textmod.ocr.callstringinfo') }}
-            </label>
-        <p>
+                <label>{{ _('textmod.ocr.callstring') }}:<br/>
+                    <textarea name="ocr_callstring" style="width:100%;height:100px;margin-bottom:2px">{{ params['callstring'] }}</textarea>
+                    <p style="text-align:right"><span id="testresult"></span><button type="button" onclick="return testparams()" style="margin-left:150px">{{ _('textmod.ocr.starttest') }}</button></p>
+                    {{ _('textmod.ocr.callstringinfo') }}
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ _('textmod.ocr.textformats') }}</legend>
+                <label>{{ _('textmod.ocr.inporttextformats') }}:<br/>
+                    <textarea name="ocr_textformats" style="width:100%;height:100px;">{{ params['inputtextformat']|join('\n') }}</textarea><br/>
+                    {{ _('textmod.ocr.inputtextformatinfo') }}
+                </label>
+            </fieldset>
+        <p style="padding-top:20px">
             <button type="submit" name="action" value="savereocrparams" class="save"><i class="fa fa-check"></i> {{ _('textmod.ocr.save') }}</button>
         </p>
     </form> 

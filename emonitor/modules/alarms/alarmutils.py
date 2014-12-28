@@ -265,7 +265,6 @@ def processFile(incomepath, filename):
                     except:
                         if p.split('.')[1] in params.keys():
                             res = ['%s:%s' % (p, params[p.split('.')[1]])]
-                            #params['error'] = '%s:%s' % (p, params[p.split('.')[1]])
                         else:
                             res = ['error: key not found - %s' % p.split('.')[1]]
                             params['error'] = 'error: key not found - %s' % p.split('.')[1]

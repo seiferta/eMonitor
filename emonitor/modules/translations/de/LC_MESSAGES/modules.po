@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-28 10:03+0100\n"
-"PO-Revision-Date: 2014-12-28 10:04+0100\n"
+"POT-Creation-Date: 2014-12-28 14:46+0100\n"
+"PO-Revision-Date: 2014-12-28 14:47+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -725,8 +725,8 @@ msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr "Alarm-Typ"
 
 #: emonitor/modules/alarms/__init__.py:110
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:67
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:69
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:68
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:70
 msgid "alarms.test.protocol"
 msgstr "Verarbeitungs-Protokoll"
 
@@ -989,6 +989,12 @@ msgstr "Datei hochladen und verarbeiten"
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:31
 msgid "alarms.test.step2"
 msgstr " Aktionen werden ausgeführt"
+
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:50
+msgid "alarms.text.wrongfile.msg"
+msgstr ""
+"Falscher Dateityp: Der hochgeladene Dateityp wird nicht als Ausgangsformat "
+"unterstützt."
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:6
 #: emonitor/modules/streets/templates/admin.streets_edit.html:201
@@ -3381,23 +3387,29 @@ msgstr ""
 "Darunter fallen die unterstützten Eingangsformate und die Parameter für die "
 "OCR Verarbeitung"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:29
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:30
+msgid "textmod.ocr.objectformats"
+msgstr "Parameter für Objekt-Dateien"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:31
 msgid "textmod.ocr.inportformats"
 msgstr "Datenformate"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:31
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:33
 msgid "textmod.ocr.inputformatinfo"
-msgstr "Dateiendungen, jeweils in einer eigenen Zeile"
+msgstr ""
+"Dateiendungen für Datendateien, jeweils in einer eigenen Zeile, z.B. pdf, "
+"tif<br/>Achtung: Groß- und Kleinschreibung beachten!"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:34
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:36
 msgid "textmod.ocr.callstring"
 msgstr "Aufruf der Textverarbeitung"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:36
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:38
 msgid "textmod.ocr.starttest"
 msgstr "OCR-Test starten"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:37
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:39
 msgid "textmod.ocr.callstringinfo"
 msgstr ""
 "Aufruf der Texterkennung. Folgende Variablen können verwendet werden und "
@@ -3407,7 +3419,21 @@ msgstr ""
 "zum Zwischenspeichern<br/><br/>Standard: [basepath]/bin/tesseract/tesseract "
 "[incomepath][filename] [tmppath] -l deu -psm 6 quiet custom"
 
-#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:40
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:44
+msgid "textmod.ocr.textformats"
+msgstr "Parameter für Text-Dateien"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:45
+msgid "textmod.ocr.inporttextformats"
+msgstr "Textformate"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:47
+msgid "textmod.ocr.inputtextformatinfo"
+msgstr ""
+"Dateiendungen für Textdateien, jeweils in einer eigenen Zeile, z.B. txt, "
+"ocr<br/>Achtung: Groß- und Kleinschreibung beachten!"
+
+#: emonitor/modules/textmod/templates/admin.textmod.ocr.html:51
 msgid "textmod.ocr.save"
 msgstr "Speichern"
 

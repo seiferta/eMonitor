@@ -502,7 +502,8 @@ class Alarm(db.Model):
                 alarm.set('object', alarm_fields['object'][0])
                 alarm.set('id.object', alarm_fields['object'][1])
                 # alarmplan from object
-                _ao = classes.get('alarmobject').getAlarmObjects(id=alarm_fields['object'][1])
+                if alarm_fields['object'][1] != 0:
+                    _ao = classes.get('alarmobject').getAlarmObjects(id=alarm_fields['object'][1])
 
                 try:
                     if _ao.alarmplan != 0:

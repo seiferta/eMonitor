@@ -37,12 +37,12 @@ def observeFolder(**kwargs):
         ERROR_RAISED = 0  # reset errorstate
         
     AFTER = dict([(f, None) for f in os.listdir(path)])
-    for a in [f for f in AFTER if not f in BEFORE and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf'])]:  # new files added
+    for a in [f for f in AFTER if f not in BEFORE and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf']) + classes.get('settings').get('ocr.inputtextformat', [])]:  # new files added
         if a not in FILES:
             events.raiseEvent('file_added', dict({'incomepath': path, 'filename': a}))
             FILES.append(a)
     
-    for r in [f for f in BEFORE if not f in AFTER and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf'])]:
+    for r in [f for f in BEFORE if f not in AFTER and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf']) + classes.get('settings').get('ocr.inputtextformat', [])]:
         if r in FILES:
             events.raiseEvent('file_removed', dict({'incomepath': path, 'filename': r}))
             FILES.remove(r)

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-16 14:17+0100\n"
+"POT-Creation-Date: 2014-12-28 10:00+0100\n"
 "PO-Revision-Date: 2014-10-01 10:46+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: emonitor/admin/admin.py:68
+#: emonitor/admin/admin.py:66
 msgid "trigger.default"
 msgstr "Standardansicht"
 
-#: emonitor/admin/admin.py:69
+#: emonitor/admin/admin.py:67
 msgid "trigger.file_added"
 msgstr "Observer - Datei hinzugefügt"
 
-#: emonitor/admin/admin.py:70
+#: emonitor/admin/admin.py:68
 msgid "trigger.file_removed"
 msgstr "Observer - Datei entfernt"
 

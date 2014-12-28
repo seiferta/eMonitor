@@ -47,6 +47,7 @@
                     $('#result').html('<div id="vtab"><ul></ul></div>');
                     $('#filename').val($('#uploadfile').val().split('\\').pop());
                 }else{
+                    alert('{{ _('alarms.text.wrongfile.msg') }}');
                     return false;
                 }
             }

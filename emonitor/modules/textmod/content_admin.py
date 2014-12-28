@@ -16,6 +16,7 @@ def getAdminContent(self, **params):
             if request.method == 'POST':
                 if request.form.get('action') == 'savereocrparams':  # save changes
                     classes.get('settings').set('ocr.inputformat', request.form.get('ocr_formats').split('\r\n'))
+                    classes.get('settings').set('ocr.inputtextformat', request.form.get('ocr_textformats').split('\r\n'))
                     classes.get('settings').set('ocr.callstring', request.form.get('ocr_callstring'))
 
             params.update({'params': classes.get('ocr').getOCRParams()})
