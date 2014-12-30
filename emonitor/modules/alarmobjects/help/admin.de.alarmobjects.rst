@@ -14,3 +14,17 @@ können sein:
 - **Bemerkung:** Freitextfeld für die Bemerkung
 - **Kartenposition:** Auf der Karte kann die Position des Einsatzobjektes bestimmt werden. Automatisch wird anhand der
   Adresse die Position zu bestimmen. Manueller Engriff ist jederzeit möglich.
+
+Diese Informationen sind in Tabs organisiert:
+
+- **Basisdaten**
+  Basisdaten zum Einsatzobjekt
+
+- **Erweiterte Informationen**
+  Zusätzliche Informationen, die in der `Felder-Definition </admin/alarmobjects/fields>`_ erzeugt wurden.
+
+- **Ausrückeordnung**
+  Für jedes Einsatzobjekt kann *eine* Ausrückeordnung definiert werden, die für alle Alarmstichworte herangezogen wird
+  und die Definition der AAO für das Stichwort überschreibt.
+- **Dateien zum Einsatzobjekt**
+  Es können beliebig viele Dateien hinterlegt werden, die über das Frontend zum Download bereit stehen.
