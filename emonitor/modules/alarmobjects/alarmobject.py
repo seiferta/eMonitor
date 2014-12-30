@@ -46,18 +46,19 @@ class AlarmObject(db.Model):
     def serialize(self):
         return dict(id=self.id, name=self.name, lat=self.lat, lng=self.lng, zoom=self.zoom, alarmplan=self.alarmplan, street=self.street.serialize, streetno=self.streetno)
 
-    def get(self, attribute):
+    def get(self, attribute, default=""):
         """
         Getter for attribute names
 
         :param attribute: name of attribute as string
+        :param optional default: default value
         :return: value of attribute
         """
         try:
             values = yaml.load(self._attributes)
             return values[attribute]
         except:
-            return ""
+            return default
 
     def set(self, attribute, val):
         """
@@ -73,14 +74,31 @@ class AlarmObject(db.Model):
         values[attribute] = val
         self._attributes = yaml.safe_dump(values, encoding='utf-8')
 
+    def get_cars_proto(self, ctype):
+        """
+        Prototype of car, material getter
+
+        :param ctype: 1:cars1, 2:cars2, 3:material
+        :return: list of :py:class:`emonitor.modules.cars.car.Car`
+        """
+        _t = {1: 'cars1', 2: 'cars2', 3: 'material'}
+        ret = []
+        cars = classes.get('car').getCars()
+        for _c in [int(c) for c in self.get(_t[ctype]) if c != '']:
+            try:
+                ret.append(filter(lambda c: c.id == _c, cars)[0])
+            except IndexError:
+                pass
+        return ret
+
     def getCars1(self):
-        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('cars1') or [])]
+        return self.get_cars_proto(1)
 
     def getCars2(self):
-        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('cars2') or [])]
+        return self.get_cars_proto(2)
 
     def getMaterial(self):
-        return [c for c in classes.get('car').getCars() if str(c.id) in (self.get('material') or [])]
+        return self.get_cars_proto(3)
 
     def hasOwnAAO(self):
         return len(self.get('cars1') + self.get('cars2') + self.get('material')) > 0
