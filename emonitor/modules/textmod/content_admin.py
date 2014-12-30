@@ -9,6 +9,12 @@ from emonitor.extensions import db, classes
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module textmod
+
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     module = request.view_args['module'].split('/')
 
     if len(module) == 2:
@@ -77,6 +83,11 @@ def getAdminContent(self, **params):
 
 
 def getAdminData(self):
+    """
+    Deliver admin content of module streets (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'testocr':
         ret = {'path': '', 'ocrtext': ''}
         teststring = request.args.get('callstring')

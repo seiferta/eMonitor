@@ -2,7 +2,13 @@ OCR-Parameter
 =============
 
 Die Erkennung des Textes aus dem PDF wird standardmäßig mit `tesseract <http://code.google.com/p/tesseract-ocr>`_
-durchgeführt. Für die Konfiguration stehen folgende Parameter zur Verfügung:
+durchgeführt.
+
+Parameter für Objekt-Formate
+----------------------------
+
+Objektformate sind Dateiformate, die zuerst umgewandelt werden müssen, um daraus Text-Informationen zu erhalten.
+Folgende Einstellungen stehen zur Verfügung:
 
 - **Datenformate:** Es kann eine Liste (zeilenweise) der möglichen Datenformate hinterlegt werden, die von der
   OCR-Software bearbeitet werden kann. Standardmäßig sind das *pdf, tiff, jpg*.
@@ -27,7 +33,8 @@ durchgeführt. Für die Konfiguration stehen folgende Parameter zur Verfügung:
 
     *-psm 6*
 
-    Tesseract kann verschiedene Layouts erkennen, *6* hat sich für die Erkennung der Faxe als am besten geeignet erwiesen.
+    Tesseract kann verschiedene Layouts erkennen, *6* hat sich für die Erkennung der Faxe als am besten geeignet
+    erwiesen.
 
     *quit*
 
@@ -35,5 +42,14 @@ durchgeführt. Für die Konfiguration stehen folgende Parameter zur Verfügung:
 
     *custom*
 
-    Das Benutzerwörterbuch wird ebenfalls unterstützt, das unter `OCR-Vokabular </admin/textmod/ocrcustom>`_ angegeben werden
-    kann
+    Das Benutzerwörterbuch wird ebenfalls unterstützt, das unter `OCR-Vokabular </admin/textmod/ocrcustom>`_ angegeben
+    werden kann
+
+Parameter für Text-Dateien
+--------------------------
+
+Text-Dateien sind Dateien, die z.B. durch externe Programme bereits erkannt wurden (OCR). In den Text-Dateien liegen
+die Textinformationen bereits im Klartext vor.
+
+Zur Alarmerstellung können Dateien mit definierter Dateiendung verwendet werden. Die Endungen werden im Feld
+**Textformate** zeilenweise hinterlegt.

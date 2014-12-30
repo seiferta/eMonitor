@@ -3,6 +3,7 @@ from emonitor.extensions import db, classes
 
 
 class Replace(db.Model):
+    """Replace class"""
     __tablename__ = 'replace'
     __table_args__ = {'extend_existing': True}
 
@@ -16,6 +17,12 @@ class Replace(db.Model):
 
     @staticmethod
     def getReplacements(id=0):
+        """
+        Get list of replacements or filtered by id
+
+        :param optional id: id of replacement or *0* for all
+        :return: list of :py:class:`emonitor.modules.textmod.replace.Replace`
+        """
         if id == 0:
             return db.session.query(Replace).order_by('id')
         else:
@@ -23,11 +30,18 @@ class Replace(db.Model):
             
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """
+        Event handler for replacements
+
+        :param eventname: *file_added*
+        :param kwargs: *time*, *text*
+        :return: kwargs
+        """
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
         in_params = [v[1] for v in hdl.getParameterValues('in')]  # required parameters for method
 
         if sorted(in_params) != sorted(list(set(in_params) & set(kwargs[0].keys()))):
-            if not 'time' in kwargs[0]:
+            if 'time' not in kwargs[0]:
                 kwargs[0]['time'] = []
             kwargs[0]['time'].append('replace: missing parameters for replace, nothing done.')
             return kwargs
@@ -45,7 +59,7 @@ class Replace(db.Model):
             kwargs[0]['text'] = text
             t = time.time() - stime
             
-        if not 'time' in kwargs[0]:
+        if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
         kwargs[0]['time'].append('replace: replace done in %s sec.' % t)
         

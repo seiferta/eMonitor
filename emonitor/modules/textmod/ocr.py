@@ -16,7 +16,7 @@ DEFAULTIMAGECONVERTCALL = 'convert -density 200 [incomepath][filename] -quality 
 
 
 class Ocr(Settings):
-
+    """OCR class"""
     @staticmethod  # convert [pdf, tif, jpg] -> jpg or png
     def convertFileType(path, inname):
         from main import webapp as wa
@@ -60,8 +60,16 @@ class Ocr(Settings):
                 break
         return i, t
         
-    @staticmethod  # run ocr with given file
+    @staticmethod
     def convertText(path, inname, pages):
+        """
+        Convert file to text (ocr)
+
+        :param path: path of income file
+        :param inname: filename of income file
+        :param pages: number of pages
+        :return: tuple of recognized text and time
+        """
         from main import webapp as wa
         i = t = 0
         text = ""
@@ -116,6 +124,11 @@ class Ocr(Settings):
         
     @staticmethod
     def getConvertParams():
+        """
+        Get dict with configuration parameters for conversion
+
+        :return: *callstring*, *format*
+        """
         ret = {'callstring': '', 'format': ''}
         for v in db.session.query(Settings).filter(Settings.name.like('convert.%')):
             if v.name == 'convert.format':
@@ -131,6 +144,11 @@ class Ocr(Settings):
 
     @staticmethod
     def getOCRParams():
+        """
+        Get dict with OCR parameters
+
+        :return: *callstring*, *inputformat*, *inputtextformat*
+        """
         ret = {'callstring': '', 'inputformat': '', 'inputtextformat': ''}
         for v in db.session.query(Settings).filter(Settings.name.like('ocr.%')):
             ret[v.name.split('.')[-1]] = v.value
@@ -144,6 +162,13 @@ class Ocr(Settings):
         
     @staticmethod
     def handleEvent(eventname, *kwargs):
+        """
+        Event handler for OCR textmod module
+
+        :param eventname: *file_added*
+        :param kwargs: *time*, *incomepath*, *filename*
+        :return: add *text* to kwargs
+        """
         hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
         in_params = [v[1] for v in hdl.getParameterValues('in')]  # required parameters for method
         if sorted(in_params) != sorted(list(set(in_params) & set(kwargs[0].keys()))):

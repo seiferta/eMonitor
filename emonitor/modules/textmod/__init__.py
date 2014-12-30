@@ -4,6 +4,9 @@ from .content_admin import getAdminContent, getAdminData
 
 
 class TextmodModule(Module):
+    """
+    Definition of textmod module with admin area
+    """
     info = dict(area=['admin'], name='textmod', path='textmod', icon='fa-text-width', version='0.1')
     
     def __repr__(self):
@@ -38,7 +41,17 @@ class TextmodModule(Module):
         babel.gettext(u'emonitor.modules.textmod.replace.Replace')
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of testmod class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.textmod.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self):
+        """
+        Call *getAdminData* method of textmod class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self)
