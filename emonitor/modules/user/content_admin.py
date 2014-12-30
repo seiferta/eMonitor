@@ -4,7 +4,12 @@ from emonitor.user import User
 
 
 def getAdminContent(self, **params):
+    """
+    Deliver admin content of module user
 
+    :param params: use given parameters of request
+    :return: rendered template as string
+    """
     if request.method == 'POST':
         if request.form.get('action').startswith('edituser_'):
             actionuser = User.getUsers(int(request.form.get('action').split('_')[-1]))

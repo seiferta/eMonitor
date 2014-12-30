@@ -3,6 +3,7 @@ from .extensions import db
 
 
 class User(db.Model):
+    """User class"""
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -18,9 +19,9 @@ class User(db.Model):
 
     def _set_password(self, password):
         self._password = generate_password_hash(password)
-    
-    # Hide password encryption by exposing password field only.
+
     password = db.synonym('_password', descriptor=property(_get_password, _set_password))
+    """Hide password encryption by exposing password field only."""
 
     def __init__(self, username, password, email, level, rights, active=False):
         self.username = username
@@ -40,17 +41,19 @@ class User(db.Model):
             return False
         return check_password_hash(self.password, password)
 
-    # Flask-Login integration
     def is_authenticated(self):
+        """Flask-login integration"""
         try:
             return self.authenticated
         except AttributeError:
             return True
 
     def is_active(self):
+        """Flask-login integration"""
         return self.active == 1
 
     def is_anonymous(self):
+        """Flask-login integration"""
         try:
             return self.anonymous
         except AttributeError:
@@ -59,13 +62,19 @@ class User(db.Model):
     def get_id(self):
         return self.id
 
-    # Required for administrative interface
     def __unicode__(self):
+        """Required for administrative interface"""
         return self.username
     
     # static part
     @staticmethod
     def getUsers(userid=0):
+        """
+        Get users filtered by parameter
+
+        :param optional userid: id of user, *0* for all
+        :return: list or :py:class:`emonitor.user.User`
+        """
         if userid == 0:
             return db.session.query(User).order_by(User.level).all()
         else:
@@ -84,6 +93,12 @@ class User(db.Model):
         
     @staticmethod
     def getUserByName(username):
+        """
+        Get user by name
+
+        :param username: username as string
+        :return: :py:class:`emonitor.user.User`
+        """
         user = db.session.query(User).filter_by(username=username)
         if user.first():
             return user.first()
@@ -92,4 +107,9 @@ class User(db.Model):
         
     @staticmethod
     def count():
+        """
+        Get number of users
+
+        :return: number as integer
+        """
         return db.session.query(User).count()
