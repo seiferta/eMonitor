@@ -5,6 +5,7 @@ from emonitor.modules.streets.housenumber import Housenumber
 
 
 class Street(db.Model):
+    """Street class"""
     __tablename__ = 'streets'
     __table_args__ = {'extend_existing': True}
     
@@ -38,15 +39,32 @@ class Street(db.Model):
 
     @property
     def serialize(self):
+        """
+        Serialize street object for json calls
+
+        :return: dict with street attributes
+        """
         return dict(id=self.id, name=self.name, city=self.city.serialize, subcity=self.subcity, lat=self.lat, lng=self.lng, zoom=self.zoom, active=self.active)
 
     def addHouseNumber(self, number, points):
+        """
+        Add housenumber for street
+
+        :param number: housenumber as string
+        :param points: list of points for housenumber
+        """
         if number not in [hn.number for hn in self.housenumbers]:
             db.session.add(Housenumber(self.id, number, yaml.dump(points)))
             db.session.commit()
 
     @staticmethod
     def getStreet(id=0):
+        """
+        Get list of streets filtered by parameter
+
+        :param optional id: id of street, *0* for all
+        :return: list of :py:class:`emonitor.modules.streets.street.Street`
+        """
         try:
             if int(id):
                 street = db.session.query(Street).filter_by(id=int(id))
@@ -59,6 +77,12 @@ class Street(db.Model):
     @staticmethod
     #@cache.memoize()
     def getAllStreets(cityid=0):
+        """
+        Get all streets of city given by id, *0* for all streets
+
+        :param optional cityid: id of city, *0* for all
+        :return: list of :py:class:`emonitor.modules.streets.street.Street`
+        """
         if cityid == 0:
             return db.session.query(Street).all()
         else:
@@ -66,6 +90,11 @@ class Street(db.Model):
             
     @staticmethod
     def getStreetsDict():
+        """
+        Get dict of streets, id as key
+
+        :return: cict of :py:class:`emonitor.modules.streets.street.Street`
+        """
         ret = {}
         for street in db.session.query(Street).filter_by(active=1).order_by('name'):
             ret[street.id] = street

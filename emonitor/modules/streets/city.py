@@ -3,6 +3,7 @@ from emonitor.extensions import db, cache
 
 
 class City(db.Model):
+    """City class"""
     __tablename__ = 'cities'
     __table_args__ = {'extend_existing': True}
 
@@ -34,6 +35,11 @@ class City(db.Model):
         return dict(id=self.id, name=self.name)
 
     def getSubCityList(self):
+        """
+        Get list of subcities
+
+        :return: list of strings with subcity names
+        """
         try:
             return [s for s in self.subcity.split("\r\n") if s.strip() != ""]
         except:
@@ -53,9 +59,19 @@ class City(db.Model):
         
     @cache.memoize()
     def getStreets(self):
+        """
+        Get sorted list of streets
+
+        :return: list of :py:class:`emonitor.modules.streeets.city.City`
+        """
         return sorted(self.streets.values(), key=lambda x: x.name)
         
     def addStreet(self, street):
+        """
+        Add street to current city
+
+        :param street: :py:class:`emonitor.modules.streeets.street.Street`
+        """
         #cache.delete_memoized('getStreets', self)
         if street.id in self.streets:
             self.streets[street.id] = street
@@ -66,10 +82,20 @@ class City(db.Model):
     # static part
     @staticmethod
     def getCities():
+        """
+        Get list of all cities
+
+        :return: list of :py:class:`emonitor.modules.streetes.city.City`
+        """
         return db.session.query(City).order_by(City.default.desc(), City.name).all()
         
     @staticmethod
     def getCitiesDict():
+        """
+        Get cities as dict
+
+        :return: dict of :py:class:`emonitor.modules.streets.city.City`, id as key
+        """
         ret = {}
         for city in db.session.query(City).order_by('id'):
             ret[city.id] = city
@@ -79,10 +105,22 @@ class City(db.Model):
         
     @staticmethod
     def get_byid(cityid):
+        """
+        Get city by id
+
+        :param cityid: id of city
+        :return: :py:class:`emonitor.modules.streets.city.City`
+        """
         return db.session.query(City).filter_by(id=cityid).first() or None
         
     @staticmethod
     def get_byname(cityname):
+        """
+        Get city by name
+
+        :param cityname: name of city
+        :return: :py:class:`emonitor.modules.streets.city.City`
+        """
         city = db.session.query(City).filter_by(name=cityname).first()
         #if city[0]:
         #    return city[0]
@@ -91,5 +129,10 @@ class City(db.Model):
         
     @staticmethod
     def getDefaultCity():
+        """
+        Get default city (default=1)
+
+        :return: :py:class:`emonitor.modules.streets.city.City`
+        """
         city = db.session.query(City).filter_by(default=1).first()
         return city or None

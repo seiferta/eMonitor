@@ -3,6 +3,7 @@ from emonitor.extensions import db
 
 
 class Housenumber(db.Model):
+    """Housenumber class"""
     __tablename__ = 'housenumbers'
     __table_args__ = {'extend_existing': True}
     
@@ -18,12 +19,22 @@ class Housenumber(db.Model):
 
     @property
     def points(self):
+        """
+        Get points for housenumber
+
+        :return: yaml structure with point positions
+        """
         return yaml.load(self._points)
 
     @staticmethod
     def getHousenumbers(id=0):
+        """
+        Get list of all housenumbers, filtered by paramters
+
+        :param optional id: id of housenumber, *0* for all
+        :return: list of :py:class:`emonitor.modules.streets.housenumber.Housenumber`
+        """
         if id == 0:
             return db.session.query(Housenumber).all()
         else:
             return db.session.query(Housenumber).filter_by(id=int(id)).first()
-

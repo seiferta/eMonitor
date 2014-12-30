@@ -43,9 +43,17 @@ def centroid_of_polygon(points):
 
     
 URL = 'http://overpass-api.de/api/interpreter'
+"""url for data download from OpenStreetMap (overpass)"""
 
 
-def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given city
+def loadStreetsFromOsm(city=None, format="html"):
+    """
+    Load all Streets from OpenStreetMap
+
+    :param optional city: :py:class:`emonitor.modules.streets.city.City`
+    :param optional format: return format, *html*=rendered template, streets as OrderedDict
+    :return: rendered template or dict
+    """
     global URL
     
     if not city:
@@ -59,7 +67,7 @@ def loadStreetsFromOsm(city=None, format="html"):  # load all streets of given c
     nodes = xmldoc.getElementsByTagName('node') 
     ways = xmldoc.getElementsByTagName('way')
 
-    dbosmids = [int(s.osmid) for s in city.getStreets()]
+    dbosmids = [int(s.osmid or 0) for s in city.getStreets()]
     
     streets = OrderedDict()
     n = {}

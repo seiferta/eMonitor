@@ -7,9 +7,15 @@ from emonitor.modules.maps.map import Map
 from emonitor.modules.streets.city import City
 
 URL = 'http://overpass-api.de/api/interpreter'
+"""url for data download from OpenStreetMap (overpass)"""
 
 
-def loadCitiesFromOsm():  # load all cities in bounding box
+def loadCitiesFromOsm():
+    """
+    Load all cities from OpenStreetMap, use bounding box for position
+
+    :return: rendered template
+    """
     global URL
     map_details = Map.getMaps()[0].getMapBox(tilepath=current_app.config.get('PATH_TILES'))
     SEARCHSTRING = 'rel[boundary=administrative](%s,%s,%s,%s);out;' % (map_details['min_latdeg'], map_details['min_lngdeg'], map_details['max_latdeg'], map_details['max_lngdeg'])  # search all cities in bounding box

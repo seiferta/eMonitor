@@ -3,9 +3,16 @@ from xml.dom import minidom
 from emonitor.extensions import classes, signal
 
 URL = 'http://overpass-api.de/api/interpreter'
+"""url for data download from OpenStreetMap (overpass)"""
 
 
 def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
+    """
+    Load all housenumbers of given street from OpenStreetMap
+
+    :param streets: list of :py:class:`emonitor.modules.streets.street.Street`
+    :return: number of housenumbers of given streeet
+    """
     global URL
     housenumbers = {}
     for street in streets:

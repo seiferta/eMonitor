@@ -3,6 +3,11 @@ from emonitor.extensions import classes
 
 
 def getFrontendData(self):
+    """
+    Deliver frontend content of module streets (ajax)
+
+    :return: rendered template as string or json dict
+    """
     if request.args.get('action') == 'streetcoords':  # get map parameter for given streetid
 
         if request.args.get('id') not in ['', 'None']:

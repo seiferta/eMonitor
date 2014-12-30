@@ -12,6 +12,9 @@ from .content_frontend import getFrontendData
 
 
 class StreetsModule(object, Module):
+    """
+    Definition of streets module with frontend, admin and widget area
+    """
     info = dict(area=['admin', 'frontend', 'widget'], name='streets', path='streets', icon='fa-road', version='0.1')
     
     def __repr__(self):
@@ -50,6 +53,9 @@ class StreetsModule(object, Module):
         babel.gettext(u'streets_street')  # widget name
 
     def updateAdminSubNavigation(self):
+        """
+        Add subnavigation for admin area
+        """
         from .city import City
         self.adminsubnavigation = []
         for c in City.getCities():
@@ -62,22 +68,40 @@ class StreetsModule(object, Module):
             name = re.sub(".\d+", "", name)
         return super(StreetsModule, self).getHelp(area=area, name=name)
 
-   # @cache.cached(timeout=8000, key_prefix='streets')
+    # @cache.cached(timeout=8000, key_prefix='streets')
     #def getFrontendContent(self, params={}):
     #    return getFrontendContent(self, params=params)
 
     def checkDefinition(self):
+        """
+        Check required definition entries
+
+        :return: :py:attr:`emonitor.utils.Module.INITNEEDED` or :py:attr:`emonitor.utils.Module.INITNEEDED`
+        """
         if db.session.query(classes.get('city')).count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
         
     def getFrontendData(self):
+        """
+        Call *getFrontendData* of streets class
+        """
         return getFrontendData(self)
 
     def getAdminContent(self, **params):
+        """
+        Call *getAdminContent* of streets class
+
+        :param params: send given parameters to :py:class:`emonitor.modules.streets.content_admin.getAdminContent`
+        """
         return getAdminContent(self, **params)
 
     def getAdminData(self):
+        """
+        Call *getAdminData* method of streets class and return values
+
+        :return: return result of method
+        """
         return getAdminData(self)
 
 
