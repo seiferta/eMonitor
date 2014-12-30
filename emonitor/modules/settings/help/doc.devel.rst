@@ -34,7 +34,3 @@
 .. automodule:: emonitor.modules.settings.content_admin
    :members:
    :show-inheritance:
-
-.. automodule:: emonitor.modules.settings.content_frontend
-   :members:
-   :show-inheritance:

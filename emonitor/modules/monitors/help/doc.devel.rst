@@ -21,7 +21,7 @@
 :class:`MonitorLayout` Class
 ----------------------------
 
-.. autoclass:: emonitor.modules.monitors.monitorlaout.MonitorLayout
+.. autoclass:: emonitor.modules.monitors.monitorlayout.MonitorLayout
    :members:
    :show-inheritance:
 
