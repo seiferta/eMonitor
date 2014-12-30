@@ -256,7 +256,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             for k in classes.get('alarmkey').getAlarmkeys():
                 keys[k.key] = k.id
 
-            repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1, cutoff=0.7)  # default cutoff 0.6
+            repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1, cutoff=0.8)  # default cutoff 0.6
             if len(repl) > 0:
                 k = classes.get('alarmkey').getAlarmkeys(int(keys[repl[0]]))
                 FezAlarmFaxChecker().fields[fieldname] = ('%s: %s' % (k.category, k.key), k.id)
