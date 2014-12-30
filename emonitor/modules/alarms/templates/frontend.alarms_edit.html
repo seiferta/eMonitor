@@ -320,7 +320,7 @@
         function getKeyCars(keyid){
             clearCars();
 
-            $.ajax({ type : "POST", url : "/data/alarmkeys?action=carslookup&keyid="+keyid+"&cityid="+$('input[name=edit_city]').val()+"&format=json",
+            $.ajax({ type : "POST", url : "/data/alarmkeys?action=carslookup&keyid="+keyid+"&cityid="+$('input[name=edit_city]').val()+"&objectid="+$('select[name=edit_object]').val()+"&format=json",
                  success: function(cars) {
                     $.each(cars.cars1, function(key, val) {
                         var el1 = $('li[data-post-id="'+val+'"]').detach();
@@ -381,7 +381,6 @@
                              $('#edit_addressid').val(suggestion.data).change(); // id
                         }
                     });
-
                     $("input[name='edit_addressid']").change(function() {getMapPosition($(this).val());});
                 }
             });
@@ -390,12 +389,15 @@
             $("select[name='edit_object']").change(function(){
                 $.ajax({ type: "POST", url: "/data/alarmobjects?action=alarmobject&id="+$(this).val()+"&format=json",
                     success: function(aobject){
-                        $('#edit_address').val(aobject.street.name);
-                        $('#edit_addressid').val(aobject.street.id);
-                        $("input[name='edit_streetno']").val(aobject.streetno).change();
-                        $("input[name='edit_cityname']").val(aobject.street.city.name);
-                        $("input[name='edit_city']").val(aobject.street.city.id);
-                        $("#objectstreetname").html(aobject.street.name+' '+aobject.streetno);
+                        if(aobject) {
+                            $('#edit_address').val(aobject.street.name);
+                            $('#edit_addressid').val(aobject.street.id);
+                            $("input[name='edit_city']").val(aobject.street.city.id);
+                            $("input[name='edit_cityname']").val(aobject.street.city.name);
+                            $("input[name='edit_streetno']").val(aobject.streetno).change();
+                            $("#objectstreetname").html(aobject.street.name + ' ' + aobject.streetno);
+                            parent.maps.map.setView(new L.LatLng(aobject.street.lat, aobject.street.lng), aobject.street.zoom);
+                        }
                     }
                 });
             });
@@ -421,7 +423,7 @@
                     parent.maps.map.clearHouseNumbers();
                     $.ajax({ type: "POST", url: "/data/alarms?action=evalhouse&streetid=" + $('#edit_addressid').val() + "&housenumber=" + $(this).val() + "&format=json",
                         success: function (coords) {
-                            if (coords.lat) parent.maps.map.addHouseNumber(coords);
+                            if (coords.lat.length > 0) parent.maps.map.addHouseNumber(coords);
                         }
                     });
                 }

@@ -138,7 +138,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                         street_id = ''
 
                     FezAlarmFaxChecker().fields[fieldname] = ('%s' % repl[0], street_id)
-                    if not 'streetno' in FezAlarmFaxChecker().fields or FezAlarmFaxChecker().fields['streetno'] == "":
+                    if 'streetno' not in FezAlarmFaxChecker().fields or FezAlarmFaxChecker().fields['streetno'] == "":
                         FezAlarmFaxChecker().fields['streetno'] = ('%s' % " ".join(_str[repl[0].count(" ") + 1:]).replace('Stra\xc3\x9fe', '').strip(), street_id)
                 return
 
@@ -166,7 +166,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 cl.append('0')
                 continue
 
-            repl = difflib.get_close_matches(p.strip(), carlist, 1)
+            repl = difflib.get_close_matches(p.strip(), carlist, 1, cutoff=0.7)
             if len(repl) == 1:
                 _id = carids[carlist.index(repl[0])]
                 if _id not in cl:  # prevent double
@@ -175,7 +175,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
             else:  # try car descriptions
                 descriptionlist = ['%s %s' % (cn.dept.name, cn.description) for cn in cars]
-                repl = difflib.get_close_matches(p.strip(), descriptionlist, 1)
+                repl = difflib.get_close_matches(p.strip(), descriptionlist, 1, cutoff=0.7)
                 if len(repl) == 1:
                     _id = carids[descriptionlist.index(repl[0])]
                     if _id not in cl:  # prevent double
@@ -186,7 +186,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                     t = ""
                     for x in p.split():
                         t += x
-                        repl = difflib.get_close_matches(t, carlist, 1)
+                        repl = difflib.get_close_matches(t, carlist, 1, cutoff=0.7)
                         if len(repl) == 1:
                             _id = carids[carlist.index(repl[0])]
                             if _id not in cl:  # prevent double

@@ -25,6 +25,6 @@ def getFrontendData(self):
     elif request.args.get('action') == 'alarmobject':  # get alarm object
         if request.args.get('id') != '':
             aobject = classes.get('alarmobject').getAlarmObjects(request.args.get('id'))
-
-            return aobject.serialize
+            if aobject:
+                return aobject.serialize
         return dict()
