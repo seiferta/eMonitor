@@ -68,6 +68,7 @@ class Eventhandler(db.Model):
                 if hdl.position == self.position - 1:
                     #return [param.split('=')[0] for param in hdl.parameters.split('\r\n') if param.startswith('out.')]
                     return hdl.getParameterList() + event.parameters  # add event parameters
+        return []
 
     @property
     def serialize(self):
