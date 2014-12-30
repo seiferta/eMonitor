@@ -1,0 +1,7 @@
+{% macro carname(car) %}
+    {% if car.name|length > 8 %}
+        {{ car.name }}
+    {% else %}
+        {{ car.dept.shortname }}<br/>{{ car.name }}
+    {% endif %}
+{% endmacro %}

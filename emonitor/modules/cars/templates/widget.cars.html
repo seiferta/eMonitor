@@ -1,3 +1,4 @@
+{%- from 'cars.macro.html' import carname with context -%}
 <style>
     div#car1{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:5px 10px;width:19%;}
     div#car2{border:3px solid silver; float:left;margin:5px 5px 0 0;text-align:center;padding:5px 10px;width:19%;}
@@ -14,20 +15,20 @@
     <div class="label">{{ _('cars') }}:</div>
     <div id="alarm_cars1" style="padding-left:20px">
         {%- for car in alarm.cars1 %}
-            <div id="car1">{{ car.dept.shortname }}<br/>{{ car.name }}</div>
+            <div id="car1">{{ carname(car) }}</div>
         {%- endfor %}
     </div>
     {%- if alarm.cars2|count %}
     <div id="alarm_cars2" style="padding-left:20px;border-top:1px solid #696969">
         {%- for car in alarm.cars2 %}
-            <div id="car2">{{ car.dept.shortname }}<br/>{{ car.name }}</div>
+            <div id="car2">{{ carname(car) }}</div>
         {%- endfor %}
     </div>
     {%- endif %}
     {%- if alarm.material|count %}
     <div id="alarm_material" style="padding-left:20px;border-top:1px solid #696969">
         {%- for car in alarm.material %}
-            <div id="material">{{ car.dept.shortname }}<br/>{{ car.name }}</div>
+            <div id="material">{{ carname(car) }}</div>
         {%- endfor %}
     </div>
     {%- endif %}

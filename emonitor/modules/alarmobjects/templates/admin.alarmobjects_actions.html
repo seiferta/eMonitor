@@ -1,4 +1,5 @@
 {%  extends "admin.html" %}
+{%- from 'cars.macro.html' import carname with context -%}
 
 {% block style %}
     {{ super() }}
@@ -154,7 +155,7 @@
                         <ul id="cars1" class="group" style="width:99%;">
                             {%- for car in alarmobject.getCars1() %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.name }}<br/>{{ car.name }}
+                                {{ carname(car) }}
                             </li>
                             {%- endfor %}
                         </ul>
@@ -164,7 +165,7 @@
                         <ul id="cars2" class="group" style="width:99%;">
                             {%- for car in alarmobject.getCars2() %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                                {{ carname(car) }}
                             </li>
                             {%- endfor %}
                         </ul>
@@ -173,7 +174,7 @@
                         <ul id="material" class="group" style="width:99%;">
                             {%- for car in alarmobject.getMaterial() %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                                {{ carname(car) }}
                             </li>
                             {%- endfor %}
                         </ul>
@@ -184,7 +185,7 @@
                         {%- for car in cars %}
                             {%- if car not in aocars %}
                             <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
-                                {{ car.dept.shortname }}<br/>{{ car.name }}
+                                {{ carname(car) }}
                             </li>
                             {%- endif %}
                         {%- endfor %}
