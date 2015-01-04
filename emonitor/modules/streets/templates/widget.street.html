@@ -10,6 +10,12 @@
         <div class="label">{{ _('alarms.address') }}:</div>
         {%- if alarm.street %}
             {{ alarm.street.name }} {{ alarm.get('streetno') }}
+            {%- if alarm.street.name|length > 14  %}
+                <style scoped="">
+                div#streets_widget #street{font-size: 2em!important}
+                div#streets_widget #street2{font-size: 2.5em!important}
+                </style>
+            {%- endif %}
         {%- endif %}
     </div>
     {%- if alarm.get('address2') %}

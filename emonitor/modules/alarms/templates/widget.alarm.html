@@ -1,6 +1,10 @@
+{%- set alarmobject = '' %}
 {%- if alarm %}
     {%- set alarmcategory = alarm.key.category %}
     {%- set alarmkey = alarm.key.key %}
+    {% if alarm.object %}
+        {%- set alarmobject = alarm.object.name %}
+    {% endif %}
 {%- else %}
     {%- set alarmcategory = '' %}
     {%- set alarmkey = '' %}
@@ -13,6 +17,13 @@
     <div class="monitor_alarm_key">
         <span id="alarm_key_category">{{ alarmcategory }}{% if alarmcategory!='' %}: {% endif %}</span>
         <span id="alarm_key_key">{{  alarmkey }}</span>
+        {%- if alarmbject!="" %}
+            <br/><span class="alarm_object">{{ alarmobject }}</span>
+            <style scoped="scoped">
+                div.monitor_alarm_key{overflow:visible!important;font-size:1.8em!important;}
+                .alarm_object{font-weight:bold;z-index:200;}
+            </style>
+        {%- endif %}
     </div>
 </div>
 
