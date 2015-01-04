@@ -90,9 +90,9 @@ def getAdminContent(self, **params):
 
             elif request.form.get('action') == 'savealarmobjectaao':  # save aao
                 alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
-                alarmobject.set('cars1', request.form.get('cars1').split(';'))
-                alarmobject.set('cars2', request.form.get('cars2').split(';'))
-                alarmobject.set('material', request.form.get('material').split(';'))
+                alarmobject.set('cars1', [c for c in request.form.get('cars1').split(';') if c != ''])
+                alarmobject.set('cars2', [c for c in request.form.get('cars2').split(';') if c != ''])
+                alarmobject.set('material', [c for c in request.form.get('material').split(';') if c != ''])
                 db.session.commit()
 
             elif request.form.get('action').startswith('editalarmobject_'):  # edit alarmobject
