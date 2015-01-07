@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
 from emonitor.extensions import signal
 from emonitor.sockethandler import SocketHandler
+import pytz
 
 logging.basicConfig()
 logger = logging.getLogger('apscheduler.scheduler')
@@ -17,7 +18,7 @@ class MyScheduler(BackgroundScheduler):
 
     def __init__(self, gconfig=None, **options):
         executors = {'default': ThreadPoolExecutor(5)}
-        job_defaults = {'coalesce': False, 'max_instances': 3, 'timezone': 'UTC'}
+        job_defaults = {'coalesce': False, 'max_instances': 3, 'timezone': pytz.timezone("EST")}
         super(BackgroundScheduler, self).__init__(executors=executors, job_defaults=job_defaults)
 
         signal.connect('scheduler', 'process', handleScheduleSignals.doHandle)
