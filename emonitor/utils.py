@@ -1,6 +1,6 @@
 import os
 import codecs
-from flask import current_app
+from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
 from StringIO import StringIO
@@ -70,9 +70,14 @@ class Classes:
 
 
 class Module:
+    """
+    Skeleton class for modules
+    """
 
     CHECKOK = 0
+    """configuration okay"""
     INITNEEDED = 1
+    """basic configuration needed"""
 
     info = {}
     helppath = ""
@@ -99,6 +104,12 @@ class Module:
         return Module.info['path']
 
     def hasHelp(self, area="frontend"):
+        """
+        Test for online help of given area
+
+        :param optional area: *frontend*, *admin*
+        :return: *1* or *0*
+        """
         _dir = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
         if self.helppath != "":
             _dir = '%s%s' % (current_app.config.get('PROJECT_ROOT'), self.helppath)
@@ -108,6 +119,13 @@ class Module:
             return 0
 
     def getHelp(self, area="frontend", name=""):  # frontend help template
+        """
+        Get help text of module for area
+
+        :param optional area: *frontend*, *admin*
+        :param optional name: name of sub area
+        :return: string of online help
+        """
         name = name.replace('help/', '').replace('/', '.')
         if self.helppath == "":
             filename = '%s/emonitor/modules/%s/help/%s.%s.%s.rst' % (current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
@@ -122,6 +140,12 @@ class Module:
         return ""
 
     def getHelpPaths(self, area="frontend"):
+        """
+        Get list of all help entries for area
+
+        :param optional area: *frontend*, *area*
+        :return: list of filenames
+        """
         ret = []
         fn = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
         if self.helppath != "":
@@ -137,12 +161,19 @@ class Module:
         pass
 
     def checkDefinition(self):
+        """Check for required parameters of module"""
         return Module.CHECKOK
 
     def fixDefinition(self, id):
+        """Fix default definition"""
         pass
 
     def getAdminSubNavigation(self):
+        """
+        Get list of subnavigation entries
+
+        :return: list of entries
+        """
         return self.adminsubnavigation
 
     def updateAdminSubNavigation(self):
@@ -166,12 +197,28 @@ class Module:
     def frontendContent(self):
         return 0
 
+    def getWidgets(self):
+        return self.widgets
+
     @staticmethod
     def getPdf(pdfdata):
+        """
+        Build pdf of module data
+
+        :param pdfdata: content of pdf file
+        :return: filename of pdf file
+        """
         import random
         images = []
 
         def link_callback(uri, rel):
+            """
+            Callback method for links
+
+            :param uri:
+            :param rel:
+            :return: fixed string for link
+            """
             if '/export/' in uri and not rel:  # create tmp-files for export items
                 if "/alarms/" in uri and uri.endswith('png'):
                     f, ext = os.path.splitext(uri)
@@ -256,3 +303,22 @@ class Pagination(object):
                     yield None
                 yield num
                 last = num
+
+
+def getmarkdown(text):
+    try:
+        from markdown import markdown
+        return Markup(markdown(text))
+    except:
+        return text
+
+
+def getreStructuredText(text):
+    try:
+        from docutils.core import publish_string
+        from docutils.writers.html4css1 import Writer as HisWriter
+
+        overrides = {'input_encoding': 'utf-8', 'output_encoding': 'unicode'}
+        return Markup(publish_string(source=text, writer=HisWriter(), settings_overrides=overrides))
+    except:
+        return text

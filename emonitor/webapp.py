@@ -160,25 +160,7 @@ def configure_extensions(app):
     login_manager.init_app(app)
 
     # jinja2 filters
-    from flask import Markup
-
-    def getmarkdown(text):
-        try:
-            from markdown import markdown
-            return Markup(markdown(text))
-        except:
-            return text
-
-    def getreStructuredText(text):
-        try:
-            from docutils.core import publish_string
-            from docutils.writers.html4css1 import Writer as HisWriter
-
-            overrides = {'input_encoding': 'utf-8', 'output_encoding': 'unicode'}
-            return Markup(publish_string(source=text, writer=HisWriter(), settings_overrides=overrides))
-        except:
-            return text
-
+    from utils import getmarkdown, getreStructuredText
     app.jinja_env.filters['markdown'] = getmarkdown
     app.jinja_env.filters['rst'] = getreStructuredText
 
