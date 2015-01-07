@@ -73,18 +73,22 @@ def init_app(app):
 
     for _, name, _ in pkgutil.iter_modules([os.path.join(app.config.get('PROJECT_ROOT'), 'emonitor/modules')]):
         m = importlib.import_module('emonitor.modules.%s' % name, '%sModule' % str(name).title())
-        m = eval('m.%sModule' % str(name).title())(app)
-        if m.info:
-            if 'area' in m.info:
-                for area in m.info['area']:
-                    if area in app.blueprints:
-                        app.blueprints[area].addModule(m)
+        try:
+            m = eval('m.%sModule' % str(name).title())(app)
+            if m.info:
+                if 'area' in m.info:
+                    for area in m.info['area']:
+                        if area in app.blueprints:
+                            app.blueprints[area].addModule(m)
 
-            if 'messages' in m.info:
-                for t in m.info['messages']:
-                    app.flashtypes.append('%s.%s' % (name, t))
+                if 'messages' in m.info:
+                    for t in m.info['messages']:
+                        app.flashtypes.append('%s.%s' % (name, t))
 
-        _count += 1
-    #app.logger.info('modules: %s modules loaded' % _count)
+            _count += 1
+        except AttributeError:
+            app.logger.error('modules: module "%s" could not be loaded' % name)
+
+    app.logger.info('modules: %s modules loaded' % _count)
 
 modules.init_app = init_app
