@@ -1,5 +1,12 @@
 {% extends "admin.html" %}
 
+{% block style %}
+    <style>
+        .document{padding-left:20px}
+        .method{padding-left:20px;}
+    </style>
+{% endblock %}
+
 {%  block subnavigation %}
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}

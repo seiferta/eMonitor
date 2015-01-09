@@ -9,7 +9,7 @@
     <form method="post">
         <p>
             <label>{{ _('monitors.clientid') }}:<br/>
-                <input type="text" name="edit_clientid" value="{{ monitor.clientid }}" style="width:99%"/>
+                <input type="number" name="edit_clientid" value="{{ monitor.clientid }}" min="1" max="99" style="width:99%" required/>
             </label>
         <p>
         <p>
@@ -27,14 +27,14 @@
         </p>
         <p>
             <label>{{ _('monitors.resolution') }}:<br/>
-                <input type="text" name="edit_resolutionx" value="{{ monitor.resolutionx }}" style="width:200px"/> x
-                <input type="text" name="edit_resolutiony" value="{{ monitor.resolutiony }}" style="width:200px"/>
+                <input type="number" name="edit_resolutionx" value="{{ monitor.resolutionx }}" style="width:200px" min="1" required/> x
+                <input type="number" name="edit_resolutiony" value="{{ monitor.resolutiony }}" style="width:200px" min="1" required/>
             </label>
         <p>
         <p>
             <label>{{ _('monitors.format') }}:<br/>
-                <input type="text" name="edit_formatx" value="{{ monitor.formatx }}" style="width:200px"/> x
-                <input type="text" name="edit_formaty" value="{{ monitor.formaty }}" style="width:200px"/>
+                <input type="number" name="edit_formatx" value="{{ monitor.formatx }}" style="width:200px" min="1" required/> x
+                <input type="number" name="edit_formaty" value="{{ monitor.formaty }}" style="width:200px" min="1" required/>
                 {{ _('monitors.format.info') }}
             </label>
         <p>

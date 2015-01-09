@@ -1,10 +1,20 @@
 {% for schedjob in schedjobs %}
-    <p>
-        <b>{{ schedjob.name }}</b>
-        <br/> - Next Run: <span>{{ schedjob.next_run_time }}</span>
-        <br/> - Parameter: <br/>
+    <h4>{{ schedjob.name }}</h4>
+    <div class="method">
+        <br/> - Next Run: {{ schedjob.next_run_time }}
+        <br/>{{ schedjob.trigger|safe|rst }}
+        <br/><b>{{ schedjob.func.__module__ }}.{{ schedjob.func.__name__ }}({%- for v in schedjob.func.func_code.co_varnames[:schedjob.func.func_code.co_argcount] %}{{ v }}{% if not loop.last %}, {% endif %}{%- endfor %})</b>
+        <br/>Parameter:
+        <ul>
         {% for key in schedjob.kwargs.keys() %}
-            &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ key }} - {{ schedjob.kwargs[key] }}</span><br/>
+            <li>{{ key }} - {{ schedjob.kwargs[key] }}</li>
         {% endfor %}
-    </p>
+        </ul>
+        {% set args = schedjob.func.func_code.co_varnames[:schedjob.func.func_code.co_argcount] %}
+        <ul>
+        {% for key in schedjob.args %}
+            <li>{{ args[schedjob.args.index(key)] }}: {{ key }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 {% endfor %}

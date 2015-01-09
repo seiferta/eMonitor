@@ -29,6 +29,10 @@
 :mod:`Helper Methods and Classes`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. autoclass:: emonitor.modules.monitors.monitor.PlaceholderWidget
+   :members:
+   :show-inheritance:
+
 .. automodule:: emonitor.modules.monitors.content_admin
    :members:
    :show-inheritance:

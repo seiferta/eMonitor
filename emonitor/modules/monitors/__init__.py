@@ -3,7 +3,7 @@ from flask import send_from_directory
 from emonitor.sockethandler import SocketHandler
 from emonitor.extensions import db, classes, babel, signal
 from emonitor.utils import Module
-from emonitor.widget.monitorwidget import MonitorWidget
+from emonitor.modules.monitors.monitor import PlaceholderWidget
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
 
@@ -25,9 +25,8 @@ class MonitorsModule(Module):
 
         # subnavigation
         self.adminsubnavigation = [('/admin/monitors', 'monitors.definition'), ('/admin/monitors/style', 'module.monitors.style'), ('/admin/monitors/current', 'module.monitors.current'), ('/admin/monitors/actions', 'module.monitors.actions')]
+        self.widgets = [PlaceholderWidget('placeholder')]
 
-        self.widgets = [MonitorWidget('placeholder', size=(1, 1), template='widget.placeholder.html')]
-        
         # create database tables
         from .monitor import Monitor
         from .monitorlayout import MonitorLayout

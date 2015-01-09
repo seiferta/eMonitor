@@ -1,6 +1,7 @@
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db, classes
 from emonitor.modules.monitors.monitorlayout import MonitorLayout
+from emonitor.widget.monitorwidget import MonitorWidget
 
 
 class Monitor(db.Model):
@@ -31,7 +32,6 @@ class Monitor(db.Model):
                             return int(p.replace('layoutid=', ''))
 
         layoutid = findid(self.clientid)
-        #layouts = self.getLayouts()
         try:
             if layoutid > 0:
                 return filter(lambda l: l.id == layoutid, self.layouts.values())[0]
@@ -98,3 +98,12 @@ class Monitor(db.Model):
     @staticmethod
     def handleEvent(eventname, *kwargs):
         return True
+
+
+class PlaceholderWidget(MonitorWidget):
+    """Placeholder widget for monitors"""
+    template = 'widget.placeholder.html'
+    size = (1, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
