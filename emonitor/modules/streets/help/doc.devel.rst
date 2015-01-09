@@ -35,6 +35,10 @@
 :mod:`Helper Methods and Classes`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. autoclass:: emonitor.modules.streets.street.StreetWidget
+   :members:
+   :show-inheritance:
+
 .. automodule:: emonitor.modules.streets.city_utils
    :memers:
    :show-interitance:

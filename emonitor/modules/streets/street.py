@@ -2,6 +2,7 @@ import yaml
 from sqlalchemy.orm import relationship
 from emonitor.extensions import db
 from emonitor.modules.streets.housenumber import Housenumber
+from emonitor.widget.monitorwidget import MonitorWidget
 
 
 class Street(db.Model):
@@ -100,3 +101,12 @@ class Street(db.Model):
             ret[street.id] = street
         ret[0] = Street('', '', 0, '', 0, 0, 0, 1, 0)
         return ret
+
+
+class StreetWidget(MonitorWidget):
+    """Street widget for alarms"""
+    template = 'widget.street.html'
+    size = (2, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
