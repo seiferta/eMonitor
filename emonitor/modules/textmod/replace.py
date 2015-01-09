@@ -1,4 +1,5 @@
 import time
+import re
 from emonitor.extensions import db, classes
 
 
@@ -54,7 +55,7 @@ class Replace(db.Model):
                 text += l + " \n"
 
             for r in Replace.getReplacements():
-                text = text.replace(r.text.encode('utf-8'), r.replace.encode('utf-8'))
+                text = re.sub(r.text.encode('utf-8'), r.replace.encode('utf-8'), text)
 
             kwargs[0]['text'] = text
             t = time.time() - stime
