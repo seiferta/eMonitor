@@ -53,7 +53,7 @@ source_suffix = '.rst'
 
 # General information about the project.
 project = u'eMonitor'
-copyright = u'2014, Arne Seifert'
+copyright = u'2014-2015, Arne Seifert'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
