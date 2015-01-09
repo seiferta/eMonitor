@@ -1,3 +1,4 @@
+{%- if alarm %}
 <link rel="stylesheet" href="/streets/inc/leaflet.css" />
 <link rel="stylesheet" href="/streets/inc/Control.MiniMap.css" />
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
@@ -54,3 +55,4 @@
     map.addMarker({{ alarm.street.lat }}, {{ alarm.street.lng }}, 1, false);
 {%- endif %}
 </script>
+{%- endif %}

@@ -1,5 +1,6 @@
 import os
 from emonitor.extensions import db, classes
+from emonitor.widget.monitorwidget import MonitorWidget
 
 DEFAULTZOOM = 12
 
@@ -91,3 +92,12 @@ class Map(db.Model):
         :return: :py:class:`emonitor.modules.maps.map.Map`
         """
         return db.session.query(Map).filter_by(default=1).first()
+
+
+class MapWidget(MonitorWidget):
+    """Map widget for map view of alarms"""
+    template = 'widget.map.html'
+    size = (2, 2)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)

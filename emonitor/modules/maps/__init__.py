@@ -1,9 +1,9 @@
 from flask import send_from_directory
 from emonitor.utils import Module
 from emonitor.extensions import classes, db, babel
-from emonitor.widget.monitorwidget import MonitorWidget
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
+from emonitor.modules.maps.map import MapWidget
 
 
 class MapsModule(Module):
@@ -33,7 +33,7 @@ class MapsModule(Module):
         classes.add('map', Map)
         db.create_all()
 
-        self.widgets = [MonitorWidget('maps_map', size=(2, 2), template='widget.map.html')]
+        self.widgets = [MapWidget('maps_map')]
 
         # static folders
         @app.route('/maps/inc/<path:filename>')

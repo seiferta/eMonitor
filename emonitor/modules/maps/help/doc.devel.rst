@@ -21,6 +21,10 @@
 :mod:`Helper Methods and Classes`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. autoclass:: emonitor.modules.maps.map.MapWidget
+   :members:
+   :show-inheritance:
+
 .. automodule:: emonitor.modules.maps.map_utils
    :members:
    :show-inheritance:
