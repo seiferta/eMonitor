@@ -21,6 +21,10 @@
 :mod:`Helper Methods`
 ^^^^^^^^^^^^^^^^^^^^^
 
+.. autoclass:: emonitor.modules.cars.car.CarWidget
+   :members:
+   :show-inheritance:
+
 .. automodule:: emonitor.modules.cars.content_admin
    :members:
    :show-inheritance:
