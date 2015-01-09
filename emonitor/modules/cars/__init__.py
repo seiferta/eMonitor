@@ -4,6 +4,7 @@ from emonitor.widget.monitorwidget import MonitorWidget
 from emonitor.extensions import classes, db, babel
 from emonitor.modules.cars.content_admin import getAdminContent
 from emonitor.modules.cars.content_frontend import getFrontendData
+from emonitor.modules.cars.car import CarWidget
 
 
 class CarsModule(object, Module):
@@ -28,7 +29,7 @@ class CarsModule(object, Module):
         # subnavigation
         self.updateAdminSubNavigation()
        
-        self.widgets = [MonitorWidget('cars', size=(1, 1), template='widget.cars.html')]
+        self.widgets = [CarWidget('cars')]
 
         # create database tables
         from .car import Car

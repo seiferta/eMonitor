@@ -1,5 +1,6 @@
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db, classes
+from emonitor.widget.monitorwidget import MonitorWidget
 
 
 class Car(db.Model):
@@ -70,3 +71,12 @@ class Car(db.Model):
         for car in db.session.query(Car):
             ret[car.id] = car
         return ret
+
+
+class CarWidget(MonitorWidget):
+    """Car widget for alarms"""
+    template = 'widget.cars.html'
+    size = (2, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
