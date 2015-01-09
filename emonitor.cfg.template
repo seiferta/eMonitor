@@ -2,8 +2,9 @@
 BABEL_DEFAULT_LOCALE = 'de'
 BABEL_DEFAULT_TIMEZONE = 'UTC'
 
-DEBUG = True
+DEBUG = False
 TESTING = False
+LOGLEVEL = 10 # 10: debug, 20:info, 30: warning, 40: error, 50: critical
 
 PORT = 80
 
