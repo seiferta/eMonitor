@@ -73,6 +73,9 @@ def main():
 
     args = vars(parser.parse_args())
 
+    if 'port' in args:  # use port from command line
+        webapp.config['PORT'] = args['port']
+
     if not args['tornado'] and not args['builtin']:
         tornado(args)
     elif args['builtin']:
