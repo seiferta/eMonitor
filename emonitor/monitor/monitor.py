@@ -28,6 +28,7 @@ def monitorContent(clientid=0):
     :return: rendered template */emonitor/monitor/templates/monitor.html*
     """
     alarmid = None
+    footer = 0
     count = []
     pos = 0
 
@@ -53,6 +54,7 @@ def monitorContent(clientid=0):
         except: pass
 
     if len(count) > 0:  # eval layout for current and next alarm
+        footer = 1
         nextalarm = currentalarm = count[0]
         for c in count:
             if c.id == alarmid:
@@ -82,9 +84,12 @@ def monitorContent(clientid=0):
         for widgets in current_app.blueprints['widget'].modules:
             for widget in widgets.getMonitorWidgets():
                 if widget.getName() == w:
-                    content = content.replace(u'[[%s]]' % w, widget.getHTML(request, alarmid=alarmid, alarm=alarm))
+                    params = widget.addParameters(alarmid=alarmid, alarm=alarm, clientid=clientid)
+                    if params and 'footer' in params and params['footer'] == 1:
+                        footer = 1
+                    content = content.replace(u'[[%s]]' % w, widget.getHTML(request))
 
-    return render_template('monitor.html', content=content, theme=layout.theme, activecount=len(count), position=pos, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+    return render_template('monitor.html', content=content, theme=layout.theme, activecount=len(count), footer=footer, position=pos, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
 
 
 # static folders

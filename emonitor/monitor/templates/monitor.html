@@ -28,7 +28,7 @@
     </head>
     <body>
         {{ content|safe }}
-        {%- if activecount > 0 %}
+        {%- if footer == 1 %}
             <div class="footer">
                 <div class="versiontext">
                     <small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small>
