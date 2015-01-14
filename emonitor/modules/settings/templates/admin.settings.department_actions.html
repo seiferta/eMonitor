@@ -1,9 +1,7 @@
 {% extends "admin.html" %}
 
 {% block style %}
-    <style>
-        .simpleColorChooser{background-color:#ffffff !important;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="/settings/inc/spectrum.min.css">
 {% endblock %}
 
 {%  block subnavigation %}
@@ -11,7 +9,7 @@
 {%  endblock %}
 
 {% block content %}
-    <script type="text/javascript" src="/settings/inc/jquery.simple-color.js"> </script>
+    <script type="text/javascript" src="/settings/inc/spectrum.min.js"></script>
     <h2>{{ _('settings.department.edittitle') }}</h2>
     <p><small>{{ _('settings.department.info') }}</small></p>
     <form method="post">
@@ -41,7 +39,7 @@
         <p>
             <label>
                 {{ _('settings.department.color') }}:<br/>
-                <input class='simple_color_callback' name="dep_color" id="dep_color" value="{{ department.color }}"/>
+                <input type="text" class='simple_color_callback' name="dep_color" id="dep_color" value="{{ department.color }}"/>
             </label>
         </p>
         <p>&nbsp;</p>
@@ -58,10 +56,11 @@
 {% block script_end %}
     {{ super() }}
     $(document).ready(function(){
-      $('.simple_color_callback').simpleColor({
-        onSelect: function( hex ) {
-          $('#dep_color').val('#'+hex);
-        }
-      });
+        $('.simple_color_callback').spectrum({
+            color: "{{ department.color }}",
+            preferredFormat: "hex",
+            showPaletteOnly: true,
+            hideAfterPaletteSelect:true,
+        });
     });
 {% endblock %}
