@@ -1,4 +1,5 @@
 import os
+import logging
 from alembic import util as alembicutil
 from sqlalchemy.exc import OperationalError
 from flask import Flask, request, render_template, current_app
@@ -192,21 +193,15 @@ def configure_logging(app):
 
     :param app: :py:class:`Flask`
     """
-
-    #if app.debug or app.testing:
-    #    # Skip debug and test mode. Just check standard output.
-    #    return
-    
-    if not app.debug:
-        import logging
+    app.logger.setLevel(logging.DEBUG)
+    if not app.debug:  # if not in debug mode write output into file
         from logging.handlers import RotatingFileHandler
-
         file_handler = RotatingFileHandler('%swebapp.log' % app.config.get('PATH_DATA'), maxBytes=1024 * 1024 * 100, backupCount=20)
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
-        app.logger.setLevel(app.config.get('LOGLEVEL', logging.ERROR))
-   
+        app.logger.setLevel(app.config.get('LOGLEVEL', logging.ERROR))  # use error level for file writer
+
 
 def configure_hook(app):
     #@app.before_request
