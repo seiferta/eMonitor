@@ -101,7 +101,7 @@ class Alarm(db.Model):
         else:
             self.attributes[attrname] = AlarmAttribute(attrname, value)
 
-    def addHistory(self, name, value, dtime=datetime.datetime.now()):
+    def addHistory(self, name, value, dtime=None):
         """
         Add history entry for alarm to store actions of alarm using
         :py:class:`emonitor.modules.alarms.alarmhistory.AlarmHistory`
@@ -110,6 +110,8 @@ class Alarm(db.Model):
         :param value: value of history entry
         :param optional dtime: timestamp of history entry (now)
         """
+        if not dtime:
+            dtime = datetime.datetime.now()
         self.history.append(AlarmHistory(name, value, dtime))
 
     def getAdditionalLayers(self):
