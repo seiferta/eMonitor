@@ -5,6 +5,7 @@ import shutil
 import requests
 import re
 import yaml
+from collections import OrderedDict
 
 from flask import current_app, flash, render_template, abort
 from emonitor.extensions import babel, db, classes, events, monitorserver, scheduler, signal
@@ -94,7 +95,7 @@ class Alarm(db.Model):
         Setter for attributes
 
         :param attrname: attribute name
-        :param val: value
+        :param value: value
         """
         if attrname in self.attributes:
             self.attributes[attrname].value = value
@@ -347,6 +348,7 @@ class Alarm(db.Model):
             os.remove(kwargs[0]['incomepath'] + kwargs[0]['filename'])
         except:
             pass
+        wa.logger.debug('alarm handler: %s' % alarm_fields)
 
         if len(alarm_fields) == 0:  # no alarmfields found
             kwargs[0]['id'] = 0
@@ -359,6 +361,7 @@ class Alarm(db.Model):
         if not alarmtype:  # alarmtype not found
             kwargs[0]['id'] = 0
             kwargs[0]['error'] = 'alarmtype not found'
+            wa.logger.error('alarm handler: alarmtype not found')
             return kwargs
 
         # position
@@ -385,16 +388,13 @@ class Alarm(db.Model):
                 else:
                     alarm_fields['key'] = (alarmtype.translation(u'_bma_key_'), u'0')
 
-        if alarm_fields['time'][1] == 1:  # found correct time
+        if 'time' in alarm_fields and alarm_fields['time'][1] == 1:  # found correct time
             t = datetime.datetime.strptime(alarm_fields['time'][0], '%d.%m.%Y - %H:%M:%S')
         else:
             t = datetime.datetime.now()
 
         alarm = Alarm(t, alarm_fields['key'][0], 1, 0)
         db.session.add(alarm)
-        #if kwargs[0]['mode'] != 'test':
-        #    db.session.commit()
-        # key
         alarm.set('id.key', alarm_fields['key'][1])
         alarm.set('k.cars1', '')  # set required attributes
         alarm.set('k.cars2', '')
@@ -431,7 +431,7 @@ class Alarm(db.Model):
                     alarm.set('k.cars1', alarm.get('k.cars1') + ';' + _c)
 
         # street / street2
-        if alarm_fields['address'][0] != '':
+        if 'address' in alarm_fields and alarm_fields['address'][0] != '':
             # check correct city -> change if street has different city
             if len(str(alarm_fields['address'][1]).split(';')) > 0 and alarm_fields['address'][1] != 0:
                 _c = []
@@ -462,7 +462,7 @@ class Alarm(db.Model):
                 alarm.set('zoom', alarm_fields['zoom'][0])
 
         # crossing
-        if alarm_fields['crossing'][0] != '':
+        if 'crossing' in alarm_fields and alarm_fields['crossing'][0] != '':
             if 'crossing' in alarm_fields and alarm_fields['address'][1] != alarm_fields['crossing'][1]:
                 alarm.set('id.address2', alarm_fields['crossing'][1])
                 alarm.set('address2', alarm_fields['crossing'][0])
@@ -471,7 +471,7 @@ class Alarm(db.Model):
                 alarm.set('address2', alarm_fields['crossing'][0])
 
         # addresspart
-        if alarm_fields['addresspart'][0] != '' and alarm_fields['addresspart'][0] != alarm_fields['address'][0]:
+        if 'addresspart' in alarm_fields and alarm_fields['addresspart'][0] != '' and alarm_fields['addresspart'][0] != alarm_fields['address'][0]:
             if alarm_fields['addresspart'][1] > 0:
                 if len(str(alarm_fields['addresspart'][1]).split(';')) > 0:
                     _c = []
@@ -491,15 +491,15 @@ class Alarm(db.Model):
             alarm.set('address2', alarm_fields['addresspart'][0])
 
         # person
-        if alarm_fields['person'][0] != '':
+        if 'person' in alarm_fields and alarm_fields['person'][0] != '':
             alarm.set('person', alarm_fields['person'][0])
         # alarmplan
-        if alarm_fields['alarmplan'][0] != '':
+        if 'alarmplan' in alarm_fields and alarm_fields['alarmplan'][0] != '':
             alarm.set('alarmplan', alarm_fields['alarmplan'][0])
 
         # alarmobject
         _ao = None
-        if alarm_fields['object'][0] != '':
+        if 'object' in alarm_fields and alarm_fields['object'][0] != '':
             alarm.set('object', alarm_fields['object'][0])
             alarm.set('id.object', alarm_fields['object'][1])
             # alarmplan from object
@@ -524,7 +524,7 @@ class Alarm(db.Model):
                 pass
 
         # remark
-        if alarm_fields['remark'][0] != '':
+        if 'remark' in alarm_fields and alarm_fields['remark'][0] != '':
             alarm.set('remark', alarm_fields['remark'][0])
             if alarmtype.translation(u'_bma_main_') in alarm_fields['remark'][0] or alarmtype.translation(u'_bma_main_') in alarm_fields['person'][0]:
                 alarmkey = classes.get('alarmkey').getAlarmkeysByName(alarmtype.translation(u'_bma_'))
@@ -539,20 +539,29 @@ class Alarm(db.Model):
             alarm.set('remark', '%s\n%s' % (alarm.get('remark'), alarm_fields['remark2'][0]))
 
         # material
-        if alarm.get('id.key') != 0 and alarm_fields['city'][1] != 0:  # found key and aao
-            if classes.get('department').getDepartments(alarm.city.dept).defaultcity == alarm_fields['city'][1]:  # default city for dep
-                if 'material' in alarm_fields and alarm_fields['material'][1][0] == '0':  # default cars for aao
+        if alarm.get('id.key') != 0 and 'city' in alarm_fields:  # found key with aao
+
+            if alarm_fields['city'][1] != 0:  # default city
+                if classes.get('department').getDepartments(alarm.city.dept).defaultcity == alarm_fields['city'][1]:  # default city for dep
+                    if 'material' in alarm_fields and str(alarm_fields['material'][1])[0] == '0':  # default cars for aao
+                        alarm.set('k.cars1', ','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]))
+                        alarm.set('k.cars2', ','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]))
+                        alarm.set('k.material', ','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
+
+                    elif 'material' in alarm_fields:  # add cars found in material if not aao
+                        for _c in alarm_fields['material'][1].split(','):
+                            if _c != '0' and _c not in alarm.get('k.cars1').split(','):
+                                alarm.set('k.cars1', alarm.get('k.cars1') + ',' + _c)
+                else:  # only alarmed material
+                    alarm.set('k.cars1', alarm_fields['material'][1])
+
+            else:  # else city
+                if alarm_fields['material'][1] == '0':  # default cars for aao
                     alarm.set('k.cars1', ','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]))
                     alarm.set('k.cars2', ','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]))
                     alarm.set('k.material', ','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
-
-                elif 'material' in alarm_fields:  # add cars found in material if not aao
-                    for _c in alarm_fields['material'][1].split(','):
-                        if _c != '0' and _c not in alarm.get('k.cars1').split(','):
-                            alarm.set('k.cars1', alarm.get('k.cars1') + ',' + _c)
-
-            else:  # extern city -> only alarmed materieal
-                alarm.set('k.cars1', alarm_fields['material'][1])
+                else:
+                    alarm.set('k.cars1', ','.join(list(OrderedDict.fromkeys(filter(lambda x: x != '0', str(alarm_fields['material'][1]).split(','))))))
 
         else:  # default aao of current department (without aao)
             if alarm_fields['city'][1] != 0:  # found city -> use default aao
@@ -582,10 +591,12 @@ class Alarm(db.Model):
         alarm.set('priority', '1')  # set normal priority
         alarm.set('alarmtype', alarmtype.name)  # set checker name
         alarm.state = 1
+
         if kwargs[0]['mode'] != 'test':
             db.session.commit()
             signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
+            wa.logger.info('alarm handler: alarm created')
         else:
             kwargs[0]['fields'] += '\n\n--------------------------\nALARM-Object\n'
             _cdict = classes.get('car').getCarsDict()
@@ -603,6 +614,7 @@ class Alarm(db.Model):
                 except (AttributeError, KeyError):
                     kwargs[0]['fields'] += '\n-%s:\n  %s (error)' % (a, alarm.get(a))
             db.session.rollback()
+            wa.logger.info('alarm handler: alarm created in TESTMODE')
 
         if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []

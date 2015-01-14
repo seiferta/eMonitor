@@ -1,4 +1,5 @@
 <div id="alarm_comment_widget">
+    {%- if alarm %}
     <style scoped="scoped">
         div#alarm_comment_widget{position:relative;width:100%;top:0;margin:0;padding:0;overflow:visible}
         div.monitor_alarm_comment{font-size:2.0vem;padding:10px 20px}
@@ -8,4 +9,5 @@
         <div class="label">{{ _('alarms.remark') }}:</div>
         <span id="alarm_key_category">{{ alarm.remark }}</span>
     </div>
+    {%- endif %}
 </div>

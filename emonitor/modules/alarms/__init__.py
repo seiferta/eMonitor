@@ -4,12 +4,11 @@ import imp
 from flask import send_from_directory, abort, Response
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
-from emonitor.widget.monitorwidget import MonitorWidget
 from emonitor.extensions import classes, db, events, scheduler, babel, signal
 from emonitor.modules.settings.settings import Settings
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
-from .alarmutils import AlarmFaxChecker
+from .alarmutils import AlarmFaxChecker, AlarmRemarkWidget, AlarmWidget, AlarmIncomeWidget, AlarmTimerWidget
 
 
 class AlarmsModule(Module):
@@ -47,7 +46,7 @@ class AlarmsModule(Module):
         classes.add('alarmtype', AlarmType)
         db.create_all()
 
-        self.widgets = [MonitorWidget('alarms_income', size=(2, 2), template='widget.income.html'), MonitorWidget('alarms', size=(2, 1), template='widget.alarm.html'), MonitorWidget('alarms_timer', size=(1, 1), template='widget.timer.html'), MonitorWidget('alarms_remark', size=(2, 1), template="widget.alarm_comment.html")]
+        self.widgets = [AlarmIncomeWidget('alarms_income'), AlarmWidget('alarms'), AlarmTimerWidget('alarms_timer'), AlarmRemarkWidget('alarms_remark')]
         
         # eventhandlers
         for f in [f for f in os.listdir('%s/emonitor/modules/alarms/inc/' % app.config.get('PROJECT_ROOT')) if f.endswith('.py')]:

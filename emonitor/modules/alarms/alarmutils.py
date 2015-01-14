@@ -1,11 +1,13 @@
 import re
 import xml.etree.ElementTree as ET
+import logging
 import datetime, time
 import requests
 from collections import OrderedDict
 from sqlalchemy import inspect
 from flask import current_app
 from emonitor.extensions import classes, events, signal, babel
+from emonitor.widget.monitorwidget import MonitorWidget
 
 __all__ = ['evalStreet', 'evalMaterial', 'evalTime', 'evalObject', 'evalAlarmplan', 'evalCity', 'evalAddressPart', 'evalKey', 'getEvalMethods', 'buildAlarmFromText']
 
@@ -147,7 +149,10 @@ class AlarmFaxChecker:
     keywords = {}
 
     def __init__(self):
-        pass
+        logging.basicConfig()
+        self.logger = logging.getLogger(self.__name__)
+        self.loglevel = logging.ERROR
+        self.logger.setLevel(self.loglevel)
 
     def getId(self):
         """
@@ -273,3 +278,35 @@ def processFile(incomepath, filename):
                 else:
                     signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1])
     signal.send('alarm', 'testupload_start', result='done')
+
+
+class AlarmRemarkWidget(MonitorWidget):
+    template = "widget.alarm_comment.html"
+    size = (2, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
+
+
+class AlarmWidget(MonitorWidget):
+    template = 'widget.alarm.html'
+    size = (2, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
+
+
+class AlarmIncomeWidget(MonitorWidget):
+    template = 'widget.income.html'
+    size = (2, 2)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
+
+
+class AlarmTimerWidget(MonitorWidget):
+    template = 'widget.timer.html'
+    size = (1, 1)
+
+    def addParameters(self, **kwargs):
+        self.params.update(kwargs)
