@@ -2,6 +2,7 @@ import logging
 import random
 import datetime, time
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.executors.pool import ThreadPoolExecutor
 from emonitor.extensions import signal
 from emonitor.sockethandler import SocketHandler
@@ -30,7 +31,7 @@ class MyScheduler(BackgroundScheduler):
         self.add_listener(MyScheduler.myDone, 64)  # 64: executed
 
         from emonitor.observer import observeFolder
-        self.add_job(observeFolder, 'interval', seconds=app.config.get('OBSERVERINTERVAL', 2), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
+        self.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=app.config.get('OBSERVERINTERVAL', 2)), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
         app.logger.info('scheduler: job added "observer"')
 
     def get_jobs(self, name=""):
@@ -43,7 +44,6 @@ class MyScheduler(BackgroundScheduler):
     def mylogger(event):
         if event.exception:
             MyScheduler.app.logger.error('scheduler: %s' % event.exception)
-            print event.__dict__
         else:
             MyScheduler.app.logger.error('error in scheduler event')
 
@@ -87,6 +87,13 @@ class MyScheduler(BackgroundScheduler):
             if j.name == event:
                 self.unschedule_job(j)
         return 1
+
+
+class eMonitorIntervalTrigger(IntervalTrigger):
+    """Own implementation of IntervalTrigger"""
+
+    def __str__(self):
+        return '*interval trigger* with interval: %s' % str(self.interval)
 
 
 class handleScheduleSignals(SocketHandler):
