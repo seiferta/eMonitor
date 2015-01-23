@@ -47,6 +47,9 @@ def getAlarmMap(alarm, tilepath):
 
     for i in range(dimx / 2 * - 1, dimx / 2 + 1):
         for j in range(dimy / 2 * -1, dimy / 2 + 1):
+            if not os.path.exists("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j)):
+                from emonitor.tileserver.tileserver import getTilePath  # load tile from web
+                getTilePath(alarm.getMap().path, zoom, t[0] + i, t[1] + j)
             img_tile = Image.open("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j))
             img_map.paste(img_tile, (dimx / 2 * 256 + (i * 256), dimy / 2 * 256 + (j * 256)))
 
