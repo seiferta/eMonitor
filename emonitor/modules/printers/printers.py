@@ -37,16 +37,22 @@ class Printers(db.Model):
     def settings(self, val):
         self._settings = yaml.safe_dump(val, encoding='utf-8')
 
-    def getCallString(self, filename=""):  # get formated callstring
+    def getCallString(self, filename="", **params):  # get formated callstring
         import emonitor.webapp as wa
         callstring = classes.get('settings').get('printer.callstring')
         callstring = callstring.replace('[basepath]', wa.config.get('PROJECT_ROOT'))
         if self.printer == '<default>':  # use default printer
             callstring = callstring.replace('-printer [printer]', '')
         else:
-            callstring = callstring.replace('[printer]', '"%s"' % self.printer)
+            if 'printer' in params:
+                callstring = callstring.replace('[printer]', '"%s"' % params['printer'])
+            else:
+                callstring = callstring.replace('[printer]', '"%s"' % self.printer)
         try:
-            callstring = callstring.replace('[copies]', self.settings[0])
+            if 'copies' in params:
+                callstring = callstring.replace('[copies]', "{}".format(params['copies']))
+            else:
+                callstring = callstring.replace('[copies]', self.settings[0])
         except IndexError:
             callstring = callstring.replace('[copies]', '1')
         callstring = callstring.replace('[filename]', filename)
@@ -60,7 +66,7 @@ class Printers(db.Model):
         """
         import emonitor.webapp as wa
         tmpfilename = random.random()
-        callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
+        callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), **params)
         if "alarmid" in params:
             alarm = classes.get('alarm').getAlarms(params['alarmid'])
             with wa.test_request_context('/', method='get'):

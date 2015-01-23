@@ -169,7 +169,7 @@ def getFrontendData(self):
                     monitorserver.sendMessage(str(monitor.id), 'load', layoutid='%s' % l.id, alarmid='%s' % request.args.get('alarmid'))  # TODO check
 
     elif request.args.get('action') == 'printalarm':
-        classes.get('printer').getPrinters(pid=int(request.args.get('printerdef'))).doPrint(alarmid=request.args.get('alarmid'))
+        classes.get('printer').getPrinters(pid=int(request.args.get('printerdef'))).doPrint(alarmid=request.args.get('alarmid'), copies=1)
         return ""
 
     elif request.args.get('action') == 'routeinfo':
