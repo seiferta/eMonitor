@@ -18,7 +18,7 @@
         <span id="alarm_key_category">{{ alarmcategory }}{% if alarmcategory!='' %}: {% endif %}</span>
         <span id="alarm_key_key">{{  alarmkey }}</span>
         {%- if alarmbject!="" %}
-            <br/><span class="alarm_object">{{ alarmobject }}</span>
+            <br/><span class="alarm_object">{%- if alarm.object.alarmplan != '' %}({{ alarm.object.alarmplan }})&nbsp;{%- endif %}{{ alarmobject }}</span>
             <style scoped="scoped">
                 div.monitor_alarm_key{overflow:visible!important;font-size:1.8em!important;}
                 .alarm_object{font-weight:bold;z-index:200;}
