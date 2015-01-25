@@ -298,9 +298,18 @@ class Alarm(db.Model):
         """
         if params['id'] and params:
             alarm = Alarm.getAlarms(params['id'])
+            if not alarm:  # create dummy alarm
+                alarm = Alarm(datetime.datetime.now(), '', 2, 0)
+                alarm.set('lat', classes.get('settings').get('defaultLat'))
+                alarm.set('lng', classes.get('settings').get('defaultLng'))
+                alarm.set('id.key', '1')
+                alarm.set('id.address', '1')
+                alarm.set('id.city', '1')
+                alarm.set('remark', 'TEST TEST TEST')
             if alarm:
                 if exportformat == '.html' and 'style' in params:  # build html-template
-                    return render_template('print.%s.html' % params['style'], alarm=Alarm.getAlarms(params['id']))
+                    params.update({'alarm': alarm})
+                    return render_template('print.%s.html' % params['style'], **params)
 
                 elif exportformat == '.png':  # send image file
 
