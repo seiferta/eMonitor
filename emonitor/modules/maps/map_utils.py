@@ -22,7 +22,10 @@ def getAlarmMap(alarm, tilepath):
     dimy = 3  # tiles in y dimension
     zoom = int(alarm.get('zoom', 18))
     img_map = Image.new('RGBA', (dimx * 256, dimy * 256), (255, 255, 255, 255))
-    t = deg2num(float(alarm.get('lat', alarm.object.lat)), float(alarm.get('lng', alarm.object.lng)), zoom)
+    try:
+        t = deg2num(float(alarm.get('lat')), float(alarm.get('lng')), zoom)
+    except ValueError:
+        t = deg2num(float(alarm.objct.lat), float(alarm.object.lng), zoom)
 
     cat = alarm.key.category
     items = []

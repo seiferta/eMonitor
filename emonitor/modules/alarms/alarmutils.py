@@ -189,7 +189,10 @@ def getAlarmRoute(alarm):
     """
     get routing from webservice, points and description
     """
-    params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat', alarm.object.lat), 'tlon': alarm.get('lng', alarm.object.lng), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+    if alarm.get('lat', '') != '':
+        params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+    else:
+        params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.object.lat, 'tlon': alarm.object.lng, 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
     r = requests.get(alarm.ROUTEURL, params=params)
     tree = ET.fromstring(r.content)
     data = {}
