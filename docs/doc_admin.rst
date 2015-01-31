@@ -8,4 +8,5 @@ Handbuch für die Administration von eMonitor. Jedes installierte Modul kann dab
    :includehidden:
    :glob:
 
+   /emonitor/onlinehelp/web/templates/admin.de.default
    /emonitor/modules/*/help/doc.admin*

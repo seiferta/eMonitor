@@ -6,11 +6,17 @@
 Welcome to eMonitor's documentation!
 ====================================
 
+Allgemeine Informationen
+========================
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    /docs/install
-   
+   /docs/firststeps
+   /docs/basicconfig
+   /docs/faxchecker
+
 Handbücher
 ==========
 
