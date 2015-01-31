@@ -6,6 +6,7 @@ import time
 from sqlalchemy import and_
 from emonitor.extensions import db, classes
 from emonitor.utils import Module
+from printerutils import PrintLayout
 
 
 class Printers(db.Model):
@@ -65,13 +66,18 @@ class Printers(db.Model):
         :param params: checks for *alarmid*
         """
         import emonitor.webapp as wa
+        pl = PrintLayout('%s.%s' % (self.module, self.layout))
+        _params = {}
+        for p in pl.getParameters(self.settings[1].split(';')):  # load parameters from printer definition
+            _params[p.getFullName()] = p.getFormatedValue()
         tmpfilename = random.random()
         callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), **params)
-        if "alarmid" in params:
-            alarm = classes.get('alarm').getAlarms(params['alarmid'])
+        if "id" in params:
             with wa.test_request_context('/', method='get'):
                 with open('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
-                    tmpfile.write(Module.getPdf(alarm.getExportData('.html', id=alarm.id, style=self.layout[6:-5])))
+                    _params['id'] = params['id']
+                    _params['style'] = self.layout[6:-5]
+                    tmpfile.write(Module.getPdf(params['object'].getExportData('.html', **_params)))
             try:
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
                 os.remove('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))

@@ -3,6 +3,10 @@
 {% block style %}
     <style>
         label{width:100%;}
+        #previewframe{overflow:hidden;border:1px solid silver;width:160px;height:230px;}
+        #previewframe body{font-size:10px;position:relative;width:791px;height:742px;-webkit-transform: scale(0.2);-moz-transform: scale(0.2);-ms-transform: scale(0.2);-o-transform: scale(0.2);transform: scale(0.2);}
+        table#parameterlist{width:80%;border:1px solid silver;padding:2px;}
+        table#parameterlist th, td{width:50%;border:1px solid silver;padding:2px;}
     </style>
 {% endblock %}
 
@@ -15,23 +19,28 @@
     <form method="post" action="" name="editcity">
         <p>
             <label>{{ _('printers.name') }}:<br/>
-                <input type="text" name="printername" value="{{ printer.name }}" style="width:99%;"/>
+                <input type="text" name="printername" value="{{ printer.name }}" style="width:99%;" autofocus=""/>
             </label>
         </p>
-        <p>
-            <label>{{ _('printers.module') }}:<br/>
-                <select name="template" style="width:20%;">
+        <p style="float:left;width:40%;">
+            <label style="width:100%">{{ _('printers.module') }}:<br/>
+                <select name="template" style="width:100%;" onchange="loadpreview()">
                     {%  for k in templates %}
                         <optgroup label="{{ _('module.'+k) }}">
                         {%  for t in templates[k] %}
-                            <option value="{{ k+'.'+t }}"{% if printer.module+printer.layout==k+t %} selected="selected"{% endif %}>{{ _('template.'+t[6:-5]) }}</option>
+                            <option value="{{ k+'.'+t.filename }}"{% if printer.module+printer.layout==k+t.filename %} selected="selected"{% endif %}>{{ _('template.'+t.filename[6:-5]) }}</option>
                         {% endfor %}
                         </optgroup>
                     {%  endfor %}
                 </select>
             </label>
+            <br/>
+            <span id="parameters"></span>
         </p>
-        <p>
+        <p style="float: left;width:60%;padding-left:20px;">
+            <iframe id="previewframe" scrolling="no" seamless="seamless" frameborder="no"></iframe>
+        </p>
+        <p style="clear:left">
             <label>{{ _('printers.printer') }}:<br/>
                 <select name="printerprinter" style="width:99%;">
                     {% for name in printernames %}
@@ -50,21 +59,28 @@
             </label>
         </p>
         <p>
-            <label>{{ _('printers.settings') }}:<br/>
-                <textarea name="printersettings" style="width:99%;height:100px;">{{ printer.settings[1] }}</textarea>
-            </label>
-        </p>
-        <p>
             <label>{{ _('printers.state') }}:<br/>
                 <input type="checkbox" name="printerstate" value="1" {% if printer.state==1 %}checked="checked"{% endif %}/>
             </label>
         </p>
-
         <p>
             <button type="submit" name="action" value="updateprinter" class="save"><i class="fa fa-check"></i> {{ _('printers.save') }}</button>
             <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('printers.cancel') }}</button>
         </p>
         <input type="hidden" name="printer_id" value="{{ printer.id }}"/>
         <input type="hidden" name="form_id" value="printer.edit"/>
+        <input type="hidden" name="printersettings" style="width:99%;height:100px;" value="{{ printer.settings[1] }}"/>
     </form>
+    <script>
+        function loadpreview(){
+            $.ajax({ type : "POST", url : "/admin/data/printers?action=loadtemplatepreview&template="+$('select[name=template]').val()+'&values='+$('input[name=printersettings]').val()+'&format=json',
+                 success: function(result) {
+                     $('#previewframe').attr('src', result.url);
+                     $('#parameters').html(result.parameters);
+                     return false;
+                }
+            });
+        }
+        loadpreview();
+    </script>
 {% endblock %}

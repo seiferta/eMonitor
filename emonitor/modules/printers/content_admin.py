@@ -3,6 +3,7 @@ import os
 import subprocess
 from flask import render_template, request, current_app
 from emonitor.extensions import classes, db
+from emonitor.modules.printers.printerutils import PrintLayout
 
 
 def getAdminContent(self, **params):
@@ -51,7 +52,7 @@ def getAdminContent(self, **params):
                     if f.endswith('.html') and f.startswith('print.'):
                         if mod not in templates:
                             templates[mod] = []
-                        templates[mod].append(f)
+                        templates[mod].append(PrintLayout('%s.%s' % (mod, f)))
             return templates
 
         if request.method == 'POST':
@@ -75,7 +76,11 @@ def getAdminContent(self, **params):
                 p.printer = request.form.get('printerprinter')
                 p.module = request.form.get('template').split('.')[0]
                 p.layout = '.'.join(request.form.get('template').split('.')[1:])
-                p.settings = request.form.getlist('printersettings')
+                _s = [request.form.get('printersettings'), []]  # add settings from template
+                for tparam in [_p for _p in request.form.get('templateparams').split(';') if _p != ""]:
+                    _s[1].append('%s=%s' % (tparam[7:], request.form.get(tparam)))
+                _s[1] = ';'.join(_s[1])
+                p.settings = _s
                 p.state = request.form.get('printerstate')
                 db.session.commit()
 
@@ -93,4 +98,16 @@ def getAdminData(self):
 
     :return: rendered template as string or json dict
     """
+
+    if 'action' in request.args and request.args['action'] == 'loadtemplatepreview':  # load template parameters
+        pl = PrintLayout(request.args.get('template'))
+        module = request.args.get('template').split('.')[0]
+        t = request.args.get('template').split('.')[2]
+        values = {}
+        for v in request.args.get('values').split(';'):
+            if '=' in v and len(v.split('=')) == 2:
+                _v = v.split('=')
+                values[_v[0]] = _v[1]
+        return {'parameters': render_template('admin.printers_parameters.html', parameters=pl.getParameters(), values=values), 'url': '/%s/export/999999-%s.html' % (module, t)}
+
     return ""

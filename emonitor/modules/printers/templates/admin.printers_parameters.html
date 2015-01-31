@@ -1,0 +1,15 @@
+{%- if parameters|length > 0 %}
+{{ _('printers.parameter.list') }}:<br/>
+{%- for parameter in parameters %}
+
+    <p>{{ parameter.pname }}:<br/>
+    {%- if parameter.ptype == 'bool' %}
+        <label><input type="radio" name="params_{{ parameter.pname }}" value="1"{%- if parameter.pname in values.keys() and values[parameter.pname]=='1' %} checked="checked"{%- endif %}/> {{ _('printers.parameters.yes') }}</label>
+        <label><input type="radio" name="params_{{ parameter.pname }}" value="0"{%- if parameter.pname in values.keys() and values[parameter.pname]=='0' %} checked="checked"{%- endif %}/> {{ _('printers.parameters.no') }}</label>
+    {%- endif %}
+    </p>
+{%- endfor %}
+<input type="hidden" name="templateparams" value="{%- for parameter in parameters %}params_{{ parameter.pname }}{%- if not loop.last %};{%- endif %}{%- endfor %}"/>
+{%- else %}
+<input type="hidden" name="templateparams"/>
+{%- endif %}
