@@ -1,4 +1,5 @@
 import os
+import yaml
 from PIL import Image, ImageDraw
 from math import ceil
 from flask import current_app
@@ -15,11 +16,34 @@ class MonitorLayout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mid = db.Column(db.Integer, db.ForeignKey('monitors.id'))
     trigger = db.Column(db.String(30), default='default')
-    layout = db.Column(db.Text)
+    _layout = db.Column('layout', db.Text)
     theme = db.Column(db.String(30))
     mintime = db.Column(db.Integer, default=0)
     maxtime = db.Column(db.Integer, default=0)
     nextid = db.Column(db.Integer, default=0)
+
+    @property
+    def layout(self):
+        """
+        Use yaml for layout
+
+        :return: yaml formated data
+        """
+        return yaml.load(self._layout)
+
+    @layout.setter
+    def layout(self, val):
+        """
+        Setter for layout
+
+        :param val: value list with parameters for widgets
+        """
+        l = []
+        for item in val:
+            if len(item.split(';')) == 5:
+                i = item.split(';')
+                l.append(dict(widget=i[0], width=int(i[1]), height=int(i[2]), col=int(i[3]), row=int(i[4])))
+        self._layout = yaml.safe_dump(l, encoding='utf-8')
 
     def _get_themes(self):
         ret = []
@@ -30,14 +54,19 @@ class MonitorLayout(db.Model):
     themes = property(_get_themes)
 
     def _get_html_layout(self):
+        """
+        Build default html layout for widget configuration
+
+        :return: html string with layout areas for widget content
+        """
         ret = ""
         items, max_x, max_y = MonitorLayout._evalLayout(self.layout)
         for l in items:
-            _l = str(int(ceil((l[0] - 1) * (100.0 / max_x)))) + '%'
-            _t = str(int(ceil((l[1] - 1) * (100.0 / max_y)))) + '%'
-            _r = str(100 - int(ceil((l[2]) * (100.0 / max_x)))) + '%'
-            _b = str(100 - int(ceil((l[3]) * (100.0 / max_y)))) + '%'
-            ret += '<div id="area" style="position:fixed;left:%s;top:%s;right:%s;bottom:%s;">[[%s]]</div>\n' % (_l, _t, _r, _b, l[-1])
+            _l = str(int(ceil((l['startx'] - 1) * (100.0 / max_x)))) + '%'
+            _t = str(int(ceil((l['starty'] - 1) * (100.0 / max_y)))) + '%'
+            _r = str(100 - int(ceil((l['endx']) * (100.0 / max_x)))) + '%'
+            _b = str(100 - int(ceil((l['endy']) * (100.0 / max_y)))) + '%'
+            ret += '<div id="area" style="position:fixed;left:%s;top:%s;right:%s;bottom:%s;">[[%s]]</div>\n' % (_l, _t, _r, _b, l['widget'])
         return ret
 
     htmllayout = property(_get_html_layout)
@@ -59,22 +88,20 @@ class MonitorLayout(db.Model):
         ret = []
         max_x = max_y = 1
         if text is None:
-            return [[1, 1, 1, 1, 'placeholder']], 1, 1
-        for l in text.split("\r\n")[:-1]:
-            n = l.split(";")
-            ret.append([int(n[3]), int(n[4]), (int(n[1]) + int(n[3]) - 1), (int(n[2]) + int(n[4]) - 1), n[0]])  # startx, starty, endx, endy, widgetname
-            if int(n[1]) + int(n[3]) - 1 > max_x:
-                max_x = int(n[1]) + int(n[3]) - 1
-            if int(n[2]) + int(n[4]) - 1 > max_y:
-                max_y = int(n[2]) + int(n[4]) - 1
+            return [dict(startx=1, starty=1, endx=1, endy=1, name='placeholder')], 1, 1
+        for l in text:
+            ret.append(dict(startx=l['col'], starty=l['row'], endx=(l['width'] + l['col'] - 1), endy=(l['height'] + l['row'] - 1), widget=l['widget']))
+            if l['width'] + l['col'] - 1 > max_x:
+                max_x = l['width'] + l['col'] - 1
+            if l['height'] + l['row'] - 1 > max_y:
+                max_y = l['height'] + l['row'] - 1
         return ret, max_x, max_y
 
-    def getHTMLLayoutScript(self):  # todo
+    def getHTMLLayoutScript(self):
         ret = '$(function(){'
-        for l in self.layout.split("\r\n")[:-1]:
+        for l in self.layout:
             try:
-                n, x, y, c, r = l.split(";")
-                ret += 'addWidget("%s", %s, %s, %s, %s);\n' % (n, x, y, c, r)
+                ret += 'addWidget("%s", %s, %s, %s, %s);\n' % (l['widget'], l['width'], l['height'], l['col'], l['row'])
             except:
                 pass
         return ret + '});'
@@ -91,9 +118,8 @@ class MonitorLayout(db.Model):
         img = Image.new('RGB', (max_x * dimension[0] + 1, max_y * dimension[1] + 1), (171, 171, 171))
         draw = ImageDraw.Draw(img)
         for l in ret:
-            draw.rectangle([((l[0] - 1) * dimension[0], (l[1] - 1) * dimension[1]),
-                            ((l[2]) * dimension[0], (l[3]) * dimension[1])], fill="white", outline='black')
-
+            draw.rectangle([((l['startx'] - 1) * dimension[0], (l['starty'] - 1) * dimension[1]),
+                            ((l['endx']) * dimension[0], (l['endy']) * dimension[1])], fill="white", outline='black')
         output = StringIO()
         img.save(output, format="PNG", dpi=(300, 300))
         return output.getvalue()
@@ -116,26 +142,3 @@ class MonitorLayout(db.Model):
 
     def getTriggerNames(self):
         return self.trigger.split(';')
-
-
-def _evalLayout(text):
-    ret = []
-    max_x = max_y = 1
-    if not text:
-        return [[1, 1, 1, 1, 'placeholder']], 1, 1
-    for l in text.split("\r\n")[:-1]:
-        n = l.split(";")
-        ret.append([int(n[3]), int(n[4]), (int(n[1]) + int(n[3]) - 1), (int(n[2]) + int(n[4]) - 1), n[0]])  # startx, starty, endx, endy, widgetname
-        if int(n[1]) + int(n[3]) - 1 > max_x:
-            max_x = int(n[1]) + int(n[3]) - 1
-        if int(n[2]) + int(n[4]) - 1 > max_y:
-            max_y = int(n[2]) + int(n[4]) - 1
-    return ret, max_x, max_y
-
-
-def _get_themes():
-    ret = []
-    for root, dirs, files in os.walk("%s/emonitor/frontend/web/css" % current_app.config.get('PROJECT_ROOT')):
-        for name in [f for f in files if f.startswith('monitor_')]:
-            ret.append(name.split('_')[1][:-4])
-    return ret

@@ -66,7 +66,7 @@ def getAdminContent(self, **params):
                         
                     layout.mid = request.form.get('edit_mid')
                     layout.trigger = ";".join(sorted(request.form.getlist('edit_trigger')))
-                    layout.layout = request.form.get('edit_layout')
+                    layout.layout = request.form.get('edit_layout').split('\r\n')
                     layout.theme = request.form.get('edit_theme')
                     layout.mintime = request.form.get('edit_mintime')
                     layout.maxtime = request.form.get('edit_maxtime')
