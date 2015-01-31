@@ -10,16 +10,22 @@ from cStringIO import StringIO
 LOADINPROGRESS = [0, 0]  # [_todo_, _done_]
 
 
-def getAlarmMap(alarm, tilepath):
+def getAlarmMap(alarm, tilepath, **params):
     """
     Build map for alarm as png image stream
 
     :param alarm: :py:class:`emonitor.modules.alarms.alarm.Alarm`
     :param tilepath: path to tile images
+    :param params: dict with extra parameters
+        - large = boolean, use large map (height =
     :return: image as stream
     """
     dimx = 5  # tiles in x dimension
     dimy = 3  # tiles in y dimension
+
+    if 'style' in params and params['style'] == 'large':  # add height
+        dimy += 1
+
     zoom = int(alarm.get('zoom', 18))
     img_map = Image.new('RGBA', (dimx * 256, dimy * 256), (255, 255, 255, 255))
     try:
