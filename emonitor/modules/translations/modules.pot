@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-28 14:46+0100\n"
+"POT-Creation-Date: 2015-02-03 14:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -530,335 +530,335 @@ msgstr ""
 msgid "alarmobjects.type.cancel"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:44
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:45
 msgid "admin.alarmobjects.header.edit"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:47
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:48
 msgid "admin.alarmobjects.basedata"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:48
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:49
 msgid "admin.alarmobjects.extended"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:49
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:50
 msgid "admin.alarmobjects.aao"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:50
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:207
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:51
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:208
 msgid "admin.alarmobjects.files"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:60
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:61
 msgid "admin.alarmobjects.mapinfo"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:65
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:66
 msgid "admin.alarmobjects.name"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:70
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:71
 msgid "admin.alarmobjects.street_no"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:82
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:83
 msgid "admin.alarmobjects.objecttype"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:91
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:92
 msgid "admin.alarmobjects.alarmplan"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:92
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:93
 msgid "admin.alarmobjects.alarmplaninfo"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:96
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:97
 msgid "admin.alarmobjects.active"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:101
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:102
 msgid "admin.alarmobjects.bma"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:106
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:107
 msgid "admin.alarmobjects.remark"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:112
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:113
 msgid "admin.alarmobjects.updateposition"
-msgstr ""
-
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:121
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:140
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:197
-msgid "admin.alarmobjects.save"
 msgstr ""
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:122
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:141
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:198
+msgid "admin.alarmobjects.save"
+msgstr ""
+
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:123
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:142
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:199
 msgid "admin.alarmobjects.cancel"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:149
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:150
 msgid "admin.alarmobject.aaoinfo"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:153
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:154
 msgid "admin.alarmobject.cars1"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:163
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:164
 msgid "admin.alarmobject.cars2"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:172
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:173
 msgid "admin.alarmobject.material"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:181
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:182
 msgid "admin.alarmobject.allcars"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:214
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:215
 msgid "admin.alarmobject.file"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:215
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:216
 msgid "admin.alarmobject.filename"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:221
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:222
 msgid "admin.alarmobject.filestart"
 msgstr ""
 
-#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:262
+#: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:263
 msgid "admin.alarmobjects.delfilequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:97
+#: emonitor/modules/alarms/__init__.py:96
 msgid "module.alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:98
+#: emonitor/modules/alarms/__init__.py:97
 msgid "alarms.base"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:99
+#: emonitor/modules/alarms/__init__.py:98
 msgid "module.alarms.types"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:100
+#: emonitor/modules/alarms/__init__.py:99
 msgid "module.alarms.test"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:101
+#: emonitor/modules/alarms/__init__.py:100
 msgid "alarms_income"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:102
+#: emonitor/modules/alarms/__init__.py:101
 msgid "alarms_timer"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:103
+#: emonitor/modules/alarms/__init__.py:102
 msgid "alarms_remark"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:104
+#: emonitor/modules/alarms/__init__.py:103
 msgid "alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:105
+#: emonitor/modules/alarms/__init__.py:104
 msgid "alarms.prio0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:106
+#: emonitor/modules/alarms/__init__.py:105
 msgid "alarms.prio1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:107
+#: emonitor/modules/alarms/__init__.py:106
 msgid "alarms.prio2"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:108
+#: emonitor/modules/alarms/__init__.py:107
 msgid "emonitor.modules.alarms.alarm.Alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:109
+#: emonitor/modules/alarms/__init__.py:108
 msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:110
+#: emonitor/modules/alarms/__init__.py:109
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:68
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:70
 msgid "alarms.test.protocol"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:111
+#: emonitor/modules/alarms/__init__.py:110
 msgid "alarms.test.result"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:112
+#: emonitor/modules/alarms/__init__.py:111
 msgid "alarmstate.active"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:113
+#: emonitor/modules/alarms/__init__.py:112
 msgid "alarmstate.created"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:114
+#: emonitor/modules/alarms/__init__.py:113
 msgid "alarmstate.done"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:115
+#: emonitor/modules/alarms/__init__.py:114
 #: emonitor/modules/alarms/templates/admin.alarms.html:62
 msgid "alarmstate.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:116
+#: emonitor/modules/alarms/__init__.py:115
 msgid "active"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:117
+#: emonitor/modules/alarms/__init__.py:116
 msgid "created"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:118
+#: emonitor/modules/alarms/__init__.py:117
 msgid "done"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:119
+#: emonitor/modules/alarms/__init__.py:118
 msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:120 emonitor/modules/alarms/alarm.py:254
+#: emonitor/modules/alarms/__init__.py:119 emonitor/modules/alarms/alarm.py:257
 msgid "alarms.statechangeactivated"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:121
+#: emonitor/modules/alarms/__init__.py:120
 msgid "alarms.prioshort0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:122
+#: emonitor/modules/alarms/__init__.py:121
 msgid "alarms.prioshort1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:123
+#: emonitor/modules/alarms/__init__.py:122
 msgid "alarms.prioshort2"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:124
+#: emonitor/modules/alarms/__init__.py:123
 msgid "alarms.carsinuse"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:125
+#: emonitor/modules/alarms/__init__.py:124
 msgid "history.autochangeState"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:126
+#: emonitor/modules/alarms/__init__.py:125
 msgid "history.message"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:127
+#: emonitor/modules/alarms/__init__.py:126
 msgid "trigger.alarm_added"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:128
+#: emonitor/modules/alarms/__init__.py:127
 msgid "trigger.alarm_changestate"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:130
+#: emonitor/modules/alarms/__init__.py:129
 msgid "trigger.alarm_added_sub"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:131
+#: emonitor/modules/alarms/__init__.py:130
 msgid "trigger.alarm_changestate_sub"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:133
-#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/__init__.py:132
+#: emonitor/modules/alarms/alarmutils.py:225
 msgid "alarms.print.slightleft"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:134
-#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/__init__.py:133
+#: emonitor/modules/alarms/alarmutils.py:225
 msgid "alarms.print.slightright"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:135
-#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/__init__.py:134
+#: emonitor/modules/alarms/alarmutils.py:225
 msgid "alarms.print.right"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:136
-#: emonitor/modules/alarms/alarmutils.py:219
+#: emonitor/modules/alarms/__init__.py:135
+#: emonitor/modules/alarms/alarmutils.py:225
 msgid "alarms.print.left"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:137
-#: emonitor/modules/alarms/alarmutils.py:219
-#: emonitor/modules/alarms/alarmutils.py:234
+#: emonitor/modules/alarms/__init__.py:136
+#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/alarmutils.py:240
 msgid "alarms.print.straight"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:138
-#: emonitor/modules/alarms/alarmutils.py:219
-#: emonitor/modules/alarms/alarmutils.py:234
+#: emonitor/modules/alarms/__init__.py:137
+#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/alarmutils.py:240
 msgid "alarms.print.exit"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:139
-#: emonitor/modules/alarms/alarmutils.py:218
+#: emonitor/modules/alarms/__init__.py:138
+#: emonitor/modules/alarms/alarmutils.py:224
 msgid "alarms.print.bus"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:140
-#: emonitor/modules/alarms/alarmutils.py:236
+#: emonitor/modules/alarms/__init__.py:139
+#: emonitor/modules/alarms/alarmutils.py:242
 msgid "alarms.print.positive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:141
-#: emonitor/modules/alarms/alarmutils.py:237
+#: emonitor/modules/alarms/__init__.py:140
+#: emonitor/modules/alarms/alarmutils.py:243
 msgid "alarms.print.negative"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:143
+#: emonitor/modules/alarms/__init__.py:142
 msgid "alarms.filter.0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:144
+#: emonitor/modules/alarms/__init__.py:143
 msgid "alarms.filter.1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:145
+#: emonitor/modules/alarms/__init__.py:144
 msgid "alarms.filter.7"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:146
+#: emonitor/modules/alarms/__init__.py:145
 msgid "alarms.filter.31"
 msgstr ""
 
-#: emonitor/modules/alarms/alarm.py:202
+#: emonitor/modules/alarms/alarm.py:205
 msgid "alarms.routingerror"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:228
-#: emonitor/modules/alarms/alarmutils.py:230
+#: emonitor/modules/alarms/alarmutils.py:234
+#: emonitor/modules/alarms/alarmutils.py:236
 msgid "alarms.print.highwaylong"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:230
+#: emonitor/modules/alarms/alarmutils.py:236
 msgid "alarms.print.highwayshort"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:234
+#: emonitor/modules/alarms/alarmutils.py:240
 msgid "alarms.print.exitstart"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:234
+#: emonitor/modules/alarms/alarmutils.py:240
 msgid "alarms.print.straightexit"
 msgstr ""
 
@@ -1143,127 +1143,127 @@ msgstr ""
 msgid "alarms.titlemap"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:37
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:179
 msgid "layout.resize"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:63
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:180
 msgid "layout.open"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:64
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:181
 msgid "layout.closed"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:49
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:50
 msgid "alarms.header.edit"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:67
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:68
 msgid "frontend.alarms.address"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:68
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:69
 msgid "frontend.alarms.object"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:74
-#: emonitor/modules/streets/templates/widget.street.html:10
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:75
+#: emonitor/modules/streets/templates/widget.street.html:11
 msgid "alarms.address"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:75
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:76
 msgid "alarms.address.placeholder"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:80
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:81
 msgid "alarms.streetno"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:81
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:82
 msgid "alarms.streetno.placeholder"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:87
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:88
 msgid "alarms.crossing"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:88
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:89
 msgid "alarms.crossing.placeholder"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:92
-#: emonitor/modules/streets/templates/widget.street.html:19
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:93
+#: emonitor/modules/streets/templates/widget.street.html:26
 msgid "alarms.city"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:93
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:94
 msgid "alarms.city.placeholder"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:107
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:108
 msgid "alarms.alarmobjects"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:109
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:110
 msgid "alarms.noobject"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:120
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:121
 msgid "alarms.key"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:128
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:129
 msgid "alarms.date"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:133
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:134
 msgid "alarms.time"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:140
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:141
 msgid "alarms.enddate"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:145
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:146
 msgid "alarms.endtime"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:153
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:152
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:154
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:84
 msgid "alarms.person"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:160
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:161
 msgid "alarms.priority"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:168
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:158
-#: emonitor/modules/alarms/templates/widget.alarm_comment.html:8
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:169
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:90
+#: emonitor/modules/alarms/templates/widget.alarm_comment.html:9
 msgid "alarms.remark"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:173
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:164
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:174
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:96
 msgid "alarms.cars"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:176
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:177
 msgid "alarms.cars1"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:178
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:179
 msgid "alarms.setdefaultcars"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:179
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:180
 msgid "alarms.clearcars"
 msgstr ""
 
@@ -1271,24 +1271,24 @@ msgstr ""
 msgid "alarms.cars2"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:203
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:202
 msgid "alarms.material"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:214
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:212
 msgid "alarms.unused"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:230
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:227
 msgid "alarms.storeupdatedmarker"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:234
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:231
 #: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 msgid "alarms.save"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:235
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:232
 msgid "alarms.cancel"
 msgstr ""
 
@@ -1352,25 +1352,25 @@ msgstr ""
 msgid "alarms.deletequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:121
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:53
 #: emonitor/modules/printers/__init__.py:43
 msgid "template.alarm_sum"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:127
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:59
 msgid "alarms.page"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/print.alarm_sum.html:145
+#: emonitor/modules/alarms/templates/print.alarm_sum.html:77
 msgid "alarms.object"
 msgstr ""
 
-#: emonitor/modules/cars/__init__.py:39
+#: emonitor/modules/cars/__init__.py:40
 msgid "module.cars"
 msgstr ""
 
-#: emonitor/modules/cars/__init__.py:40
-#: emonitor/modules/cars/templates/widget.cars.html:14
+#: emonitor/modules/cars/__init__.py:41
+#: emonitor/modules/cars/templates/widget.cars.html:15
 msgid "cars"
 msgstr ""
 
@@ -1777,19 +1777,19 @@ msgstr ""
 msgid "itemtype.itemscount"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:44
+#: emonitor/modules/maps/__init__.py:51
 msgid "module.maps"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:45
+#: emonitor/modules/maps/__init__.py:52
 msgid "maps_map"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:46
+#: emonitor/modules/maps/__init__.py:53
 msgid "maps.base"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:47
+#: emonitor/modules/maps/__init__.py:54
 msgid "module.maps.position"
 msgstr ""
 
@@ -1806,19 +1806,19 @@ msgid "settings.map.listtitle"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.html:23
-#: emonitor/modules/maps/templates/admin.map_actions.html:26
+#: emonitor/modules/maps/templates/admin.map_actions.html:30
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:18
 msgid "settings.map.info"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.html:27
-#: emonitor/modules/maps/templates/admin.map_actions.html:29
+#: emonitor/modules/maps/templates/admin.map_actions.html:33
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:21
 msgid "settings.map.name"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.html:28
-#: emonitor/modules/maps/templates/admin.map_actions.html:34
+#: emonitor/modules/maps/templates/admin.map_actions.html:38
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:26
 msgid "settings.map.path"
 msgstr ""
@@ -1876,13 +1876,13 @@ msgid "settings.map.startposition"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.position.html:42
-#: emonitor/modules/maps/templates/admin.map_actions.html:75
+#: emonitor/modules/maps/templates/admin.map_actions.html:81
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:66
 msgid "settings.map.lat"
 msgstr ""
 
 #: emonitor/modules/maps/templates/admin.map.position.html:43
-#: emonitor/modules/maps/templates/admin.map_actions.html:76
+#: emonitor/modules/maps/templates/admin.map_actions.html:82
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:67
 msgid "settings.map.lng"
 msgstr ""
@@ -1916,148 +1916,147 @@ msgstr ""
 msgid "settings.map.startmarker.info"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:25
+#: emonitor/modules/maps/templates/admin.map_actions.html:29
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:17
 msgid "settings.map.edittitle"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:40
+#: emonitor/modules/maps/templates/admin.map_actions.html:44
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:32
 msgid "settings.map.maptype"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:41
+#: emonitor/modules/maps/templates/admin.map_actions.html:45
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:33
 msgid "settings.map.type0"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:42
+#: emonitor/modules/maps/templates/admin.map_actions.html:46
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:34
 msgid "settings.map.type1"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:43
+#: emonitor/modules/maps/templates/admin.map_actions.html:47
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:35
 msgid "settings.map.type2"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:46
+#: emonitor/modules/maps/templates/admin.map_actions.html:50
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:38
 msgid "settings.map.tileserver"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:50
+#: emonitor/modules/maps/templates/admin.map_actions.html:54
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:40
 msgid "settings.tileserver.info"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:53
+#: emonitor/modules/maps/templates/admin.map_actions.html:57
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:44
 msgid "settings.map.default"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:54
+#: emonitor/modules/maps/templates/admin.map_actions.html:58
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:45
 msgid "settings.map.default1"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:55
+#: emonitor/modules/maps/templates/admin.map_actions.html:59
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:46
 msgid "settings.map.default0"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:59
+#: emonitor/modules/maps/templates/admin.map_actions.html:63
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:50
 msgid "settings.map.save"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:60
+#: emonitor/modules/maps/templates/admin.map_actions.html:64
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:51
 msgid "settings.map.cancel"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:71
+#: emonitor/modules/maps/templates/admin.map_actions.html:70
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:62
 msgid "settings.map.gettiles"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:72
+#: emonitor/modules/maps/templates/admin.map_actions.html:71
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:63
 msgid "settings.map.gettilesinfo"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:80
+#: emonitor/modules/maps/templates/admin.map_actions.html:76
 #: emonitor/modules/settings/templates/admin.settings.map_actions.html:71
 msgid "settings.map.updateinprogress"
 msgstr ""
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:84
-#: emonitor/modules/settings/templates/admin.settings.map_actions.html:75
-msgid "settings.map.loadtiles"
+#: emonitor/modules/maps/templates/admin.map_actions.html:78
+msgid "settings.map.updatestop"
+msgstr ""
+
+#: emonitor/modules/maps/templates/admin.map_actions.html:119
+msgid "settings.map.startdownload"
 msgstr ""
 
 #: emonitor/modules/maps/templates/frontend.map.html:82
 msgid "maps.nodefaultposition"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:33
-msgid "module.messages"
-msgstr ""
-
-#: emonitor/modules/monitors/__init__.py:46
+#: emonitor/modules/monitors/__init__.py:45
 msgid "module.monitors"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:47
+#: emonitor/modules/monitors/__init__.py:46
 msgid "monitors.definition"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:48
+#: emonitor/modules/monitors/__init__.py:47
 msgid "module.monitors.style"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:49
+#: emonitor/modules/monitors/__init__.py:48
 msgid "module.monitors.current"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:50
+#: emonitor/modules/monitors/__init__.py:49
 msgid "module.monitors.actions"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:51
+#: emonitor/modules/monitors/__init__.py:50
 msgid "monitors.landscape"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:52
+#: emonitor/modules/monitors/__init__.py:51
 msgid "monitors.portrait"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:53
+#: emonitor/modules/monitors/__init__.py:52
 msgid "monitors.orientation.0"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:54
+#: emonitor/modules/monitors/__init__.py:53
 msgid "monitors.orientation.1"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:55
+#: emonitor/modules/monitors/__init__.py:54
 msgid "placeholder"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.actions.html:9
+#: emonitor/modules/monitors/templates/admin.monitors.actions.html:16
 msgid "monitors.actions.header.overview"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.actions.html:10
+#: emonitor/modules/monitors/templates/admin.monitors.actions.html:17
 msgid "monitors.actions.info"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.actions.html:13
+#: emonitor/modules/monitors/templates/admin.monitors.actions.html:20
 #: emonitor/modules/monitors/templates/admin.monitors.current.html:16
 msgid "monitors.current.refreshtitle"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.actions.html:16
+#: emonitor/modules/monitors/templates/admin.monitors.actions.html:23
 msgid "monitors.actions.loadingschedules"
 msgstr ""
 
@@ -2355,12 +2354,12 @@ msgid "printers.id"
 msgstr ""
 
 #: emonitor/modules/printers/templates/admin.printers.html:22
-#: emonitor/modules/printers/templates/admin.printers_actions.html:17
+#: emonitor/modules/printers/templates/admin.printers_actions.html:21
 msgid "printers.name"
 msgstr ""
 
 #: emonitor/modules/printers/templates/admin.printers.html:23
-#: emonitor/modules/printers/templates/admin.printers_actions.html:22
+#: emonitor/modules/printers/templates/admin.printers_actions.html:26
 msgid "printers.module"
 msgstr ""
 
@@ -2369,12 +2368,12 @@ msgid "printers.layout"
 msgstr ""
 
 #: emonitor/modules/printers/templates/admin.printers.html:25
-#: emonitor/modules/printers/templates/admin.printers_actions.html:35
+#: emonitor/modules/printers/templates/admin.printers_actions.html:44
 msgid "printers.printer"
 msgstr ""
 
 #: emonitor/modules/printers/templates/admin.printers.html:26
-#: emonitor/modules/printers/templates/admin.printers_actions.html:58
+#: emonitor/modules/printers/templates/admin.printers_actions.html:62
 msgid "printers.state"
 msgstr ""
 
@@ -2422,24 +2421,32 @@ msgstr ""
 msgid "printers.settings.save"
 msgstr ""
 
-#: emonitor/modules/printers/templates/admin.printers_actions.html:14
+#: emonitor/modules/printers/templates/admin.printers_actions.html:18
 msgid "printers.header.edit"
 msgstr ""
 
-#: emonitor/modules/printers/templates/admin.printers_actions.html:44
+#: emonitor/modules/printers/templates/admin.printers_actions.html:53
 msgid "printers.pages"
 msgstr ""
 
-#: emonitor/modules/printers/templates/admin.printers_actions.html:53
-msgid "printers.settings"
-msgstr ""
-
-#: emonitor/modules/printers/templates/admin.printers_actions.html:64
+#: emonitor/modules/printers/templates/admin.printers_actions.html:67
 msgid "printers.save"
 msgstr ""
 
-#: emonitor/modules/printers/templates/admin.printers_actions.html:65
+#: emonitor/modules/printers/templates/admin.printers_actions.html:68
 msgid "printers.cancel"
+msgstr ""
+
+#: emonitor/modules/printers/templates/admin.printers_parameters.html:2
+msgid "printers.parameter.list"
+msgstr ""
+
+#: emonitor/modules/printers/templates/admin.printers_parameters.html:7
+msgid "printers.parameters.yes"
+msgstr ""
+
+#: emonitor/modules/printers/templates/admin.printers_parameters.html:8
+msgid "printers.parameters.no"
 msgstr ""
 
 #: emonitor/modules/scripts/__init__.py:27
@@ -2506,83 +2513,83 @@ msgstr ""
 msgid "settings.cars.save"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:21
+#: emonitor/modules/settings/templates/admin.settings.department.html:16
 msgid "settings.department.listtitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:22
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:16
+#: emonitor/modules/settings/templates/admin.settings.department.html:17
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:14
 msgid "settings.department.info"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:25
+#: emonitor/modules/settings/templates/admin.settings.department.html:20
 msgid "settings.nodepartmentdefinition"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:29
+#: emonitor/modules/settings/templates/admin.settings.department.html:24
 msgid "settings.department.delquestion"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:35
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:20
+#: emonitor/modules/settings/templates/admin.settings.department.html:30
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:18
 msgid "settings.department.name"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:36
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
+#: emonitor/modules/settings/templates/admin.settings.department.html:31
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:30
 msgid "settings.department.defaultcity"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:37
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:43
+#: emonitor/modules/settings/templates/admin.settings.department.html:32
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:41
 msgid "settings.department.color"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:39
+#: emonitor/modules/settings/templates/admin.settings.department.html:34
 msgid "settings.department.addtitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:43
+#: emonitor/modules/settings/templates/admin.settings.department.html:38
 msgid "settings.department.nodata"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:53
+#: emonitor/modules/settings/templates/admin.settings.department.html:48
 msgid "settings.department.defaultdep"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:63
+#: emonitor/modules/settings/templates/admin.settings.department.html:58
 msgid "settings.department.deletetitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:64
+#: emonitor/modules/settings/templates/admin.settings.department.html:59
 msgid "settings.department.detailtitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:69
+#: emonitor/modules/settings/templates/admin.settings.department.html:64
 msgid "settings.department.ordersave"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department.html:70
+#: emonitor/modules/settings/templates/admin.settings.department.html:65
 msgid "settings.department.itemscount"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:15
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:13
 msgid "settings.department.edittitle"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:26
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:24
 msgid "settings.department.shortname"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:34
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:32
 msgid "settings.department.notset"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:49
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:47
 msgid "settings.department.save"
 msgstr ""
 
-#: emonitor/modules/settings/templates/admin.settings.department_actions.html:50
+#: emonitor/modules/settings/templates/admin.settings.department_actions.html:48
 msgid "settings.department.cancel"
 msgstr ""
 
@@ -2672,6 +2679,10 @@ msgstr ""
 msgid "settings.autoarchive"
 msgstr ""
 
+#: emonitor/modules/settings/templates/admin.settings.map_actions.html:75
+msgid "settings.map.loadtiles"
+msgstr ""
+
 #: emonitor/modules/settings/templates/admin.settings.start.html:17
 msgid "settings.start.title"
 msgstr ""
@@ -2756,79 +2767,79 @@ msgstr ""
 msgid "admin.streets.cities.edit..."
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:140
+#: emonitor/modules/streets/content_admin.py:151
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:162
+#: emonitor/modules/streets/content_admin.py:173
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:28
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:29
 msgid "streets.city.edittitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:29
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:30
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:41
 msgid "streets.city.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:32
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:33
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:50
 msgid "streets.city.name"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:37
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:38
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:51
 msgid "streets.city.subname"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:42
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:43
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:52
 msgid "streets.city.dept"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:51
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:52
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:53
 msgid "streets.city.map"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:60
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:61
 msgid "streets.city.color"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:65
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:66
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:67
 msgid "streets.city.default"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:70
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:71
 msgid "streets.city.osmid"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:75
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:76
 msgid "streets.city.osmname"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:80
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:81
 msgid "streets.city.housenumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:82
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:83
 msgid "streets.city.loadhnumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:83
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:84
 msgid "streets.city.housenumbersfound"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:86
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:87
 msgid "streets.city.save"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.city_edit.html:87
+#: emonitor/modules/streets/templates/admin.streets.city_edit.html:88
 msgid "streets.city.cancel"
 msgstr ""
 
@@ -3058,31 +3069,31 @@ msgstr ""
 msgid "streets.osmimport"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:32
+#: emonitor/modules/textmod/__init__.py:35
 msgid "module.textmod"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:33
+#: emonitor/modules/textmod/__init__.py:36
 msgid "module.textmod.replace"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:34
+#: emonitor/modules/textmod/__init__.py:37
 msgid "module.textmod.ocr"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:35
+#: emonitor/modules/textmod/__init__.py:38
 msgid "module.textmod.ocrcustom"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:36
+#: emonitor/modules/textmod/__init__.py:39
 msgid "module.textmod.convert"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:37
+#: emonitor/modules/textmod/__init__.py:40
 msgid "emonitor.modules.textmod.ocr.Ocr"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:38
+#: emonitor/modules/textmod/__init__.py:41
 msgid "emonitor.modules.textmod.replace.Replace"
 msgstr ""
 
@@ -3256,19 +3267,19 @@ msgstr ""
 msgid "textmod.replace.cancel"
 msgstr ""
 
-#: emonitor/modules/user/__init__.py:18
+#: emonitor/modules/user/__init__.py:21
 msgid "module.users"
 msgstr ""
 
-#: emonitor/modules/user/__init__.py:19
+#: emonitor/modules/user/__init__.py:22
 msgid "userlevel.notset"
 msgstr ""
 
-#: emonitor/modules/user/__init__.py:20
+#: emonitor/modules/user/__init__.py:23
 msgid "userlevel.admin"
 msgstr ""
 
-#: emonitor/modules/user/__init__.py:21
+#: emonitor/modules/user/__init__.py:24
 msgid "userlevel.user"
 msgstr ""
 

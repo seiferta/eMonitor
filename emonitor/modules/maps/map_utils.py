@@ -6,8 +6,11 @@ import requests
 from xml.dom import minidom
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
+from emonitor.extensions import signal
+from emonitor.sockethandler import SocketHandler
 
-LOADINPROGRESS = [0, 0]  # [_todo_, _done_]
+CURRENTLOADING = []
+LOADTILES = []
 
 
 def getAlarmMap(alarm, tilepath, **params):
@@ -151,17 +154,19 @@ def loadTiles(path, tilelist):
     :return: progress information *[position, number of tiles to load]* as list
     """
     from emonitor.extensions import scheduler
-    global LOADINPROGRESS
+    LOADTILES.append(tilelist[min(tilelist.keys())][0])  # add selected tile
+    CURRENTLOADING.extend(sum(tilelist.values(), []))  # add tiles
+    signal.send('map', 'tiledownloadstart', tiles=tilelist[min(tilelist.keys())][0])
 
     def doLoadTiles(**kwargs):
-        global LOADINPROGRESS
 
         def getTile(zoom, item):
             response = urllib2.urlopen('http://a.tile.openstreetmap.org/%s/%s/%s.png' % (zoom, item[0], item[1]))
-            LOADINPROGRESS[1] += 1
-            #print "get", LOADINPROGRESS[1]
             with open('%s/%s/%s-%s.png' % (path, zoom, item[0], item[1]), 'wb') as fout:
                 fout.write(response.read())
+            if item in CURRENTLOADING:
+                CURRENTLOADING.remove(item)
+
         if 'path' in kwargs:
             path = kwargs['path']
         else:
@@ -178,6 +183,10 @@ def loadTiles(path, tilelist):
             if not os.path.exists('%s/%s' % (path, zoom)):
                 os.makedirs('%s/%s' % (path, zoom))
             for item in tilelist[zoom]:
+                if len(CURRENTLOADING) == 0:  # loding stopped or ended
+                    return
+                if (len(LOADTILES) * 5460 - len(CURRENTLOADING)) % 10 == 0:  # send state every 10 loads
+                    signal.send('map', 'tiledownloadprogress', progress=(len(LOADTILES) * 5460 - len(CURRENTLOADING), len(LOADTILES) * 5460), tiles=LOADTILES)
                 try:
                     getTile(zoom, item)
                 except:
@@ -188,13 +197,8 @@ def loadTiles(path, tilelist):
                 getTile(err[0], err[1])
             except:
                 print "error in %s" % err
+        signal.send('map', 'tiledownloaddone', tiles=tilelist[min(tilelist.keys())][0])
 
-        LOADINPROGRESS = [0, 0]
-
-    if LOADINPROGRESS[0] != 0:
-        return LOADINPROGRESS  # still in progress
-
-    LOADINPROGRESS = [sum(map(lambda x:len(tilelist[x]), tilelist)), 0]  # init progress
     scheduler.add_job(doLoadTiles, kwargs={'path': path, 'tilelist': tilelist})
     return 1  # loading started
 
@@ -233,6 +237,52 @@ def loadPositionOfCity(name):
                 cities.append(dict(name=tag.attributes['v'].value, lat=node.attributes['lat'].value, lon=node.attributes['lon'].value))
     return dict(result=sorted(cities, key=lambda k: k['name']))
 
+
+class adminMapHandler(SocketHandler):
+    """
+    Handler class for admin socked events of maps
+    """
+    @staticmethod
+    def handleMapDownloadStart(sender, **extra):
+        """
+        Implementation of start map tile download
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleMapDownloadStop(sender, **extra):
+        """
+        Implementation of stop map tile download
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleMapDownloadDone(sender, **extra):
+        """
+        Implementation of stop map tile download
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
+        if 'tiles' in extra and extra['tiles'] in LOADTILES:
+            LOADTILES.remove(extra['tiles'])  # clicked tile, zoom 12
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleMapDownloadProgress(sender, **extra):
+        """
+        Implementation of stop map tile download
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
+        SocketHandler.send_message(sender, **extra)
 
 if __name__ == "__main__":
     print deg2num(48.1083922, 11.7306440, 18)

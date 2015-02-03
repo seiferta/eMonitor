@@ -1,7 +1,7 @@
 import os
 from flask import request, render_template, current_app
 
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import classes, db, babel, signal
 from emonitor.modules.maps.map import Map
 import map_utils
 
@@ -49,11 +49,11 @@ def getAdminContent(self, **params):
                 db.session.commit()
 
             elif request.form.get('action') == 'createmap':  # add map
-                params.update({'map': Map('', '', 0, '', 0), 'progress': map_utils.LOADINPROGRESS, 'tilebase': current_app.config.get('PATH_TILES'), 'settings': classes.get('settings')})
+                params.update({'map': Map('', '', 0, '', 0), 'tilebase': current_app.config.get('PATH_TILES'), 'settings': classes.get('settings')})
                 return render_template('admin.map_actions.html', **params)
 
             elif request.form.get('action').startswith('detailmap_'):  # edit map
-                params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': classes.get('settings'), 'tilebase': current_app.config.get('PATH_TILES'), 'progress': map_utils.LOADINPROGRESS, 'tiles': '\', \''.join(classes.get('settings').getMapTiles(int(request.form.get('action').split('_')[-1])))})
+                params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': classes.get('settings'), 'tilebase': current_app.config.get('PATH_TILES'), 'tiles': '\', \''.join(classes.get('settings').getMapTiles(int(request.form.get('action').split('_')[-1])))})
                 return render_template('admin.map_actions.html', **params)
 
             elif request.form.get('action').startswith('deletemap_'):  # delete map
@@ -116,8 +116,12 @@ def getAdminData(self, **params):
             return babel.gettext('settings.map.loadingstarted')  # loading started
         return ""
 
-    elif request.args.get('action') == 'tileprogress':
-        return {'position': map_utils.LOADINPROGRESS[1], 'of': map_utils.LOADINPROGRESS[0]}
+    elif request.args.get('action') == 'stoptileload':  # stop tile download
+        for i in map_utils.LOADTILES:
+            signal.send('map', 'tiledownloaddone', tiles=i)
+        map_utils.LOADTILES = []
+        map_utils.CURRENTLOADING = []
+        return {}
 
     elif request.args.get('action') == 'maptiles':
         _map = classes.get('map').getMaps(id=request.args.get('id'))

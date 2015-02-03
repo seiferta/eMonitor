@@ -29,6 +29,7 @@ Im Bearbeitungsmodus der Karten-Definition stehen folgende Parameter zur Verfüg
 - **Kartenverwendung:** Eine Karte sollte als Standardkarte definiert werden, weitere können als Erweiterungskarte
   genutzt werden
 
-Zusätzlich können für die Offline-Verwendung der Karte die Tiles direkt herunter geladen werden. Dazu müssen zuerst die 
-Bereiche markiert werden (anklicken), daraufhin wird die Transparenz des entsprechenden Tiles entfernt und das Tile 
-deutlich dargestellt. Mit dem Button "Kartenteile laden" kann anschließend der Download der Tiles angestoßen werden.
+Zusätzlich können für die Offline-Verwendung der Karte die Tiles direkt herunter geladen werden. Dazu muss ein Bereiche
+angeklickt werden, anschließend wird in einem Popup gefragt, ob der Download gestartet werden soll. Bereiche, die
+aktuell aktualisiert werden, sind mit einer Sanduhr markiert. Der Download läuft im Hintergrund, so dass die Seite
+nicht offen gehalten werden muss. Nach Abschluss des Downloads wird wieder der Kartenausschnitt dargestellt.

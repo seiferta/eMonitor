@@ -1,9 +1,10 @@
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import classes, db, babel, signal
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
 from emonitor.modules.maps.map import MapWidget
+from emonitor.modules.maps.map_utils import adminMapHandler
 
 
 class MapsModule(Module):
@@ -34,6 +35,12 @@ class MapsModule(Module):
         db.create_all()
 
         self.widgets = [MapWidget('maps_map')]
+
+        # signals and handlers
+        signal.connect('map', 'tiledownloadstart', adminMapHandler.handleMapDownloadStart)
+        signal.connect('map', 'tiledownloadstop', adminMapHandler.handleMapDownloadStop)
+        signal.connect('map', 'tiledownloaddone', adminMapHandler.handleMapDownloadDone)
+        signal.connect('map', 'tiledownloadprogress', adminMapHandler.handleMapDownloadProgress)
 
         # static folders
         @app.route('/maps/inc/<path:filename>')
