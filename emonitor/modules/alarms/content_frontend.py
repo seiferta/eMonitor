@@ -221,6 +221,6 @@ def getFrontendData(self):
 
     elif request.args.get('action') == 'alarmsforstate':  # render alarms for given state
         if 'alarmfilter' not in session:
-            session['alarmfilter'] = 0
+            session['alarmfilter'] = 7
         return render_template('frontend.alarms_alarm.html', alarms=classes.get('alarm').getAlarms(days=int(session['alarmfilter']), state=int(request.args.get('state', '-1'))), printdefs=classes.get('printer').getActivePrintersOfModule('alarms'))
     return ""
