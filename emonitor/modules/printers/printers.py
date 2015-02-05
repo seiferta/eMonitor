@@ -106,7 +106,10 @@ class Printers(db.Model):
         if _printer:
             try:
                 if kwargs[0]['mode'] != 'test':
-                    _printer.doPrint(alarmid=kwargs[0]['id'])
+                    if '%sid' % _printer.module[:-1] in kwargs[0]:  # add obkect and id if given
+                        kwargs[0]['id'] = kwargs[0]['%sid' % _printer.module[:-1]]
+                        kwargs[0]['object'] = classes.get(_printer.module[:-1])
+                    _printer.doPrint(**dict(kwargs[0]))
                 else:
                     state = "(testmode) "
             except KeyError:

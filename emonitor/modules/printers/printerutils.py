@@ -68,7 +68,11 @@ class PrintLayout:
         self.filename = '.'.join(filename.split('.')[1:])
         self.parameters = []
         env = Environment(loader=PackageLoader('emonitor.modules.%s' % self.module, 'templates'))
-        env.filters.update(current_app.jinja_env.filters)
+        if not current_app:
+            import emonitor.webapp as wa
+            env.filters.update(wa.jinja_env.filters)
+        else:
+            env.filters.update(current_app.jinja_env.filters)
         parsed_content = env.parse(env.loader.get_source(env, self.filename)[0])
         parameters = meta.find_undeclared_variables(parsed_content)
         for p in filter(lambda x: x.startswith('param_'), parameters):
