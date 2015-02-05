@@ -241,6 +241,7 @@
                 }
 
                 function printAlarm(id, printerdefid){
+                    $('.dropdown-menu').hide();
                     $.ajax({ type : "POST", url : "/data/alarms?action=printalarm&alarmid="+id+"&printerdef="+printerdefid,
                         success: function(ret) {
                             $('.options').find('.dropdown-menu').stop(true, true).hide();
