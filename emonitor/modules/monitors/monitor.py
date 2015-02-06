@@ -91,7 +91,7 @@ class Monitor(db.Model):
         if id != 0:
             return db.session.query(Monitor).filter_by(id=id).first()
         elif clientid != 0:
-            return db.session.query(Monitor).filter_by(clientid=id).first()
+            return db.session.query(Monitor).filter_by(clientid=clientid).first()
         else:
             return db.session.query(Monitor).order_by('clientid').all()
 

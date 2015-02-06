@@ -41,7 +41,7 @@ def monitorContent(clientid=0):
         count = classes.get('alarm').getActiveAlarms()
     alarm = classes.get('alarm').getAlarms(id=alarmid)
 
-    defmonitor = classes.get('monitor').getMonitors(clientid)
+    defmonitor = classes.get('monitor').getMonitors(clientid=int(clientid))
     try:
         layout = defmonitor.currentlayout
     except AttributeError:
