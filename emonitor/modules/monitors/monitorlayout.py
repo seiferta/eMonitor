@@ -5,7 +5,7 @@ from math import ceil
 from flask import current_app
 from StringIO import StringIO
 
-from emonitor.extensions import db
+from emonitor.extensions import db, classes
 
 
 class MonitorLayout(db.Model):
@@ -44,6 +44,11 @@ class MonitorLayout(db.Model):
                 i = item.split(';')
                 l.append(dict(widget=i[0], width=int(i[1]), height=int(i[2]), col=int(i[3]), row=int(i[4])))
         self._layout = yaml.safe_dump(l, encoding='utf-8')
+
+    @property
+    def monitor(self):
+        """Build monitor from mid"""
+        return classes.get('monitor').getMonitors(id=self.mid)
 
     def _get_themes(self):
         ret = []

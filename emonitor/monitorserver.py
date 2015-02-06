@@ -152,12 +152,12 @@ class MonitorServer():
                         for p in hdl.getParameterValues('in'):
                             if p[0] == 'in.condition' and p[1] == '!activealarm':
                                 if classes.get('alarm').getActiveAlarms().count() == 0:
-                                    MonitorServer.changeLayout(monitorlayout.mid, monitorlayout.id, params)
+                                    MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, params)
 
                         scheduler.deleteJobForEvent('changeLayout')
-                        MonitorServer.changeLayout(monitorlayout.mid, monitorlayout.id, params)
+                        MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, params)
                         if monitorlayout.nextid != 0:
-                            scheduler.add_job(MonitorServer.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), args=[monitorlayout.mid, monitorlayout.nextid, params])
+                            scheduler.add_job(MonitorServer.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), args=[monitorlayout.monitor.clientid, monitorlayout.nextid, params])
                 except:
                     #MonitorServer.app.logger.error('monitorserver.handleEvent: %s' %traceback.format_exc())
                     pass

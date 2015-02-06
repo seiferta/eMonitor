@@ -76,7 +76,7 @@ def monitorContent(clientid=0):
                 for tr in l.trigger.split(';'):  # support more than one trigger for layout
                     if ('.' in tr and tr.split('.')[-1] == nextalarm.get('alarmtype')) or ('.' not in tr and nextalarm.get('alarmtype', '') == ""):
                         if int(l.mintime) != 0:
-                            scheduler.add_job(monitorserver.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), args=[defmonitor.id, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
+                            scheduler.add_job(monitorserver.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), args=[defmonitor.clientid, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
 
     # render content for monitor
     content = '<div id="content">%s</div>' % layout.htmllayout
