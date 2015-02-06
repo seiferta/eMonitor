@@ -313,9 +313,12 @@ class Alarm(db.Model):
 
                 elif exportformat == '.png':  # send image file
 
-                    if params['style'] == 'alarmmap':  # deliver map for alarmid
+                    if params['style'].startswith('alarmmap'):  # deliver map for alarmid
                         from emonitor.modules.maps.map_utils import getAlarmMap
-                        return getAlarmMap(alarm, current_app.config.get('PATH_TILES'))
+                        args = dict()
+                        if params['style'] != 'alarmmap':
+                            args = dict(style=params['style'].split('_')[-1])
+                        return getAlarmMap(alarm, current_app.config.get('PATH_TILES'), **args)
 
                     elif params['style'] == 'routemap':  # deliver map with route
                         from emonitor.modules.maps.map_utils import getAlarmRoute

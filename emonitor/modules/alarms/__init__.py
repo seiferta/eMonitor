@@ -1,7 +1,7 @@
 import os
 import time
 import imp
-from flask import send_from_directory, abort, Response
+from flask import send_from_directory, abort, Response, request
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
 from emonitor.extensions import classes, db, events, scheduler, babel, signal
@@ -86,11 +86,11 @@ class AlarmsModule(Module):
             if extension not in ['.pdf', '.html', '.png']:
                 abort(404)
             elif extension == '.pdf':
-                return Response(Module.getPdf(Alarm.getExportData('.html', id=id, style=template)), mimetype="application/pdf")
+                return Response(Module.getPdf(Alarm.getExportData('.html', id=id, style=template, args=request.args)), mimetype="application/pdf")
             elif extension == '.html':
-                return Response(Alarm.getExportData(extension, id=id, style=template), mimetype="text/html")
+                return Response(Alarm.getExportData(extension, id=id, style=template, args=request.args), mimetype="text/html")
             elif extension == '.png':
-                return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename), mimetype="image/png")
+                return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename, args=request.args), mimetype="image/png")
             
         # translations
         babel.gettext(u'module.alarms')

@@ -1,116 +1,48 @@
 <!--suppress ALL -->
+{% if param_bool_largemap %}
+    {% set contentheight = [391, 584] %}
+{% else %}
+    {% set contentheight = [565, 418] %}
+{% endif %}
 <html>
     <head>
         <style>
             @page {
-                height: 742px;
-                width: 495px;
-
-                @frame content_frame {
-                    -pdf-frame-content:content;
-                    -pdf-frame-border: 1;
-                    top: 80px;
-                    left: 50px;
-                    right: 150px;
-                    height: 565px;
-                }
-
-                @frame pages{
-                    -pdf-frame-content:pages;
-                    -pdf-frame-border: 1;
-                    right: 50px;
-                    top: 50px;
-                    left: 50px;
-                    height: 23px;
-                }
-
-                @frame header_frame {
-                    -pdf-frame-content:header_content;
-                    -pdf-frame-border: 1;
-                    left: 50px;
-                    right: 50px;
-                    top: 50px;
-                    height:23px;
-                }
-
-                @frame cars_frame {
-                    -pdf-frame-content:cars_content;
-                    -pdf-frame-border: 1;
-                    top:80px;
-                    right:50px;
-                    width:90px;
-                    height:565px;
-                }
-
-                @frame map_frame {
-                    -pdf-frame-content:map_content;
-                    -pdf-frame-border: 1;
-                    left: 50px;
-                    right: 50px;
-                    bottom: 50px;
-                    height: 418px;
-                    margin: 0;
-                }
+                height: 742px;width: 495px;
+                top:50px;left:50px;right:50px;bottom:50px;
+                @frame content_frame{-pdf-frame-content:content;-pdf-frame-border: 1;top: 80px;left: 50px;right: 150px;height: {{ contentheight[0] }}px;}
+                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 1;right: 50px;top: 50px;left: 50px; height: 23px;}
+                @frame header_frame {-pdf-frame-content:header_content;-pdf-frame-border: 1;left: 50px;right: 50px;top: 50px;height:23px;}
+                @frame cars_frame {-pdf-frame-content:cars_content;-pdf-frame-border: 1;top:80px;right:50px;width:90px;height:{{ contentheight[0] }}px;}
+                @frame map_frame{-pdf-frame-content:map_content;-pdf-frame-border: 0;left: 50px;width: 693px;height: {{ contentheight[1] }}px;bottom:50px;margin: 0;}
+                /*@frame map_frame{-pdf-frame-content:map_content;-pdf-frame-border: 0;left: 50px;right: 50px;bottom: 50px;height: {# contentheight[1] #}px;margin: 0;}*/
             }
 
             @page second_page{
-                height: 742px;
-                width: 495px;
-
-                @frame content_second{
-                    /*-pdf-frame-content:content_second;*/
-
-                    -pdf-frame-border: 1;
-                    top: 80px;
-                    left: 50px;
-                    right: 50px;
-                    bottom: 50px;
-                }
-
-                @frame pages{
-                    -pdf-frame-content:pages;
-                    -pdf-frame-border: 1;
-                    right: 50px;
-                    top: 50px;
-                    left: 50px;
-                    height: 23px;
-                }
-
-                @frame header_frame {
-                    -pdf-frame-content:header_content;
-                    -pdf-frame-border: 1;
-                    left: 50px;
-                    right: 50px;
-                    top: 50px;
-                    height:23px;
-                }
-
-                @frame description_route {
-                    border: 0;
-                    padding:10px;
-                }
-
-                @frame map_route {
-                    -pdf-frame-content:route_content;
-                    left: 50px;
-                    right: 50px;
-                    bottom: 50px;
-                    margin: 0;
-                    top:450px;
-                }
+                height: 742px;width: 495px;
+                @frame content_second{-pdf-frame-border: 1;top: 80px;left: 50px;right: 50px;bottom: 50px;}
+                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 1;right: 50px;top: 50px;left: 50px;height: 23px;}
+                @frame header_frame{-pdf-frame-content:header_content;-pdf-frame-border: 1;left: 50px;right: 50px;top: 50px;height:23px;}
+                @frame description_route{border: 0;padding:10px;}
+                @frame map_route {-pdf-frame-content:route_content;left: 50px;right: 50px;bottom: 50px;margin: 0;top:450px;}
             }
 
             body{font-family: Arial, Helvetica, sans-serif}
             #content{float:left;}
             #cars_content{float:left;}
 
-            h1{font-size:3em;padding-bottom:10px;}
-            h2{font-size:2em;}
-            h3{font-size:1.2em;padding-bottom:2px;}
-            p{font-size:1em}
-            hr{height:1px;border:1px solid black}
-
-            p.car{border:1px solid black; padding:5px 1px 1px 1px; text-align:center}
+            @media screen{
+               html{left:0;top:0;font-size:10px;position:relative;width:791px;height:742px;
+                    -webkit-transform: scale(0.2);-moz-transform: scale(0.2);-ms-transform: scale(0.2);-o-transform: scale(0.2);transform: scale(0.2);
+                    -webkit-transform-origin: 0 0;-moz-transform-origin: 0 0;-ms-transform-origin: 0 0;-o-transform-origin: 0 0;transform-origin: 0 0;}
+                #pages{position:absolute;top:50px;right:50px;}
+                #header_content{border:1px solid #000;position:absolute;left:50px;right:50px;height:23px;top:50px;}
+                #content {border:1px solid #000;position:absolute;left:50px;right:150px;top:80px;height:{{ contentheight[0] }}px;overflow:hidden;}
+                #cars_content{border:1px solid #000;height:{{ contentheight[0] }}px;width:90px;right:50px;top:80px;position:absolute;}
+                #map_content{position:absolute;left:50px;right:50px;height:{{ contentheight[1] }}px;top:660px;bottom:50px;border:1px solid #000;overflow:hidden;}
+                #content_second{display:none;}
+            }
+            p.car{border:1px solid #000; padding:5px 1px 1px 1px; text-align:center}
             p.header{padding:5px 5px 0 1px}
             p.page{padding:5px 5px 0 1px; text-align:right}
             td.description{border-bottom:1px solid silver;padding-top:2px}
@@ -187,9 +119,9 @@
         </div>
 
         <div id="map_content">
-            <img src="/alarms/export/{{ alarm.id }}-alarmmap.png" width="691"/>
+            <img id="map_content_image" style="border:1px solid black;" src="/alarms/export/{{ alarm.id }}-alarmmap{%- if param_bool_largemap %}_large{%- endif %}.png" width="691"/>
         </div>
-        {%- if alarm.city.id==None %}
+        {%- if not alarm.city.id or param_bool_allpages %}
 
         <pdf:nexttemplate name="second_page" />
         <pdf:nextpage />
