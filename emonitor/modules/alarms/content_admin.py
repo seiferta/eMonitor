@@ -116,11 +116,7 @@ def getAdminContent(self, **params):
             return render_template('admin.alarms.test.html', **params)
 
     else:
-        alarms = classes.get('alarm').getAlarms()
-        stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], int(0))
-        for alarm in alarms:
-            stats[str(alarm.state)] += 1
-        params.update({'alarms': alarms, 'stats': stats, 'alarmstates': classes.get('alarm').ALARMSTATES, 'help': self.hasHelp('admin')})
+        params.update({'alarms': dict(classes.get('alarm').getAlarmCount()), 'alarmstates': classes.get('alarm').ALARMSTATES, 'help': self.hasHelp('admin')})
         return render_template('admin.alarms.html', **params)
 
 
@@ -160,4 +156,13 @@ def getAdminData(self):
                 cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % f)
                 variables = getattr(cls, cls.__all__[0])().getDefaultConfig()[u'translations']
                 return {u'keywords': "\n".join(getattr(cls, cls.__all__[0])().getDefaultConfig()[u'keywords']), u'variables': variables}
+        return ""
+
+    elif request.args.get('action') == 'alarmsforstate':
+        alarms = classes.get('alarm').getAlarms(state=int(request.args.get('state')))
+        return render_template('admin.alarms_alarm.html', alarms=alarms)
+
+    elif request.args.get('action') == 'alarmsarchive':
+        for id in request.args.get('alarmids').split(','):
+            classes.get('alarm').changeState(int(id), 3)
         return ""

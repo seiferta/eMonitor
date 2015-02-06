@@ -1,0 +1,28 @@
+{% if alarms|count > 0 %}
+<ul id="selectable_{{ alarms[0].state }}" class="selectable">
+    {%- for alarm in alarms %}
+    <li class="alarmrow">
+        {{ alarm.timestamp|datetime }}:
+        <b>{{ alarm.key.key }}</b>
+        <br/>
+        <span class="address">
+            {{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }} <em style="margin-left:10px;" class="address">{{ alarm.street2.name }}</em>
+            {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
+        </span>
+        <div class="alarmdetails">
+            {%- if alarm.type==1 %} <a href="javascript:void(0)" onclick="return openPDF('/file/fax/{{ alarm.get('filename') }}')" class="alarmfax"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{%- endif %}
+            {{ alarm.history|count }}<i class="fa fa-comment-o" style="padding-left:2px;"></i>
+            {%- if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{%- endif %}
+            {%- if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{%- endif %}
+            {%- if alarm.get('lat', '0')!='' %}
+            <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
+            {%- endif %}
+            <p style="text-align:right;">
+            id: <span id="alarmid">{{ alarm.id }}</span></p>
+        </div>
+    </li>
+    {%- endfor %}
+</ul>
+{%- else %}
+<div class="loading"><p class="noalarms">{{ _('alarms.noactive') }}</p></div>
+{%- endif %}

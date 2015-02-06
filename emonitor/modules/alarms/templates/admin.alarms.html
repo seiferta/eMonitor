@@ -4,9 +4,19 @@
     <style>
         #subnorth{padding:0 10px 0 10px;border-width:0;}
         #subcenter{border-width:0;padding:0;position:relative;height:100%;}
+        #accordion h3 {font-size: 1.1em; background: #ababab;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;border-bottom:2px solid silver;}
+        #accordion h3:hover{background-color:silver!important;}
 
-        h3{font-size: 1.1em; background:rgb(171,171,171); border: 1px 0 solid silver; margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:visible;position:relative;}
-        .alarmrow{position:relative;clear:left;overflow:hidden;min-height:40px;padding:4px 2px  2px 15px;border-bottom:1px solid silver;background-color:#fff;}
+        .selectable .ui-selecting { background: silver; }
+        .selectable .ui-selected {background-color: #dedede;}
+        .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+
+        .alarmrow{position:relative;clear:left;overflow:hidden;min-height:40px;padding:4px 2px;border-bottom:1px solid silver;background-color:#fff;}
+        .alarmrow .alarmdetails{position:absolute;top:4px;right:4px;color:#818181 !important;}
+        .alarmrow .alarmdetails i{margin-right:3px;}
+        .alarmrow:hover{cursor: pointer;background-color:silver;}
+        div.loading{width:100%;margin:0;padding-top:20px;text-align:center;}
+        #accordion p.noalarms{margin-top:10%;text-align:center;color:#818181;font-size:1.4em;}
     </style>
 {% endblock %}
 
@@ -25,7 +35,7 @@
         <h2>{{ _('alarms.header.overview') }}</h2>
         <div style="position:absolute;bottom:5px;right:10px;">
             <form method="post" action="">
-                <span onclick="doArchive()">{{ _('alarms.alarmarchive') }}</span>
+                <span onclick="return doArchive()" style="cursor:pointer;">{{ _('alarms.alarmarchive') }}</span>
             </form>
         </div>
     </div>
@@ -36,42 +46,17 @@
                 {% for k in alarmstates.keys() %}
                     <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
                         {{ _('alarmstate.'+alarmstates[k]) }}
-                        <span class="badge badge-info pull-right">{{ stats[k] }}</span>
+                        <span class="badge badge-info pull-right">
+                            {% if k|int in alarms.keys() %}{{ alarms[k|int] }}{% else %}0{% endif %}
+                        </span>
                     </h3>
-
-                    <div style="position:relative">
-                        {% for alarm in alarms %}
-                            {% if k==alarm.state|string %}
-                            <div class="alarmrow">
-                                {{ alarm.timestamp|datetime }}:
-                                <b>{{ alarm.key.key }}</b>
-                                <br/>
-                                <span class="address">
-                                    {{ alarm.city.name }}:
-                                    {{ alarm.street.name }}
-                                    {{ alarm.streetno }}
-                                    <em style="margin-left:10px;">{{ alarm.street2.name }}</em>
-                                    {% if alarm.object %}> {{ alarm.object.name }}{% endif %}
-                                </span>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    <div id="alarmsstate_{{ k }}" style="position:relative"><div class="loading"><img src="/img/loading.gif"/></div></div>
                 {% endfor %}
                 <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
                     {{ _('alarmstate.archive') }}
-                    <span class="badge pull-right">{{ stats['3'] }}</span>
+                    <span class="badge pull-right">{% if 3 in alarms.keys() %}{{ alarms[3] }}{% else %}0{% endif %}</span>
                 </h3>
-                <div style="position:relative">
-                    {% for alarm in alarms %}
-                        {% if alarm.state=='3' %}
-                        <div class="alarmrow">
-                            {{ alarm.timestamp }}:
-                            <b>{{ alarm.key.key }}</b>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                <div id="alarmsstate_3" style="position:relative"><div class="loading"><img src="/img/loading.gif"/></div></div>
             </div>
     </div>
     </form>
@@ -79,6 +64,8 @@
 
 {% block script_end %}
     {{ super() }}
+
+    var selectedalarms = new Array();
     $(document).ready(function() {
         alarmlayout = $('.content').layout({
             center:{paneSelector: "#subcenter", onresize: $.layout.callbacks.resizePaneAccordions,},
@@ -89,7 +76,39 @@
     
     function doArchive(){
         if(confirm('{{ _('alarms.alarmarchivequestion') }}')){
-        
+            $.ajax({ type : "POST", url : "/admin/data/alarms?action=alarmsarchive&alarmids="+selectedalarms,
+                success: function(data) {
+                    location.reload();
+                }
+            });
         }
+        return false;
     }
+
+    function openPDF(path) {
+        window.open(path, '_blank');
+        return false;
+    }
+
+    function getAlarmsforState(state){
+        $.ajax({ type : "POST", url : "/admin/data/alarms?action=alarmsforstate&state="+state,
+             success: function(data) {
+                $('#alarmsstate_'+state).html(data);
+                $( "#selectable_"+state ).selectable({
+                    stop: function() {
+                    selectedalarms = new Array();
+                    $( ".ui-selected", this ).each(function() {
+                        selectedalarms.push($(this).find('#alarmid').text());
+                        });
+                    }
+                });
+            }
+        });
+        return false;
+    }
+
+    {%- for k in alarmstates.keys() %}
+    getAlarmsforState({{ k }});
+    {%- endfor %}
+    getAlarmsforState(3);
 {% endblock %}
