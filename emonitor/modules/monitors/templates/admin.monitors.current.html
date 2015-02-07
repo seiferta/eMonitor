@@ -20,24 +20,74 @@
         <br/><br/>
         <img src="/admin/img/loading.gif"/>
     </div>
-    <div id="monitors" style="position:relative"> </div>
+    <div id="monitors" style="position:relative">
+    {%- for monitor in monitors %}
+    <div class="client_inactive" id="client_{{ monitor.clientid }}">
+        <div class="client_id">{{ monitor.clientid }}</div>
+        <div class="client_ip" style="font-style:italic">{{ _('monitors.current.notconnected') }}</div>
+    </div>
+    {%- endfor %}
+    </div>
     <div style="clear:left;"> </div>
+    <div style="text-align: right">{{ _('monitor.clienttime') }}: <span id="timestamp"></span></div>
+
+<div id="errorclient" style="display:none;">
+    <div class="client_error">
+        <div class="client_id"></div>
+        <div class="client_ip"></div>
+        <div style="font-style:italic;position:absolute;top:25px;text-align:center;width:100%">{{ _('monitors.current.nodefinition') }}</div>
+    </div>
+</div>
 {% endblock %}
+
+
 
 {% block script_end %}
     {{ super() }}
-    refreshPing();
-    
+    var nextrun;
     function refreshPing(){
-        $('#loadinginfo').toggle();
-        $('#monitors').html('');
-        $.ajax({ type : "POST", url : "/admin/data/monitors?action=ping", 
+        $('#timestamp').html(new Date().toString().match(/\d{2}:\d{2}:\d{2}/)[0]);
+        clearTimeout(nextrun);
+        nextrun = setTimeout(refreshPing, 10000); // 10 seconds
+        $.ajax({ type : "POST", url : "/admin/data/monitors?action=ping&format=json",
             success: function(result){
-                $('#loadinginfo').toggle();
-                $('#monitors').html(result);
+                $.each($('#monitors').children(), function(index, item) {
+                    if (result.clients.indexOf(item.id.split('_')[1])==-1){
+                        if($(item).hasClass('client_error')){
+                            $(item).remove();
+                        }else if($(item).hasClass('client')){
+                            $(item).removeClass('client').addClass('client_inactive');
+                            $(item).find('div.client_ip').html('{{ _('monitors.current.notconnected') }}');
+                        }
+                    }
+                });
+
             }
         });
         return false;
     }
+
+     var monitorsocket = new WebSocket("ws://"+location.host+"/ws");
+     monitorsocket.onopen = function() {
+        refreshPing()
+     };
+
+     monitorsocket.onmessage = function (e) {
+         var data = JSON.parse(e.data);
+         if (data.sender == 'monitorserver.clientanswer'){
+             if($('#client_'+data.clientid).length==1){
+                 $('#client_'+data.clientid).removeClass('client_inactive').addClass('client');
+                 $('#client_'+data.clientid).find('div.client_ip').html(data.ip[0]+'<br/>'+data.name);
+             }else{
+                var errobj = $('#errorclient').children().clone()[0];
+                $(errobj).attr('id', 'client_'+data.clientid);
+                $(errobj).find('div.client_id').html(data.clientid);
+                $(errobj).find('div.client_ip').html(data.ip[0]+'<br/>'+data.name);
+                $('#monitors').append(errobj);
+             }
+         }
+         return false;
+     };
+
 {% endblock %}
 

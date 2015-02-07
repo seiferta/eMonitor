@@ -208,7 +208,7 @@ class MonitorServer():
                                 data, server = self.sock.recvfrom(8192)
                                 result.append({'data': data, 'from': server, 'name': socket.gethostbyaddr(server[0])[0]})
                                 MonitorLog.addLog(int(data.split('|')[0]), 1, 'income', data.split('|')[1])
-                                signal.send('monitorserver', 'clientanswer', clientid=data.split('|')[0], value=data.split('|')[1:])
+                                signal.send('monitorserver', 'clientanswer', clientid=data.split('|')[0], value=data.split('|')[1:], ip=server, name=socket.gethostbyaddr(server[0])[0])
                             except socket.timeout:
                                 break
                             except:

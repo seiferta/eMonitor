@@ -120,6 +120,7 @@ def getAdminContent(self, **params):
         elif module[1] == 'current':  # monitors current
             if request.method == 'POST':
                 pass
+            params.update({'monitors': classes.get('monitor').getMonitors()})
             return render_template('admin.monitors.current.html', **params)
 
         elif module[1] == 'actions':  # monitors actions
@@ -142,8 +143,9 @@ def getAdminData(self):
         return render_template('admin.monitors.actions.html', width=request.args.get('width'), height=request.args.get('height'), widget=request.args.get('w_id'))  # macro='widgetparams'
         
     if request.args.get('action') == 'ping':  # ping clients
-        return render_template('admin.monitors.current_actions.html', clients=monitorserver.getClients())
-        
+        clients = monitorserver.getClients()  # start discovery
+        return dict(clients=[k for k in clients.keys() if clients[k][0]])
+
     if request.args.get('action') == 'schedules':  # get active schedules
         return render_template('admin.monitors.actions_actions.html', schedjobs=scheduler.get_jobs())  # macro='schedjobs'
         
