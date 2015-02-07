@@ -84,7 +84,7 @@ def monitorContent(clientid=0):
         for widgets in current_app.blueprints['widget'].modules:
             for widget in widgets.getMonitorWidgets():
                 if widget.getName() == w:
-                    params = widget.addParameters(alarmid=alarmid, alarm=alarm, clientid=clientid)
+                    params = widget.addParameters(alarmid=alarmid, alarm=alarm, clientid=clientid, layout=layout)
                     if params and 'footer' in params and params['footer'] == 1:
                         footer = 1
                     content = content.replace(u'[[%s]]' % w, widget.getHTML(request))

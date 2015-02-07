@@ -1,2 +1,10 @@
-<p style="font-size:5em;text-align:center;margin-top:200px;">Alarmeingang</p>
-<img src="/alarms/inc/bee-do.png" style="position:absolute;bottom:30px;left:0"/>
+<style>
+    img.incomeimage{position:absolute;bottom:30px;left:0}
+{%- if layout.monitor.orientation == 0 %} {# landscape mode #}
+    p.incomeheader{font-size:5em;text-align:center;margin-top:200px;}
+{%- else %} {# portrait mode #}
+    p.incomeheader{font-size:4em;text-align:center;margin-top:400px;}
+{%- endif %}
+</style>
+<p class="incomeheader">Alarmeingang</p>
+<img class="incomeimage" src="/alarms/inc/bee-do.png"/>

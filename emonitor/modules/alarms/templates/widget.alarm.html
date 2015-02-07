@@ -12,7 +12,12 @@
 <div id="alarm_widget">
     <style scoped="scoped">
         div#alarm_widget{position:relative;width:100%;top:0;margin:0;padding:0;}
-        div#alarm_widget div.monitor_alarm_key{font-size:2.5em;padding:30px 20px;white-space:nowrap}
+        {%- if layout.monitor.orientation == 0 %} {# landscape mode #}
+        div#alarm_widget div.monitor_alarm_key{font-size:2.5em;padding:30px 20px;white-space:nowrap;}
+        {%- else %} {# portrait mode #}
+        div#alarm_widget div.monitor_alarm_key{font-size:2.5em;padding:30px 20px;}
+        div#alarm_key_category, div#alarm_key_key{white-space: normal!important;}
+        {%- endif %}
     </style>
     <div class="monitor_alarm_key">
         <span id="alarm_key_category">{{ alarmcategory }}{% if alarmcategory!='' %}: {% endif %}</span>
@@ -26,4 +31,3 @@
         {%- endif %}
     </div>
 </div>
-
