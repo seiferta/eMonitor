@@ -25,10 +25,13 @@ def getFrontendData(self):
         if request.args.get('refresh') == '1':  # force refresh
             scheduler.add_job(monitorserver.getClients)  # use scheduler for search
         else:
-            clients = monitorserver.clients['clients']
+            clients = monitorserver.clients['clients']  # clientids
             layouts = {}
             for c in clients:
-                layouts[c] = classes.get('monitorlayout').getLayouts(mid=c)
+                try:
+                    layouts[c] = classes.get('monitor').getMonitors(clientid=int(c)).getLayouts()
+                except AttributeError:  # no layouts for clientid found
+                    pass
             return render_template('frontend.monitors_clients.html', clients=clients, layouts=layouts, t=monitorserver.clients['time'])
 
     elif request.args.get('action') == 'changelayout':  # load monitorlayout
