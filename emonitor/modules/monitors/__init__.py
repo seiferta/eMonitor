@@ -35,6 +35,7 @@ class MonitorsModule(Module):
         db.create_all()
 
         signal.connect('monitorserver', 'clientsearchdone', frontendMonitorHandler.handleClientSearch)
+        signal.connect('monitorserver', 'clientanswer', frontendMonitorHandler.handleClientAnswer)
 
         # static folders
         @app.route('/monitors/inc/<path:filename>')
@@ -103,4 +104,9 @@ class frontendMonitorHandler(SocketHandler):
     @staticmethod
     def handleClientSearch(sender, **extra):
         """Deliver result of client search"""
-        SocketHandler.send_message(extra)
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleClientAnswer(sender, **extra):
+        """Deliver data from client answer"""
+        SocketHandler.send_message(sender, **extra)

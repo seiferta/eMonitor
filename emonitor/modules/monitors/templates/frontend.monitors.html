@@ -40,20 +40,23 @@
      };
 
      monitorsocket.onmessage = function (evt) {
-        $('#monitors').html('');
+         $('#monitors').html('');
          $('#loadinginfo').show();
-        var data = JSON.parse(evt.data);
-        if(data['clients']) {
+         var data = JSON.parse(evt.data);
+         console.log(data);
+         if (data.sender == 'monitorserver.clientsearchdone'){
+             if(data['clients']) {
 
-            $.ajax({ type: "POST", url: "/data/monitors?action=ping",
-                success: function (result) {
-                    $('#monitors').html(result);
-                    if (result!="") {
-                        $('#loadinginfo').hide();
+                $.ajax({ type: "POST", url: "/data/monitors?action=ping",
+                    success: function (result) {
+                        $('#monitors').html(result);
+                        if (result!="") {
+                            $('#loadinginfo').hide();
+                        }
                     }
-                }
-            });
-        }
+                });
+             }
+         }
         return false;
      };
 
