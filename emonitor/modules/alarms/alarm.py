@@ -454,7 +454,7 @@ class Alarm(db.Model):
                         _c.append(_s.cityid)
                         alarm.set('id.address', _s.id)
                         alarm.set('address', _s.name)
-                        if str(alarm_fields['object'][1]) == '0':
+                        if 'object' in alarm_fields and str(alarm_fields['object'][1]) == '0':
                             if 'lat' not in alarm_fields and 'lng' not in alarm_fields:
                                 alarm.set('lat', _s.lat)
                                 alarm.set('lng', _s.lng)
