@@ -29,7 +29,7 @@
     {%- endfor %}
     </div>
     <div style="clear:left;"> </div>
-    <div style="text-align: right">{{ _('monitor.clienttime') }}: <span id="timestamp"></span></div>
+    <div style="text-align: right"><span id="loadingimage" style="display:none;"><img src="/img/loading.gif"></span> {{ _('monitor.clienttime') }}: <span id="timestamp"></span></div>
 
 <div id="errorclient" style="display:none;">
     <div class="client_error">
@@ -46,6 +46,7 @@
     {{ super() }}
     var nextrun;
     function refreshPing(){
+        $('#loadingimage').show();
         $('#timestamp').html(new Date().toString().match(/\d{2}:\d{2}:\d{2}/)[0]);
         clearTimeout(nextrun);
         nextrun = setTimeout(refreshPing, 10000); // 10 seconds
@@ -61,7 +62,7 @@
                         }
                     }
                 });
-
+                $('#loadingimage').hide();
             }
         });
         return false;
