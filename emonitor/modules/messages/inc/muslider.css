@@ -1,0 +1,77 @@
+/*
+* container style
+*/
+
+.slider {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+/*
+* single slide style
+*/
+
+.slide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom:0;
+    right:0;
+}
+
+/*
+* image caption style
+*/
+
+.caption {
+    position: absolute;
+    bottom: -42px;
+    width: 100%;
+    background: #222;
+    background: rgba(20,20,20,0.7);
+    color: #f7f7f7;
+    border-top: 1px solid #404040;
+}
+
+.caption p {
+    padding: 0 10px;
+}
+
+/*
+* slides control buttons style
+*/
+
+.navslide {
+    position: relative;
+    margin: 15px auto;
+    padding: 0;
+    text-align: center;
+}
+
+.navslide p span {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.start, .stop {
+    display: none;
+}
+
+.slider_position{
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    left:0;
+    text-align:center;
+}
+
+.slider_position i{
+    color:silver;
+    font-size:0.3em;
+}

@@ -1,0 +1,29 @@
+{% if messages|count > 0 %}
+<ul id="selectable_{{ messages[0].state }}" class="selectable">
+    {%- for msg in messages %}
+    <li class="messagerow">
+        <div style="overflow:hidden;">
+            <span class="date">{{ msg.startdate|datetime('dd.MM.yyyy') }}-{{ msg.enddate|datetime('dd.MM.yyyy') }}</span><br/>
+            <span class="content">
+                <b>{{ msg.name }}</b>{%- if msg.remark !="" %}:<br/>{{ msg.remark }}{%- endif %}
+            </span>
+        </div>
+        <div class="messagedetails">
+            <span class="monitors" title="{{ _('messages.monitors.title') }}">
+                {%- if msg.monitors|length < 1 %}<i class="fa fa-exclamation-triangle" style="color:#97070B!important;"></i>{%- endif %}
+            {% for monitor in monitors %}
+                {%- if monitor.clientid in msg.monitors %}<span class="monitor">{{ monitor.clientid }}</span>{%- else %}<span class="monitor inactive">{{ monitor.clientid }}</span>{%- endif %}
+            {% endfor %}
+            </span>
+            {%-if msg.get('cron.day_of_week')!= '*' or msg.get('cron.hour') != '*' %}<i class="fa fa-clock-o fa-lg" title="{{ _('messages.timeslots') }}"></i>{%- endif %}
+            {%- if msg.currentState %}<i title="{{ _('messages.state.active') }}" class="fa fa-eye fa-lg"></i>{% else %}<i title="{{ _('messages.state.inactive') }}" class="fa fa-eye-slash fa-lg"></i>{%- endif %}
+            <i class="fa {{ msg.type.__info__['icon'] }} fa-lg"></i>
+            <p style="text-align:right;">
+            id: <span id="messageid">{{ msg.id }}</span></p>
+        </div>
+    </li>
+    {%- endfor %}
+</ul>
+{%- else %}
+<div class="loading"><p class="nomessages">{{ _('messages.noactive') }}</p></div>
+{%- endif %}

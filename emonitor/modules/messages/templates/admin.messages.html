@@ -1,0 +1,73 @@
+{% extends "admin.html" %}
+
+{% block style %}
+    <style>
+        #subnorth{padding:0 10px 0 10px;border-width:0;}
+        #subcenter{border-width:0;padding:0;position:relative;height:100%;}
+        #messageaccordion h3 {font-size: 1.1em; background: #ababab;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;border-bottom:2px solid silver;}
+        #messageaccordion h3:hover{background-color:silver!important;}
+
+        .selectable .ui-selecting { background: silver; }
+        .selectable .ui-selected {background-color: #dedede;}
+        .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+        .messagerow{position:relative;clear:left;overflow:hidden;min-height:40px;padding:4px 2px;border-bottom:1px solid silver;background-color:#fff;}
+        .messagerow .messagedetails{position:absolute;top:4px;right:4px;color:#818181 !important;}
+        .messagerow .messagedetails i{margin-right:3px;}
+        .messagerow:hover{cursor: pointer;background-color:silver;}
+        div.loading{width:100%;margin:0;padding-top:20px;text-align:center;}
+        #messageaccordion p.nomessages{margin-top:10%;text-align:center;color:#818181;font-size:1.4em;}
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <div id="subnorth">
+        <h2>{{ _('messages.header.overview') }}</h2>
+    </div>
+    <form action="messages" method="post" id="messageform">
+    <div id="subcenter" style="padding:1px">
+        <div id="messageaccordion">
+            {%- for k in ['1', '0'] %}
+                <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
+                    {{ _('messagestate.'+k) }}
+                    <span class="badge badge-info pull-right">{{ messages[k]|length }}</span>
+                </h3>
+                <div id="messagesstate_{{ k }}" style="position:relative"><div class="loading"><img src="/img/loading.gif"/></div></div>
+            {% endfor %}
+        </div>
+    </div>
+    </form>
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+
+    $(document).ready(function() {
+        messagelayout = $('.content').layout({
+            center:{paneSelector: "#subcenter", onresize: $.layout.callbacks.resizePaneAccordions,},
+            north:{paneSelector: "#subnorth", size: 50, slidable: false, resizable: false, closable:false, spacing_open: 0},
+        });
+        $("#messageaccordion").accordion({ heightStyle: "fill",});
+    });
+
+    function getMessagesforState(state){
+        $.ajax({ type : "POST", url : "/admin/data/messages?action=messagesforstate&state="+state,
+             success: function(data) {
+                $('#messagesstate_'+state).html(data);
+            }
+        });
+        return false;
+    }
+
+    {%- for k in ['1', '0'] %}
+    getMessagesforState({{ k }});
+    {%- endfor %}
+
+{% endblock %}

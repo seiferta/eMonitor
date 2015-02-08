@@ -1,0 +1,141 @@
+{% extends "frontend.area.html" %}
+
+{% block style %}
+    <style>
+        #messagesubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0 0 1px 0;}
+        #messagesubnorth button{width:36px;height:25px;}
+        #messagesubcenter {border-width:0;padding:0;}
+        h3 {font-size: 1.1em; background: #ababab;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;}
+        h3:hover{background-color:silver!important;}
+        .messagerow {position:relative;clear:left;padding:4px 2px 0 15px;border-bottom:1px solid silver;background-color:#fff;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;min-height:40px;}
+        .messagerow a{color:#818181;}
+        .messagerow a:hover{color:#b40431;}
+        .messagerow:hover {background-color: #dedede;cursor:pointer;}
+
+        .messagerow .messagedetails{position:absolute;top:4px;right:30px;color:#818181 !important;}
+        .messagerow .messagedetails i{margin-right:3px;}
+
+        .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0;}
+        .btn:hover {color:#428bca;}
+
+        .monitors .monitor{border:1px solid silver;padding:0 2px;}
+        .monitors .monitor.inactive{text-decoration: line-through;}
+    </style>
+
+{% endblock %}
+
+{% block headscript %}
+    <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
+    <script>
+        $(document).ready(function() {
+            var innerLayout = $('#messagecontainer').layout({
+                center:{paneSelector: "#messagesubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
+                north: {paneSelector: "#messagesubnorth", size: 40, slidable: false, resizable: false, closable:false, spacing_open: 0, showOverflowOnHover: true},
+                resizerTip:'{{ _('layout.resize') }}',
+                togglerTip_open: '{{ _('layout.open') }}',
+                togglerTip_closed: '{{ _('layout.closed') }}'
+            });
+
+            $("#messageaccordion").accordion({ heightStyle: "fill", active: 0});
+            $("messageaccordion h3").eq($('#messageaccordion').accordion( "option", "active" )).click();
+
+            if (typeof parent.maps.map != "undefined") {
+                parent.maps.map.clearMarkers();
+                parent.maps.map.clearHouseNumbers();
+                parent.maps.map.clearRoute();
+            }
+        });
+    </script>
+{% endblock %}
+
+{%- macro contextmenu(id) %}
+    <div class="btn-group options" style="position:absolute;top:2px;right:5px;">
+        <span class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-gear fa-lg"></i>
+        </span>
+        <ul class="dropdown-menu pull-right">
+            <li><a href="javascript:void(0)" onclick="editMessage({{ id }})" id="editmessage_{{ id }}"><i class="fa fa-pencil fa-fw"></i> {{ _('messages.edit') }}</a></li>
+            <li><a href="javascript:void(0)" onclick="return questionDelete({{ id }})"><i class="fa fa-trash-o fa-fw"></i> {{ _('messages.delete') }}</a></li>
+            <!--<li class="divider"></li>-->
+        </ul>
+    </div>
+{%- endmacro %}
+
+{% block content %}
+    <div style="height:100%;width:100%;padding:0;margin:0;" id="messagecontainer" class="messagecontainer">
+        <div class="pane" id="messagesubnorth" style="padding-top:5px;overflow:hidden;">
+            <button type="button" name="action" value="addmessage" onclick="window.location.href='/messages?action=editmessage&messageid=0&area={{ frontendarea }}'" title="{{ _('messages.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+            <button type="button" name="action" value="refresh" title="{{ _('messages.refresh') }}" onclick="window.location.href='/messages?area={{ frontendarea }}'"><i class="fa fa-refresh fa-lg"></i></button>
+
+            <div class="smallmodulesarea">
+                {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
+                {%- if mod != 'messages' %} {# exclude current module #}
+                <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
+                {%- endif %}
+                {%- endfor %}
+            </div>
+        </div>
+        <div id="messagesubcenter">
+            <div id="messageaccordion">
+                {%- for k in ['1', '0'] %}
+                <h3 a_name="messagestate__{{ k }}" class="btn-default" style="background-color:#adadad;padding-right:5px;border-bottom:1px solid #ddd;" key="{{ k }}">
+                    {{ _('messagestate.'+k) }}
+                    <span class="badge badge-info pull-right">{{ messages[k]|length }}</span>
+                </h3>
+                <div id="messagestate_{{ k }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px">
+                    {%- for msg in messages[k] %}
+                    <div class="messagerow">
+                        <div style="overflow:hidden;">
+                            <span class="date">{{ msg.startdate|datetime('dd.MM.yyyy') }}-{{ msg.enddate|datetime('dd.MM.yyyy') }}</span><br/>
+                            <span class="content">
+                                <b>{{ msg.name }}</b>{%- if msg.remark !="" %}:<br/>{{ msg.remark }}{%- endif %}
+                            </span>
+                        </div>
+                        <div class="messagedetails">
+                            <span class="monitors" title="{{ _('messages.monitors.title') }}">
+                                {%- if msg.monitors|length < 1 %}<i class="fa fa-exclamation-triangle" style="color:#97070B!important;"></i>{%- endif %}
+                            {% for monitor in monitors %}
+                                {%- if monitor.clientid in msg.monitors %}<span class="monitor">{{ monitor.clientid }}</span>{%- else %}<span class="monitor inactive">{{ monitor.clientid }}</span>{%- endif %}
+                            {% endfor %}
+                            </span>
+                            {%-if msg.get('cron.day_of_week')!= '*' or msg.get('cron.hour') != '*' %}<i class="fa fa-clock-o fa-lg" title="{{ _('messages.timeslots') }}"></i>{%- endif %}
+                            {%- if msg.currentState %}<i title="{{ _('messages.state.active') }}" class="fa fa-eye fa-lg"></i>{% else %}<i title="{{ _('messages.state.inactive') }}" class="fa fa-eye-slash fa-lg"></i>{%- endif %}
+                            <i class="fa {{ msg.type.__info__['icon'] }} fa-lg"></i>
+                        </div>
+                        {{ contextmenu(msg.id) }}
+                    </div>
+                    {%- endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editMessage(id){
+            window.location.href='/messages?action=editmessage&messageid='+id+'&area={{ frontendarea }}';
+        }
+
+        function questionDelete(messageid){
+            if (confirm('{{ _('messages.deletequestion') }}')){
+                $.ajax({ type : "POST", url : "/messages?action=deletemessage&messageid="+messageid+"&area={{ frontendarea }}",
+                    success: function(result) {
+                        window.location.href='/messages?area={{ frontendarea }}';
+                        return false;
+                    }
+                });
+            }
+            return false;
+        }
+
+        $(document).ready(function(){
+            $('.options').hover(function() {
+                if ($(this).find('span').attr('disabled') == undefined) {
+                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+                }}, function() {
+                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+            });
+        });
+    </script>
+
+{% endblock %}

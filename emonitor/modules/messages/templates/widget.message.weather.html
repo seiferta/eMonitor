@@ -1,0 +1,53 @@
+<link href="/messages/inc/weather.min.css" rel="stylesheet" />
+{%-  if layout.monitor.orientation == 0 %}  {# landscape mode #}
+
+{%- else %}  {# portrait mode #}
+<style>
+    #message_weather #temp {width:98%;padding-top:200px!important;}
+    #message_weather #forecast{border-width:0!important;}
+</style>
+{%- endif %}
+<div id="weathercontainer">
+
+    <div id="message_weather">
+        <div id="temp">
+            {%- if icons == 'image' %}
+                <img src="/messages/inc/weather/{{ data['item']['condition']['code'] }}.png"/>
+            {%- else %}
+                <i class="icon-{{ data['item']['condition']['code'] }}"></i>
+            {%- endif %}
+            <div style="text-align: right;">
+                <i class="icon-t1"></i> {{ data['item']['condition']['temp'] }}&deg;{{ data['units']['temperature'] }}
+            </div>
+            <div id="astronomy">
+                <i class="icon-sunrise small"></i> {{ data['astronomy']['sunrise'] }}<br/>
+                <i class="icon-sunset small"></i> {{ data['astronomy']['sunset'] }}
+                ({{ data['location']['city'] }})
+            </div>
+            <div id="wind" style="font-size: 0.4em;padding-top:30px;">
+                {{ data['wind']['speed'] }} {{ data['units']['speed'] }} {{ data['wind']['directionstring'] }}<br/>
+                <small>
+                    {{ _('messages.weather.humidity') }}: {{ data['atmosphere']['humidity'] }}%<br/>
+                    {{ _('messages.weather.pressure') }}: {{ data['atmosphere']['pressure'] }} hPa
+                </small>
+                <br/>
+                <br/>
+                <small>{{ data['lastBuildDate'] }}</small>
+            </div>
+        </div>
+
+        <div id="forecast">
+            {%- if forecast == '1' %}
+            <div id="forecast_data">
+            {%- for forecast in data['item']['forecast'] %}
+                <p>
+                    {{ _(forecast['day']) }}: {{ forecast['low'] }}/{{ forecast['high'] }}&deg;{{ data['units']['temperature'] }}
+                    <i class="icon-{{ forecast['code'] }} small"></i>
+                </p>
+            {%- endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>

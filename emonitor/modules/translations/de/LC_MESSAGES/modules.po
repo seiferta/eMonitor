@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-03 14:51+0100\n"
-"PO-Revision-Date: 2015-02-03 14:52+0100\n"
+"POT-Creation-Date: 2015-02-08 21:24+0100\n"
+"PO-Revision-Date: 2015-02-08 21:27+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -404,14 +404,12 @@ msgid "alarmobjects.fields.save"
 msgstr "Speichern"
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields_action.html:12
-#, fuzzy
 msgid "alarmobjects.fields.edittitle"
-msgstr "Einsatzobjekt bearbeiten"
+msgstr "Felder bearbeiten"
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields_action.html:17
-#, fuzzy
 msgid "alarmobjects.fields.name"
-msgstr "Typname"
+msgstr "Feldname"
 
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects.fields_action.html:23
 msgid "alarmobjects.fields.remark"
@@ -747,7 +745,7 @@ msgid "alarmstate.done"
 msgstr "Abgeschlossene Einsätze"
 
 #: emonitor/modules/alarms/__init__.py:114
-#: emonitor/modules/alarms/templates/admin.alarms.html:62
+#: emonitor/modules/alarms/templates/admin.alarms.html:55
 msgid "alarmstate.archive"
 msgstr "Einsatz-Archiv"
 
@@ -897,19 +895,19 @@ msgstr "Auf"
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
-#: emonitor/modules/alarms/content_admin.py:154
+#: emonitor/modules/alarms/content_admin.py:150
 msgid "admin.alarms.checkernotvalid"
 msgstr "Datei nicht passend"
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:25
+#: emonitor/modules/alarms/templates/admin.alarms.html:35
 msgid "alarms.header.overview"
 msgstr "Einsatzübersicht"
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:28
+#: emonitor/modules/alarms/templates/admin.alarms.html:38
 msgid "alarms.alarmarchive"
 msgstr "Archivieren"
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:91
+#: emonitor/modules/alarms/templates/admin.alarms.html:77
 msgid "alarms.alarmarchivequestion"
 msgstr "Sollen die Einsätze wirklich archiviert werden?"
 
@@ -1145,6 +1143,32 @@ msgstr "Speichern"
 msgid "alarms.type.cancel"
 msgstr "Abbrechen"
 
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:13
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:44
+msgid "alarms.showfax"
+msgstr "Alarmfax anzeigen (pdf)"
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:15
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:46
+msgid "alarms.typeautomatic"
+msgstr "Einsatz aus Fax erzeugt"
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:16
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:47
+msgid "alarms.typemanual"
+msgstr "Einsatz manuell erzeugt"
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:18
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:49
+msgid "alarms.titlemap"
+msgstr "Kartenposition gesetzt"
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:27
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:129
+msgid "alarms.noactive"
+msgstr "keine Einsätze"
+
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:7
 msgid "alarm.edit"
 msgstr "bearbeiten"
@@ -1179,46 +1203,31 @@ msgstr "Route anzeigen/ausblenden"
 msgid "alarm.print"
 msgstr "Drucken..."
 
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:129
-msgid "alarms.noactive"
-msgstr "keine Einsätze"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:44
-msgid "alarms.showfax"
-msgstr "Alarmfax anzeigen (pdf)"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:45
 msgid "alarms.messagestitle"
 msgstr "%(number)s Meldungen vorhanden"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:46
-msgid "alarms.typeautomatic"
-msgstr "Einsatz aus Fax erzeugt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:47
-msgid "alarms.typemanual"
-msgstr "Einsatz manuell erzeugt"
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:49
-msgid "alarms.titlemap"
-msgstr "Kartenposition gesetzt"
-
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:179
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:37
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:34
 msgid "layout.resize"
 msgstr "Größe ändern"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:63
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:180
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:38
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:35
 msgid "layout.open"
 msgstr "Öffnen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:64
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:181
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:39
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:36
 msgid "layout.closed"
 msgstr "Schließen"
 
@@ -1433,7 +1442,7 @@ msgid "module.cars"
 msgstr "Fahrzeug/Material"
 
 #: emonitor/modules/cars/__init__.py:41
-#: emonitor/modules/cars/templates/widget.cars.html:15
+#: emonitor/modules/cars/templates/widget.cars.html:14
 msgid "cars"
 msgstr "Fahrzeuge"
 
@@ -2116,43 +2125,355 @@ msgstr ""
 "Es wurde noch keine Standardposition für die Kartendarstellung gespeichert, "
 "das kann im Administrationsbereich unter 'Straßenkarte' eingestellt werden."
 
-#: emonitor/modules/monitors/__init__.py:45
+#: emonitor/modules/messages/__init__.py:36
+msgid "module.messages"
+msgstr "Mitteilungen"
+
+#: emonitor/modules/messages/__init__.py:37
+msgid "messages.main"
+msgstr "Mitteilungen"
+
+#: emonitor/modules/messages/__init__.py:38
+msgid "messages.types"
+msgstr "Meldungstyp"
+
+#: emonitor/modules/messages/__init__.py:39
+msgid "weather"
+msgstr "Wetter"
+
+#: emonitor/modules/messages/__init__.py:40
+msgid "messages"
+msgstr "Mitteilung"
+
+#: emonitor/modules/messages/__init__.py:41
+msgid "messagestate.1"
+msgstr "Aktive Mitteilungen"
+
+#: emonitor/modules/messages/__init__.py:42
+msgid "messagestate.0"
+msgstr "Deaktivierte Mitteilungen"
+
+#: emonitor/modules/messages/__init__.py:43
+msgid "message.state.1"
+msgstr "Aktiviert"
+
+#: emonitor/modules/messages/__init__.py:44
+msgid "message.state.0"
+msgstr "Deaktiviert"
+
+#: emonitor/modules/messages/message_base.py:12
+msgid "message.base"
+msgstr "Mitteilungen"
+
+#: emonitor/modules/messages/message_map.py:8
+msgid "message.map"
+msgstr ""
+
+#: emonitor/modules/messages/message_text.py:8
+msgid "message.text"
+msgstr "Textnachrichten"
+
+#: emonitor/modules/messages/message_weather.py:10
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
+msgid "Mon"
+msgstr "Montag"
+
+#: emonitor/modules/messages/message_weather.py:11
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
+msgid "Tue"
+msgstr "Dienstag"
+
+#: emonitor/modules/messages/message_weather.py:12
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
+msgid "Wed"
+msgstr "Mittwoch"
+
+#: emonitor/modules/messages/message_weather.py:13
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
+msgid "Thu"
+msgstr "Donnerstag"
+
+#: emonitor/modules/messages/message_weather.py:14
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
+msgid "Fri"
+msgstr "Freitag"
+
+#: emonitor/modules/messages/message_weather.py:15
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:155
+msgid "Sat"
+msgstr "Samstag"
+
+#: emonitor/modules/messages/message_weather.py:16
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:156
+msgid "Sun"
+msgstr "Sonntag"
+
+#: emonitor/modules/messages/message_weather.py:17
+msgid "message.weather"
+msgstr "Wetter"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:4
+msgid "messages.base.default"
+msgstr ""
+"Standard Widget (wird verwendet, wenn keine Meldung aktiv ist, evtl. leere "
+"Anzeige)"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:6
+msgid "messages.base.default_none"
+msgstr "- kein Widget -"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:15
+msgid "messages.base.type"
+msgstr "Basistyp"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:25
+msgid "messages.base.slidespeed"
+msgstr "Anzeigedauer in Sekunden"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:27
+msgid "message.base.slidespeed.info"
+msgstr ""
+"Wenn mehrere Mitteilungen aktiv sind, werden sie per slideshow "
+"weitergeschaltet nach der konfigurierten Anzahl an Sekunden."
+
+#: emonitor/modules/messages/templates/admin.message.base.html:32
+msgid "messages.base.slideeffect"
+msgstr "Effekt"
+
+#: emonitor/modules/messages/templates/admin.message.base.html:42
+#: emonitor/modules/messages/templates/admin.message.text.html:11
+#: emonitor/modules/messages/templates/admin.message.weather.html:23
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:198
+msgid "messages.save"
+msgstr "Speichern"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:3
+msgid "messages.text.header"
+msgstr "Text-Widget-Einstellungen"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:6
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:3
+msgid "messages.text.content"
+msgstr "Mitteilungstext/Inhalt"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:8
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:5
+msgid "messages.text.content.info"
+msgstr ""
+"Der Mitteilungstext kann einfacher Text sein oder nach 'restructuredText' "
+"formatiert werden."
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:3
+msgid "messages.weather.header"
+msgstr "Wetter-Widget-Einstellungen"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:7
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:4
+msgid "messages.weather.location"
+msgstr "Ortsangabe"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:9
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:6
+msgid "messages.weather.location.info"
+msgstr "Der Wetterbericht wird für ein Ort erstellt, z.B. 'München, BY'"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:13
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:10
+msgid "messages.weather.icons"
+msgstr "Wetter-Icons"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:14
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:11
+msgid "messages.weather.iconsimage"
+msgstr "Bilder verwenden (online)"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:15
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:13
+msgid "messages.weather.iconsfont"
+msgstr "Schriftart verwenden (lokal)"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:18
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:16
+msgid "messages.weather.forecast"
+msgstr "Vorhersage (5 Tage)"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:19
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:17
+msgid "messages.weather.forecastshow"
+msgstr "Wettervorhersage anzeigen"
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:20
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:19
+msgid "messages.weather.forecasthide"
+msgstr "Wettervorhersage ausblenden"
+
+#: emonitor/modules/messages/templates/admin.messages.html:32
+msgid "messages.header.overview"
+msgstr "Mitteilungsübersicht"
+
+#: emonitor/modules/messages/templates/admin.messages.types.html:16
+msgid "messages.types.overview"
+msgstr "Einstellungsübersicht"
+
+#: emonitor/modules/messages/templates/admin.messages.types.html:17
+msgid "messages.types.info"
+msgstr ""
+"In der Konfiguration kann für die verschiedenen Mitteilungstypen die "
+"Basiskonfiguration vorgenommen werden. Dabei bieten die einzelnen Typen "
+"unterschiedliche Parameter.<br/>In der Basis-Einstellung können die globalen "
+"Parameter der Mitteilungsmoduls definiert werden."
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:12
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:95
+msgid "messages.monitors.title"
+msgstr "Mitteilung wird auf Monitor angezeigt"
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:18
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:101
+msgid "messages.timeslots"
+msgstr "Zeitsteuerung aktiv"
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:19
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:102
+msgid "messages.state.active"
+msgstr "Aktiv"
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:19
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:102
+msgid "messages.state.inactive"
+msgstr "Deaktiviert"
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:28
+msgid "messages.noactive"
+msgstr "Keine Mitteilungen"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:89
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:67
+msgid "messages.addtitle"
+msgstr "Mitteilung hinzufügen"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:107
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:108
+msgid "messages.name"
+msgstr "Name"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:112
+msgid "messages.type"
+msgstr "Mitteilungstyp"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:129
+msgid "messages.startdate"
+msgstr "Start-Datum"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:134
+msgid "messages.enddate"
+msgstr "End-Datum"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:139
+msgid "messages.specialtime"
+msgstr "Zusätzliche Zeitparameter"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:142
+msgid "messages.specialdays"
+msgstr "Wochentage"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:144
+msgid "messages.cron.allday"
+msgstr "alle Wochentage"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:147
+msgid "messages.cron.notallday"
+msgstr "bestimmte Wochentage"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:159
+msgid "messages.specialhours"
+msgstr "Stundenparameter"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:162
+msgid "messages.cron.allhours"
+msgstr "Stundenparameter"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:165
+msgid "messages.cron.notallhours"
+msgstr "bestimmte Stunden"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:175
+msgid "messages.state"
+msgstr "Status"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:184
+msgid "messages.monitors"
+msgstr "Monitorauswahl"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:192
+msgid "messages.remark"
+msgstr "Bemerkung"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:199
+msgid "messages.cancel"
+msgstr "Abbrechen"
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:57
+msgid "messages.edit"
+msgstr "bearbeiten"
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:58
+msgid "messages.delete"
+msgstr "löschen"
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:68
+msgid "messages.refresh"
+msgstr "aktualisieren"
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:120
+msgid "messages.deletequestion"
+msgstr "Soll die gewählte Mitteilung wirklich gelöscht werden?"
+
+#: emonitor/modules/messages/templates/widget.message.weather.html:30
+msgid "messages.weather.humidity"
+msgstr "Luftfeuchte"
+
+#: emonitor/modules/messages/templates/widget.message.weather.html:31
+msgid "messages.weather.pressure"
+msgstr "Luftdruck"
+
+#: emonitor/modules/monitors/__init__.py:46
 msgid "module.monitors"
 msgstr "Monitorkonfiguration"
 
-#: emonitor/modules/monitors/__init__.py:46
+#: emonitor/modules/monitors/__init__.py:47
 msgid "monitors.definition"
 msgstr "Definitionen"
 
-#: emonitor/modules/monitors/__init__.py:47
+#: emonitor/modules/monitors/__init__.py:48
 msgid "module.monitors.style"
 msgstr "Monitor-Theme"
 
-#: emonitor/modules/monitors/__init__.py:48
+#: emonitor/modules/monitors/__init__.py:49
 msgid "module.monitors.current"
 msgstr "Monitore"
 
-#: emonitor/modules/monitors/__init__.py:49
+#: emonitor/modules/monitors/__init__.py:50
 msgid "module.monitors.actions"
 msgstr "Schedules"
 
-#: emonitor/modules/monitors/__init__.py:50
+#: emonitor/modules/monitors/__init__.py:51
 msgid "monitors.landscape"
 msgstr "Querformat"
 
-#: emonitor/modules/monitors/__init__.py:51
+#: emonitor/modules/monitors/__init__.py:52
 msgid "monitors.portrait"
 msgstr "Hochformat"
 
-#: emonitor/modules/monitors/__init__.py:52
+#: emonitor/modules/monitors/__init__.py:53
 msgid "monitors.orientation.0"
 msgstr "Querformat"
 
-#: emonitor/modules/monitors/__init__.py:53
+#: emonitor/modules/monitors/__init__.py:54
 msgid "monitors.orientation.1"
 msgstr "Hochformat"
 
-#: emonitor/modules/monitors/__init__.py:54
+#: emonitor/modules/monitors/__init__.py:55
 msgid "placeholder"
 msgstr "Platzhalter"
 
@@ -2192,13 +2513,19 @@ msgstr ""
 msgid "monitors.current.loadingclients"
 msgstr "Bildschirme/Clients werden gesucht..."
 
-#: emonitor/modules/monitors/templates/admin.monitors.current_actions.html:16
-msgid "monitors.current.nodefinition"
-msgstr "Monitordefinition fehlt"
-
-#: emonitor/modules/monitors/templates/admin.monitors.current_actions.html:23
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:27
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:61
 msgid "monitors.current.notconnected"
 msgstr "kein Client angeschlossen"
+
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:32
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
+msgid "monitor.clienttime"
+msgstr "Stand"
+
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:38
+msgid "monitors.current.nodefinition"
+msgstr "Monitordefinition fehlt"
 
 #: emonitor/modules/monitors/templates/admin.monitors.html:10
 msgid "monitors.delquestion"
@@ -2438,10 +2765,6 @@ msgstr "kein Client angeschlossen"
 #: emonitor/modules/monitors/templates/frontend.monitors_clients.html:58
 msgid "monitor.testpage"
 msgstr "Testseite"
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
-msgid "monitor.clienttime"
-msgstr "Stand"
 
 #: emonitor/modules/monitors/templates/frontend.monitors_clients.html:71
 msgid "monitor.layout.changed"
@@ -3576,370 +3899,3 @@ msgstr "Speichern"
 #: emonitor/modules/user/templates/admin.user_actions.html:33
 msgid "users.cancel"
 msgstr "Abbrechen"
-
-#~ msgid "monitors.actions.refreshtitle"
-#~ msgstr "Aktualisieren"
-
-#~ msgid "alarms.alarmstate.archive"
-#~ msgstr "Aktiv"
-
-#~ msgid "alarms.alarmadded"
-#~ msgstr "Archivieren"
-
-#~ msgid "settings.map"
-#~ msgstr "Kartendefinition"
-
-#~ msgid "monitorlayout.changewidgetsize"
-#~ msgstr "Größe ändern"
-
-#~ msgid "monitorlayout.width"
-#~ msgstr "Breite"
-
-#~ msgid "monitorlayout.gridlabel"
-#~ msgstr "Rastereinheiten"
-
-#~ msgid "monitorlayout.height"
-#~ msgstr "Höhe"
-
-#~ msgid "monitorlayout.okay"
-#~ msgstr "OK"
-
-#~ msgid "streets_map"
-#~ msgstr "Karte"
-
-#~ msgid "default_city"
-#~ msgstr "default ort"
-
-#~ msgid "_bab_"
-#~ msgstr "Autobahn"
-
-#~ msgid "_train_"
-#~ msgstr "Bahn/Eisenbahn"
-
-#~ msgid "_street_"
-#~ msgstr "Straße"
-
-#~ msgid "_default_city_"
-#~ msgstr "Standard-Ort"
-
-#~ msgid "_interchange_"
-#~ msgstr "Anschlussstelle"
-
-#~ msgid "_kilometer_"
-#~ msgstr "Kilometer"
-
-#~ msgid "printer.name"
-#~ msgstr "Name"
-
-#~ msgid "printer.settings"
-#~ msgstr "Einstellungen"
-
-#~ msgid "alarms.statechangeactived"
-#~ msgstr "Einsatz aktiviert"
-
-#~ msgid "alarms.test.noeventresult"
-#~ msgstr "Testverarbeitung liefert kein Ergebnis"
-
-#~ msgid "event.variable.notset"
-#~ msgstr "- nicht gesetzt -"
-
-#~ msgid "alarm.route_print"
-#~ msgstr "Anfahrt"
-
-#~ msgid "streets.hnumbersloaded"
-#~ msgstr "Hausnummern wurden geladen."
-
-#~ msgid "street.street"
-#~ msgstr "Straße"
-
-#~ msgid "module.%sname"
-#~ msgstr "Einsätze"
-
-#~ msgid "settings.alarmsevalfields.title"
-#~ msgstr "Variablen in Einsatzfeldern"
-
-#~ msgid "alarms.types"
-#~ msgstr "Einsatztyp"
-
-#~ msgid "alarms.test"
-#~ msgstr "Testverarbeitung"
-
-#~ msgid "monitors.style"
-#~ msgstr "Monitor-Themes"
-
-#~ msgid "settings.cars"
-#~ msgstr "Fahrzeuge/Material"
-
-#~ msgid "settings.start"
-#~ msgstr "Startseite"
-
-#~ msgid "textmod.ocr"
-#~ msgstr "Text-Erkennung (OCR)"
-
-#~ msgid "module.usermodule"
-#~ msgstr "Benutzerverwaltung"
-
-#~ msgid "module.alarmkeys.upload"
-#~ msgstr "Ausrückeordnung hochladen"
-
-#~ msgid "settings.map.positionerror"
-#~ msgstr "Positionsfehler"
-
-#~ msgid "mapitems.itemtype"
-#~ msgstr "Typ des OpenStreetMap Objektes"
-
-#~ msgid "mapitems.type_way"
-#~ msgstr "Streckenzug (way)"
-
-#~ msgid "mapitems.type_node"
-#~ msgstr "Punkt (node)"
-
-#~ msgid "mapitems.itemtypeattributes"
-#~ msgstr "Attribute"
-
-#~ msgid "itemtype.definition.save"
-#~ msgstr "Definition speichern"
-
-#~ msgid "messages.text.save"
-#~ msgstr "Speichern"
-
-#~ msgid "messages.weather.save"
-#~ msgstr "Speichern"
-
-#~ msgid "messages.title"
-#~ msgstr "Titel"
-
-#~ msgid "messages.layout"
-#~ msgstr "Layout"
-
-#~ msgid "messages.attributes"
-#~ msgstr "Attribute"
-
-#~ msgid "messages.text.style"
-#~ msgstr "Speichern"
-
-#~ msgid "alarms.printlayout.header.overview"
-#~ msgstr "Einsatztypen"
-
-#~ msgid "alarms.printlayout.info"
-#~ msgstr "Anfahrt-Information"
-
-#~ msgid "printers.settings"
-#~ msgstr "Einstellungen"
-
-#~ msgid "printers.parameter.header.name"
-#~ msgstr "Name"
-
-#~ msgid "printers.parameter.header.value"
-#~ msgstr "mögl. Werte"
-
-#~ msgid "module.messages"
-#~ msgstr "Mitteilungen"
-
-#~ msgid "messages.main"
-#~ msgstr "Mitteilungs-Übersicht"
-
-#~ msgid "messages.types"
-#~ msgstr "Konfiguration"
-
-#~ msgid "weather"
-#~ msgstr "Wetter"
-
-#~ msgid "messages"
-#~ msgstr "Mitteilungen"
-
-#~ msgid "messagestate.1"
-#~ msgstr "Aktive Mitteilungen"
-
-#~ msgid "messagestate.0"
-#~ msgstr "Deaktivierte Mitteilungen"
-
-#~ msgid "message.state.1"
-#~ msgstr "Aktiviert"
-
-#~ msgid "message.state.0"
-#~ msgstr "Deaktiviert"
-
-#~ msgid "message.base"
-#~ msgstr "Mitteilungen"
-
-#~ msgid "message.map"
-#~ msgstr "Mitteilungs-Übersicht"
-
-#~ msgid "message.text"
-#~ msgstr "Textnachrichten"
-
-#~ msgid "Mon"
-#~ msgstr "Montag"
-
-#~ msgid "Tue"
-#~ msgstr "Dienstag"
-
-#~ msgid "Wed"
-#~ msgstr "Mittwoch"
-
-#~ msgid "Thu"
-#~ msgstr "Donnerstag"
-
-#~ msgid "Fri"
-#~ msgstr "Freitag"
-
-#~ msgid "Sat"
-#~ msgstr "Samstag"
-
-#~ msgid "Sun"
-#~ msgstr "Sonntag"
-
-#~ msgid "message.weather"
-#~ msgstr "Wetter"
-
-#~ msgid "messages.base.default"
-#~ msgstr ""
-#~ "Standard Widget (wird verwendet, wenn keine Meldung aktiv ist, evtl. "
-#~ "leere Anzeige)"
-
-#~ msgid "messages.base.default_none"
-#~ msgstr "- kein Widget -"
-
-#~ msgid "messages.base.type"
-#~ msgstr "Basistyp"
-
-#~ msgid "messages.base.slidespeed"
-#~ msgstr "Anzeigedauer in Sekunden"
-
-#~ msgid "message.base.slidespeed.info"
-#~ msgstr ""
-#~ "Wenn mehrere Mitteilungen aktiv sind, werden sie per Slideshow "
-#~ "weitergeschaltet nach der konfigurierten Anzahl an Sekunden."
-
-#~ msgid "messages.base.slideeffect"
-#~ msgstr "Anzeigedauer in Sekunden"
-
-#~ msgid "messages.save"
-#~ msgstr "Speichern"
-
-#~ msgid "messages.text.header"
-#~ msgstr "Text-Widget-Einstellungen"
-
-#~ msgid "messages.text.content"
-#~ msgstr "Mitteilungstext/Inhalt"
-
-#~ msgid "messages.text.content.info"
-#~ msgstr ""
-#~ "Der Mitteilungstext kann einfacher Text sein oder nach 'restructuredText' "
-#~ "formatiert werden."
-
-#~ msgid "messages.weather.header"
-#~ msgstr "Wetter-Widget-Einstellungen"
-
-#~ msgid "messages.weather.location"
-#~ msgstr "Ortsangabe"
-
-#~ msgid "messages.weather.location.info"
-#~ msgstr "Der Wetterbericht wird für ein Ort erstellt, z.B. 'München, BY'"
-
-#~ msgid "messages.weather.icons"
-#~ msgstr "Wetter-Icons"
-
-#~ msgid "messages.weather.iconsimage"
-#~ msgstr "Bilder verwenden (online)"
-
-#~ msgid "messages.weather.iconsfont"
-#~ msgstr "Schriftart verwenden (lokal)"
-
-#~ msgid "messages.weather.forecast"
-#~ msgstr "Vorhersage (5 Tage)"
-
-#~ msgid "messages.weather.forecastshow"
-#~ msgstr "Wettervorhersage anzeigen"
-
-#~ msgid "messages.weather.forecasthide"
-#~ msgstr "Wettervorhersage ausblenden"
-
-#~ msgid "messages.types.overview"
-#~ msgstr "Einstellungsübersicht"
-
-#~ msgid "messages.types.info"
-#~ msgstr ""
-#~ "In der Konfiguration kann für die verschiedenen Mitteilungstypen die "
-#~ "Basiskonfiguration vorgenommen werden. Dabei bieten die einzelnen Typen "
-#~ "unterschiedliche Parameter.<br/>In der Basis-Einstellung können die "
-#~ "globalen Parameter der Mitteilungsmoduls definiert werden."
-
-#~ msgid "messages.addtitle"
-#~ msgstr "Mitteilung hinzufügen"
-
-#~ msgid "messages.name"
-#~ msgstr "Name"
-
-#~ msgid "messages.type"
-#~ msgstr "Mitteilungstyp"
-
-#~ msgid "messages.startdate"
-#~ msgstr "Start-Datum"
-
-#~ msgid "messages.enddate"
-#~ msgstr "End-Datum"
-
-#~ msgid "messages.specialtime"
-#~ msgstr "Zusätzliche Zeitparameter"
-
-#~ msgid "messages.specialdays"
-#~ msgstr "Wochentage"
-
-#~ msgid "messages.cron.allday"
-#~ msgstr "alle Wochentage"
-
-#~ msgid "messages.cron.notallday"
-#~ msgstr "bestimmte Wochentage"
-
-#~ msgid "messages.specialhours"
-#~ msgstr "Stundenparameter"
-
-#~ msgid "messages.cron.allhours"
-#~ msgstr "alle Stunden"
-
-#~ msgid "messages.cron.notallhours"
-#~ msgstr "bestimmte Stunden"
-
-#~ msgid "messages.state"
-#~ msgstr "Status"
-
-#~ msgid "messages.monitors"
-#~ msgstr "Monitorauswahl"
-
-#~ msgid "messages.remark"
-#~ msgstr "Bemerkung"
-
-#~ msgid "messages.cancel"
-#~ msgstr "Abbrechen"
-
-#~ msgid "messages.edit"
-#~ msgstr "bearbeiten"
-
-#~ msgid "messages.delete"
-#~ msgstr "löschen"
-
-#~ msgid "messages.refresh"
-#~ msgstr "Mitteilungsliste akualisieren"
-
-#~ msgid "messages.monitors.title"
-#~ msgstr "Mitteilung wird auf Monitor angezeigt"
-
-#~ msgid "messages.timeslots"
-#~ msgstr "Zeitsteuerung aktiv"
-
-#~ msgid "messages.state.active"
-#~ msgstr "Aktiv"
-
-#~ msgid "messages.state.inactive"
-#~ msgstr "Deaktiviert"
-
-#~ msgid "messages.deletequestion"
-#~ msgstr "Soll die gewählte Mitteilung wirklich gelöscht werden?"
-
-#~ msgid "messages.weather.humidity"
-#~ msgstr "Luftfeuchte"
-
-#~ msgid "messages.weather.pressure"
-#~ msgstr "Luftdruck"

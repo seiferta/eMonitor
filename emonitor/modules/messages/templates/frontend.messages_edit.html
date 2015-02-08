@@ -1,0 +1,207 @@
+{% extends "frontend.area.html" %}
+
+{% block style %}
+    <style>
+        #messagessubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0;}
+        #messagessubcenter {border-width:0;padding:0;}
+        #messagessubnorth button{width:36px;height:25px;}
+        #messagessubnorth p{font-size:14px;font-weight:bold;margin:5px 0!important}
+
+        ::-webkit-input-placeholder {color: #999}
+        :-ms-input-placeholder {color: #999}
+        :-moz-placeholder {color: #999}
+        .lists {float:left;}
+        .lists div{overflow:hidden;}
+        .lists .group{min-height:50px;border:1px solid #ddd;padding:0;width:99%;}
+        .lists ul { list-style: none; float:left}
+        .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width:60px; height:40px; float:left; border:2px solid #333;}
+        .lists li:hover { background:#bbb; }
+        .lists li:active { background:#999; }
+        .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
+        .extended{border:1px solid silver!important; }
+        body{background-color: #fff!important; }
+        .float{width:40px;}
+        .half{width:40%;}
+        #cronlabel{ cursor: pointer; }
+        #crondetails{border:1px solid silver;padding:2px;}
+    </style>
+{% endblock %}
+
+{% block headscript %}
+    <script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
+    <script>
+        $(document).ready(function() {
+            var innerLayout = $('#messagescontainer').layout({
+                center:{paneSelector: "#messagessubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
+                north: {paneSelector: "#messagessubnorth", size: 40, slidable: false, resizable: false, closable:false, spacing_open: 0},
+                resizerTip:'{{ _('layout.resize') }}',
+                togglerTip_open: '{{ _('layout.open') }}',
+                togglerTip_closed: '{{ _('layout.closed') }}'
+            })
+
+            $('.date').mask("99.99.9999");
+            $('.time').mask("99:99:00");
+
+            $('#cronlabel').click(function(){$('#crondetails').toggle()});
+
+            $("button[value='cancel']").click(function(){
+                window.location.href='/messages?area={{ frontendarea }}';
+            });
+
+            $("input[name='allday']").change(function(){
+               if ($(this).val()=='*'){
+                   $('#cron_days').find("input").prop('checked', false).prop('disabled', true);
+               }else{
+                   $('#cron_days').find("input").prop('disabled', false);
+               }
+            });
+            {%- if message.get('cron.day_of_week') in ['*', ''] %}
+            $('#cron_days').find("input").prop('checked', false).prop('disabled', true);
+            {%- endif %}
+            $("input[name='allhour']").change(function(){
+               if ($(this).val()=='*'){
+                   $('#cron_hours').find("input").prop('checked', false).prop('disabled', true);
+               }else{
+                   $('#cron_hours').find("input").prop('disabled', false);
+               }
+            });
+            {%- if message.get('cron.hour') in ['*', ''] %}
+            $('#cron_hours').find("input").prop('checked', false).prop('disabled', true);
+            {%- endif %}
+
+            $("#messagetype").change(function(){
+                $.ajax({ type : "POST", url : "/data/messages?action=messagetypefields&messagetypename="+$("#messagetype").val(),
+                    success: function(result) {
+                        $('#implementation_fields').html(result);
+                        return false;
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div style="height:100%;width:100%;padding:0;margin:0;" id="messagescontainer" class="messagescontainer">
+
+        <div class="pane" id="messagessubnorth" style="padding-top:5px;">
+            <button type="button" name="action" value="addmessage" onclick="window.location.href='/messages?action=editmessage&messageid=0&area={{ frontendarea }}'" title="{{ _('messages.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+
+            <div class="smallmodulesarea">
+
+
+                {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
+                {%- if mod != 'messages' %} {# exclude current module #}
+                <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
+                {%- endif %}
+                {%- endfor %}
+            </div>
+        </div>
+
+        <div id="messagessubcenter">
+
+            <form method="post">
+                <div style="padding:5px">
+                    <p>
+                        <label style="width:100%">{{ _('messages.name') }}:<br/>
+                            <input type="text" name="messages.name" value="{{ message.name }}" placeholder="{{ _('messages.name') }}" autofocus="" required="" style="width:100%">
+                        </label>
+                    </p>
+                    <p>
+                        <label style="width:100%">{{ _('messages.type') }}:<br/>
+                            {%- if message.id==None %}
+                            <select name="messages.type" id="messagetype" style="width:100%">
+                                {% for impl in implementations %}
+                                <option value="{{ impl[0] }}"{% if impl[0] == message.type %} selected="selected"{% endif %}>{{ _(impl[1]|string) }}</option>
+                                {% endfor %}
+                            </select>
+                            {%-else %}
+                            {{ _(message.type) }}
+                            <input type="hidden" name="messages.type" value="{{ message.type }}">
+                            {%- endif %}
+                        </label>
+                    </p>
+                    <div id="implementation_fields">
+                    {{ message.type.getEditorContent(message=message)|safe }}
+                    </div>
+                    <p style="float:left;width:50%;">
+                        <label>{{ _('messages.startdate') }}:<br/>
+                            <input type="text" name="messages.startdate" value="{{ message.startdate|datetime('dd.MM.yyyy') }}" class="date">
+                        </label>
+                    </p>
+                    <p style="float:left;width:50%;">
+                        <label>{{ _('messages.enddate') }}:<br/>
+                            <input type="text" name="messages.enddate" value="{{ message.enddate|datetime('dd.MM.yyyy') }}" class="date">
+                        </label>
+                    </p>
+                    <div style="clear:left;">
+                        <p id="cronlabel">{{ _('messages.specialtime') }} <i class="fa fa-angle-down"></i></p>
+                        <div id="crondetails" style="display:none">
+                            {% set cron_days = message.get('cron.day_of_week').split(',') or ['*'] %}
+                            {{ _('messages.specialdays') }}:<br/>
+                            <label>
+                                <input type="radio" name="allday" value="*"{%- if cron_days[0] in ['*',''] %} checked="checked"{%- endif %}/> {{ _('messages.cron.allday') }}
+                            </label>
+                            <label style="padding-left:5px;">
+                                <input type="radio" name="allday" value=""{%- if cron_days[0] not in ['*',''] %} checked="checked"{%- endif %}/> {{ _('messages.cron.notallday') }}
+                            </label>
+                            <div style="padding-left:5px;" id="cron_days">
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="0"{%- if '0' in cron_days%} checked="checked"{% endif %}> {{ _('Mon') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="1"{%- if '1' in cron_days %} checked="checked"{% endif %}> {{ _('Tue') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="2"{%- if '2' in cron_days %} checked="checked"{% endif %}> {{ _('Wed') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="3"{%- if '3' in cron_days %} checked="checked"{% endif %}> {{ _('Thu') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="4"{%- if '4' in cron_days %} checked="checked"{% endif %}> {{ _('Fri') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="5"{%- if '5' in cron_days %} checked="checked"{% endif %}> {{ _('Sat') }}</label>
+                                <label class="half"><input type="checkbox" name="messages.cron.day_of_week" value="6"{%- if '6' in cron_days %} checked="checked"{% endif %}> {{ _('Sun') }}</label>
+                            </div>
+                            <br/>
+                            {{ _('messages.specialhours') }}:<br/>
+                            {% set cron_hours = message.get('cron.hour').split(',') or ['*'] %}
+                            <label>
+                                <input type="radio" name="allhour" value="*"{%- if cron_hours[0] in ['*',''] %} checked="checked"{%- endif %}/> {{ _('messages.cron.allhours') }}
+                            </label>
+                            <label style="padding-left:5px;">
+                                <input type="radio" name="allhour" value=""{%- if cron_hours[0] not in ['*',''] %} checked="checked"{%- endif %}/> {{ _('messages.cron.notallhours') }}
+                            </label>
+                            <div style="padding-left:5px;" id="cron_hours">
+                                {%- for i in range(0, 24) %}
+                                <label class="float"><input type="checkbox" name="messages.cron.hour" value="{{ i }}"{%- if i|string in cron_hours %} checked="checked"{% endif %}> {{ i }}</label>
+                                {%- endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <label style="width:100%;">{{ _('messages.state') }}:<br/>
+                            <select name="messages.state" style="width:100%">
+                                {%- for i in range(0,2) %}
+                                <option value="{{ i|string }}"{% if i==message.state %} selected="selected"{% endif %}>{{ _('message.state.'+i|string) }}</option>
+                                {%- endfor %}
+                            </select>
+                        </label>
+                    </p>
+                    <p>
+                        {{ _('messages.monitors') }}:<br/>
+                        {%- for monitor in monitors %}
+                            <label style="float:left;padding-right:10px;">
+                                <input type="checkbox" name="messages.monitors" value="{{ monitor.clientid }}"{%- if monitor.clientid in message.monitors %} checked="checked"{%- endif %}/> {{ monitor.name }}
+                            </label>
+                        {%- endfor %}
+                    </p>
+                    <p>
+                        <label style="width:100%">{{ _('messages.remark') }}:<br/>
+                            <textarea name="messages.remark" style="width:100%;height:50px;">{{ message.remark }}</textarea>
+                        </label>
+                    </p>
+
+                    <p style="padding-bottom:10px;">
+                        <button type="submit" name="action" value="updatemessage" class="save" id="saveButton"><i class="fa fa-check"></i> {{ _('messages.save') }}</button>
+                        <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('messages.cancel') }}</button>
+                    </p>
+                    <input type="hidden" name="messages.id" value="{{ message.id }}"/>
+                    <input type="hidden" name="action" value="updatemessage"/>
+                </div>
+            </form>
+        </div>
+     </div>
+{% endblock %}

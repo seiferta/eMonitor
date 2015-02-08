@@ -1,0 +1,9 @@
+<span class="slider_position">
+{%- for i in range(0, number) %}
+    {% if i==position|int %}
+    <i class="fa fa-circle"></i>
+    {% else %}
+    <i class="fa fa-circle-o"></i>
+    {% endif %}
+{%- endfor %}
+</span>

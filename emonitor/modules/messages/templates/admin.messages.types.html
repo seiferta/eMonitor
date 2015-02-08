@@ -1,0 +1,23 @@
+{% extends "admin.html" %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
+
+{%  block subnavigation %}
+    {{ subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('messages.types.overview') }}</h2>
+    <p><small>{{ _('messages.types.info') }}</small></p>
+
+    {%- for impl in implementations %}
+        <p>{{ impl[1].getAdminContent()|safe }}</p>
+    {%- endfor %}
+
+{% endblock %}

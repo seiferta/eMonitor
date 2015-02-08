@@ -1,0 +1,21 @@
+<link rel="stylesheet" type="text/css" media="screen" href="/messages/inc/muslider.min.css" />
+<link href="/css/font-awesome.min.css" rel="stylesheet" />
+<div id="message_slider" class="slider">
+    {{ content|safe }}
+</div>
+<script type="text/javascript" src="/messages/inc/jquery.muslider.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#message_slider").muslider({
+            "responsive": "no",
+            "animation_start": "auto",
+            "height": "100%",
+            "width": "100%",
+            "animation_interval": {{ settings.get('messages.base.slidespeed') }}000,
+            "animation_duration": 1000,
+            "animation_type": "{{ settings.get('messages.base.slideeffect', 'fade') }}" /*horizontal, vertical, fade*/
+        });
+
+        setTimeout(function () { location.reload(true); }, 3600000); /*reload page after 1 hour */
+    });
+</script>

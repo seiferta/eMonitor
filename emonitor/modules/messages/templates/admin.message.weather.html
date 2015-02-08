@@ -1,0 +1,26 @@
+
+<fieldset>
+    <legend>{{ _('messages.weather.header') }}</legend>
+    <form id="message_weather" method="post">
+        <p>
+            <label style="width:100%">
+                {{ _('messages.weather.location') }}:<br/>
+                <input type="text" name="weather.location" value="{{ settings.get('messages.weather.location') }}" style="width:50%"/>
+                <br/> <small>{{ _('messages.weather.location.info') }}</small>
+            </label>
+        </p>
+        <p>
+            {{ _('messages.weather.icons') }}:<br/>
+            <label><input type="radio" name="weather.icons" value="image"{% if settings.get('messages.weather.icons', '') in ['image', ''] %} checked="checked"{% endif %}> {{ _('messages.weather.iconsimage') }}</label>
+            <label><input type="radio" name="weather.icons" value="font"{% if settings.get('messages.weather.icons')=='font' %} checked="checked"{% endif %}> {{ _('messages.weather.iconsfont') }}</label>
+        </p>
+        <p>
+            {{ _('messages.weather.forecast') }}:<br/>
+            <label><input type="radio" name="weather.forecast" value="1"{% if settings.get('messages.weather.forecast', '') in ['1', ''] %} checked="checked"{% endif %}> {{ _('messages.weather.forecastshow') }}</label>
+            <label><input type="radio" name="weather.forecast" value="0"{% if settings.get('messages.weather.forecast')=='0' %} checked="checked"{% endif %}> {{ _('messages.weather.forecasthide') }}</label>
+        </p>
+        <p>
+            <button type="submit" name="saveparameters" value="weather">{{ _('messages.save') }}</button>
+        </p>
+    </form>
+</fieldset>

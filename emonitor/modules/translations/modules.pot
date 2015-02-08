@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-03 14:51+0100\n"
+"POT-Creation-Date: 2015-02-08 21:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,7 +714,7 @@ msgid "alarmstate.done"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:114
-#: emonitor/modules/alarms/templates/admin.alarms.html:62
+#: emonitor/modules/alarms/templates/admin.alarms.html:55
 msgid "alarmstate.archive"
 msgstr ""
 
@@ -862,19 +862,19 @@ msgstr ""
 msgid "alarms.print.straightexit"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:154
+#: emonitor/modules/alarms/content_admin.py:150
 msgid "admin.alarms.checkernotvalid"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:25
+#: emonitor/modules/alarms/templates/admin.alarms.html:35
 msgid "alarms.header.overview"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:28
+#: emonitor/modules/alarms/templates/admin.alarms.html:38
 msgid "alarms.alarmarchive"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/admin.alarms.html:91
+#: emonitor/modules/alarms/templates/admin.alarms.html:77
 msgid "alarms.alarmarchivequestion"
 msgstr ""
 
@@ -1084,6 +1084,32 @@ msgstr ""
 msgid "alarms.type.cancel"
 msgstr ""
 
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:13
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:44
+msgid "alarms.showfax"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:15
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:46
+msgid "alarms.typeautomatic"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:16
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:47
+msgid "alarms.typemanual"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:18
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:49
+msgid "alarms.titlemap"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/admin.alarms_alarm.html:27
+#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:129
+msgid "alarms.noactive"
+msgstr ""
+
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:7
 msgid "alarm.edit"
 msgstr ""
@@ -1118,46 +1144,31 @@ msgstr ""
 msgid "alarm.print"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:129
-msgid "alarms.noactive"
-msgstr ""
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:44
-msgid "alarms.showfax"
-msgstr ""
-
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:45
 msgid "alarms.messagestitle"
-msgstr ""
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:46
-msgid "alarms.typeautomatic"
-msgstr ""
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:47
-msgid "alarms.typemanual"
-msgstr ""
-
-#: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:49
-msgid "alarms.titlemap"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:38
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:179
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:37
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:34
 msgid "layout.resize"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:63
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:180
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:38
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:35
 msgid "layout.open"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:64
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:181
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:39
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:36
 msgid "layout.closed"
 msgstr ""
 
@@ -1370,7 +1381,7 @@ msgid "module.cars"
 msgstr ""
 
 #: emonitor/modules/cars/__init__.py:41
-#: emonitor/modules/cars/templates/widget.cars.html:15
+#: emonitor/modules/cars/templates/widget.cars.html:14
 msgid "cars"
 msgstr ""
 
@@ -2003,43 +2014,345 @@ msgstr ""
 msgid "maps.nodefaultposition"
 msgstr ""
 
-#: emonitor/modules/monitors/__init__.py:45
-msgid "module.monitors"
+#: emonitor/modules/messages/__init__.py:36
+msgid "module.messages"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:37
+msgid "messages.main"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:38
+msgid "messages.types"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:39
+msgid "weather"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:40
+msgid "messages"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:41
+msgid "messagestate.1"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:42
+msgid "messagestate.0"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:43
+msgid "message.state.1"
+msgstr ""
+
+#: emonitor/modules/messages/__init__.py:44
+msgid "message.state.0"
+msgstr ""
+
+#: emonitor/modules/messages/message_base.py:12
+msgid "message.base"
+msgstr ""
+
+#: emonitor/modules/messages/message_map.py:8
+msgid "message.map"
+msgstr ""
+
+#: emonitor/modules/messages/message_text.py:8
+msgid "message.text"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:10
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
+msgid "Mon"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:11
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
+msgid "Tue"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:12
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
+msgid "Wed"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:13
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
+msgid "Thu"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:14
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
+msgid "Fri"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:15
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:155
+msgid "Sat"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:16
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:156
+msgid "Sun"
+msgstr ""
+
+#: emonitor/modules/messages/message_weather.py:17
+msgid "message.weather"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:4
+msgid "messages.base.default"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:6
+msgid "messages.base.default_none"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:15
+msgid "messages.base.type"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:25
+msgid "messages.base.slidespeed"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:27
+msgid "message.base.slidespeed.info"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:32
+msgid "messages.base.slideeffect"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.base.html:42
+#: emonitor/modules/messages/templates/admin.message.text.html:11
+#: emonitor/modules/messages/templates/admin.message.weather.html:23
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:198
+msgid "messages.save"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.text.html:3
+msgid "messages.text.header"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.text.html:6
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:3
+msgid "messages.text.content"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.text.html:8
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:5
+msgid "messages.text.content.info"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:3
+msgid "messages.weather.header"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:7
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:4
+msgid "messages.weather.location"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:9
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:6
+msgid "messages.weather.location.info"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:13
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:10
+msgid "messages.weather.icons"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:14
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:11
+msgid "messages.weather.iconsimage"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:15
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:13
+msgid "messages.weather.iconsfont"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:18
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:16
+msgid "messages.weather.forecast"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:19
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:17
+msgid "messages.weather.forecastshow"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:20
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:19
+msgid "messages.weather.forecasthide"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages.html:32
+msgid "messages.header.overview"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages.types.html:16
+msgid "messages.types.overview"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages.types.html:17
+msgid "messages.types.info"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:12
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:95
+msgid "messages.monitors.title"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:18
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:101
+msgid "messages.timeslots"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:19
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:102
+msgid "messages.state.active"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:19
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:102
+msgid "messages.state.inactive"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.messages_message.html:28
+msgid "messages.noactive"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:89
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:67
+msgid "messages.addtitle"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:107
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:108
+msgid "messages.name"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:112
+msgid "messages.type"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:129
+msgid "messages.startdate"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:134
+msgid "messages.enddate"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:139
+msgid "messages.specialtime"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:142
+msgid "messages.specialdays"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:144
+msgid "messages.cron.allday"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:147
+msgid "messages.cron.notallday"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:159
+msgid "messages.specialhours"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:162
+msgid "messages.cron.allhours"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:165
+msgid "messages.cron.notallhours"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:175
+msgid "messages.state"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:184
+msgid "messages.monitors"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:192
+msgid "messages.remark"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:199
+msgid "messages.cancel"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:57
+msgid "messages.edit"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:58
+msgid "messages.delete"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:68
+msgid "messages.refresh"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_smallarea.html:120
+msgid "messages.deletequestion"
+msgstr ""
+
+#: emonitor/modules/messages/templates/widget.message.weather.html:30
+msgid "messages.weather.humidity"
+msgstr ""
+
+#: emonitor/modules/messages/templates/widget.message.weather.html:31
+msgid "messages.weather.pressure"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:46
-msgid "monitors.definition"
+msgid "module.monitors"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:47
-msgid "module.monitors.style"
+msgid "monitors.definition"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:48
-msgid "module.monitors.current"
+msgid "module.monitors.style"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:49
-msgid "module.monitors.actions"
+msgid "module.monitors.current"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:50
-msgid "monitors.landscape"
+msgid "module.monitors.actions"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:51
-msgid "monitors.portrait"
+msgid "monitors.landscape"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:52
-msgid "monitors.orientation.0"
+msgid "monitors.portrait"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:53
-msgid "monitors.orientation.1"
+msgid "monitors.orientation.0"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:54
+msgid "monitors.orientation.1"
+msgstr ""
+
+#: emonitor/modules/monitors/__init__.py:55
 msgid "placeholder"
 msgstr ""
 
@@ -2072,12 +2385,18 @@ msgstr ""
 msgid "monitors.current.loadingclients"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.current_actions.html:16
-msgid "monitors.current.nodefinition"
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:27
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:61
+msgid "monitors.current.notconnected"
 msgstr ""
 
-#: emonitor/modules/monitors/templates/admin.monitors.current_actions.html:23
-msgid "monitors.current.notconnected"
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:32
+#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
+msgid "monitor.clienttime"
+msgstr ""
+
+#: emonitor/modules/monitors/templates/admin.monitors.current.html:38
+msgid "monitors.current.nodefinition"
 msgstr ""
 
 #: emonitor/modules/monitors/templates/admin.monitors.html:10
@@ -2307,10 +2626,6 @@ msgstr ""
 
 #: emonitor/modules/monitors/templates/frontend.monitors_clients.html:58
 msgid "monitor.testpage"
-msgstr ""
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
-msgid "monitor.clienttime"
 msgstr ""
 
 #: emonitor/modules/monitors/templates/frontend.monitors_clients.html:71

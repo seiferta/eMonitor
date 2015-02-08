@@ -1,0 +1,48 @@
+<form id="message_weather" method="post">
+    <p>
+        <label style="width:50%">
+            {{ _('messages.base.default') }}:<br/>
+            <select name="base.default" style="width:100%">
+                <option value="">{{ _('messages.base.default_none') }}</option>
+                {%- for implementation in implementations %}
+                <option value="{{ implementation[0].split('.')[0] }}"{%- if settings.get('messages.base.default') == implementation[0].split('.')[0] %} selected="selected"{%- endif %}>{{ _('message.'+implementation[1].__repr__()) }}</option>
+                {%- endfor %}
+            </select>
+        </label>
+    </p>
+    <p>
+        <label style="width:50%">
+            {{ _('messages.base.type') }}:<br/>
+            <select name="base.type" style="width:100%">
+                {%- for implementation in implementations %}
+                <option value="{{ implementation[0].split('.')[0] }}"{%- if settings.get('messages.base.type') == implementation[0].split('.')[0] %} selected="selected"{%- endif %}>{{ _('message.'+implementation[1].__repr__()) }}</option>
+                {%- endfor %}
+            </select>
+        </label>
+    </p>
+    <p>
+        <label style="width:100%">
+            {{ _('messages.base.slidespeed') }}:<br/>
+            <input type="text" name="base.slidespeed" value="{{ settings.get('messages.base.slidespeed', '10') }}" style="width:50%;text-align:right"/><br/>
+            <small>{{ _('message.base.slidespeed.info') }}</small>
+        </label>
+    </p>
+    <p>
+        <label style="width:100%">
+            {{ _('messages.base.slideeffect') }}:<br/>
+            {%- set slideeffects = ['fade', 'horizontal', 'vertical'] %}
+            <select name="base.slideeffect" style="width:50%">
+                {%- for slideeffect in slideeffects %}
+                <option value="{{ slideeffect }}"{% if settings.get('messages.base.slideeffect', 'fade') == slideeffect %} selected="selected"{%- endif %}>{{ _(slideeffect) }}</option>
+                {%- endfor %}
+            </select>
+        </label>
+    </p>
+    <p>
+        <button type="submit" name="saveparameters" value="base">{{ _('messages.save') }}</button>
+    </p>
+</form>
+
+<script>
+
+</script>
