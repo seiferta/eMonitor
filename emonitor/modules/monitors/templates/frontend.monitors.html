@@ -1,34 +1,47 @@
-<div style="position:absolute; bottom:15px;right:15px;">
-    <a href="#" onclick="return refreshPing('1')" title="{{ _('monitor.refreshtitle') }}"><i class="fa fa-refresh fa-lg"></i></a>
+<link rel="stylesheet" href="/monitors/inc/monitors.css" />
+<style>
+    .btn{background-color:transparent!important;border-width:0;}
+</style>
+<div id="monitors" style="overflow:visible;padding:0; height:100%;margin:10px 0 20px 20px;">
+    {% for monitor in monitors %}
+    <div class="client_inactive" id="client_{{ monitor.clientid }}">
+        <div class="client_id">{{ monitor.clientid }}</div>
+        <div class="client_ip" style="font-style:italic">{{ _('monitors.current.notconnected') }}</div>
+
+        <div class="btn-group options" style="position:absolute;top:12px;right:24px;">
+            {% if monitor.getLayouts()|count %}
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-gear fa-lg"></i>
+            </a>
+            <ul class="dropdown-menu pull-right">
+
+                {% for l in monitor.getLayouts() %}
+                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {% for tr in l.trigger.split(';') %}{{ tr }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
+                {% endfor %}
+                <li><a href="#" onclick="return changeLayout({{ id }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
 </div>
-<div id="loadinginfo" style="background-color:#ffffff;text-align:center;padding:20px 5px;margin:80px 5px;display:none;">
-    {{ _('monitor.loadingclients') }}
-    <br/><br/>
-    <img src="/img/loading.gif"/>
-</div>
-<div id="monitors"> </div>
+<p style="clear:left;text-align:right;font-size:10px;" id="timestamp"> </p>
  <script>
-    refreshPing('0');
-
-    function refreshPing(op){
-        $('#loadinginfo').show();
-        $('#monitors').html('');
-        $.ajax({ type : "POST", url : "/data/monitors?action=ping&refresh="+op,
+    var nextrun;
+    function refreshPing(){
+        $('#timestamp').html(new Date().toString().match(/\d{2}:\d{2}:\d{2}/)[0]);
+        clearTimeout(nextrun);
+        nextrun = setTimeout(refreshPing, 10000); // 10 seconds
+        $.ajax({ type : "POST", url : "/admin/data/monitors?action=ping&format=json",
             success: function(result){
-                console.log('result');
-                if (result!="") {
-                    $('#loadinginfo').hide();
-                }
-                $('#monitors').html(result);
-            }
-        });
-        return false;
-    }
-
-    function getDetails(id){
-        $.ajax({ type : "POST", url : "/data/monitors?action=loadmonitor&id="+id,
-            success: function(result){
-                $('#content').html(result);
+                $.each($('#monitors').children(), function(index, item) {
+                    if (result.clients.indexOf(item.id.split('_')[1])==-1){
+                        if($(item).hasClass('client')){
+                            $(item).removeClass('client').addClass('client_inactive');
+                            $(item).find('div.client_ip').html('{{ _('monitors.current.notconnected') }}');
+                        }
+                    }
+                });
             }
         });
         return false;
@@ -36,28 +49,18 @@
 
      var monitorsocket = new WebSocket("ws://"+location.host+"/ws");
      monitorsocket.onopen = function() {
-        monitorsocket.send("add.monitorserver.clientsearchdone");
+        refreshPing()
      };
 
-     monitorsocket.onmessage = function (evt) {
-         $('#monitors').html('');
-         $('#loadinginfo').show();
-         var data = JSON.parse(evt.data);
-         console.log(data);
-         if (data.sender == 'monitorserver.clientsearchdone'){
-             if(data['clients']) {
-
-                $.ajax({ type: "POST", url: "/data/monitors?action=ping",
-                    success: function (result) {
-                        $('#monitors').html(result);
-                        if (result!="") {
-                            $('#loadinginfo').hide();
-                        }
-                    }
-                });
+     monitorsocket.onmessage = function (e) {
+         var data = JSON.parse(e.data);
+         if (data.sender == 'monitorserver.clientanswer'){
+             if($('#client_'+data.clientid).length==1){
+                 $('#client_'+data.clientid).removeClass('client_inactive').addClass('client');
+                 $('#client_'+data.clientid).find('div.client_ip').html(data.ip[0]+'<br/>'+data.name);
              }
          }
-        return false;
+         return false;
      };
 
 </script>

@@ -18,8 +18,7 @@ def getFrontendData(self):
     :return: rendered template as string or json dict
     """
     if request.args.get('action') == 'monitoroverview':
-        monitors = []
-        return render_template('frontend.monitors.html', monitors=monitors)
+        return render_template('frontend.monitors.html', monitors=classes.get('monitor').getMonitors())
 
     elif request.args.get('action') == 'ping':  # search from monitors
         if request.args.get('refresh') == '1':  # force refresh
