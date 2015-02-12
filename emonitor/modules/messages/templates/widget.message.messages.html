@@ -1,8 +1,9 @@
-<link rel="stylesheet" type="text/css" media="screen" href="/messages/inc/muslider.min.css" />
+{%- if count>1 %}<link rel="stylesheet" type="text/css" media="screen" href="/messages/inc/muslider.min.css" />{%- endif %}
 <link href="/css/font-awesome.min.css" rel="stylesheet" />
 <div id="message_slider" class="slider">
     {{ content|safe }}
 </div>
+{%- if count>1 %}
 <script type="text/javascript" src="/messages/inc/jquery.muslider.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -19,3 +20,4 @@
         setTimeout(function () { location.reload(true); }, 3600000); /*reload page after 1 hour */
     });
 </script>
+{%- endif %}

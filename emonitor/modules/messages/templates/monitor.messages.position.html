@@ -1,3 +1,4 @@
+{%- if number > 1 %}
 <span class="slider_position">
 {%- for i in range(0, number) %}
     {% if i==position|int %}
@@ -7,3 +8,4 @@
     {% endif %}
 {%- endfor %}
 </span>
+{% endif %}

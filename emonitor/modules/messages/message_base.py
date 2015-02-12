@@ -39,8 +39,7 @@ class MessageWidget(MonitorWidget):
         kwargs.update({'settings': settings})
         if len(messages) > 0:
             for message in messages:
-                kwargs.update({'message': message})
-                #content += '<div>' + message.type.getMonitorContent(**kwargs) + '</div>\n'
+                kwargs.update({'message': message, 'count': len(messages)})
                 pos = render_template('monitor.messages.position.html', number=len(messages), position=messages.index(message))
                 content += '<div class="slide">%s%s</div>\n' % (message.type.getMonitorContent(**kwargs), pos)
 
@@ -50,7 +49,7 @@ class MessageWidget(MonitorWidget):
                     kwargs.update({'footer': 1})  # set footer
                     content = mt[1].getMonitorContent(**kwargs)
 
-        kwargs.update({'content': content})
+        kwargs.update({'content': content, 'count': len(messages)})
         if len(messages) > 0:
             kwargs.update({'footer': 1})
         self.params = kwargs
