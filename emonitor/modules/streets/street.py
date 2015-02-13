@@ -85,7 +85,7 @@ class Street(db.Model):
         :return: list of :py:class:`emonitor.modules.streets.street.Street`
         """
         if cityid == 0:
-            return db.session.query(Street).all()
+            return db.session.query(Street).order_by(Street.name).all()
         else:
             return db.session.query(Street).filter_by(cityid=cityid).all()
             
