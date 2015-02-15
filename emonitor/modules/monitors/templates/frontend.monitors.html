@@ -16,9 +16,9 @@
             <ul class="dropdown-menu pull-right">
 
                 {% for l in monitor.getLayouts() %}
-                    <li><a href="#" onclick="return changeLayout({{ id }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {% for tr in l.trigger.split(';') %}{{ tr }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
+                    <li><a href="#" onclick="return changeMLayout({{ monitor.clientid }}, {{ l.id }})"><i class="fa fa-desktop fa-fw"></i> {% for tr in l.trigger.split(';') %}{{ _('trigger.'+tr) }}{% if not loop.last %}, {% endif %}{%  endfor %}</a></li>
                 {% endfor %}
-                <li><a href="#" onclick="return changeLayout({{ id }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
+                <li><a href="#" onclick="return changeMLayout({{ monitor.clientid }}, -1)"><i class="fa fa-desktop fa-fw"></i> {{ _('monitor.testpage') }}</a></li>
             </ul>
             {% endif %}
         </div>
@@ -32,7 +32,7 @@
         $('#timestamp').html(new Date().toString().match(/\d{2}:\d{2}:\d{2}/)[0]);
         clearTimeout(nextrun);
         nextrun = setTimeout(refreshPing, 10000); // 10 seconds
-        $.ajax({ type : "POST", url : "/admin/data/monitors?action=ping&format=json",
+        $.ajax({ type : "POST", url : "/data/monitors?action=ping&format=json",
             success: function(result){
                 $.each($('#monitors').children(), function(index, item) {
                     if (result.clients.indexOf(item.id.split('_')[1])==-1){
@@ -46,6 +46,12 @@
         });
         return false;
     }
+
+    $('.options').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function() {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
 
      var monitorsocket = new WebSocket("ws://"+location.host+"/ws");
      monitorsocket.onopen = function() {
@@ -62,5 +68,16 @@
          }
          return false;
      };
+
+     function changeMLayout(id, layoutid){
+       console.log('schange');
+        $.ajax({ type : "POST", url : "/data/monitors?action=changelayout&id="+id+"&layoutid="+layoutid,
+            success: function(){
+                alert('{{ _('monitor.layout.changed') }}');
+                return false;
+            }
+        });
+        return false;
+    }
 
 </script>
