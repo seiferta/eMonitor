@@ -40,10 +40,3 @@ scheduler = MyScheduler()
 # printer
 from .printertype import ePrinters
 printers = ePrinters()
-
-# modules
-#from .utils import ModuleLoader
-#modules = ModuleLoader()
-
-#from modules import Modules
-#modules = Modules()

@@ -1,6 +1,9 @@
 import threading
 import traceback
+import logging
 from .extensions import classes
+
+logger = logging.getLogger(__name__)
 
 
 class Event:
@@ -63,8 +66,8 @@ class Event:
 
     @staticmethod
     def raiseEvent(name, *kwargs):
-        Event.app.logger.info('events: raiseEvent %s' % name)
-        Event.app.logger.debug('  > arguments %s' % kwargs[0])
+        logger.info('raiseEvent %s' % name)
+        logger.debug('  > arguments %s' % kwargs[0])
         action = RunEvent([e for e in Event.events if e.name == name], kwargs[0], Event.app.logger)
         action.start()
 
@@ -86,9 +89,9 @@ class RunEvent(threading.Thread):
         handler = None
         for handler in self.eventhandler:
             try:
-                self.logger.info('events: try handleEvent %s' % handler)
+                logger.info('try handleEvent %s' % handler.name)
                 handler.handle(self.kwargs)
             except:
-                self.logger.error('events: eventHandle %s: %s' % (handler.name, traceback.format_exc()))
+                logger.error('handleEvent %s: %s' % (handler.name, traceback.format_exc()))
         if handler:
-            self.logger.info('events: eventDone %s' % handler.name)
+            logger.info('eventDone %s' % handler.name)

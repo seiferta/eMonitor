@@ -1,9 +1,12 @@
 import sys
 import os, argparse
+import logging
 from emonitor import webapp
 from emonitor.sockethandler import SocketHandler
 
 __all__ = ['main', 'tornado', 'builtin']
+
+logger = logging.getLogger()
 
 f = __file__
 _PATH = os.path.realpath(__file__)[:os.path.realpath(__file__).rfind(os.sep)]
@@ -21,7 +24,7 @@ def tornado(args):
     def t_reload():
         sys.exit(0)  # exit app
 
-    webapp.logger.info('emonitor started with tornado server on port %s' % webapp.config.get('PORT'))
+    logger.info('emonitor started with tornado server on port %s' % webapp.config.get('PORT'))
     _server = web.Application([(r'/ws', SocketHandler), (r'.*', web.FallbackHandler, {'fallback': wsgi.WSGIContainer(webapp)})])
     _server.listen(int(webapp.config.get('PORT')))
 
@@ -33,13 +36,12 @@ def tornado(args):
     try:
         tornadoloop.start()
     except KeyboardInterrupt:
-        webapp.logger.info('emonitor stopped')
-        tornadoloop.stop()
         try:
             sys.exit(0)
         except:
             pass
     finally:
+        logger.info('emonitor stopped')
         tornadoloop.stop()
 
 
@@ -51,7 +53,7 @@ def builtin(args):
     """
     webapp.logger.info('emonitor started with builtin server on port %s' % webapp.config.get('PORT'))
     webapp.run(host=webapp.config.get('HOST'), port=webapp.config.get('PORT'), debug=webapp.config.get('DEBUG'), threaded=True)
-    webapp.logger.info('emonitor stopped')
+    logger.info('emonitor stopped')
 
 
 def main():

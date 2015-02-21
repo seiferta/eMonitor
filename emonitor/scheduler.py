@@ -4,13 +4,14 @@ import datetime, time
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.executors.pool import ThreadPoolExecutor
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_REMOVED
 from emonitor.extensions import signal
 from emonitor.sockethandler import SocketHandler
 import pytz
 
 logging.basicConfig()
-logger = logging.getLogger('apscheduler.scheduler')
-logger.setLevel(50)  # critical
+logger = logging.getLogger('apscheduler')
+logger.setLevel(logging.FATAL)
 
 
 class MyScheduler(BackgroundScheduler):
@@ -27,12 +28,12 @@ class MyScheduler(BackgroundScheduler):
     def initJobs(self, app):
         MyScheduler.app = app
 
-        self.add_listener(MyScheduler.mylogger, 128)  # 128: job_error
-        self.add_listener(MyScheduler.myDone, 64)  # 64: executed
+        self.add_listener(MyScheduler.mylogger, EVENT_JOB_ERROR)
+        self.add_listener(MyScheduler.myDone, EVENT_JOB_REMOVED)
 
         from emonitor.observer import observeFolder
         self.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=app.config.get('OBSERVERINTERVAL', 2)), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
-        app.logger.info('scheduler: job added "observer"')
+        logger.info('scheduler: job added "observer"')
 
     def get_jobs(self, name=""):
         if name == "":
@@ -43,9 +44,7 @@ class MyScheduler(BackgroundScheduler):
     @staticmethod
     def mylogger(event):
         if event.exception:
-            MyScheduler.app.logger.error('scheduler: %s' % event.exception)
-        else:
-            MyScheduler.app.logger.error('error in scheduler event')
+            logger.error('%s' % event.exception)
 
     @staticmethod
     def myDone(event):

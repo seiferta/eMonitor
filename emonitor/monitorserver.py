@@ -6,13 +6,16 @@ import time
 import datetime
 import traceback
 import random
+import logging
 from compiler.ast import flatten
 from .extensions import db, events, classes, signal
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 
 class MonitorServer():
     
-    app = None
     clients = {'clients': {}, 'time': datetime.datetime.now()}
 
     def __init__(self):
@@ -27,7 +30,6 @@ class MonitorServer():
         self.sock = None
 
     def init_app(self, app):
-        MonitorServer.app = app
         events.addHandlerClass('*', 'emonitor.monitorserver.MonitorServer', self.handleEvent, ['in.params', 'in.condition'])
 
         self.ANY = app.config.get('MONITORSERVER_ANY', "0.0.0.0")
@@ -76,7 +78,7 @@ class MonitorServer():
             t.start()
         except:
             _id = ""
-            MonitorServer.app.logger.error('monitorserver: %s' % traceback.format_exc())
+            logger.error('sendMessage: %s' % traceback.format_exc())
         return _id
 
     def sendMessageWithReturn(self, clientid, operation, *parameters):
@@ -144,7 +146,7 @@ class MonitorServer():
                     params.append((p, kwargs[0][p]))
         except:
             hdl = []
-            MonitorServer.app.logger.error('monitorserver: %s' % traceback.format_exc())
+            logger.error('handleEvent: %s' % traceback.format_exc())
 
         if kwargs[0]['mode'] != 'test':
             for monitorlayout in classes.get('monitorlayout').getLayouts():
@@ -160,7 +162,6 @@ class MonitorServer():
                         if monitorlayout.nextid != 0:
                             scheduler.add_job(MonitorServer.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), args=[monitorlayout.monitor.clientid, monitorlayout.nextid, params])
                 except:
-                    #MonitorServer.app.logger.error('monitorserver.handleEvent: %s' %traceback.format_exc())
                     pass
                 finally: pass
         
@@ -172,18 +173,18 @@ class MonitorServer():
     @staticmethod
     def changeLayout(monitorid, layoutid, *params):
         from emonitor.extensions import monitorserver
-        MonitorServer.app.logger.debug('monitorserver: changeLayout for monitor %s > %s' % (monitorid, layoutid))
+        logger.debug('changeLayout for monitor %s > %s' % (monitorid, layoutid))
         parameters = [(u'layoutid', u'%s' % layoutid)]
         try:
             for p in params:
                 parameters.append((p[0], p[1]))  # do not change!
         except: pass
         l = MonitorLog.addLog(monitorid, 0, 'change layout', parameters)
-        if l: MonitorServer.app.logger.error('monitorserver.addLog: %s' % l)
+        if l: logger.error('change layout, addLog: %s' % l)
         message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', parameters)
 
         l = MonitorLog.addLog(int(message.split('|')[0]), 0, message.split('|')[1], '|'.join(message.split('|')[2:]))
-        if l: MonitorServer.app.logger.error('monitorserver.addLog: %s' % l)
+        if l: logger.error('change layout, addLog: %s' % l)
         return 1
 
     def run(self, id):
@@ -248,7 +249,6 @@ class MonitorLog(db.Model):
             db.session.commit()
         except:
             pass
-            #return traceback.print_exc()
         return None
         
     @staticmethod

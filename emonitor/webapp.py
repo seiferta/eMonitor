@@ -193,21 +193,47 @@ def configure_logging(app):
 
     :param app: :py:class:`Flask`
     """
-    app.logger.setLevel(logging.DEBUG)
-    if not app.debug:  # if not in debug mode write output into file
-        from logging.handlers import RotatingFileHandler
-        file_handler = RotatingFileHandler('%swebapp.log' % app.config.get('PATH_DATA'), maxBytes=1024 * 1024 * 100, backupCount=20)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    from logging.handlers import RotatingFileHandler
+
+    class MyFilter(object):
+        def __init__(self, level):
+            self.__level = level
+
+        def filter(self, logRecord):
+            return logRecord.levelno == self.__level
+
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+    tornadologger = logging.getLogger('tornado.access')
+
+    if app.debug:
+        tornadologger.propagate = False
+        file_handler = RotatingFileHandler('%s%s-access.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
         file_handler.setFormatter(formatter)
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(app.config.get('LOGLEVEL', logging.ERROR))  # use error level for file writer
+        tornadologger.addHandler(file_handler)
+
+    logger = logging.getLogger('alembic.migration')
+    logger.setLevel(logging.ERROR)
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    file_handler = RotatingFileHandler('%s%s.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
+    logger.addHandler(file_handler)
+
+    if app.config.get('LOGLEVEL') == logging.ERROR:
+        file_handler = RotatingFileHandler('%s%s-error.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
+        file_handler.setFormatter(formatter)
+        file_handler.addFilter(MyFilter(logging.ERROR))
+        file_handler.setLevel(logging.ERROR)
+        logger.addHandler(file_handler)
 
 
 def configure_hook(app):
     #@app.before_request
     #def before_request():
     #    pass
-        
+
     @babel.localeselector
     def get_locale():
         return request.accept_languages.best_match(app.config.get('LANGUAGES').keys())

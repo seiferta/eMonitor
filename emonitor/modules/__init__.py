@@ -1,12 +1,15 @@
 import os
 import pkgutil
 import importlib
+import logging
+import traceback
 from flask import render_template, current_app
 from emonitor.extensions import classes, babel
 from emonitor.utils import Module
 
 from flask import Blueprint
 
+logger = logging.getLogger(__name__)
 modules = Blueprint('modules', __name__, template_folder="web/templates")
 
 
@@ -87,8 +90,8 @@ def init_app(app):
 
             _count += 1
         except AttributeError:
-            app.logger.error('modules: module "%s" could not be loaded' % name)
+            logger.error('module "%s" could not be loaded: %s' % (name, traceback.format_exc()))
 
-    app.logger.info('modules: %s modules loaded' % _count)
+    logger.info('%s modules loaded' % _count)
 
 modules.init_app = init_app
