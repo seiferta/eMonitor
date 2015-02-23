@@ -19,8 +19,19 @@ def get_street_proto(self, stype):  # deliver street object
         return classes.get('street')(self.get(_t[stype], ''), '', '', 1, '', float(classes.get('settings').get('defaultLat', '0')), float(classes.get('settings').get('defaultLng', '0')), float(classes.get('settings').get('defaultZoom', '13')), 1)
 
 
+def set_street_proto(self, value, stype):
+    _t = {1: 'address', 2: 'address2'}
+    if value and value.id and value.name:
+        self.set("id.{}".format(_t[stype]), value.id)
+        self.set("{}".format(_t[stype]), value.name)
+
+
 def get_street(self):
     return get_street_proto(self, 1)
+
+
+def set_street(self, value):
+    set_street_proto(self, value, 1)
 
 
 def get_housenumber(self):
@@ -61,13 +72,17 @@ def get_object(self):
         return None
 
 
+def set_object(self, alarmobject):
+    self.set('id.object', alarmobject.id)
+    self.set('object', alarmobject.name)
+
+
 def get_cars_proto(self, ctype):
     # type 1:cars1, 2:cars2, 3:material
     _t = {1: 'k.cars1', 2: 'k.cars2', 3: 'k.material'}
     ret = []
     if not inspect(self).session:
         return ret
-    #cars = inspect(self).session.query(classes.get('car').car.Car)
     cars = classes.get('car').getCars()
     for _c in [int(c) for c in self.get(_t[ctype], []).split(',') if c != '']:
         try:
@@ -89,11 +104,17 @@ def get_material(self):
     return get_cars_proto(self, 3)
 
 
+def set_material(self, material):
+    for t in ('cars1', 'cars2', 'material'):
+        if t in material:
+            self.set(u"k.{}".format(t), material[t])
+
+
 def get_key(self):  # deliver alarmkey object
     if self.get('id.key') and self.get('id.key') not in ['None', '0']:
         return classes.get('alarmkey').getAlarmkeys(self.get('id.key'))
     else:
-        k = classes.get('alarmkey')(u'', '%s' % self._key, u'', u'-not in list-')
+        k = classes.get('alarmkey')(u'', u'%s' % self._key, u'', u'-not in list-')
         k.id = 0
         return k
 
@@ -107,6 +128,15 @@ def get_city(self):  # deliver city object
         return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
     else:
         return classes.get('city').getDefaultCity()
+
+
+def set_city(self, city):  # set city parameters from object
+    if city:
+        self.set('id.city', city.id)
+        self.set('city', city.name)
+    else:
+        self.set('id.city', '')
+        self.set('city', '')
 
 
 def get_person(self):  # deliver person string
@@ -137,6 +167,31 @@ def get_marker(self):  # deliver markerinfo: 0=no marker
     return int(self.get('marker', '0'))
 
 
+def get_position(self):
+    """
+    Return position as dict
+
+    :return: dict with lat, lng, zoom
+    """
+    return dict(lat=self.get_lat(), lng=self.get_lng(), zoom=self.get_zoom())
+
+
+def set_position(self, position):
+    """
+    Set position (lat, lng, zoom)
+
+    :param position: dict with keys: lat, lng, zoom
+    """
+    if 'lat' in position:
+        self.set('lat', position['lat'])
+    if 'lng' in position:
+        self.set('lng', position['lng'])
+    if 'zoom' in position:
+        self.set('zoom', position['zoom'])
+    else:
+        self.set('zoom', 17)
+
+
 class AlarmFaxChecker:
     """
     Prototype for fax checkers
@@ -148,7 +203,7 @@ class AlarmFaxChecker:
 
     def __init__(self):
         logging.basicConfig()
-        self.logger = logging.getLogger(self.__name__)
+        self.logger = logging.getLogger('emonitor.modules.alarms.faxchecker.{}'.format(self.__name__))
         self.loglevel = logging.ERROR
         self.logger.setLevel(self.loglevel)
 
@@ -279,6 +334,7 @@ def processFile(incomepath, filename):
                 else:
                     signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1])
     signal.send('alarm', 'testupload_start', result='done')
+    return params
 
 
 class AlarmRemarkWidget(MonitorWidget):

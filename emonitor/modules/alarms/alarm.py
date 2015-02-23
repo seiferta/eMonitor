@@ -6,6 +6,7 @@ import requests
 import re
 import yaml
 from collections import OrderedDict
+import logging
 
 from flask import current_app, flash, render_template, abort
 from emonitor.extensions import babel, db, classes, events, monitorserver, scheduler, signal
@@ -15,6 +16,8 @@ import emonitor.modules.alarms.alarmutils as alarmutils
 from emonitor.modules.alarms.alarmhistory import AlarmHistory
 from emonitor.modules.alarms.alarmattribute import AlarmAttribute
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 USE_NOMINATIM = 0
 LASTALARM = 0.0  # timestamp ini millies
@@ -54,22 +57,23 @@ class Alarm(db.Model):
     endtimestamp = property(alarmutils.get_endtimestamp)
     cars1 = property(alarmutils.get_cars1)
     cars2 = property(alarmutils.get_cars2)
-    material = property(alarmutils.get_material)
-    city = property(alarmutils.get_city)
+    material = property(alarmutils.get_material, alarmutils.set_material)
+    city = property(alarmutils.get_city, alarmutils.set_city)
     key = property(alarmutils.get_key)
-    street = property(alarmutils.get_street)
+    street = property(alarmutils.get_street, alarmutils.set_street)
     street2 = property(alarmutils.get_street2)
     streetno = property(alarmutils.get_streetno)
 
     housenumber = property(alarmutils.get_housenumber)
 
-    object = property(alarmutils.get_object)
+    object = property(alarmutils.get_object, alarmutils.set_object)
     person = property(alarmutils.get_person)
     priority = property(alarmutils.get_priority)
     remark = property(alarmutils.get_remark)
     lat = property(alarmutils.get_lat)
     lng = property(alarmutils.get_lng)
     zoom = property(alarmutils.get_zoom)
+    position = property(alarmutils.get_position, alarmutils.set_position)
     marker = property(alarmutils.get_marker)
 
     def __init__(self, timestamp, key, type, state):
@@ -241,7 +245,7 @@ class Alarm(db.Model):
                             if "'alarmid', %s" % i in str(j.args):  # layout changes for given alarm
                                 scheduler.unschedule_job(j)
                 except:
-                    current_app.logger.error('%s' % [a.id for a in Alarm.getActiveAlarms()])
+                    logger.error('%s' % [a.id for a in Alarm.getActiveAlarms()])
             LASTALARM = time.time() + 2.0
 
             if alarm.get('alarmtype', '') != '':
@@ -272,8 +276,6 @@ class Alarm(db.Model):
                     scheduler.remove_job(j.id)
 
             monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
-
-            #flash(babel.gettext(u'alarms.statechangeclosed'), 'alarms.close')
             signal.send('alarm', 'changestate', newstate=2)
             return []
 
@@ -300,8 +302,7 @@ class Alarm(db.Model):
             alarm = Alarm.getAlarms(params['id'])
             if not alarm:  # create dummy alarm
                 alarm = Alarm(datetime.datetime.now(), '', 2, 0)
-                alarm.set('lat', classes.get('settings').get('defaultLat'))
-                alarm.set('lng', classes.get('settings').get('defaultLng'))
+                alarm.position = dict(lat=classes.get('settings').get('defaultLat'), lng=classes.get('settings').get('defaultLng'))
                 alarm.set('id.key', '1')
                 alarm.set('id.address', '1')
                 alarm.set('id.city', '1')
@@ -344,6 +345,7 @@ class Alarm(db.Model):
         alarm_fields = dict()
         stime = time.time()
         alarmtype = None
+        stime = time.time()
         for t in classes.get('alarmtype').getAlarmTypes():
             if re.search(t.keywords.replace('\r\n', '|'), unicode(kwargs[0]['text'], errors='ignore')):
                 alarm_fields = t.interpreterclass().buildAlarmFromText(t, kwargs[0]['text'])
@@ -360,10 +362,11 @@ class Alarm(db.Model):
             os.remove(kwargs[0]['incomepath'] + kwargs[0]['filename'])
         except:
             pass
-        wa.logger.debug('alarm handler: %s' % alarm_fields)
+        logger.debug('alarm_fields: %s' % alarm_fields)
 
         if len(alarm_fields) == 0:  # no alarmfields found
             kwargs[0]['id'] = 0
+            logger.error('no alarm fields found.')
             return kwargs
 
         kwargs[0]['fields'] = ''
@@ -373,12 +376,11 @@ class Alarm(db.Model):
         if not alarmtype:  # alarmtype not found
             kwargs[0]['id'] = 0
             kwargs[0]['error'] = 'alarmtype not found'
-            wa.logger.error('alarm handler: alarmtype not found')
+            logger.error('alarmtype not found.')
             return kwargs
 
         # position
-        _lat = u'0.0'
-        _lng = u'0.0'
+        _position = dict(lat=u'0.0', lng=u'0.0')
         if USE_NOMINATIM == 1:
             try:
                 url = 'http://nominatim.openstreetmap.org/search'
@@ -386,8 +388,7 @@ class Alarm(db.Model):
                 if 'streetno' in alarm_fields:
                     params += ' %s' % alarm_fields['streetno'][0].split()[0]  # only first value
                 r = requests.get('%s?%s' % (url, params))
-                _lat = r.json()[0]['lat']
-                _lng = r.json()[0]['lon']
+                _position = dict(lat=r.json()[0]['lat'], lng=r.json()[0]['lon'])
             except:
                 pass
 
@@ -408,16 +409,18 @@ class Alarm(db.Model):
         alarm = Alarm(t, alarm_fields['key'][0], 1, 0)
         db.session.add(alarm)
         alarm.set('id.key', alarm_fields['key'][1])
-        alarm.set('k.cars1', '')  # set required attributes
-        alarm.set('k.cars2', '')
-        alarm.set('k.material', '')
+        alarm.material = dict(cars1='', cars2='', material='')  # set required attributes
         alarm.set('marker', '0')
         alarm.set('filename', kwargs[0]['filename'])
+        alarm.set('priority', '1')  # set normal priority
+        alarm.set('alarmtype', alarmtype.name)  # set checker name
+        alarm.state = 1
 
         # city
-        if alarm_fields['city'][1] != 0:
-            alarm.set('city', alarm_fields['city'][0])
-            alarm.set('id.city', alarm_fields['city'][1])
+        if 'city' in alarm_fields and alarm_fields['city'][1] != 0:
+            alarm.city = classes.get('city').getCities(alarm_fields['city'][1])
+            if alarm_fields['address'][1] != 0:
+                alarm.street = classes.get('street').getStreet(alarm_fields['address'][1])
         else:  # city not found -> build from fax
             url = 'http://nominatim.openstreetmap.org/search'
             params = 'format=json&city=%s&street=%s' % (alarm_fields['city'][0].split()[0], alarm_fields['address'][0])
@@ -426,17 +429,18 @@ class Alarm(db.Model):
                 alarm.set('streetno', alarm_fields['streetno'][0])
 
             r = requests.get('%s?%s' % (url, params))
+            logger.debug('load address data from nomination with parameters: city=%s street=%s' % (alarm_fields['city'][0].split()[0], alarm_fields['address'][0]))
             try:
-                _lat = r.json()[0]['lat']
-                _lng = r.json()[0]['lon']
-                alarm.set('lat', r.json()[0]['lat'])
-                alarm.set('lng', r.json()[0]['lon'])
+                _position = dict(lat=r.json()[0]['lat'], lng=r.json()[0]['lon'])
+                alarm.position = _position
             except:
                 pass
 
             alarm.set('city', alarm_fields['city'][0].split()[0])
             alarm.set('id.city', alarm_fields['city'][1])
             alarm.set('address', alarm_fields['address'][0])
+            if alarm_fields['address'][1] != 0:
+                alarm.street = classes.get('street').getStreet(id=alarm_fields['address'][1])
 
             if 'cars' in alarm_fields:  # add cars found in material
                 for _c in alarm_fields['cars'][1].split(';'):
@@ -452,24 +456,22 @@ class Alarm(db.Model):
                     _s = classes.get('street').getStreet(id=s)
                     if _s.cityid and _s.cityid not in _c and _s.cityid == alarm_fields['city'][1]:
                         _c.append(_s.cityid)
-                        alarm.set('id.address', _s.id)
-                        alarm.set('address', _s.name)
+                        alarm.street = _s
                         if 'object' in alarm_fields and str(alarm_fields['object'][1]) == '0':
                             if 'lat' not in alarm_fields and 'lng' not in alarm_fields:
-                                alarm.set('lat', _s.lat)
-                                alarm.set('lng', _s.lng)
-                                alarm.set('zoom', _s.zoom)
-                                if _lat != u'0.0' and _lng != u'0.0':  # set marker if nominatim delivers result
-                                    alarm.set('lat', _lat)
-                                    alarm.set('lng', _lng)
+                                alarm.position = dict(lat=_s.lat, lng=_s.lng, zoom=_s.zoom)
+                                if _position['lat'] != u'0.0' and _position['lng'] != u'0.0':  # set marker if nominatim delivers result
+                                    alarm.position = _position
                                     alarm.set('marker', '1')
-
+            else:  # add unknown street
+                alarm.set('id.address', 0)
+                alarm.set('address', alarm_fields['address'][0])
         # houseno
         if 'streetno' in alarm_fields.keys():
             alarm.set('streetno', alarm_fields['streetno'][0])
             if 'id.streetno' in alarm_fields and 'lat' in alarm_fields and 'lng' in alarm_fields:
-                alarm.set('lat', alarm_fields['lat'][0])
-                alarm.set('lng', alarm_fields['lng'][0])
+                alarm.position = dict(lat=alarm_fields['lat'][0], lng=alarm_fields['lng'][0])
+
             if 'zoom' in alarm_fields.keys():
                 alarm.set('zoom', alarm_fields['zoom'][0])
 
@@ -522,16 +524,12 @@ class Alarm(db.Model):
                 if _ao.alarmplan != 0:
                     alarm.set('alarmplan', _ao.alarmplan)
                 if _ao.streetid != alarm_fields['address'][1]:  # street config from alarmobject
-                    alarm.set('id.address', _ao.streetid)
-                    _s = classes.get('street').getStreets(id=_ao.streetid)
-                    alarm.set('address', '%s %s' % (_s.name, _ao.streetno))
+                    alarm.street = classes.get('street').getStreets(id=_ao.streetid)
                     if _ao.streetno == "":
                         alarm.set('streetno', alarm_fields['streetno'][0])
                     else:
                         alarm.set('streetno', _ao.streetno)
-                alarm.set('lat', _ao.lat)
-                alarm.set('lng', _ao.lng)
-                alarm.set('zoom', _ao.zoom)
+                alarm.position = dict(lat=_ao.lat, lng=_ao.lng, zoom=_ao.zoom)
             except:
                 pass
 
@@ -542,73 +540,68 @@ class Alarm(db.Model):
                 alarmkey = classes.get('alarmkey').getAlarmkeysByName(alarmtype.translation(u'_bma_'))
                 if len(alarmkey) > 0:
                     alarm.set('id.key', alarmkey[0].id)
-                    alarm._key = '%s: %s' % (alarmkey[0].category, alarmkey[0].key)
+                    alarm._key = u'%s: %s' % (alarmkey[0].category, alarmkey[0].key)
                 else:
                     alarm.set('id.key', '0')
                     alarm._key = alarmtype.translation(u'_bma_key_')
         # additional remarks
         if 'remark2' in alarm_fields and alarm_fields['remark2'][0] != '':
-            alarm.set('remark', '%s\n%s' % (alarm.get('remark'), alarm_fields['remark2'][0]))
+            alarm.set('remark', u'%s\n%s' % (alarm.get('remark'), alarm_fields['remark2'][0]))
 
         # material
         if alarm.get('id.key') != 0 and 'city' in alarm_fields:  # found key with aao
 
             if alarm_fields['city'][1] != 0:  # default city
                 if classes.get('department').getDepartments(alarm.city.dept).defaultcity == alarm_fields['city'][1]:  # default city for dep
-                    if 'material' in alarm_fields and str(alarm_fields['material'][1])[0] == '0':  # default cars for aao
-                        alarm.set('k.cars1', ','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]))
-                        alarm.set('k.cars2', ','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]))
-                        alarm.set('k.material', ','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
+                    if 'material' in alarm_fields:
+                        if str(alarm_fields['material'][1])[0] == '0':  # default cars for aao
+                            try:
+                                alarm.material = dict(cars1=u','.join([str(c.id) for c in alarm.key.getCars1(alarm.street.city.dept)]), cars2=u','.join([str(c.id) for c in alarm.key.getCars2(alarm.street.city.dept)]), material=u','.join([str(c.id) for c in alarm.key.getMaterial(alarm.street.city.dept)]))
+                            except AttributeError:
+                                alarm.material = dict(cars1=u','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]), cars2=u','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]), material=u','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
 
-                    elif 'material' in alarm_fields:  # add cars found in material if not aao
-                        for _c in alarm_fields['material'][1].split(','):
+                        for _c in alarm_fields['material'][1].split(','):  # add additional cars
                             if _c != '0' and _c not in alarm.get('k.cars1').split(','):
-                                alarm.set('k.cars1', alarm.get('k.cars1') + ',' + _c)
+                                alarm.set('k.cars1', u'{},{}'.format(alarm.get('k.cars1'), _c))
+
                 else:  # only alarmed material
-                    alarm.set('k.cars1', alarm_fields['material'][1])
+                    alarm.material = dict(cars1=alarm_fields['material'][1])
 
             else:  # else city
-                if alarm_fields['material'][1] == '0':  # default cars for aao
-                    alarm.set('k.cars1', ','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]))
-                    alarm.set('k.cars2', ','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]))
-                    alarm.set('k.material', ','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
+                if alarm_fields['material'][1] == u'0':  # default cars for aao
+                    alarm.material = dict(cars1=u','.join([str(c.id) for c in alarm.key.getCars1(alarm.city.dept)]), cars2=u','.join([str(c.id) for c in alarm.key.getCars2(alarm.city.dept)]), material=u','.join([str(c.id) for c in alarm.key.getMaterial(alarm.city.dept)]))
                 else:
-                    alarm.set('k.cars1', ','.join(list(OrderedDict.fromkeys(filter(lambda x: x != '0', str(alarm_fields['material'][1]).split(','))))))
+                    alarm.material = dict(cars1=u','.join(list(OrderedDict.fromkeys(filter(lambda x: x != '0', str(alarm_fields['material'][1]).split(','))))))
 
         else:  # default aao of current department (without aao)
             if alarm_fields['city'][1] != 0:  # found city -> use default aao
                 c = classes.get('city').get_byid(alarm_fields['city'][1]).dept
                 akc = classes.get('alarmkey').getDefault(c)
-                alarm.set('k.cars1', ",".join([str(c.id) for c in akc.cars1]))
-                alarm.set('k.cars2', ",".join([str(c.id) for c in akc.cars2]))
-                alarm.set('k.material', ",".join([str(c.id) for c in akc.materials]))
+                alarm.material = dict(cars1=u",".join([str(c.id) for c in akc.cars1]), cars2=u",".join([str(c.id) for c in akc.cars2]), material=u",".join([str(c.id) for c in akc.materials]))
 
-            l = ('%s,%s,%s' % (alarm.get('k.cars1'), alarm.get('k.cars2'), alarm.get('k.material'))).split(',')
+            l = (u'%s,%s,%s' % (alarm.get('k.cars1'), alarm.get('k.cars2'), alarm.get('k.material'))).split(',')
             if len(set(str(alarm_fields['material'][1]).split(',')).intersection(set(l))) == 0:
                 _dep = classes.get('department').getDefaultDepartment()
                 for c in alarm_fields['material'][1].split(','):
-                    if c == '0':  # default of home department needed
-                        alarm.set('k.cars1', ",".join([str(c.id) for c in alarm.key.getCars1(_dep.id)]))
-                        alarm.set('k.cars2', ",".join([str(c.id) for c in alarm.key.getCars2(_dep.id)]))
-                        alarm.set('k.material', ",".join([str(c.id) for c in alarm.key.getMaterial(_dep.id)]))
+                    if c == u'0':  # default of home department needed
+                        alarm.material = dict(cars1=u",".join([str(c.id) for c in alarm.key.getCars1(_dep.id)]), cars2=u",".join([str(c.id) for c in alarm.key.getCars2(_dep.id)]), material=u",".join([str(c.id) for c in alarm.key.getMaterial(_dep.id)]))
                         break
-                if '0' not in alarm_fields['material'][1]:  # only single car needed
-                    alarm.set('k.cars1', '%s,%s' % (alarm_fields['material'][1], alarm.get('k.cars1')))
+                if u'0' not in alarm_fields['material'][1]:  # only single car needed
+                    alarm.set('k.cars1', u'%s,%s' % (alarm_fields['material'][1], alarm.get('k.cars1')))
 
         if _ao and _ao.hasOwnAAO():  # use aao of current object
-            alarm.set('k.cars1', ",".join([str(c.id) for c in _ao.getCars1()]))
-            alarm.set('k.cars2', ",".join([str(c.id) for c in _ao.getCars2()]))
-            alarm.set('k.material', ",".join([str(c.id) for c in _ao.getMaterial()]))
+            alarm.material = dict(cars1=u",".join([str(c.id) for c in _ao.getCars1()]), cars2=u",".join([str(c.id) for c in _ao.getCars2()]), material=u",".join([str(c.id) for c in _ao.getMaterial()]))
 
-        alarm.set('priority', '1')  # set normal priority
-        alarm.set('alarmtype', alarmtype.name)  # set checker name
-        alarm.state = 1
+        if 'time' not in kwargs[0]:
+            kwargs[0]['time'] = []
+        etime = time.time()
+        kwargs[0]['time'].append('alarm creation done in %s sec.' % (etime - stime))
 
         if kwargs[0]['mode'] != 'test':
             db.session.commit()
             signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
-            wa.logger.info('alarm handler: alarm created')
+            logger.info('alarm created with id %s (%s)' % (alarm.id, (etime - stime)))
         else:
             kwargs[0]['fields'] += '\n\n--------------------------\nALARM-Object\n'
             _cdict = classes.get('car').getCarsDict()
@@ -625,12 +618,11 @@ class Alarm(db.Model):
                         kwargs[0]['fields'] += '\n-%s:\n  %s' % (a, alarm.get(a))
                 except (AttributeError, KeyError):
                     kwargs[0]['fields'] += '\n-%s:\n  %s (error)' % (a, alarm.get(a))
+            kwargs[0]['id'] = '-0'  # add dummy id
             db.session.rollback()
-            wa.logger.info('alarm handler: alarm created in TESTMODE')
+            logger.info('alarm created in TESTMODE (%s)' % (etime - stime))
+            return kwargs
 
-        if 'time' not in kwargs[0]:
-            kwargs[0]['time'] = []
-        kwargs[0]['time'].append('alarm: field detection done in %s sec.' % (time.time() - stime))
         if alarm:
             kwargs[0]['id'] = alarm.id
         else:
