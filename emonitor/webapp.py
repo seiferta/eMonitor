@@ -211,6 +211,12 @@ def configure_logging(app):
         file_handler.setFormatter(formatter)
         tornadologger.addHandler(file_handler)
 
+        # set debug mode to all other loggers of emonitor, use loglevel definition of emonitor.cfg
+        for l in [l for l in logging.Logger.manager.loggerDict if l.startswith(app.name.lower())]:
+            lo = logging.getLogger(l)
+            if lo.level > logging.DEBUG:
+                lo.setLevel(app.config.get('LOGLEVEL', logging.DEBUG))
+
     logger = logging.getLogger('alembic.migration')
     logger.setLevel(logging.ERROR)
     logger = logging.getLogger()
