@@ -93,5 +93,6 @@ class RunEvent(threading.Thread):
                 handler.handle(self.kwargs)
             except:
                 logger.error('handleEvent %s: %s' % (handler.name, traceback.format_exc()))
+                raise
         if handler:
             logger.info('eventDone %s' % handler.name)

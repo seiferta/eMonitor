@@ -20,7 +20,8 @@ class MySignal:
             self.signals['%s.%s' % (classname, option)] = self.signal.signal('%s.%s' % (classname, option))
 
     def send(self, classname, option, **extra):
-        logger.info('send signal %s.%s with: %s' % (classname, option, extra))
+        logger.debug('send signal %s.%s with: %s' % (classname, option, extra))
+        logger.info('send signal %s.%s' % (classname, option))
         if '%s.%s' % (classname, option) in self.signals.keys():
             self.signals['%s.%s' % (classname, option)].send('%s.%s' % (classname, option), **extra)
 

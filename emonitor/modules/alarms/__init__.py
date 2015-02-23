@@ -1,6 +1,7 @@
 import os
 import time
 import imp
+import logging
 from flask import send_from_directory, abort, Response, request
 from emonitor.sockethandler import SocketHandler
 from emonitor.utils import Module
@@ -9,6 +10,9 @@ from emonitor.modules.settings.settings import Settings
 from .content_admin import getAdminContent, getAdminData
 from .content_frontend import getFrontendContent, getFrontendData
 from .alarmutils import AlarmFaxChecker, AlarmRemarkWidget, AlarmWidget, AlarmIncomeWidget, AlarmTimerWidget
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 
 class AlarmsModule(Module):
@@ -161,7 +165,7 @@ class AlarmsModule(Module):
                     else:
                         scheduler.add_job(Alarm.changeState, args=[aalarm.id, 2])
             except:
-                app.logger.error('alarms.__init__.py: aalarm error')
+                logger.exception('error in aalarm')
 
     def frontendContent(self):
         return 1

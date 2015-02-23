@@ -2,10 +2,14 @@ import os
 import subprocess
 import codecs
 import time
+import logging
 from PIL import Image
 
 from emonitor.extensions import db, classes
 from emonitor.modules.settings.settings import Settings
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 DEFAULTINPUTFORMAT = ['pdf', 'tiff', 'jpg']
 DEFAULTINPUTTEXTFORMAT = ['txt']
@@ -42,7 +46,7 @@ class Ocr(Settings):
                 callstring = callstring.replace('[incomepath]', path)
                 callstring = callstring.replace('[filename]', '%s%s[%s]' % (inname, ext, i))
                 callstring = callstring.replace('[tmppath]', '%s%s%s' % (path2, inname + '-%d.', convertparams['format']))
-                #wa.logger.info('run image conversion with %s' % callstring)
+                logger.debug('run image conversion with %s' % callstring)
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
 
                 if i > -1:
@@ -102,7 +106,7 @@ class Ocr(Settings):
             callstring = callstring.replace('[incomepath]', path)
             callstring = callstring.replace('[filename]', '%s-%s.%s' % (inname, i, convertparams['format']))
             callstring = callstring.replace('[tmppath]', '%s%s-%s' % (path, inname, i))
-            #wa.logger.info('run ocr with %s' % callstring)
+            logger.debug('run ocr with %s' % callstring)
             subprocess.call(callstring, shell=True)
 
             try:

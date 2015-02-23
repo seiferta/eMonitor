@@ -216,6 +216,8 @@ def configure_logging(app):
             lo = logging.getLogger(l)
             if lo.level > logging.DEBUG:
                 lo.setLevel(app.config.get('LOGLEVEL', logging.DEBUG))
+    else:
+        tornadologger.setLevel(logging.ERROR)
 
     logger = logging.getLogger('alembic.migration')
     logger.setLevel(logging.ERROR)
@@ -227,12 +229,11 @@ def configure_logging(app):
     file_handler.setLevel(logging.INFO)
     logger.addHandler(file_handler)
 
-    if app.config.get('LOGLEVEL') == logging.ERROR:
-        file_handler = RotatingFileHandler('%s%s-error.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
-        file_handler.setFormatter(formatter)
-        file_handler.addFilter(MyFilter(logging.ERROR))
-        file_handler.setLevel(logging.ERROR)
-        logger.addHandler(file_handler)
+    file_handler = RotatingFileHandler('%s%s-error.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
+    file_handler.setFormatter(formatter)
+    file_handler.addFilter(MyFilter(logging.ERROR))
+    file_handler.setLevel(logging.ERROR)
+    logger.addHandler(file_handler)
 
 
 def configure_hook(app):
