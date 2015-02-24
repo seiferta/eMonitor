@@ -19,20 +19,12 @@
             <div style="text-align: right;">
                 <i class="icon-t1"></i> {{ data['item']['condition']['temp'] }}&deg;{{ data['units']['temperature'] }}
             </div>
-            <div id="astronomy">
-                <i class="icon-sunrise small"></i> {{ data['astronomy']['sunrise'] }}<br/>
-                <i class="icon-sunset small"></i> {{ data['astronomy']['sunset'] }}
-                ({{ data['location']['city'] }})
-            </div>
             <div id="wind" style="font-size: 0.4em;padding-top:30px;">
                 {{ data['wind']['speed'] }} {{ data['units']['speed'] }} {{ data['wind']['directionstring'] }}<br/>
                 <small>
                     {{ _('messages.weather.humidity') }}: {{ data['atmosphere']['humidity'] }}%<br/>
                     {{ _('messages.weather.pressure') }}: {{ data['atmosphere']['pressure'] }} hPa
                 </small>
-                <br/>
-                <br/>
-                <small>{{ data['lastBuildDate'] }}</small>
             </div>
         </div>
 
@@ -49,5 +41,14 @@
             {% endif %}
         </div>
 
+        <div id="bottom">
+            <div id="astronomy">
+                <i class="icon-sunrise small"></i> {{ data['astronomy']['sunrise'] }}<br/>
+                <i class="icon-sunset small"></i> {{ data['astronomy']['sunset'] }}
+                ({{ data['location']['city'] }})
+
+                <p style="text-align:right;font-size:1vw">{{ data['lastBuildDate'] }}</p>
+            </div>
+        </div>
     </div>
 </div>

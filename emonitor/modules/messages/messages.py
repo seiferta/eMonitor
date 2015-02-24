@@ -1,10 +1,13 @@
 import yaml
 import datetime
 import pytz
+import logging
 from emonitor.extensions import db, scheduler, classes, monitorserver
 from messageutils import calcNextStateChange, MessageTrigger
 from emonitor.modules.messages.message_text import TextWidget  # MessageText
 from emonitor.modules.messages.messagetype import MessageType
+
+logger = logging.getLogger(__name__)
 
 
 class Messages(db.Model):
@@ -174,7 +177,7 @@ class Messages(db.Model):
         job = scheduler.add_job(Messages.doMessageTrigger, name="messages", id="messages", trigger=MessageTrigger(Messages.getActiveMessages(), minutes=60))
         if len(job.trigger.messagelist) == 0:  # pause job if no active messages
             job.pause()
-        scheduler.app.logger.info('message trigger: scheduler job init done, next run at %s' % job.next_run_time)
+        logger.info('scheduler job init done, next run at %s' % job.next_run_time)
 
     @staticmethod
     def updateMessageTrigger():
