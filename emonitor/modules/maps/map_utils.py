@@ -34,7 +34,7 @@ def getAlarmMap(alarm, tilepath, **params):
     try:
         t = deg2num(float(alarm.get('lat')), float(alarm.get('lng')), zoom)
     except ValueError:
-        t = deg2num(float(alarm.objct.lat), float(alarm.object.lng), zoom)
+        t = deg2num(float(alarm.object.lat), float(alarm.object.lng), zoom)
 
     cat = alarm.key.category
     items = []

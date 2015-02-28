@@ -266,7 +266,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 FezAlarmFaxChecker().fields[fieldname] = (u'%s: %s' % (k.category, k.key), k.id)
                 FezAlarmFaxChecker().logger.debug('key: found "%s: %s"' % (k.category, k.key))
                 return
-            FezAlarmFaxChecker().logger.error('key: "%s" not found in alarmkeys' % _str)
+            FezAlarmFaxChecker().logger.info('key: "%s" not found in alarmkeys' % _str)
             FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
         except:
             FezAlarmFaxChecker().logger.error('key: error in key evaluation')

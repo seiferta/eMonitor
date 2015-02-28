@@ -85,7 +85,7 @@ class City(db.Model):
         """
         Get list of all cities
 
-        :return: list of :py:class:`emonitor.modules.streetes.city.City`
+        :return: list of :py:class:`emonitor.modules.streets.city.City`
         """
         if id == 0:
             return db.session.query(City).order_by(City.default.desc(), City.name).all()

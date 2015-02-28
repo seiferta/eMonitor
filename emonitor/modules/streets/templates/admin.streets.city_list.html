@@ -19,6 +19,7 @@
                     $('#osmcities').html(result);
                 }
             });
+            return false;
         }
 
         function loadAllHouseNumbers(){
@@ -84,7 +85,7 @@
             <small>{{ _('streets.city.housnumber.info') }}</small>
         </p>
         <p>
-            <button onclick="loadAllHouseNumbers()" name="action"><i class="fa fa-download"></i> {{ _('streets.city.loadnumbersbutton') }}</button>
+            <button type="button" onclick="return loadAllHouseNumbers()" name="action"><i class="fa fa-download"></i> {{ _('streets.city.loadnumbersbutton') }}</button>
         </p>
         <input type="hidden" name="form_id" value="admin.streets.city.overview"/>
     </form>

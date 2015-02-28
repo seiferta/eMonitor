@@ -88,7 +88,6 @@
     {{ super() }}
     var tiles = [{{ tiles }}];
     var map = null;
-    var interval;
 
     ws.onmessage=function(e){
         d = JSON.parse(e.data);
