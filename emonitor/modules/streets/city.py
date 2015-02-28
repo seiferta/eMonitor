@@ -81,13 +81,16 @@ class City(db.Model):
     
     # static part
     @staticmethod
-    def getCities():
+    def getCities(id=0):
         """
         Get list of all cities
 
         :return: list of :py:class:`emonitor.modules.streetes.city.City`
         """
-        return db.session.query(City).order_by(City.default.desc(), City.name).all()
+        if id == 0:
+            return db.session.query(City).order_by(City.default.desc(), City.name).all()
+        else:
+            return db.session.query(City).filter_by(id=id).one() or None
         
     @staticmethod
     def getCitiesDict():
