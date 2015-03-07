@@ -12,8 +12,7 @@
     #area{font-size:2vw;}
 }
 
-
-body, html{height:100%;margin:0;padding:0;color: #000000; font-family:Verdana, Arial, Helvetica, sans-serif; font-weight:normal; text-decoration:none; text-align:left; font-size:11px}
+body, html{background-color:#000000;height:100%;margin:0;padding:0;color: #000000; font-family:Verdana, Arial, Helvetica, sans-serif; font-weight:normal; text-decoration:none; text-align:left; font-size:11px}
 textarea{font-family:Verdana, Arial, Helvetica, sans-serif;}
 a, a:visited{color:#B40431;text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -84,6 +83,11 @@ div.popup_close{position:absolute;top:-10px;right:-10px;}
 div.popup_close a img{border:0;}
 
 div.version{background:url(/img/logo.png) no-repeat 0 0 transparent;position:absolute;left:2px; bottom:2px;height:30px;padding-left:30px;}
+div.versiontext{clear:both;position:fixed;bottom:5px;left:30px;}
+div.versiontext small{color: #ababab;}
+div.footer{position:fixed;left:0;right:0;bottom:0;height:20px;background-color: #333333 !important;border-top:1px solid #6e6e6e;}
+div.time{float:right;color: #ababab;padding-right:5px;padding-top:2px;font-size:12px;}
+#activecount{position:absolute;top:2px;left:2px;color: #ffffff;font-size:20px;}
 
 div.client{background:url(/img/monitor.png) no-repeat 25px transparent;height:160px;position:relative;cursor:pointer;}
 div.client_inactive{background:url(/img/monitor_inactive.png) no-repeat 25px transparent;height:160px;position:relative;cursor:pointer;}
