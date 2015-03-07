@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-04 14:33+0200\n"
-"PO-Revision-Date: 2014-08-04 14:35+0100\n"
+"POT-Creation-Date: 2015-03-07 09:45+0100\n"
+"PO-Revision-Date: 2015-03-07 09:48+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -23,6 +23,10 @@ msgstr ""
 msgid "admin.login.needed"
 msgstr "Anmeldung für Admin-Bereich erforderlich"
 
+#: emonitor/login/login.py:11
+msgid "admin.loginerror"
+msgstr "Falscher Benutzername oder Passwort."
+
 #: emonitor/login/templates/login.html:10
 #: emonitor/login/templates/login_settings.html:10
 msgid "login.titlemain"
@@ -32,25 +36,25 @@ msgstr "eMonitor - Login"
 msgid "login.header"
 msgstr "Anmelden an eMonitor"
 
-#: emonitor/login/templates/login.html:33
+#: emonitor/login/templates/login.html:32
 msgid "login.username"
 msgstr "Benutzername"
 
-#: emonitor/login/templates/login.html:40
+#: emonitor/login/templates/login.html:37
 msgid "login.password"
 msgstr "Passwort"
 
-#: emonitor/login/templates/login.html:45
-#: emonitor/login/templates/login_settings.html:51
+#: emonitor/login/templates/login.html:41
+#: emonitor/login/templates/login_settings.html:47
 msgid "login.rememberme"
 msgstr "angemeldet bleiben"
 
-#: emonitor/login/templates/login.html:49
+#: emonitor/login/templates/login.html:45
 msgid "login.loginbutton"
 msgstr "Anmelden"
 
-#: emonitor/login/templates/login.html:52
-#: emonitor/login/templates/login_settings.html:58
+#: emonitor/login/templates/login.html:48
+#: emonitor/login/templates/login_settings.html:54
 msgid "startpage.title"
 msgstr "eMonitor - Startseite"
 
@@ -58,22 +62,22 @@ msgstr "eMonitor - Startseite"
 msgid "login.user_header"
 msgstr "Passwort für aktuellen Benutzer ändern"
 
-#: emonitor/login/templates/login_settings.html:33
+#: emonitor/login/templates/login_settings.html:32
 msgid "login.curpassword"
 msgstr "Aktuelles Passwort"
 
-#: emonitor/login/templates/login_settings.html:36
+#: emonitor/login/templates/login_settings.html:35
 msgid "login.newpassword"
 msgstr "Neues Passwort eingeben"
 
-#: emonitor/login/templates/login_settings.html:40
+#: emonitor/login/templates/login_settings.html:38
 msgid "login.newpasswd"
 msgstr "Neues Passwort"
 
-#: emonitor/login/templates/login_settings.html:46
+#: emonitor/login/templates/login_settings.html:43
 msgid "login.repeat"
 msgstr "Passwort wiederholen"
 
-#: emonitor/login/templates/login_settings.html:55
+#: emonitor/login/templates/login_settings.html:51
 msgid "login.save"
 msgstr "Speichern"

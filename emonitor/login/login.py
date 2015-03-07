@@ -8,6 +8,7 @@ from emonitor.extensions import db
 login = Blueprint('login', __name__, template_folder="templates")
 
 gettext(u'admin.login.needed')
+gettext(u'admin.loginerror')
 
 
 @login.route("/login", methods=["GET", "POST"])

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-04 14:33+0200\n"
+"POT-Creation-Date: 2015-03-07 09:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,10 @@ msgstr ""
 msgid "admin.login.needed"
 msgstr ""
 
+#: emonitor/login/login.py:11
+msgid "admin.loginerror"
+msgstr ""
+
 #: emonitor/login/templates/login.html:10
 #: emonitor/login/templates/login_settings.html:10
 msgid "login.titlemain"
@@ -30,25 +34,25 @@ msgstr ""
 msgid "login.header"
 msgstr ""
 
-#: emonitor/login/templates/login.html:33
+#: emonitor/login/templates/login.html:32
 msgid "login.username"
 msgstr ""
 
-#: emonitor/login/templates/login.html:40
+#: emonitor/login/templates/login.html:37
 msgid "login.password"
 msgstr ""
 
-#: emonitor/login/templates/login.html:45
-#: emonitor/login/templates/login_settings.html:51
+#: emonitor/login/templates/login.html:41
+#: emonitor/login/templates/login_settings.html:47
 msgid "login.rememberme"
 msgstr ""
 
-#: emonitor/login/templates/login.html:49
+#: emonitor/login/templates/login.html:45
 msgid "login.loginbutton"
 msgstr ""
 
-#: emonitor/login/templates/login.html:52
-#: emonitor/login/templates/login_settings.html:58
+#: emonitor/login/templates/login.html:48
+#: emonitor/login/templates/login_settings.html:54
 msgid "startpage.title"
 msgstr ""
 
@@ -56,23 +60,23 @@ msgstr ""
 msgid "login.user_header"
 msgstr ""
 
-#: emonitor/login/templates/login_settings.html:33
+#: emonitor/login/templates/login_settings.html:32
 msgid "login.curpassword"
 msgstr ""
 
-#: emonitor/login/templates/login_settings.html:36
+#: emonitor/login/templates/login_settings.html:35
 msgid "login.newpassword"
 msgstr ""
 
-#: emonitor/login/templates/login_settings.html:40
+#: emonitor/login/templates/login_settings.html:38
 msgid "login.newpasswd"
 msgstr ""
 
-#: emonitor/login/templates/login_settings.html:46
+#: emonitor/login/templates/login_settings.html:43
 msgid "login.repeat"
 msgstr ""
 
-#: emonitor/login/templates/login_settings.html:55
+#: emonitor/login/templates/login_settings.html:51
 msgid "login.save"
 msgstr ""
 
