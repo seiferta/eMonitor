@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-07 09:45+0100\n"
+"POT-Creation-Date: 2015-03-07 10:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,10 @@ msgstr ""
 
 #: emonitor/login/login.py:11
 msgid "admin.loginerror"
+msgstr ""
+
+#: emonitor/login/login.py:12
+msgid "login.currpwdwrong"
 msgstr ""
 
 #: emonitor/login/templates/login.html:10

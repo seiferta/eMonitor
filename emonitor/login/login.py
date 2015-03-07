@@ -9,6 +9,7 @@ login = Blueprint('login', __name__, template_folder="templates")
 
 gettext(u'admin.login.needed')
 gettext(u'admin.loginerror')
+gettext(u'login.currpwdwrong')
 
 
 @login.route("/login", methods=["GET", "POST"])

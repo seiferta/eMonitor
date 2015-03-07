@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-07 09:45+0100\n"
-"PO-Revision-Date: 2015-03-07 09:48+0100\n"
+"POT-Creation-Date: 2015-03-07 10:02+0100\n"
+"PO-Revision-Date: 2015-03-07 10:02+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -26,6 +26,10 @@ msgstr "Anmeldung für Admin-Bereich erforderlich"
 #: emonitor/login/login.py:11
 msgid "admin.loginerror"
 msgstr "Falscher Benutzername oder Passwort."
+
+#: emonitor/login/login.py:12
+msgid "login.currpwdwrong"
+msgstr "Passworte stimmen nicht überein."
 
 #: emonitor/login/templates/login.html:10
 #: emonitor/login/templates/login_settings.html:10
