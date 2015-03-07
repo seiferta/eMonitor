@@ -74,3 +74,17 @@ div.loginversion{position:absolute;bottom:2px;right:2px;color: #ababab;}
 
 div.smallmodulesarea{right:0;position:absolute;top:5px}
 div.smallmodulesarea button{width:36px;height:25px}
+
+div.user ul { margin:0; padding: 0; list-style: none; cursor: pointer; position: relative; text-align:right;}
+div.user ul li { padding: 0.25em 3px 0.3em 15px;}
+div.user ul ul { z-index: 200000; display: none; position: absolute; right: 0; bottom: 0;margin: 0 0 1.55em; text-align:right;border:1px solid black;}
+div.user .dropdown ul ul { bottom: auto;margin: 1.45em 0 0;}
+div.user ul ul li { padding: 0.3em 5px 0.3em 5px;}
+div.user ul ul li:hover { background-color: #ababab;}
+div.user ul li:hover ul { display: block; background-color: #dedede;z-index: 200000;}
+
+.footer_functions{position:absolute;right:10px;top:2px;color:#fff;}
+.footer_functions a{color:#fff;}
+.footer_functions a:hover{color:#428bca;}
+
+span#ws i{padding-right:4px;}
