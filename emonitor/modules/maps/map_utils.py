@@ -55,7 +55,7 @@ def getAlarmMap(alarm, tilepath, **params):
             return x, y
 
         for p in alarm.housenumber.points:
-            points.append(t2pixel(deg2num(p[0], p[1], 18)))
+            points.append(t2pixel(deg2num(p[0], p[1], zoom)))
 
     for i in range(dimx / 2 * - 1, dimx / 2 + 1):
         for j in range(dimy / 2 * -1, dimy / 2 + 1):
