@@ -1,10 +1,14 @@
 import os
 import codecs
+import logging
 from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
 from StringIO import StringIO
 from emonitor import sockethandler
+
+xhtml2pdflogger = logging.getLogger('xhtml2pdf')
+xhtml2pdflogger.setLevel(logging.ERROR)
 
 
 class Classes:
