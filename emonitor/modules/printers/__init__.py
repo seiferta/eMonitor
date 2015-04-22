@@ -17,7 +17,7 @@ class PrintersModule(Module):
     def __init__(self, app):
         Module.__init__(self, app)
         # add template path
-        app.jinja_loader.searchpath.append("%s/emonitor/modules/printers/templates" % app.config.get('PROJECT_ROOT'))
+        app.jinja_loader.searchpath.append("{}/emonitor/modules/printers/templates".format(app.config.get('PROJECT_ROOT')))
 
         # create database tables
         from .printers import Printers
@@ -33,7 +33,7 @@ class PrintersModule(Module):
         # static folders
         @app.route('/printer/inc/<path:filename>')
         def printer_static(filename):
-            return send_from_directory("%s/emonitor/modules/printers/inc/" % app.config.get('PROJECT_ROOT'), filename)
+            return send_from_directory("{}/emonitor/modules/printers/inc/".format(app.config.get('PROJECT_ROOT')), filename)
 
         # translations
         babel.gettext(u'module.printers')
