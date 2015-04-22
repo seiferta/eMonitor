@@ -35,10 +35,13 @@ def set_street(self, value):
 
 
 def get_housenumber(self):
-    n = [n for n in self.street.housenumbers if str(n.number) == str(self.get('streetno').split(' ')[0])]
-    if len(n) == 1:
-        return n[0]
-    else:
+    try:
+        n = [n for n in self.street.housenumbers if u'{}'.format(n.number) == self.get('streetno').split(' ')[0]]
+        if len(n) == 1:
+            return n[0]
+        else:
+            return None
+    except:
         return None
 
 
