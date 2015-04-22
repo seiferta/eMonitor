@@ -267,4 +267,4 @@ class MonitorLog(db.Model):
             
     @staticmethod
     def getLogForClient(clientid):
-        return db.session.query(MonitorLog).filter((MonitorLog.clientid == clientid) | (MonitorLog.clientid == 0)).order_by('timestamp desc')
+        return db.session.query(MonitorLog).filter((MonitorLog.clientid == clientid) | (MonitorLog.clientid == 0)).order_by(MonitorLog.timestamp.desc())

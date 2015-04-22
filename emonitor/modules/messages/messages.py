@@ -169,7 +169,7 @@ class Messages(db.Model):
 
         :return: :py:class:`emonitor.modules.messages.messages.Messages` list
         """
-        return db.session.query(Messages).filter(Messages.state > 0).filter(Messages.startdate <= datetime.datetime.now()).filter(Messages.enddate >= datetime.datetime.now()).order_by('messages.startdate asc').all()
+        return db.session.query(Messages).filter(Messages.state > 0).filter(Messages.startdate <= datetime.datetime.now()).filter(Messages.enddate >= datetime.datetime.now()).order_by(Messages.startdate.asc()).all()
 
     @staticmethod
     def initMessageTrigger():

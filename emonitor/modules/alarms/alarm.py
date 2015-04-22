@@ -157,14 +157,14 @@ class Alarm(db.Model):
             return db.session.query(Alarm).filter_by(id=id).first()
         elif days != 0:  # filter last days, 0 = all days
             if int(state) == -1:
-                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').all()
+                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by(Alarm.timestamp.desc()).all()
             else:
-                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days)), Alarm.state == state).order_by('alarms.timestamp desc').all()
+                return db.session.query(Alarm).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days)), Alarm.state == state).order_by(Alarm.timestamp.desc()).all()
         else:
             if int(state) == -1:  # all states
-                return db.session.query(Alarm).order_by('alarms.timestamp desc').all()
+                return db.session.query(Alarm).order_by(Alarm.timestamp.desc()).all()
             else:
-                return db.session.query(Alarm).filter(Alarm.state == state).order_by('alarms.timestamp desc').all()
+                return db.session.query(Alarm).filter(Alarm.state == state).order_by(Alarm.timestamp.desc()).all()
 
     @staticmethod
     def getAlarmCount(days=0):
@@ -175,7 +175,7 @@ class Alarm(db.Model):
         :return: list grouped by state
         """
         if days != 0:
-            return db.session.query(Alarm.state, count(Alarm.id)).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by('alarms.timestamp desc').group_by(Alarm.state).all()
+            return db.session.query(Alarm.state, count(Alarm.id)).filter(Alarm.timestamp > (datetime.datetime.now() - datetime.timedelta(days=days))).order_by(Alarm.timestamp.desc()).group_by(Alarm.state).all()
         else:
             return db.session.query(Alarm.state, count(Alarm.id)).group_by(Alarm.state).all()
 
@@ -186,7 +186,7 @@ class Alarm(db.Model):
 
         :return: list or :py:class:`emonitor.modules.alarms.alarm.Alarm`
         """
-        return db.session.query(Alarm).filter_by(state=1).order_by('alarms.timestamp desc').all()
+        return db.session.query(Alarm).filter_by(state=1).order_by(Alarm.timestamp.desc()).all()
 
     @staticmethod
     def changeStates(state):
