@@ -46,9 +46,9 @@ class Printers(db.Model):
             callstring = callstring.replace('-printer [printer]', '')
         else:
             if 'printer' in params:
-                callstring = callstring.replace('[printer]', '"%s"' % params['printer'])
+                callstring = callstring.replace('[printer]', '"{}"'.format(params['printer']))
             else:
-                callstring = callstring.replace('[printer]', '"%s"' % self.printer)
+                callstring = callstring.replace('[printer]', '"{}"'.format(self.printer))
         try:
             if 'copies' in params:
                 callstring = callstring.replace('[copies]', "{}".format(params['copies']))
@@ -66,21 +66,21 @@ class Printers(db.Model):
         :param params: checks for *alarmid*
         """
         import emonitor.webapp as wa
-        pl = PrintLayout('%s.%s' % (self.module, self.layout))
+        pl = PrintLayout('{}.{}'.format(self.module, self.layout))
         _params = {}
         for p in pl.getParameters(self.settings[1].split(';')):  # load parameters from printer definition
             _params[p.getFullName()] = p.getFormatedValue()
         tmpfilename = random.random()
-        callstring = self.getCallString(filename='%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), **params)
+        callstring = self.getCallString(filename='{}{}.pdf'.format(wa.config.get('PATH_TMP'), tmpfilename), **params)
         if "id" in params:
             with wa.test_request_context('/', method='get'):
-                with open('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
+                with open('{}{}pdf'.format(wa.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
                     _params['id'] = params['id']
                     _params['style'] = self.layout[6:-5]
                     tmpfile.write(Module.getPdf(params['object'].getExportData('.html', **_params)))
             try:
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
-                os.remove('%s%s.pdf' % (wa.config.get('PATH_TMP'), tmpfilename))
+                os.remove('{}{}.pdf'.format(wa.config.get('PATH_TMP'), tmpfilename))
             except WindowsError:
                 pass
 
@@ -106,8 +106,8 @@ class Printers(db.Model):
         if _printer:
             try:
                 if kwargs[0]['mode'] != 'test':
-                    if '%sid' % _printer.module[:-1] in kwargs[0]:  # add obkect and id if given
-                        kwargs[0]['id'] = kwargs[0]['%sid' % _printer.module[:-1]]
+                    if '{}id'.format(_printer.module[:-1]) in kwargs[0]:  # add obkect and id if given
+                        kwargs[0]['id'] = kwargs[0]['{}id'.format(_printer.module[:-1])]
                         kwargs[0]['object'] = classes.get(_printer.module[:-1])
                     _printer.doPrint(**dict(kwargs[0]))
                 else:
@@ -119,7 +119,7 @@ class Printers(db.Model):
 
         if 'time' not in kwargs[0]:
             kwargs[0]['time'] = []
-        kwargs[0]['time'].append('printer: print done %sin %s sec.' % (state, time.time() - stime))
+        kwargs[0]['time'].append('printer: print done {}in {} sec.'.format(state, time.time() - stime))
 
         return kwargs
 

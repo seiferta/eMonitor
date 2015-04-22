@@ -23,7 +23,7 @@ class LayoutParameter:
         self.value = ""
 
     def __str__(self):
-        return '<params_%s_%s>' % (self.ptype, self.pname)
+        return '<params_{}_{}>'.format(self.ptype, self.pname)
 
     def setValue(self, value):
         """
@@ -39,7 +39,7 @@ class LayoutParameter:
 
         :return: param_[type]_[name]
         """
-        return "param_%s_%s" % (self.ptype, self.pname)
+        return "param_{}_{}".format(self.ptype, self.pname)
 
     def getFormatedValue(self):
         """
@@ -67,7 +67,7 @@ class PrintLayout:
         self.module = filename.split('.')[0]
         self.filename = '.'.join(filename.split('.')[1:])
         self.parameters = []
-        env = Environment(loader=PackageLoader('emonitor.modules.%s' % self.module, 'templates'))
+        env = Environment(loader=PackageLoader('emonitor.modules.{}'.format(self.module), 'templates'))
         if not current_app:
             import emonitor.webapp as wa
             env.filters.update(wa.jinja_env.filters)

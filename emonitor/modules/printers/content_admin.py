@@ -30,7 +30,7 @@ def getAdminContent(self, **params):
         def _printernames(callstring):
             printernames = ['<default>']
             if len(callstring.split()) > 0:
-                callstring = '%s -printer "xxx"' % callstring.split()[0]
+                callstring = '{} -printer "xxx"'.format(callstring.split()[0])
             try:
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
             except subprocess.CalledProcessError as e:
@@ -46,13 +46,13 @@ def getAdminContent(self, **params):
 
         def _templates():  # get all printer templates
             templates = {}
-            for root, dirs, files in os.walk("%s/emonitor/modules/" % current_app.config.get('PROJECT_ROOT')):
-                mod = root.replace("%s/emonitor/modules/" % current_app.config.get('PROJECT_ROOT'), '').replace('\\templates', '')
+            for root, dirs, files in os.walk("{}/emonitor/modules/".format(current_app.config.get('PROJECT_ROOT'))):
+                mod = root.replace("{}/emonitor/modules/".format(current_app.config.get('PROJECT_ROOT'), '').replace('\\templates', ''))
                 for f in files:
                     if f.endswith('.html') and f.startswith('print.'):
                         if mod not in templates:
                             templates[mod] = []
-                        templates[mod].append(PrintLayout('%s.%s' % (mod, f)))
+                        templates[mod].append(PrintLayout('{}.{}'.format(mod, f)))
             return templates
 
         if request.method == 'POST':
@@ -78,7 +78,7 @@ def getAdminContent(self, **params):
                 p.layout = '.'.join(request.form.get('template').split('.')[1:])
                 _s = [request.form.get('printersettings'), []]  # add settings from template
                 for tparam in [_p for _p in request.form.get('templateparams').split(';') if _p != ""]:
-                    _s[1].append('%s=%s' % (tparam[7:], request.form.get(tparam)))
+                    _s[1].append('{}={}'.format(tparam[7:], request.form.get(tparam)))
                 _s[1] = ';'.join(_s[1])
                 p.settings = _s
                 p.state = request.form.get('printerstate')
@@ -108,6 +108,6 @@ def getAdminData(self):
             if '=' in v and len(v.split('=')) == 2:
                 _v = v.split('=')
                 values[_v[0]] = _v[1]
-        return {'parameters': render_template('admin.printers_parameters.html', parameters=pl.getParameters(), values=values), 'url': '/%s/export/999999-%s.html' % (module, t)}
+        return {'parameters': render_template('admin.printers_parameters.html', parameters=pl.getParameters(), values=values), 'url': '/{}/export/999999-{}.html'.format(module, t)}
 
     return ""
