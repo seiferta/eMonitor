@@ -34,6 +34,13 @@ class MyScheduler(BackgroundScheduler):
         from emonitor.observer import observeFolder
         self.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=app.config.get('OBSERVERINTERVAL', 2)), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
         logger.info('scheduler: job added "observer"')
+        
+        try:
+            from emonitor.extensions import monitorserver
+            self.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(hours=1))
+            logger.info('scheduler: job added "monitorping"')
+        except:
+            logger.info('scheduler: error while adding ping job')
 
     def get_jobs(self, name=""):
         if name == "":
