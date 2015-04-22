@@ -1,4 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+import sqlalchemy.exc
 from .extensions import db
 
 
@@ -79,8 +80,12 @@ class User(db.Model):
             return db.session.query(User).order_by(User.level).all()
         else:
             user = db.session.query(User).filter_by(id=userid)
-            if user.first():
-                return user.first()
+            try:
+                if user.first():
+                    return user.first()
+            except sqlalchemy.exc.OperationalError:
+                db.session.rollback()
+                return User.getUsers(userid)
             
         # no user found -> init: create admin user
         if db.session.query(User).count() == 0:
