@@ -6,7 +6,7 @@ import requests
 from xml.dom import minidom
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
-from emonitor.extensions import signal
+from emonitor.extensions import signal, babel
 from emonitor.sockethandler import SocketHandler
 
 CURRENTLOADING = []
@@ -31,10 +31,19 @@ def getAlarmMap(alarm, tilepath, **params):
 
     zoom = int(alarm.get('zoom', 18))
     img_map = Image.new('RGBA', (dimx * 256, dimy * 256), (255, 255, 255, 255))
+    t = None
     try:
         t = deg2num(float(alarm.get('lat')), float(alarm.get('lng')), zoom)
     except ValueError:
-        t = deg2num(float(alarm.object.lat), float(alarm.object.lng), zoom)
+        if alarm.object:
+            t = deg2num(float(alarm.object.lat), float(alarm.object.lng), zoom)
+
+    if not t:  # no position found, create default image
+        stream = StringIO()
+        draw = ImageDraw.Draw(img_map)
+        draw.text((dimx * 256 / 2, dimy * 256 / 2), babel.gettext('alarms.position.notfound'), (255, 0, 0))
+        img_map.save(stream, format="PNG", dpi=(600, 600))
+        return stream.getvalue()
 
     cat = alarm.key.category
     items = []

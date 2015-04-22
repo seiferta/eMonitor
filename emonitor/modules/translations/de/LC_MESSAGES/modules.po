@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-08 21:24+0100\n"
-"PO-Revision-Date: 2015-02-08 21:27+0100\n"
+"POT-Creation-Date: 2015-04-22 13:17+0200\n"
+"PO-Revision-Date: 2015-04-22 13:18+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Language: de\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: emonitor/modules/__init__.py:24
+#: emonitor/modules/__init__.py:27
 msgid "module.startpages"
 msgstr "Startseite"
 
@@ -670,228 +670,228 @@ msgstr "Datei hochladen"
 msgid "admin.alarmobjects.delfilequestion"
 msgstr "Soll die gewählte Datei wirklich gelöscht werden?"
 
-#: emonitor/modules/alarms/__init__.py:96
+#: emonitor/modules/alarms/__init__.py:100
 msgid "module.alarms"
 msgstr "Einsätze"
 
-#: emonitor/modules/alarms/__init__.py:97
+#: emonitor/modules/alarms/__init__.py:101
 msgid "alarms.base"
 msgstr "Einsatzübersicht"
 
-#: emonitor/modules/alarms/__init__.py:98
+#: emonitor/modules/alarms/__init__.py:102
 msgid "module.alarms.types"
 msgstr "Einsatz-Typen "
 
-#: emonitor/modules/alarms/__init__.py:99
+#: emonitor/modules/alarms/__init__.py:103
 msgid "module.alarms.test"
 msgstr "Testverarbeitung"
 
-#: emonitor/modules/alarms/__init__.py:100
+#: emonitor/modules/alarms/__init__.py:104
 msgid "alarms_income"
 msgstr "Alarmeingang"
 
-#: emonitor/modules/alarms/__init__.py:101
+#: emonitor/modules/alarms/__init__.py:105
 msgid "alarms_timer"
 msgstr "Timer"
 
-#: emonitor/modules/alarms/__init__.py:102
+#: emonitor/modules/alarms/__init__.py:106
 msgid "alarms_remark"
 msgstr "Bemerkung"
 
-#: emonitor/modules/alarms/__init__.py:103
+#: emonitor/modules/alarms/__init__.py:107
 msgid "alarms"
 msgstr "Einsatz"
 
-#: emonitor/modules/alarms/__init__.py:104
+#: emonitor/modules/alarms/__init__.py:108
 msgid "alarms.prio0"
 msgstr "Niedrige Priorität"
 
-#: emonitor/modules/alarms/__init__.py:105
+#: emonitor/modules/alarms/__init__.py:109
 msgid "alarms.prio1"
 msgstr "Normale Priorität"
 
-#: emonitor/modules/alarms/__init__.py:106
+#: emonitor/modules/alarms/__init__.py:110
 msgid "alarms.prio2"
 msgstr "Hohe Priorität"
 
-#: emonitor/modules/alarms/__init__.py:107
+#: emonitor/modules/alarms/__init__.py:111
 msgid "emonitor.modules.alarms.alarm.Alarms"
 msgstr "Alarmerstellung"
 
-#: emonitor/modules/alarms/__init__.py:108
+#: emonitor/modules/alarms/__init__.py:112
 msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr "Alarm-Typ"
 
-#: emonitor/modules/alarms/__init__.py:109
+#: emonitor/modules/alarms/__init__.py:113
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:68
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:70
 msgid "alarms.test.protocol"
 msgstr "Verarbeitungs-Protokoll"
 
-#: emonitor/modules/alarms/__init__.py:110
+#: emonitor/modules/alarms/__init__.py:114
 msgid "alarms.test.result"
 msgstr "Verarbeitungs-Ergebnis"
 
-#: emonitor/modules/alarms/__init__.py:111
+#: emonitor/modules/alarms/__init__.py:115
 msgid "alarmstate.active"
 msgstr "Laufende Einsätze"
 
-#: emonitor/modules/alarms/__init__.py:112
+#: emonitor/modules/alarms/__init__.py:116
 msgid "alarmstate.created"
 msgstr "Offene Einsätze"
 
-#: emonitor/modules/alarms/__init__.py:113
+#: emonitor/modules/alarms/__init__.py:117
 msgid "alarmstate.done"
 msgstr "Abgeschlossene Einsätze"
 
-#: emonitor/modules/alarms/__init__.py:114
+#: emonitor/modules/alarms/__init__.py:118
 #: emonitor/modules/alarms/templates/admin.alarms.html:55
 msgid "alarmstate.archive"
 msgstr "Einsatz-Archiv"
 
-#: emonitor/modules/alarms/__init__.py:115
+#: emonitor/modules/alarms/__init__.py:119
 msgid "active"
 msgstr "aktiviert"
 
-#: emonitor/modules/alarms/__init__.py:116
+#: emonitor/modules/alarms/__init__.py:120
 msgid "created"
 msgstr "erzeugt"
 
-#: emonitor/modules/alarms/__init__.py:117
+#: emonitor/modules/alarms/__init__.py:121
 msgid "done"
 msgstr "abgeschlossen"
 
-#: emonitor/modules/alarms/__init__.py:118
+#: emonitor/modules/alarms/__init__.py:122
 msgid "archive"
 msgstr "archiviert"
 
-#: emonitor/modules/alarms/__init__.py:119
-#: emonitor/modules/alarms/alarm.py:257
+#: emonitor/modules/alarms/__init__.py:123
+#: emonitor/modules/alarms/alarm.py:261
 msgid "alarms.statechangeactivated"
 msgstr "Einsatz aktiviert"
 
-#: emonitor/modules/alarms/__init__.py:120
+#: emonitor/modules/alarms/__init__.py:124
 msgid "alarms.prioshort0"
 msgstr "Niedrig"
 
-#: emonitor/modules/alarms/__init__.py:121
+#: emonitor/modules/alarms/__init__.py:125
 msgid "alarms.prioshort1"
 msgstr "Normal"
 
-#: emonitor/modules/alarms/__init__.py:122
+#: emonitor/modules/alarms/__init__.py:126
 msgid "alarms.prioshort2"
 msgstr "Hoch"
 
-#: emonitor/modules/alarms/__init__.py:123
+#: emonitor/modules/alarms/__init__.py:127
 msgid "alarms.carsinuse"
 msgstr ""
 "Folgende Fahrzeuge/Geräte sind bereits in einem anderen Einsatz eingebunden:"
 
-#: emonitor/modules/alarms/__init__.py:124
+#: emonitor/modules/alarms/__init__.py:128
 msgid "history.autochangeState"
 msgstr "autom. Statusänderung"
 
-#: emonitor/modules/alarms/__init__.py:125
+#: emonitor/modules/alarms/__init__.py:129
 msgid "history.message"
 msgstr "Mitteilung"
 
-#: emonitor/modules/alarms/__init__.py:126
+#: emonitor/modules/alarms/__init__.py:130
 msgid "trigger.alarm_added"
 msgstr "Einsatz hinzugefügt"
 
-#: emonitor/modules/alarms/__init__.py:127
+#: emonitor/modules/alarms/__init__.py:131
 msgid "trigger.alarm_changestate"
 msgstr "Einsatz-Status geändert"
 
-#: emonitor/modules/alarms/__init__.py:129
+#: emonitor/modules/alarms/__init__.py:133
 msgid "trigger.alarm_added_sub"
 msgstr "Einsatz hinzugefügt (%(sub)s)"
 
-#: emonitor/modules/alarms/__init__.py:130
+#: emonitor/modules/alarms/__init__.py:134
 msgid "trigger.alarm_changestate_sub"
 msgstr "Einsatz-Status geändert (%(sub)s)"
 
-#: emonitor/modules/alarms/__init__.py:132
-#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/__init__.py:136
+#: emonitor/modules/alarms/alarmutils.py:283
 msgid "alarms.print.slightleft"
 msgstr "leicht links"
 
-#: emonitor/modules/alarms/__init__.py:133
-#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/__init__.py:137
+#: emonitor/modules/alarms/alarmutils.py:283
 msgid "alarms.print.slightright"
 msgstr "leicht rechts"
 
-#: emonitor/modules/alarms/__init__.py:134
-#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/__init__.py:138
+#: emonitor/modules/alarms/alarmutils.py:283
 msgid "alarms.print.right"
 msgstr "rechts"
 
-#: emonitor/modules/alarms/__init__.py:135
-#: emonitor/modules/alarms/alarmutils.py:225
+#: emonitor/modules/alarms/__init__.py:139
+#: emonitor/modules/alarms/alarmutils.py:283
 msgid "alarms.print.left"
 msgstr "links"
 
-#: emonitor/modules/alarms/__init__.py:136
-#: emonitor/modules/alarms/alarmutils.py:225
-#: emonitor/modules/alarms/alarmutils.py:240
+#: emonitor/modules/alarms/__init__.py:140
+#: emonitor/modules/alarms/alarmutils.py:283
+#: emonitor/modules/alarms/alarmutils.py:298
 msgid "alarms.print.straight"
 msgstr "weiterfahren"
 
-#: emonitor/modules/alarms/__init__.py:137
-#: emonitor/modules/alarms/alarmutils.py:225
-#: emonitor/modules/alarms/alarmutils.py:240
+#: emonitor/modules/alarms/__init__.py:141
+#: emonitor/modules/alarms/alarmutils.py:283
+#: emonitor/modules/alarms/alarmutils.py:298
 msgid "alarms.print.exit"
 msgstr "ausfahrt"
 
-#: emonitor/modules/alarms/__init__.py:138
-#: emonitor/modules/alarms/alarmutils.py:224
+#: emonitor/modules/alarms/__init__.py:142
+#: emonitor/modules/alarms/alarmutils.py:282
 msgid "alarms.print.bus"
 msgstr "bus"
 
-#: emonitor/modules/alarms/__init__.py:139
-#: emonitor/modules/alarms/alarmutils.py:242
+#: emonitor/modules/alarms/__init__.py:143
+#: emonitor/modules/alarms/alarmutils.py:300
 msgid "alarms.print.positive"
 msgstr "Fahrtrichtung SÜD"
 
-#: emonitor/modules/alarms/__init__.py:140
-#: emonitor/modules/alarms/alarmutils.py:243
+#: emonitor/modules/alarms/__init__.py:144
+#: emonitor/modules/alarms/alarmutils.py:301
 msgid "alarms.print.negative"
 msgstr "Fahrtrichtung NORD"
 
-#: emonitor/modules/alarms/__init__.py:142
+#: emonitor/modules/alarms/__init__.py:146
 msgid "alarms.filter.0"
 msgstr "alle Einsätze"
 
-#: emonitor/modules/alarms/__init__.py:143
+#: emonitor/modules/alarms/__init__.py:147
 msgid "alarms.filter.1"
 msgstr "Einsätze ein Tag"
 
-#: emonitor/modules/alarms/__init__.py:144
+#: emonitor/modules/alarms/__init__.py:148
 msgid "alarms.filter.7"
 msgstr "Einsätze eine Woche"
 
-#: emonitor/modules/alarms/__init__.py:145
+#: emonitor/modules/alarms/__init__.py:149
 msgid "alarms.filter.31"
 msgstr "Einsätze ein Monat"
 
-#: emonitor/modules/alarms/alarm.py:205
+#: emonitor/modules/alarms/alarm.py:209
 msgid "alarms.routingerror"
 msgstr "Fehler bei der Anfahrtsberechnung"
 
-#: emonitor/modules/alarms/alarmutils.py:234
-#: emonitor/modules/alarms/alarmutils.py:236
+#: emonitor/modules/alarms/alarmutils.py:292
+#: emonitor/modules/alarms/alarmutils.py:294
 msgid "alarms.print.highwaylong"
 msgstr "Bundesautobahn"
 
-#: emonitor/modules/alarms/alarmutils.py:236
+#: emonitor/modules/alarms/alarmutils.py:294
 msgid "alarms.print.highwayshort"
 msgstr "A"
 
-#: emonitor/modules/alarms/alarmutils.py:240
+#: emonitor/modules/alarms/alarmutils.py:298
 msgid "alarms.print.exitstart"
 msgstr "Auf"
 
-#: emonitor/modules/alarms/alarmutils.py:240
+#: emonitor/modules/alarms/alarmutils.py:298
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
@@ -1904,6 +1904,10 @@ msgstr "Download gestartet"
 msgid "settings.map.loadingstarted"
 msgstr "Tile-Download in Bearbeitung..."
 
+#: emonitor/modules/maps/map_utils.py:44
+msgid "alarms.position.notfound"
+msgstr "- keine Position definiert -"
+
 #: emonitor/modules/maps/templates/admin.map.html:22
 msgid "settings.map.listtitle"
 msgstr "Vorhandene Karten"
@@ -2113,7 +2117,7 @@ msgstr "Aktualisierung läuft"
 msgid "settings.map.updatestop"
 msgstr "Download abbrechen"
 
-#: emonitor/modules/maps/templates/admin.map_actions.html:119
+#: emonitor/modules/maps/templates/admin.map_actions.html:118
 msgid "settings.map.startdownload"
 msgstr ""
 "Sollen die Kartenteile der gewählten Fläche heruntergeladen werden, dass sie "
@@ -2165,50 +2169,46 @@ msgstr "Deaktiviert"
 msgid "message.base"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/message_map.py:8
-msgid "message.map"
-msgstr ""
-
 #: emonitor/modules/messages/message_text.py:8
 msgid "message.text"
 msgstr "Textnachrichten"
 
-#: emonitor/modules/messages/message_weather.py:10
+#: emonitor/modules/messages/message_weather.py:9
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:150
 msgid "Mon"
 msgstr "Montag"
 
-#: emonitor/modules/messages/message_weather.py:11
+#: emonitor/modules/messages/message_weather.py:10
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:151
 msgid "Tue"
 msgstr "Dienstag"
 
-#: emonitor/modules/messages/message_weather.py:12
+#: emonitor/modules/messages/message_weather.py:11
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:152
 msgid "Wed"
 msgstr "Mittwoch"
 
-#: emonitor/modules/messages/message_weather.py:13
+#: emonitor/modules/messages/message_weather.py:12
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:153
 msgid "Thu"
 msgstr "Donnerstag"
 
-#: emonitor/modules/messages/message_weather.py:14
+#: emonitor/modules/messages/message_weather.py:13
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:154
 msgid "Fri"
 msgstr "Freitag"
 
-#: emonitor/modules/messages/message_weather.py:15
+#: emonitor/modules/messages/message_weather.py:14
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:155
 msgid "Sat"
 msgstr "Samstag"
 
-#: emonitor/modules/messages/message_weather.py:16
+#: emonitor/modules/messages/message_weather.py:15
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:156
 msgid "Sun"
 msgstr "Sonntag"
 
-#: emonitor/modules/messages/message_weather.py:17
+#: emonitor/modules/messages/message_weather.py:16
 msgid "message.weather"
 msgstr "Wetter"
 
@@ -2429,11 +2429,11 @@ msgstr "aktualisieren"
 msgid "messages.deletequestion"
 msgstr "Soll die gewählte Mitteilung wirklich gelöscht werden?"
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:30
+#: emonitor/modules/messages/templates/widget.message.weather.html:25
 msgid "messages.weather.humidity"
 msgstr "Luftfeuchte"
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:31
+#: emonitor/modules/messages/templates/widget.message.weather.html:26
 msgid "messages.weather.pressure"
 msgstr "Luftdruck"
 
@@ -2515,11 +2515,12 @@ msgstr "Bildschirme/Clients werden gesucht..."
 
 #: emonitor/modules/monitors/templates/admin.monitors.current.html:27
 #: emonitor/modules/monitors/templates/admin.monitors.current.html:61
+#: emonitor/modules/monitors/templates/frontend.monitors.html:9
+#: emonitor/modules/monitors/templates/frontend.monitors.html:41
 msgid "monitors.current.notconnected"
 msgstr "kein Client angeschlossen"
 
 #: emonitor/modules/monitors/templates/admin.monitors.current.html:32
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:65
 msgid "monitor.clienttime"
 msgstr "Stand"
 
@@ -2742,31 +2743,11 @@ msgstr "Speichern"
 msgid "monitors.cancel"
 msgstr "Abbrechen"
 
-#: emonitor/modules/monitors/templates/frontend.monitors.html:2
-msgid "monitor.refreshtitle"
-msgstr "Aktualisieren/erneut suchen"
-
-#: emonitor/modules/monitors/templates/frontend.monitors.html:5
-msgid "monitor.loadingclients"
-msgstr "Bildschirme/Clients werden gesucht..."
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:21
-msgid "monitor.ping.header"
-msgstr "Folgende Bildschirme/Clients wurden gefunden"
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:37
-msgid "monitor.nodefinition"
-msgstr "keine Defintion vorhanden"
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:44
-msgid "monitor.notconnected"
-msgstr "kein Client angeschlossen"
-
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:58
+#: emonitor/modules/monitors/templates/frontend.monitors.html:21
 msgid "monitor.testpage"
 msgstr "Testseite"
 
-#: emonitor/modules/monitors/templates/frontend.monitors_clients.html:71
+#: emonitor/modules/monitors/templates/frontend.monitors.html:76
 msgid "monitor.layout.changed"
 msgstr "Der neue Inhalt wurde an den Bildschirm geschickt"
 
@@ -3271,29 +3252,29 @@ msgid "streets.city.edittitle"
 msgstr "Ort bearbeiten"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:30
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:41
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:42
 msgid "streets.city.info"
 msgstr ""
 "Übersicht über die definierten Orte. Jedem Ort können beliebig viele Straßen "
 "zugeordnet werden."
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:33
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:50
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
 msgid "streets.city.name"
 msgstr "Ortsname"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:38
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:51
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:52
 msgid "streets.city.subname"
 msgstr "Ortsteile"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:43
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:52
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:53
 msgid "streets.city.dept"
 msgstr "Zuständige Einheit"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:52
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:53
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:54
 msgid "streets.city.map"
 msgstr "Standardkarte"
 
@@ -3302,7 +3283,7 @@ msgid "streets.city.color"
 msgstr "Ortsfarbe"
 
 #: emonitor/modules/streets/templates/admin.streets.city_edit.html:66
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:67
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:68
 msgid "streets.city.default"
 msgstr "Standardort"
 
@@ -3338,63 +3319,63 @@ msgstr "Abbrechen"
 msgid "streets.city.delquestion"
 msgstr "Soll der gewählte Ort wirklich gelöscht werden?"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:40
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:41
 msgid "streets.city.listtitle"
 msgstr "Ortsliste"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:44
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:45
 #: emonitor/modules/streets/templates/admin.streets.html:51
 msgid "streets.nocitydef"
 msgstr ""
 "Definition des Ortes unvollständig: Es muss mindestens ein Ort/eine Stadt "
 "angelegt sein, dass eMonitor korrekt arbeiten kann."
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:55
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:56
 msgid "streets.city.addtitle"
 msgstr "Ort hinzufügen"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:60
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:61
 msgid "streets.city.nodata"
 msgstr "- keine Orte definiert -"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:73
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:74
 msgid "streets.city.deletetitle"
 msgstr "Ort löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:74
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:75
 msgid "streets.city.detailtitle"
 msgstr "Ort bearbeiten"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:80
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:81
 msgid "streets.city.itemscount"
 msgstr "(%(count)s Orte vorhanden)"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:82
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:83
 msgid "streets.city.housnumber.header"
 msgstr "Hausnummern von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:84
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:85
 msgid "streets.city.housnumber.info"
 msgstr ""
 "Von OpenStreetMap können alle Hausnummern der konfigurierten Städte geladen "
 "werden. Dabei werden die Hausnummern je Straße verfügbar."
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:87
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:88
 msgid "streets.city.loadnumbersbutton"
 msgstr "Hausnummern aller Städte/Orte laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:92
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:93
 msgid "streets.city.loadtitle"
 msgstr "Städte/Orte von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:93
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:94
 msgid "streets.city.load.info"
 msgstr ""
 "Über OpenStreetMap können automatisch alle Städte/Orte geladen werden, die "
 "innerhalb des definierten Kartenausschnitts liegen. Anschließend können "
 "einzelne Städte/Orte ins System eingespielt werden."
 
-#: emonitor/modules/streets/templates/admin.streets.city_list.html:94
+#: emonitor/modules/streets/templates/admin.streets.city_list.html:95
 msgid "streets.city.loadbutton"
 msgstr "Städte/Orte laden"
 
@@ -3899,3 +3880,18 @@ msgstr "Speichern"
 #: emonitor/modules/user/templates/admin.user_actions.html:33
 msgid "users.cancel"
 msgstr "Abbrechen"
+
+#~ msgid "monitor.refreshtitle"
+#~ msgstr "Aktualisieren/erneut suchen"
+
+#~ msgid "monitor.loadingclients"
+#~ msgstr "Bildschirme/Clients werden gesucht..."
+
+#~ msgid "monitor.ping.header"
+#~ msgstr "Folgende Bildschirme/Clients wurden gefunden"
+
+#~ msgid "monitor.nodefinition"
+#~ msgstr "keine Defintion vorhanden"
+
+#~ msgid "monitor.notconnected"
+#~ msgstr "kein Client angeschlossen"
