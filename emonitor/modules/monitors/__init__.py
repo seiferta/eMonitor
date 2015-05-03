@@ -1,11 +1,12 @@
 from flask import send_from_directory
 
-from emonitor.sockethandler import SocketHandler
-from emonitor.extensions import db, classes, babel, signal
+from emonitor.socketserver import SocketHandler
+from emonitor.extensions import babel, signal
 from emonitor.utils import Module
-from emonitor.modules.monitors.monitor import PlaceholderWidget
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendContent, getFrontendData
+from emonitor.modules.monitors.monitor import Monitor, PlaceholderWidget
+from emonitor.modules.monitors.monitorlayout import MonitorLayout
+from emonitor.modules.monitors.content_admin import getAdminContent, getAdminData
+from emonitor.modules.monitors.content_frontend import getFrontendData
 
 
 class MonitorsModule(Module):
@@ -26,13 +27,6 @@ class MonitorsModule(Module):
         # subnavigation
         self.adminsubnavigation = [('/admin/monitors', 'monitors.definition'), ('/admin/monitors/style', 'module.monitors.style'), ('/admin/monitors/current', 'module.monitors.current'), ('/admin/monitors/actions', 'module.monitors.actions')]
         self.widgets = [PlaceholderWidget('placeholder')]
-
-        # create database tables
-        from .monitor import Monitor
-        from .monitorlayout import MonitorLayout
-        classes.add('monitor', Monitor)
-        classes.add('monitorlayout', MonitorLayout)
-        db.create_all()
 
         signal.connect('monitorserver', 'clientsearchdone', frontendMonitorHandler.handleClientSearch)
         signal.connect('monitorserver', 'clientanswer', frontendMonitorHandler.handleClientAnswer)
@@ -55,7 +49,7 @@ class MonitorsModule(Module):
         babel.gettext(u'placeholder')
 
     def checkDefinition(self):
-        if db.session.query(classes.get('monitor')).count() == 0:
+        if Monitor.query.count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
 
@@ -75,24 +69,17 @@ class MonitorsModule(Module):
         """
         return getAdminData(self)
 
-    def getFrontendContent(self, **params):
-        """
-        Call *getFrontendContent* of monitors class
-
-        :param params: send given parameters to :py:class:`emonitor.modules.monitors.content_frontend.getFrontendContent`
-        """
-        return getFrontendContent(self, **params)
-
     def getFrontendData(self):
         """
         Call *getFrontendData* of monitors class
         """
+        from emonitor.modules.monitors.content_frontend import getFrontendData
         return getFrontendData(self)
    
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         """DEPRECATED test method"""
-        kwargs[0]['monitors_ret'] = 'yyy'
+        kwargs['monitors_ret'] = 'yyy'
         from time import sleep
         
         sleep(10)

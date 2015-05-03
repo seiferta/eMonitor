@@ -1,5 +1,5 @@
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from emonitor.modules.monitors.monitorlayout import MonitorLayout
 from emonitor.widget.monitorwidget import MonitorWidget
 
@@ -21,10 +21,11 @@ class Monitor(db.Model):
     layouts = db.relationship("MonitorLayout", collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
 
     def _get_current_layout(self):
+        from emonitor.monitorserver import MonitorLog
         layoutid = 0
         
         def findid(clientid):
-            for ml in classes.get('monitorlog').getLogForClient(clientid):
+            for ml in MonitorLog.getLogForClient(clientid):
                 if ml.type == 'change layout':
                     for p in ml.operation.split(';'):
                         
@@ -62,9 +63,9 @@ class Monitor(db.Model):
         :param layoutid: id as integer
         :return: :py:class:`emonitor.modules.monitors.monitorlayout.MonitorLayout`
         """
-        l = db.session.query(MonitorLayout).filter_by(id=int(layoutid))
-        if l.first():
-            return l.first()
+        l = MonitorLayout.getLayouts(id=int(layoutid))
+        if l:
+            return l
         else:  # deliver default layout
             return self.currentlayout
         
@@ -89,15 +90,15 @@ class Monitor(db.Model):
         :return: list of :py:class:`emonitor.modules.monitors.monitor.Monitor`
         """
         if id != 0:
-            return db.session.query(Monitor).filter_by(id=id).first()
+            return Monitor.query.filter_by(id=id).first()
         elif clientid != 0:
-            return db.session.query(Monitor).filter_by(clientid=clientid).first()
+            return Monitor.query.filter_by(clientid=clientid).first()
         else:
-            return db.session.query(Monitor).order_by('clientid').all()
+            return Monitor.query.order_by('clientid').all()
 
     @staticmethod
-    def handleEvent(eventname, *kwargs):
-        return True
+    def handleEvent(eventname, **kwargs):
+        return kwargs
 
 
 class PlaceholderWidget(MonitorWidget):

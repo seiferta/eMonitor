@@ -3,9 +3,11 @@ import yaml
 from PIL import Image, ImageDraw
 from math import ceil
 from flask import current_app
+from sqlalchemy.orm import relationship
 from StringIO import StringIO
 
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
+#from emonitor.modules.monitors.monitor import Monitor
 
 
 class MonitorLayout(db.Model):
@@ -21,6 +23,8 @@ class MonitorLayout(db.Model):
     mintime = db.Column(db.Integer, default=0)
     maxtime = db.Column(db.Integer, default=0)
     nextid = db.Column(db.Integer, default=0)
+
+    monitor = relationship("Monitor", backref="monitors", lazy='joined')
 
     @property
     def layout(self):
@@ -45,10 +49,10 @@ class MonitorLayout(db.Model):
                 l.append(dict(widget=i[0], width=int(i[1]), height=int(i[2]), col=int(i[3]), row=int(i[4])))
         self._layout = yaml.safe_dump(l, encoding='utf-8')
 
-    @property
-    def monitor(self):
-        """Build monitor from mid"""
-        return classes.get('monitor').getMonitors(id=self.mid)
+    #@property
+    #def monitor(self):
+    #    """Build monitor from mid"""
+    #    return Monitor.getMonitors(id=self.mid)
 
     def _get_themes(self):
         ret = []
@@ -139,11 +143,11 @@ class MonitorLayout(db.Model):
         :return: list of :py:class:`emonitor.modules.monitors.monitorlyout.MonitorLayout`
         """
         if id != 0:
-            return db.session.query(MonitorLayout).filter_by(id=id).first()
+            return MonitorLayout.query.filter_by(id=id).first()
         elif mid != 0:
-            return db.session.query(MonitorLayout).filter_by(mid=mid).all()
+            return MonitorLayout.query.filter_by(mid=mid).all()
         else:
-            return db.session.query(MonitorLayout).order_by('mid').all()
+            return MonitorLayout.query.order_by('mid').all()
 
     def getTriggerNames(self):
         return self.trigger.split(';')

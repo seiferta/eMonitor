@@ -1,6 +1,8 @@
 import os
 from flask import request, render_template, current_app
-from emonitor.extensions import classes, db, events, scheduler, monitorserver
+from emonitor.extensions import db, events, scheduler#, monitorserver
+from emonitor.modules.monitors.monitor import Monitor
+from emonitor.modules.monitors.monitorlayout import MonitorLayout
 
 
 def getAdminContent(self, **params):
@@ -15,14 +17,14 @@ def getAdminContent(self, **params):
     if len(module) == 1:  # monitor definition
         if request.method == 'POST':
             if request.form.get('action') == 'createmonitor':  # add monitor
-                params.update({'monitor': classes.get('monitor')('', '', '', '', '', '', ''), 'orientations': ['monitors.landscape', 'monitors.portrait']})
+                params.update({'monitor': Monitor('', '', '', '', '', '', ''), 'orientations': ['monitors.landscape', 'monitors.portrait']})
                 return render_template('admin.monitors_actions.html', **params)
 
             elif request.form.get('action') == 'updatemonitors':  # save monitor
                 if request.form.get('edit_id') != 'None':  # update
-                    monitor = classes.get('monitor').getMonitors(id=request.form.get('edit_id'))
+                    monitor = Monitor.getMonitors(id=request.form.get('edit_id'))
                 else:  # add monitor
-                    monitor = classes.get('monitor')('', '', '', '', '', '', '')
+                    monitor = Monitor('', '', '', '', '', '', '')
                     db.session.add(monitor)
                     
                 monitor.clientid = request.form.get('edit_clientid')
@@ -35,16 +37,16 @@ def getAdminContent(self, **params):
                 db.session.commit()
                 
             elif request.form.get('action').startswith('editmonitor_'):  # edit monitor
-                params.update({'monitor': classes.get('monitor').getMonitors(id=int(request.form.get('action').split('_')[-1])), 'orientations': ['monitors.landscape', 'monitors.portrait']})
+                params.update({'monitor': Monitor.getMonitors(id=int(request.form.get('action').split('_')[-1])), 'orientations': ['monitors.landscape', 'monitors.portrait']})
                 return render_template('admin.monitors_actions.html', **params)
 
             elif request.form.get('action').startswith('deletemonitor_'):  # delete monitor
-                db.session.delete(classes.get('monitor').getMonitors(id=int(request.form.get('action').split('_')[-1])))
+                db.session.delete(Monitor.getMonitors(id=int(request.form.get('action').split('_')[-1])))
                 db.session.commit()
                 
             elif request.form.get('action').startswith('createlayout_'):  # layout edit
                 mid = int(request.form.get('action').split('_')[-1])
-                monitor = classes.get('monitor').getMonitors(id=int(request.form.get('action').split('_')[-1]))
+                monitor = Monitor.getMonitors(id=int(request.form.get('action').split('_')[-1]))
                 
                 layouts = []
                 usedtriggers = []
@@ -53,15 +55,15 @@ def getAdminContent(self, **params):
                         layouts.append(l)
                         usedtriggers.append(l.trigger)
 
-                params.update({'monitors': classes.get('monitor').getMonitors(), 'layout': classes.get('monitorlayout')(mid, '', '', '', 0, 0, ''), 'layouts': layouts, 'triggers': events.getEvents(), 'usedtriggers': usedtriggers, 'monitor': classes.get('monitor').getMonitors(id=mid), 'widgets': current_app.blueprints['widget'].modules})
+                params.update({'monitors': Monitor.getMonitors(), 'layout': MonitorLayout(mid, '', '', '', 0, 0, ''), 'layouts': layouts, 'triggers': events.getEvents(), 'usedtriggers': usedtriggers, 'monitor': Monitor.getMonitors(id=mid), 'widgets': current_app.blueprints['widget'].modules})
                 return render_template('admin.monitors.layout_actions.html', **params)
 
             elif request.form.get('action') == 'updatelayout':  # update layout
                     if request.form.get('edit_id') != 'None':  # update
-                        layout = classes.get('monitorlayout').getLayouts(id=request.form.get('edit_id'))
+                        layout = MonitorLayout.getLayouts(id=request.form.get('edit_id'))
                     
                     else:  # add layout
-                        layout = classes.get('monitorlayout')('', '', '', '', '', '', '')
+                        layout = MonitorLayout('', '', '', '', '', '', '')
                         db.session.add(layout)
                         
                     layout.mid = request.form.get('edit_mid')
@@ -74,21 +76,21 @@ def getAdminContent(self, **params):
                     db.session.commit()
                     
             elif request.form.get('action').startswith('editmonitorlayout_'):  # edit layout
-                layout = classes.get('monitorlayout').getLayouts(id=int(request.form.get('action').split('_')[-1]))
+                layout = MonitorLayout.getLayouts(id=int(request.form.get('action').split('_')[-1]))
                 layouts = []
                 usedtriggers = []
-                for l in classes.get('monitorlayout').getLayouts(mid=layout.mid):
+                for l in MonitorLayout.getLayouts(mid=layout.mid):
                     if l.id != layout.id:
                         layouts.append(l)
                         usedtriggers.extend(l.trigger.split(';'))
-                params.update({'monitors': classes.get('monitor').getMonitors(), 'layout': layout, 'layouts': layouts, 'triggers': events.getEvents(), 'usedtriggers': usedtriggers, 'monitor': classes.get('monitor').getMonitors(id=layout.mid), 'widgets': current_app.blueprints['widget'].modules})
+                params.update({'monitors': Monitor.getMonitors(), 'layout': layout, 'layouts': layouts, 'triggers': events.getEvents(), 'usedtriggers': usedtriggers, 'monitor': Monitor.getMonitors(id=layout.mid), 'widgets': current_app.blueprints['widget'].modules})
                 return render_template('admin.monitors.layout_actions.html', **params)
 
             elif request.form.get('action').startswith('deletemonitorlayout_'):  # delete layout
-                db.session.delete(classes.get('monitorlayout').getLayouts(id=int(request.form.get('action').split('_')[-1])))
+                db.session.delete(MonitorLayout.getLayouts(id=int(request.form.get('action').split('_')[-1])))
                 db.session.commit()
 
-        params.update({'monitors': classes.get('monitor').getMonitors()})
+        params.update({'monitors': Monitor.getMonitors()})
         return render_template('admin.monitors.html', **params)
 
     else:
@@ -120,7 +122,7 @@ def getAdminContent(self, **params):
         elif module[1] == 'current':  # monitors current
             if request.method == 'POST':
                 pass
-            params.update({'monitors': classes.get('monitor').getMonitors()})
+            params.update({'monitors': Monitor.getMonitors()})
             return render_template('admin.monitors.current.html', **params)
 
         elif module[1] == 'actions':  # monitors actions
@@ -136,13 +138,14 @@ def getAdminData(self):
     :return: rendered template as string or json dict
     """
     if request.args.get('action') == 'thumb':  # create dynamic thumbnail of layout
-        layout = classes.get('monitorlayout').getLayouts(id=int(request.args.get('id')))
+        layout = MonitorLayout.getLayouts(id=request.args.get('id'))
         return layout.getLayoutThumb()
     
     if request.args.get('action') == 'widgetparams':  # params: width, height, w_id,
         return render_template('admin.monitors.actions.html', width=request.args.get('width'), height=request.args.get('height'), widget=request.args.get('w_id'))  # macro='widgetparams'
         
     if request.args.get('action') == 'ping':  # ping clients
+        from emonitor.extensions import monitorserver
         clients = monitorserver.getClients()  # start discovery
         return dict(clients=[k for k in clients.keys() if clients[k][0]])
 
