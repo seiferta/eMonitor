@@ -1,7 +1,6 @@
 import threading
 import traceback
 import logging
-from .extensions import classes
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +25,7 @@ class Event:
 
         for db_handler in self.getHandlers():
             for handler in [hdl for hdl in self.getHandlerList() if hdl[0] == db_handler.handler or hdl[0] == '*']:
-                if handler[1](self.name, args):
-                    pass
+                args.update(handler[1](self.name, **args))
 
     def addHandler(self, classname):
         self.handlers.append(classname)
@@ -36,12 +34,13 @@ class Event:
         return Event.globalhandlers.values() + self.handlers
 
     def getHandlers(self, handlerid=0):  # returns defined handlers (db) for event
+        from emonitor.modules.events.eventhandler import Eventhandler
         if handlerid != 0:
-            if classes.get('eventhandler'):
-                return classes.get('eventhandler').getEventhandlers(id=handlerid)
+            if Eventhandler:
+                return Eventhandler.getEventhandlers(id=handlerid)
         else:
-            if classes.get('eventhandler'):
-                return classes.get('eventhandler').getEventhandlers(event=self.name)
+            if Eventhandler:
+                return Eventhandler.getEventhandlers(event=self.name)
         return []
 
     @staticmethod
@@ -65,10 +64,10 @@ class Event:
         return
 
     @staticmethod
-    def raiseEvent(name, *kwargs):
-        logger.info('raiseEvent %s' % name)
-        logger.debug('  > arguments %s' % kwargs[0])
-        action = RunEvent([e for e in Event.events if e.name == name], kwargs[0], Event.app.logger)
+    def raiseEvent(name, **kwargs):
+        logger.info('raiseEvent {}'.format(name))
+        logger.debug('  > arguments {}'.format(kwargs))
+        action = RunEvent([e for e in Event.events if e.name == name], kwargs, Event.app.logger)
         action.start()
 
     @staticmethod
@@ -89,10 +88,10 @@ class RunEvent(threading.Thread):
         handler = None
         for handler in self.eventhandler:
             try:
-                logger.info('try handleEvent %s' % handler.name)
+                logger.info('try handleEvent {}'.format(handler.name))
                 handler.handle(self.kwargs)
             except:
-                logger.error('handleEvent %s: %s' % (handler.name, traceback.format_exc()))
+                logger.error('handleEvent {}: {}'.format(handler.name, traceback.format_exc()))
                 raise
         if handler:
-            logger.info('eventDone %s' % handler.name)
+            logger.info('eventDone {}'.format(handler.name))

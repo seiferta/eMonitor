@@ -19,8 +19,7 @@ def myget_translations():
 
     if os.path.exists(dirname):
         try:
-            for mo in [f[:-3] for f in os.listdir(os.path.join(dirname, str(get_locale()) + '/LC_MESSAGES')) if
-                       f.endswith('.mo')]:
+            for mo in [f[:-3] for f in os.listdir(os.path.join(dirname, str(get_locale()) + '/LC_MESSAGES')) if f.endswith('.mo')]:
                 files.append(support.Translations.load(dirname, [get_locale()], domain=mo))
         except:
             pass

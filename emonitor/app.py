@@ -3,9 +3,10 @@ import logging
 from alembic import util as alembicutil
 from sqlalchemy.exc import OperationalError
 from flask import Flask, request, render_template, current_app
-from .extensions import alembic, db, login_manager, babel, classes, cache, events, scheduler, monitorserver, signal, printers
+from .extensions import alembic, db, login_manager, babel, cache, events, scheduler, monitorserver, signal, printers
 from .user import User
 
+from emonitor import __version__
 from emonitor.widget.widget import widget
 from emonitor.frontend.frontend import frontend
 from emonitor.modules import modules
@@ -40,25 +41,28 @@ class DEFAULT_CONFIG(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 60
     SECRET_KEY = 'secret key'                             # default key, overwrite in cfg
-    APP_VERSION = '0.3.3'                                  # current version
+    APP_VERSION = __version__                             # current version
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     LANGUAGE_DIR = 'emonitor/web/translations'            # relative path of default templates
     DEFAULTZOOM = 12                                      # used for map-data
     LANGUAGES = {'de': 'Deutsch'}
-    ALEMBIC = {'script_location': 'alembic'}             # alembic base path
-    DB_VERSION = 'a35c7dbf502'                           # version of database
+    ALEMBIC = {'script_location': 'alembic'}              # alembic base path
+    DB_VERSION = '2b56ad35fcd7'                           # version of database
 
     # monitorserver
     MONITORSERVER_ANY = "0.0.0.0"
     MONITORSERVER_MCAST_ADDR = "224.168.2.9"
     MONITORSERVER_MCAST_PORT = 1600
 
+    OBSERVERINTERVAL = 2                                # interval for folderobserver
+    MONITORPING = 2                                     # monitor ping in minutes
+
 
 def create_app(config=None, app_name=None, blueprints=None):
     """
     Create app with given configuration and add blueprints
 
-    :param config: configuration from :py:class:`emonitor.webapp.DEFAULT_CONFIG` and config file
+    :param config: configuration from :py:class:`emonitor.app.DEFAULT_CONFIG` and config file
     :param app_name: name of app as string
     :param blueprints: list of blueprints to init
     :return: app object :py:class:`Flask`
@@ -111,27 +115,17 @@ def configure_extensions(app):
     db.app = app
 
     with app.app_context():
-        try:
-            db.reflect()  # check init
-            db.create_all()
-            alembic.stamp()  # set stamp to latest version
-        except:
-            if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
-                try:
-                    alembic.upgrade(current_app.config.get('DB_VERSION'))
-                except (alembicutil.CommandError, OperationalError):
-                    pass
-                finally:
-                    alembic.stamp()
+        if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
+            try:
+                alembic.upgrade(current_app.config.get('DB_VERSION'))
+            except (alembicutil.CommandError, OperationalError):
+                pass
+        db.reflect()  # check init
+        db.create_all()
+        alembic.stamp()  # set stamp to latest version
 
     # babel
     babel.init_app(app)
-
-    # add default classes
-    from emonitor.monitorserver import MonitorLog
-    #from modules.settings.department import Department
-    classes.add('monitorlog', MonitorLog)
-    #classes.add('department', Department)
 
     # flask-cache
     cache.init_app(app)
@@ -144,7 +138,8 @@ def configure_extensions(app):
     events.addEvent('default', handlers=[], parameters=[])
 
     # scheduler
-    scheduler.start()
+    if scheduler._stopped:
+        scheduler.start()
     scheduler.initJobs(app)
 
     # monitorserver
@@ -166,12 +161,30 @@ def configure_extensions(app):
     app.jinja_env.filters['rst'] = getreStructuredText
 
     # user
-    if User.count() == 0:
+    if User.query.count() == 0:
         User.getUsers(1)
     
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(id)
+        return User.getUsers(userid=id)
+
+    # add global elements
+    from emonitor.scheduler import eMonitorIntervalTrigger
+    from emonitor.modules.settings.settings import Settings
+    try:
+        _jping = scheduler.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(minutes=int(Settings.get('monitorping', app.config.get('MONITORPING', 2)))), name='monitorping')
+    except:
+        _jping = scheduler.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(minutes=int(app.config.get('MONITORPING', 2))), name='monitorping')
+
+    if str(Settings.get('monitorping', app.config.get('MONITORPING'))) == '0':
+        _jping.pause()
+    from emonitor.observer import observeFolder
+    try:
+        _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL', 2)))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+    except ValueError:
+        _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(app.config.get('OBSERVERINTERVAL', 2))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+    if str(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL'))) == '0':
+        _jobserver.pause()
 
 
 def configure_blueprints(app, blueprints):
@@ -237,26 +250,12 @@ def configure_logging(app):
 
 
 def configure_hook(app):
-    #@app.before_request
-    #def before_request():
-    #    pass
-
     @babel.localeselector
     def get_locale():
         return request.accept_languages.best_match(app.config.get('LANGUAGES').keys())
 
 
 def configure_handlers(app):
-
-    #@app.before_request
-    #def before_request():
-    #    print "before_request"
-
-    #@app.after_request
-    #def after_request(response):
-    #    print "after_request", response
-    #    return response
-
     @app.errorhandler(403)
     def forbidden_page(error):
         return render_template("errors403.html"), 403
@@ -267,4 +266,9 @@ def configure_handlers(app):
 
     @app.errorhandler(500)
     def server_error_page(error):
+        try:
+            from emonitor.extensions import db
+            db.rollback()
+        except:
+            pass
         return render_template("errors500.html"), 500

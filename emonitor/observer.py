@@ -1,6 +1,7 @@
 import os
 import logging
-from .extensions import events, classes
+from emonitor.extensions import events
+from emonitor.modules.settings.settings import Settings
 
 logger = logging.getLogger(__name__)
 BEFORE = AFTER = {}
@@ -32,26 +33,26 @@ def observeFolder(**kwargs):
     if not os.path.exists(path):
         if ERROR_RAISED == 0:
             ERROR_RAISED = 1
-            logger.error('observer path %s not found' % path)
+            logger.error(u"observer path {} not found".format(path))
         return  # error delivered
     elif ERROR_RAISED == 1:  # path found again
         ERROR_RAISED = 0
-        logger.info('observer path {} present again'.format(path))
+        logger.info(u"observer path {} present again".format(path))
 
     if ERROR_RAISED == 1:
         ERROR_RAISED = 0  # reset errorstate
-        
+
     AFTER = dict([(f, None) for f in os.listdir(path)])
-    for a in [f for f in AFTER if f not in BEFORE and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf']) + classes.get('settings').get('ocr.inputtextformat', [])]:  # new files added
+    for a in [f for f in AFTER if f not in BEFORE and os.path.splitext(f)[-1][1:] in Settings.get('ocr.inputformat', ['pdf']) + Settings.get('ocr.inputtextformat', [])]:  # new files added
         if a not in FILES:
-            events.raiseEvent('file_added', dict({'incomepath': path, 'filename': a}))
-            logger.info('file_added: %s%s' % (path, a))
+            events.raiseEvent('file_added', incomepath=path, filename=a)
+            logger.info(u"file_added: {}{}".format(path, a))
             FILES.append(a)
     
-    for r in [f for f in BEFORE if f not in AFTER and os.path.splitext(f)[-1][1:] in classes.get('settings').get('ocr.inputformat', ['pdf']) + classes.get('settings').get('ocr.inputtextformat', [])]:
+    for r in [f for f in BEFORE if f not in AFTER and os.path.splitext(f)[-1][1:] in Settings.get('ocr.inputformat', ['pdf']) + Settings.get('ocr.inputtextformat', [])]:
         if r in FILES:
-            events.raiseEvent('file_removed', dict({'incomepath': path, 'filename': r}))
-            logger.info('file_removed: %s%s' % (path, r))
+            events.raiseEvent('file_removed', incomepath=path, filename=r)
+            logger.info(u"file_removed: {}{}".format(path, r))
             FILES.remove(r)
             
     BEFORE = AFTER

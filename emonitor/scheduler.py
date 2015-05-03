@@ -6,7 +6,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_REMOVED
 from emonitor.extensions import signal
-from emonitor.sockethandler import SocketHandler
+from emonitor.socketserver import SocketHandler
 import pytz
 
 logging.basicConfig()
@@ -31,17 +31,6 @@ class MyScheduler(BackgroundScheduler):
         self.add_listener(MyScheduler.mylogger, EVENT_JOB_ERROR)
         self.add_listener(MyScheduler.myDone, EVENT_JOB_REMOVED)
 
-        from emonitor.observer import observeFolder
-        self.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=app.config.get('OBSERVERINTERVAL', 2)), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))})
-        logger.info('scheduler: job added "observer"')
-        
-        try:
-            from emonitor.extensions import monitorserver
-            self.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(hours=1))
-            logger.info('scheduler: job added "monitorping"')
-        except:
-            logger.info('scheduler: error while adding ping job')
-
     def get_jobs(self, name=""):
         if name == "":
             return super(MyScheduler, self).get_jobs()
@@ -51,7 +40,7 @@ class MyScheduler(BackgroundScheduler):
     @staticmethod
     def mylogger(event):
         if event.exception:
-            logger.error('%s' % event.exception)
+            logger.error(event.exception)
 
     @staticmethod
     def myDone(event):
@@ -66,7 +55,7 @@ class MyScheduler(BackgroundScheduler):
         :return:
         """
         for j in self.get_jobs():
-            if "'monitorid', %s" % monitorid in str(j.args):
+            if "'monitorid', {}".format(monitorid) in str(j.args):
                 self.unschedule_job(j)
         return 1
 
@@ -99,7 +88,7 @@ class eMonitorIntervalTrigger(IntervalTrigger):
     """Own implementation of IntervalTrigger"""
 
     def __str__(self):
-        return '*interval trigger* with interval: %s' % str(self.interval)
+        return '*interval trigger* with interval: {}'.format(self.interval)
 
 
 class handleScheduleSignals(SocketHandler):

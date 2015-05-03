@@ -7,8 +7,12 @@ import datetime
 import traceback
 import random
 import logging
-from compiler.ast import flatten
-from .extensions import db, events, classes, signal
+import urllib
+from emonitor.extensions import db, events, signal
+from emonitor.modules.events.eventhandler import Eventhandler
+from emonitor.modules.monitors.monitor import Monitor, MonitorLayout
+from emonitor.modules.alarms.alarm import Alarm
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -46,46 +50,39 @@ class MonitorServer():
         signal.addSignal('monitorserver', 'clientsearchdone')
         signal.addSignal('monitorserver', 'clientanswer')
 
-    def sendMessage(self, clientid, operation, *parameters):
-        p = flatten(parameters)
-        parameters = dict(zip(p[::2], p[1::2]))
-        params = ""
-        for p in parameters:
-            params += '&%s=%s' % (p, parameters[p])
+    def sendMessage(self, clientid, operation, **parameters):
+        _parameters = urllib.urlencode(parameters)
 
-        if len(params) > 0: _parameters = '?' + params
-        else: _parameters = ''
+        if len(_parameters) > 0:
+            _parameters = '?{}'.format(_parameters)
 
         if operation == "load":  # load monitor
             if "layoutid" in parameters and parameters['layoutid'] == '-1':
-                    _parameters = 'http://%s:%s/monitor' % (self.host, self.port)
+                    _parameters = 'http://{}:{}/monitor'.format(self.host, self.port)
             else:
-                _parameters = 'http://%s:%s/monitor/%%s%s' % (self.host, self.port, _parameters)
+                _parameters = 'http://{}:{}/monitor/{{}}{}'.format(self.host, self.port, _parameters)
 
         elif operation == "reset":  # reset monitor
-            _parameters = 'http://%s:%s/monitor/%s' % (self.host, self.port, '%s')
+            _parameters = 'http://{}:{}/monitor/{{}}'.format(self.host, self.port)
         elif operation == "execute":  # run script
-            _parameters = params
+            _parameters = _parameters
 
-        message = '%s|%s' % (clientid, operation)
+        message = '{}|{}'.format(clientid, operation)
         if _parameters != "":
-            message += '|%s' % _parameters
+            message += '|{}'.format(_parameters)
 
         self.messages.append(message)
         try:
-            _id = str(random.random())[2:10]
+            _id = "{}".format(random.random())
             t = threading.Thread(target=self.run, args=(_id,))
             t.start()
         except:
             _id = ""
-            logger.error('sendMessage: %s' % traceback.format_exc())
+            logger.error('sendMessage: {}'.format(traceback.format_exc()))
         return _id
 
-    def sendMessageWithReturn(self, clientid, operation, *parameters):
-        if len(parameters) == 0:
-            _id = self.sendMessage(clientid, operation)
-        else:
-            _id = self.sendMessage(clientid, operation, *parameters)
+    def sendMessageWithReturn(self, clientid, operation, **parameters):
+        _id = self.sendMessage(clientid, operation, **parameters)
 
         while _id not in self.results.keys():
             pass
@@ -99,9 +96,9 @@ class MonitorServer():
         
     def getClients(self):
         signal.send('monitorserver', 'clientsearchstart', clients=[])
-        monitors = classes.get('monitor').getMonitors()
+        monitors = Monitor.getMonitors()
         message, results = self.sendMessageWithReturn('0', 'ping')
-        
+
         clients = {}
         for res in results:
             _id = res['data'].split('|')[0]
@@ -126,65 +123,60 @@ class MonitorServer():
         pass
 
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         from emonitor.extensions import scheduler
-
-        #def cleanSchedules(monitorid):
-        #    for schedjob in scheduler.get_jobs():
-        #        if schedjob.name == 'changeState' and schedjob.args[0] == monitorid:
-        #            scheduler.unschedule_job(schedjob)
 
         if eventname == "client_income":
             return kwargs
-        params = []
+        params = dict()
         
         try:
-            hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.monitorserver.MonitorServer'][0]
+            hdl = [hdl for hdl in Eventhandler.getEventhandlers(event=eventname) if hdl.handler == 'emonitor.monitorserver.MonitorServer'][0]
             
             for p in [v[1] for v in hdl.getParameterValues('in') if v[1] != '']:  # required parameters for method
-                if p in kwargs[0]:
-                    params.append((p, kwargs[0][p]))
+                if p in kwargs:
+                    params[p] = kwargs[p]
         except:
             hdl = []
-            logger.error('handleEvent: %s' % traceback.format_exc())
+            logger.error('handleEvent: {}'.format(traceback.format_exc()))
 
-        if kwargs[0]['mode'] != 'test':
-            for monitorlayout in classes.get('monitorlayout').getLayouts():
+        if kwargs['mode'] != 'test':
+            for monitorlayout in MonitorLayout.getLayouts():
                 try:
                     if monitorlayout.trigger == eventname:
                         for p in hdl.getParameterValues('in'):
                             if p[0] == 'in.condition' and p[1] == '!activealarm':
-                                if classes.get('alarm').getActiveAlarms().count() == 0:
-                                    MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, params)
+                                if Alarm.getActiveAlarms().count() == 0:
+                                    MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, **params)
 
                         scheduler.deleteJobForEvent('changeLayout')
-                        MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, params)
+                        MonitorServer.changeLayout(monitorlayout.monitor.clientid, monitorlayout.id, **params)
                         if monitorlayout.nextid != 0:
                             scheduler.add_job(MonitorServer.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + monitorlayout.maxtime), args=[monitorlayout.monitor.clientid, monitorlayout.nextid, params])
                 except:
                     pass
                 finally: pass
         
-        if 'time' not in kwargs[0]:
-            kwargs[0]['time'] = []
-        kwargs[0]['time'].append('monitorserver: message sent')
+        if 'time' not in kwargs.keys():
+            kwargs['time'] = []
+        kwargs['time'].append('monitorserver: message sent')
         return kwargs
 
     @staticmethod
-    def changeLayout(monitorid, layoutid, *params):
+    def changeLayout(monitorid, layoutid, **params):
         from emonitor.extensions import monitorserver
-        logger.debug('changeLayout for monitor %s > %s' % (monitorid, layoutid))
-        parameters = [(u'layoutid', u'%s' % layoutid)]
+        logger.debug(u'changeLayout for monitor {} > {}'.format(monitorid, layoutid))
+        parameters = dict(layoutid=u'{}'.format(layoutid))
         try:
-            for p in params:
-                parameters.append((p[0], p[1]))  # do not change!
+            for k, v in params.iteritems():
+                parameters[k] = v
         except: pass
         l = MonitorLog.addLog(monitorid, 0, 'change layout', parameters)
-        if l: logger.error('change layout, addLog: %s' % l)
-        message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', parameters)
+        if l: logger.error(u'change layout, addLog: {}'.format(l))
+        message, result = monitorserver.sendMessageWithReturn(monitorid, 'load', **parameters)
 
         l = MonitorLog.addLog(int(message.split('|')[0]), 0, message.split('|')[1], '|'.join(message.split('|')[2:]))
-        if l: logger.error('change layout, addLog: %s' % l)
+        if l: logger.error(u'change layout, addLog: {}'.format(l))
         return 1
 
     def run(self, id):
@@ -259,12 +251,12 @@ class MonitorLog(db.Model):
     @staticmethod
     def getMonitorLogs(timestamp=0, clientid=0):
         if timestamp == 0 and clientid == 0:
-            return db.session.query(MonitorLog).order_by('timestamp')
+            return MonitorLog.query.order_by('timestamp').all()
         elif timestamp == 0 and clientid != 0:
-            return db.session.query(MonitorLog).filter_by(clientid=clientid).order_by('timestamp')
+            return MonitorLog.query.filter_by(clientid=clientid).order_by('timestamp').all()
         else:
-            return db.session.query(MonitorLog).filter_by(timestamp=timestamp)[0]
+            return MonitorLog.query.filter_by(timestamp=timestamp).one()
             
     @staticmethod
     def getLogForClient(clientid):
-        return db.session.query(MonitorLog).filter((MonitorLog.clientid == clientid) | (MonitorLog.clientid == 0)).order_by(MonitorLog.timestamp.desc())
+        return MonitorLog.query.filter((MonitorLog.clientid == clientid) | (MonitorLog.clientid == 0)).order_by(MonitorLog.timestamp.desc())

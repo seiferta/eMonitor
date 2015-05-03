@@ -1,5 +1,4 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlalchemy.exc
 from .extensions import db
 
 
@@ -35,7 +34,7 @@ class User(db.Model):
         self.authenticated = True  # default value
         
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User {}>'.format(self.username)
 
     def check_password(self, password):
         if self.password is None:
@@ -77,18 +76,14 @@ class User(db.Model):
         :return: list or :py:class:`emonitor.user.User`
         """
         if userid == 0:
-            return db.session.query(User).order_by(User.level).all()
+            return User.query.order_by(User.level).all()
         else:
-            user = db.session.query(User).filter_by(id=userid)
-            try:
-                if user.first():
-                    return user.first()
-            except sqlalchemy.exc.OperationalError:
-                db.session.rollback()
-                return User.getUsers(userid)
+            user = User.query.filter_by(id=userid)
+            if user.first():
+                return user.first()
             
         # no user found -> init: create admin user
-        if db.session.query(User).count() == 0:
+        if User.query.count() == 0:
             user = User('Administrator', '', '', 1, '', True)
             user._set_password('admin')
             db.session.add(user)
@@ -104,17 +99,8 @@ class User(db.Model):
         :param username: username as string
         :return: :py:class:`emonitor.user.User`
         """
-        user = db.session.query(User).filter_by(username=username)
+        user = User.query.filter_by(username=username)
         if user.first():
             return user.first()
         else:
             return None
-        
-    @staticmethod
-    def count():
-        """
-        Get number of users
-
-        :return: number as integer
-        """
-        return db.session.query(User).count()

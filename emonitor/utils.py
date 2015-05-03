@@ -1,14 +1,16 @@
 import os
 import codecs
 import logging
+import functools
+import inspect
 from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
 from StringIO import StringIO
-from emonitor import sockethandler
+from emonitor.socketserver import SocketHandler
 
-xhtml2pdflogger = logging.getLogger('xhtml2pdf')
-xhtml2pdflogger.setLevel(logging.ERROR)
+logger = logging.getLogger('xhtml2pdf')
+logger.setLevel(logging.ERROR)
 
 
 class Classes:
@@ -94,7 +96,7 @@ class Module:
         self.widgets = []
         self.adminsubnavigation = []
         self.dependency = []  # modulenames with dependency, if module data updated, alert
-        self.signalHandler = sockethandler.SocketHandler
+        self.signalHandler = SocketHandler
     
     @property
     def getName(self):
@@ -114,9 +116,9 @@ class Module:
         :param optional area: *frontend*, *admin*
         :return: *1* or *0*
         """
-        _dir = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
+        _dir = '{}/emonitor/modules/{}/help'.format(current_app.config.get('PROJECT_ROOT'), self.info['path'])
         if self.helppath != "":
-            _dir = '%s%s' % (current_app.config.get('PROJECT_ROOT'), self.helppath)
+            _dir = '{}{}'.format(current_app.config.get('PROJECT_ROOT'), self.helppath)
         if os.path.exists(_dir):
             return len([fn for fn in os.listdir(_dir) if fn.startswith(area)]) > 0
         else:
@@ -132,15 +134,15 @@ class Module:
         """
         name = name.replace('help/', '').replace('/', '.')
         if self.helppath == "":
-            filename = '%s/emonitor/modules/%s/help/%s.%s.%s.rst' % (current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
+            filename = '{}/emonitor/modules/{}/help/{}.{}.{}.rst'.format(current_app.config.get('PROJECT_ROOT'), self.info['path'], area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
         else:
-            filename = '%s%s%s.%s.%s.md' % (current_app.config.get('PROJECT_ROOT'), self.helppath, area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
+            filename = '{}{}{}.{}.{}.md'.format(current_app.config.get('PROJECT_ROOT'), self.helppath, area, current_app.config.get('BABEL_DEFAULT_LOCALE'), name)
 
         if os.path.exists(filename):
             with codecs.open(filename, 'r', encoding="utf-8") as helpcontent:
                 return helpcontent.read()
         else:
-            current_app.logger.info('help: missing help template %s' % filename)
+            current_app.logger.info('help: missing help template {}'.format(filename))
         return ""
 
     def getHelpPaths(self, area="frontend"):
@@ -151,9 +153,9 @@ class Module:
         :return: list of filenames
         """
         ret = []
-        fn = '%s/emonitor/modules/%s/help' % (current_app.config.get('PROJECT_ROOT'), self.info['path'])
+        fn = '{}/emonitor/modules/{}/help'.format(current_app.config.get('PROJECT_ROOT'), self.info['path'])
         if self.helppath != "":
-            fn = '%s/%s' % (current_app.config.get('PROJECT_ROOT'), self.helppath)
+            fn = '{}/{}'.format(current_app.config.get('PROJECT_ROOT'), self.helppath)
         for f in [fn for fn in os.listdir(fn) if fn.startswith(area)]:
             ret.append("/".join(f.split('.')[2:-1]))
         return sorted(ret)
@@ -227,7 +229,7 @@ class Module:
                 if "/alarms/" in uri and uri.endswith('png'):
                     f, ext = os.path.splitext(uri)
                     from emonitor.modules.alarms.alarm import Alarm
-                    fname = '%s%s' % (current_app.config.get('PATH_TMP'), '%s.png' % random.random())
+                    fname = '{}{}'.format(current_app.config.get('PATH_TMP'), '{}.png'.format(random.random()))
                     with open(fname, 'wb') as tmpimg:  # write tmp image file
                         tmpimg.write(Alarm.getExportData('.png', style=uri.split('-')[1][:-4], id=f.split('/')[-1].split('-')[0]))
                         images.append(fname)
@@ -248,27 +250,16 @@ def serialize(root):
     xml = ''
     for key in root.keys():
         if isinstance(root[key], dict):
-            xml = '%s<%s>\n%s</%s>\n' % (xml, key, serialize(root[key]), key)
+            xml = '{}<{}>\n{}</{}>\n'.format(xml, key, serialize(root[key]), key)
         elif isinstance(root[key], list):
-            xml = '%s<%s>' % (xml, key)
+            xml = '{}<{}>'.format(xml, key)
             for item in root[key]:
-                xml = '%s%s' % (xml, serialize(item))
-            xml = '%s</%s>' % (xml, key)
+                xml = '{}{}'.format(xml, serialize(item))
+            xml = '{}</{}>'.format(xml, key)
         else:
             value = root[key]
-            xml = '%s<%s>%s</%s>\n' % (xml, key, value, key)
+            xml = '{}<{}>{}</{}>\n'.format(xml, key, value, key)
     return xml
-
-
-#def u(s):
-#    try:
-#        return s.encode("utf-8")
-#    except:
-#        try:
-#            s = unicode(s)
-#            return s.decode("latin-1").encode("utf-8")
-#        except:
-#            return s
 
 
 class Pagination(object):
