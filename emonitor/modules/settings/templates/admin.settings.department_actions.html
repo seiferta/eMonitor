@@ -70,7 +70,7 @@
                 {{ _('settings.department.logo.act') }}
                 <div id="previewcontainer">
                     <div id="dellink"><a href="#" onclick="return deleteLogo()"><i class="fa fa-trash-o fa-lg"></i></a></div>
-                    <div id="preview">{%- if department.attributes['logo'] !='' %}<img src="data:image/{{ department.attributes['logo'].split('.')[-1] }};base64,{{ department.getLogoStream() }}"/>{%- endif %}</div>
+                    <div id="preview">{%- if department.logo !='' %}<img src="data:image/{{ department.logo.split('.')[-1] }};base64,{{ department.getLogoStream() }}"/>{%- endif %}</div>
                 </div>
                 <p>
                     <input name="dep_logo" type="file" style="width:100%;" accept="image/*">
@@ -130,8 +130,7 @@
 
         var reader = new FileReader();
         reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-        #reader.readAsDataURL(files[files.length -1]);
-        reader.readAsText(files[files.length -1]);
+        reader.readAsDataURL(files[files.length -1]);
     }
 
     function deleteLogo(){

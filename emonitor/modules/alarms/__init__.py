@@ -80,7 +80,6 @@ class AlarmsModule(Module):
             filename, extension = os.path.splitext(filename)
             try:
                 id, template = filename.split('-')
-                print ">>>", id, template, extension
                 if extension not in ['.pdf', '.html', '.png']:
                     abort(404)
                 elif extension == '.pdf':
