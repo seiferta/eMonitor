@@ -43,9 +43,9 @@ class AlarmObjectFile(db.Model):
         :return: :py:class:`emonitor.modules.alarmobjects.alarmobjectfile.AlarmObjectFile`
         """
         if filename == "":
-            return db.session.query(AlarmObjectFile).filter_by(id=id).first()
+            return AlarmObjectFile.query.filter_by(id=id).first()
         else:
-            return db.session.query(AlarmObjectFile).filter_by(object_id=id, filename=filename).first()
+            return AlarmObjectFile.query.filter_by(object_id=id, filename=filename).first()
 
     @staticmethod
     def getAlarmObjectTypes(objectid=0):
@@ -55,7 +55,7 @@ class AlarmObjectFile(db.Model):
         :param objectid: objectid as integer
         :return: list of :py:mod:`emonitor.modules.alarmobjects.alarmobjectfile.AlarmObjectFile`
         """
-        if id != 0:
-            return db.session.query(AlarmObjectFile).filter_by(id=id).all()
+        if objectid != 0:
+            return AlarmObjectFile.query.filter_by(id=objectid).all()
         else:
-            return db.session.query(AlarmObjectFile).order_by(collate(AlarmObjectFile.name, 'NOCASE')).all()
+            return AlarmObjectFile.query.order_by(collate(AlarmObjectFile.name, 'NOCASE')).all()

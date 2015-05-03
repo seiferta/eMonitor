@@ -1,8 +1,8 @@
 import yaml
-from emonitor.extensions import classes
 from emonitor.modules.streets.street import Street
 from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
 from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
+from emonitor.modules.cars.car import Car
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db
 
@@ -83,7 +83,7 @@ class AlarmObject(db.Model):
         """
         _t = {1: 'cars1', 2: 'cars2', 3: 'material'}
         ret = []
-        cars = classes.get('car').getCars()
+        cars = Car.getCars()
         for _c in [int(c) for c in self.get(_t[ctype]) if c != '']:
             try:
                 ret.append(filter(lambda c: c.id == _c, cars)[0])
@@ -105,11 +105,8 @@ class AlarmObject(db.Model):
 
     @staticmethod
     def getAlarmObjectsDict():
-        ret = {}
-        for obj in db.session.query(AlarmObject).order_by('name'):
-            ret[obj.id] = obj
-        return ret
-    
+        return dict((_o.id, _o) for _o in AlarmObject.query.order_by('name'))
+
     @staticmethod
     def getAlarmObjects(id=0, active=1):
         """
@@ -120,9 +117,9 @@ class AlarmObject(db.Model):
         :return: list of :py:class:`emonitor.modules.alarmobjects.alarmobject.AlarmObject`
         """
         if id != 0:
-            return db.session.query(AlarmObject).filter_by(id=id).first()
+            return AlarmObject.query.filter_by(id=id).first()
         else:
             if active == 1:  # only active objects
-                return db.session.query(AlarmObject).filter_by(active=1).order_by('name').all()
+                return AlarmObject.query.filter_by(active=1).order_by('name').all()
             else:  # deliver all objects
-                return db.session.query(AlarmObject).order_by('name').all()
+                return AlarmObject.query.order_by('name').all()

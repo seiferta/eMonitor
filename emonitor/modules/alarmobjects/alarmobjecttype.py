@@ -24,6 +24,6 @@ class AlarmObjectType(db.Model):
         :return: list or single :py:mod:`emonitor.modules.alarmobjects.alarmobjecttype.AlarmObjectType`
         """
         if id != 0:
-            return db.session.query(AlarmObjectType).filter_by(id=id).first()
+            return AlarmObjectType.query.filter_by(id=id).first()
         else:
-            return db.session.query(AlarmObjectType).order_by(collate(AlarmObjectType.name, 'NOCASE')).all()
+            return AlarmObjectType.query.order_by(collate(AlarmObjectType.name, 'NOCASE')).all()

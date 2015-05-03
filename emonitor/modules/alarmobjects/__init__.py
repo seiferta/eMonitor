@@ -1,8 +1,11 @@
 from flask import send_from_directory, current_app
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendData
+from emonitor.extensions import db, babel
+from emonitor.modules.alarmobjects.content_admin import getAdminContent, getAdminData
+from emonitor.modules.alarmobjects.content_frontend import getFrontendData
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
+from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
 
 
 class AlarmobjectsModule(Module):
@@ -17,19 +20,10 @@ class AlarmobjectsModule(Module):
     def __init__(self, app):
         Module.__init__(self, app)
         # add template path
-        app.jinja_loader.searchpath.append("%s/emonitor/modules/alarmobjects/templates" % app.config.get('PROJECT_ROOT'))
+        app.jinja_loader.searchpath.append(u"{}/emonitor/modules/alarmobjects/templates".format(app.config.get('PROJECT_ROOT')))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/alarmobjects', 'module.alarmobjects.base'), ('/admin/alarmobjects/types', 'module.alarmobjects.types'), ('/admin/alarmobjects/fields', 'module.alarmobjects.fields')]
-
-        # create database tables
-        from .alarmobject import AlarmObject
-        from .alarmobjecttype import AlarmObjectType
-        from .alarmobjectfile import AlarmObjectFile
-        classes.add('alarmobject', AlarmObject)
-        classes.add('alarmobjecttype', AlarmObjectType)
-        classes.add('alarmobjectfile', AlarmObjectFile)
-        db.create_all()
+        self.adminsubnavigation = [(u'/admin/alarmobjects', u'module.alarmobjects.base'), (u'/admin/alarmobjects/types', u'module.alarmobjects.types'), (u'/admin/alarmobjects/fields', u'module.alarmobjects.fields')]
 
         # translations
         babel.gettext(u'module.alarmobjects')
@@ -40,12 +34,11 @@ class AlarmobjectsModule(Module):
         @app.route('/alarmobjects/file/<path:filename>')  # filename = [id]-[filensme].ext
         def objectfile_static(filename):
             id, name = filename.split('-')
-            alarmobjectfile = classes.get('alarmobjectfile').getFile(id=id, filename=name)
-            fpath = '%salarmobjects/%s/' % (current_app.config.get('PATH_DATA'), id)
-            return send_from_directory(fpath, alarmobjectfile.filename)
+            alarmobjectfile = AlarmObjectFile.getFile(id=id, filename=name)
+            return send_from_directory(u'{}alarmobjects/{}/'.format(current_app.config.get('PATH_DATA'), id), alarmobjectfile.filename)
 
     def checkDefinition(self):
-        if db.session.query(classes.get('alarmobjecttype')).count() == 0:
+        if AlarmObjectType.query.count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
 

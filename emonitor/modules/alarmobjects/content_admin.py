@@ -1,7 +1,16 @@
 import os
 import random
 from flask import render_template, request, current_app
-from emonitor.extensions import classes, db
+from emonitor.extensions import db
+from emonitor.modules.settings.settings import Settings
+from emonitor.modules.settings.department import Department
+from emonitor.modules.streets.street import Street
+from emonitor.modules.maps.map import Map
+from emonitor.modules.cars.car import Car
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
+from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
+
 
 
 def getAdminContent(self, **params):
@@ -20,53 +29,53 @@ def getAdminContent(self, **params):
         if module[1] == 'types':
             if request.method == 'POST':
                 if request.form.get('action') == 'createalarmobjecttype':  # add type
-                    params.update({'alarmobjecttype': classes.get('alarmobjecttype')('', '')})
+                    params.update({'alarmobjecttype': AlarmObjectType('', '')})
                     return render_template('admin.alarmobjects.types_action.html', **params)
 
                 elif request.form.get('action') == 'savealarmobjecttype':  # save type
                     if request.form.get('alarmobjecttype_id') == 'None':  # add new type
-                        alarmobjecttype = classes.get('alarmobjecttype')('', '')
+                        alarmobjecttype = AlarmObjectType('', '')
                         db.session.add(alarmobjecttype)
                     else:  # update existing
-                        alarmobjecttype = classes.get('alarmobjecttype').getAlarmObjectTypes(id=int(request.form.get('alarmobjecttype_id')))
+                        alarmobjecttype = AlarmObjectType.getAlarmObjectTypes(id=int(request.form.get('alarmobjecttype_id')))
                     alarmobjecttype.name = request.form.get('alarmobjecttype_name')
                     alarmobjecttype.remark = request.form.get('alarmobjecttype_remark')
                     db.session.commit()
 
                 elif request.form.get('action').startswith('detailobjecttype'):  # edit type
-                    alarmobjecttype = classes.get('alarmobjecttype').getAlarmObjectTypes(id=int(request.form.get('action').split('_')[-1]))
+                    alarmobjecttype = AlarmObjectType.getAlarmObjectTypes(id=int(request.form.get('action').split('_')[-1]))
                     params.update({'alarmobjecttype': alarmobjecttype})
                     return render_template('admin.alarmobjects.types_action.html', **params)
 
                 elif request.form.get('action').startswith('deleteobjecttype_'):  # delete type
-                    db.session.delete(classes.get('alarmobjecttype').getAlarmObjectTypes(id=int(request.form.get('action').split('_')[-1])))
+                    db.session.delete(AlarmObjectType.getAlarmObjectTypes(id=int(request.form.get('action').split('_')[-1])))
                     db.session.commit()
 
-            params.update({'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes()})
+            params.update({'alarmobjecttypes': AlarmObjectType.getAlarmObjectTypes()})
             return render_template('admin.alarmobjects.types.html', **params)
 
         elif module[1] == 'fields':
             if request.method == 'POST':
                 if request.form.get('action') == 'updatefield':  # update fields
-                    classes.get('settings').set('alarmobjectfields', [i for i in chunks(request.form.getlist('fieldname'), 2) if i[0] != ''])
+                    Settings.set('alarmobjectfields', [i for i in chunks(request.form.getlist('fieldname'), 2) if i[0] != ''])
                     db.session.commit()
 
-            params.update({'fields': classes.get('settings').get('alarmobjectfields', [])})
+            params.update({'fields': Settings.get('alarmobjectfields', [])})
             return render_template('admin.alarmobjects.fields.html', **params)
 
     else:  # base view
         if request.method == 'POST':
-            streets = classes.get('street').getAllStreets()
+            streets = Street.getStreets()
             if request.form.get('action') == 'createalarmobject':  # add alarmobject
-                params.update({'alarmobject': classes.get('alarmobject')('', 0, '', classes.get('settings').get('defaultLat'), classes.get('settings').get('defaultLng'), classes.get('settings').get('defaultZoom'), '', '', '', 0, 0), 'streets': streets, 'selectedstreet': '', 'map': classes.get('map').getDefaultMap(), 'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes()})
+                params.update({'alarmobject': AlarmObject('', 0, '', Settings.get('defaultLat'), Settings.get('defaultLng'), Settings.get('defaultZoom'), '', '', '', 0, 0), 'streets': streets, 'selectedstreet': '', 'map': Map.getDefaultMap(), 'alarmobjecttypes': AlarmObjectType.getAlarmObjectTypes()})
                 return render_template('admin.alarmobjects_actions.html', **params)
 
             elif request.form.get('action') == 'savealarmobject':  # save
                 if request.form.get('alarmobject_id') == 'None':  # add new
-                    alarmobject = classes.get('alarmobject')('', 0, '', 0, 0, 0, '', '', '', 0, 0)
+                    alarmobject = AlarmObject('', 0, '', 0, 0, 0, '', '', '', 0, 0)
                     db.session.add(alarmobject)
                 else:  # update existing
-                    alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+                    alarmobject = AlarmObject.getAlarmObjects(id=request.form.get('alarmobject_id'))
                 alarmobject.name = request.form.get('edit_name')
                 alarmobject._streetid = request.form.get('streetid')
                 alarmobject._objecttype = int(request.form.get('edit_objecttype'))
@@ -82,29 +91,29 @@ def getAdminContent(self, **params):
                 db.session.commit()
 
             elif request.form.get('action') == 'savealarmobjectattributes':  # save attributes
-                alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
-                for field in classes.get('settings').get('alarmobjectfields', []):  # store attributes
+                alarmobject = AlarmObject.getAlarmObjects(id=request.form.get('alarmobject_id'))
+                for field in Settings.get('alarmobjectfields', []):  # store attributes
                     if 'edit_%s' % field[0] in request.form:
                         alarmobject.set(field[0], request.form.get('edit_%s' % field[0]))
                 db.session.commit()
 
             elif request.form.get('action') == 'savealarmobjectaao':  # save aao
-                alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+                alarmobject = AlarmObject.getAlarmObjects(id=request.form.get('alarmobject_id'))
                 alarmobject.set('cars1', [c for c in request.form.get('cars1').split(';') if c != ''])
                 alarmobject.set('cars2', [c for c in request.form.get('cars2').split(';') if c != ''])
                 alarmobject.set('material', [c for c in request.form.get('material').split(';') if c != ''])
                 db.session.commit()
 
             elif request.form.get('action').startswith('editalarmobject_'):  # edit alarmobject
-                alarmobject = classes.get('alarmobject').getAlarmObjects(id=int(request.form.get('action').split('_')[-1]))
-                params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': '%s (%s)' % (alarmobject.street.name, alarmobject.street.city.name), 'map': classes.get('map').getDefaultMap(), 'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes(), 'fields': classes.get('settings').get('alarmobjectfields', []), 'cars': classes.get('car').getCars(deptid=classes.get('department').getDefaultDepartment().id)})
+                alarmobject = AlarmObject.getAlarmObjects(id=int(request.form.get('action').split('_')[-1]))
+                params.update({'alarmobject': alarmobject, 'streets': streets, 'selectedstreet': '%s (%s)' % (alarmobject.street.name, alarmobject.street.city.name), 'map': Map.getDefaultMap(), 'alarmobjecttypes': AlarmObjectType.getAlarmObjectTypes(), 'fields': Settings.get('alarmobjectfields', []), 'cars': Car.getCars(deptid=Department.getDefaultDepartment().id)})
                 return render_template('admin.alarmobjects_actions.html', **params)
 
             elif request.form.get('action').startswith('deletealarmobject_'):  # delete alarmobject
-                db.session.delete(classes.get('alarmobject').getAlarmObjects(id=int(request.form.get('action').split('_')[-1])))
+                db.session.delete(AlarmObject.getAlarmObjects(id=int(request.form.get('action').split('_')[-1])))
                 db.session.commit()
 
-        params.update({'alarmobjects': classes.get('alarmobject').getAlarmObjects(active=0), 'alarmobjecttypes': classes.get('alarmobjecttype').getAlarmObjectTypes()})
+        params.update({'alarmobjects': AlarmObject.getAlarmObjects(active=0), 'alarmobjecttypes': AlarmObjectType.getAlarmObjectTypes()})
         return render_template('admin.alarmobjects.html', **params)
 
     
@@ -117,25 +126,25 @@ def getAdminData(self):
     if request.args.get('action') == 'uploadfile':  # add file for alarmobject
         ufile = request.files['uploadfile']
         filetype = request.form.get('name')
-        alarmobject = classes.get('alarmobject').getAlarmObjects(id=request.form.get('alarmobject_id'))
+        alarmobject = AlarmObject.getAlarmObjects(id=request.form.get('alarmobject_id'))
         filename = '%s%s' % (str(random.random())[2:], os.path.splitext(ufile.filename)[1])
 
         if not os.path.exists('%salarmobjects/%s/' % (current_app.config.get('PATH_DATA'), alarmobject.id)):  # create base directory
             os.makedirs('%salarmobjects/%s/' % (current_app.config.get('PATH_DATA'), alarmobject.id))
 
         ufile.save('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), alarmobject.id, filename))
-        alarmobject.files.set(classes.get('alarmobjectfile')(alarmobject.id, filename, filetype))
+        alarmobject.files.set(AlarmObjectFile(alarmobject.id, filename, filetype))
         db.session.commit()
         return render_template('admin.alarmobjects.file.html', alarmobject=alarmobject)
 
     elif request.args.get('action') == 'deletefile':  # delete file with id
-        objectfile = classes.get('alarmobjectfile').getFile(id=request.args.get('id'))
+        objectfile = AlarmObjectFile.getFile(id=request.args.get('id'))
         oid = objectfile.object_id
         if os.path.exists('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), oid, objectfile.filename)):
             os.remove('%salarmobjects/%s/%s' % (current_app.config.get('PATH_DATA'), oid, objectfile.filename))
         db.session.delete(objectfile)
         db.session.commit()
-        alarmobject = classes.get('alarmobject').getAlarmObjects(id=oid)
+        alarmobject = AlarmObject.getAlarmObjects(id=oid)
         return render_template('admin.alarmobjects.file.html', alarmobject=alarmobject)
 
     return ""
