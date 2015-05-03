@@ -11,7 +11,7 @@ This example will add the module 'modulename' in admin area with url `server/adm
 """
 from collections import OrderedDict
 import flask.ext.login as login
-from emonitor.sockethandler import SocketHandler
+from emonitor.socketserver import SocketHandler
 from flask import Blueprint, request, render_template, send_from_directory, current_app, jsonify
 from emonitor.decorators import admin_required
 from emonitor.user import User
@@ -83,6 +83,7 @@ def adminContent(module=''):
     :return: rendered HTML-output of module or startpage
     """
     if module == 'upgradedb':  # create new db-revision name given by revisionname
+        msg = ""
         if request.args.get('revisionname', '') != '':
             msg = alembic.revision(request.args.get('revisionname'))
         return render_template('admin.dbrevision.html', modules=[], current_mod='upgradedb', user=User.getUsers(login.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), path='/admin/' + module, revisionname=request.args.get('revisionname', ''), msg=msg)

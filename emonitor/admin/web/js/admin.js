@@ -6,6 +6,6 @@ if(!window.WebSocket){
 }else {
     ws = new WebSocket("ws://"+location.host+"/ws");
     ws.onclose=function(){
-        $('#ws').html('<i class="fa fa-eye-slash fa-lg"></i>');
+        $('#ws').html('<i class="fa fa-unlink fa-lg"></i>');
     }
 }
