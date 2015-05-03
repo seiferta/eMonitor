@@ -1,6 +1,7 @@
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import babel
 from emonitor.modules.events.content_admin import getAdminContent, getAdminData
+from emonitor.modules.events.eventhandler import Eventhandler
 
 
 class EventsModule(Module):
@@ -21,18 +22,13 @@ class EventsModule(Module):
         Module.__init__(self, app)
 
         # add template path
-        app.jinja_loader.searchpath.append("%s/emonitor/modules/events/templates" % app.config.get('PROJECT_ROOT'))
+        app.jinja_loader.searchpath.append(u"{}/emonitor/modules/events/templates".format(app.config.get('PROJECT_ROOT')))
 
-        # create database tables
-        from .eventhandler import Eventhandler
-        classes.add('eventhandler', Eventhandler)
-        db.create_all()
-        
         # translations
         babel.gettext(u'module.events')
 
     def checkDefinition(self):
-        if db.session.query(classes.get('eventhandler')).count() == 0:
+        if Eventhandler.query.count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
         

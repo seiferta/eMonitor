@@ -85,8 +85,8 @@ class Eventhandler(db.Model):
         :return: list or single object :py:class:`emonitor.modules.events.eventhandler.Eventhandler`
         """
         if id != '':
-            return db.session.query(Eventhandler).filter_by(id=id).first()
+            return Eventhandler.query.filter_by(id=id).first()
         elif event != '':
-            return db.session.query(Eventhandler).filter_by(event=event).order_by('position').all()
+            return Eventhandler.query.filter_by(event=event).order_by('position').all()
         else:
-            return db.session.query(Eventhandler).order_by('event', 'position').all()
+            return Eventhandler.query.order_by('event', 'position').all()

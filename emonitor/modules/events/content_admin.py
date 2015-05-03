@@ -1,5 +1,6 @@
 from flask import render_template, request
-from emonitor.extensions import classes, db, events
+from emonitor.extensions import db, events
+from emonitor.modules.events.eventhandler import Eventhandler
 
 
 def getAdminContent(self, **params):
@@ -17,25 +18,25 @@ def getAdminContent(self, **params):
     else:
         if request.method == 'POST':
             if request.form.get('action').startswith('edithandler_'):  # edit handler
-                handler = classes.get('eventhandler').getEventhandlers(id=int(request.form.get('action').split('_')[-1]))  # handler defined in db
+                handler = Eventhandler.getEventhandlers(id=int(request.form.get('action').split('_')[-1]))  # handler defined in db
                 handlers = events.getEvents(name=handler.event).getHandlerList()  # all possible handlers for given event
                 params.update({'handler': handler, 'handlers': handlers})
                 return render_template('admin.events_actions.html', **params)
 
             elif request.form.get('action').startswith('createhandler_'):  # add handler
-                handler = classes.get('eventhandler')(request.form.get('action').replace('createhandler_', ''), '', '', '')
+                handler = Eventhandler(request.form.get('action').replace('createhandler_', ''), '', '', '')
                 handlers = events.getEvents(name=handler.event).getHandlerList()  # all possible handlers for given event
                 params.update({'handler': handler, 'handlers': handlers})
                 return render_template('admin.events_actions.html', **params)
 
             elif request.form.get('action') == 'updateeventhandler':  # save handler
                 if request.form.get('handler_id') != 'None':  # update
-                    hdl = classes.get('eventhandler').getEventhandlers(id=request.form.get('handler_id'))
+                    hdl = Eventhandler.getEventhandlers(id=request.form.get('handler_id'))
                     hdl.position = request.form.get('edit_position')
                 
                 else:  # add
-                    existing = classes.get('eventhandler').getEventhandlers(event=request.form.get('edit_event'))
-                    hdl = classes.get('eventhandler')(request.form.get('edit_event'), '', '', '')
+                    existing = Eventhandler.getEventhandlers(event=request.form.get('edit_event'))
+                    hdl = Eventhandler(request.form.get('edit_event'), '', '', '')
                     db.session.add(hdl)
                     hdl.position = len(existing) + 1
                     
@@ -56,7 +57,7 @@ def getAdminContent(self, **params):
                 db.session.commit()
 
             elif request.form.get('action').startswith('deletehandler_'):  # delete handler
-                handler = classes.get('eventhandler').getEventhandlers(id=int(request.form.get('action').split('_')[-1]))
+                handler = Eventhandler.getEventhandlers(id=int(request.form.get('action').split('_')[-1]))
                 db.session.delete(handler)
                 db.session.commit()
                 
@@ -64,10 +65,10 @@ def getAdminContent(self, **params):
                 for item in [i for i in request.form if i.startswith('position_')]:
                     ids = request.form.getlist(item)
                     for _id in ids:
-                        hdl = classes.get('eventhandler').getEventhandlers(id=int(_id))
+                        hdl = Eventhandler.getEventhandlers(id=int(_id))
                         hdl.position = ids.index(_id) + 1
                 db.session.commit()
-        params.update({'events': events.getEvents(), 'definitions': len(classes.get('eventhandler').getEventhandlers())})
+        params.update({'events': events.getEvents(), 'definitions': len(Eventhandler.getEventhandlers())})
         return render_template('admin.events.html', **params)
 
     
@@ -85,9 +86,9 @@ def getAdminData(self, **params):
             return "- error, no handler given -"
 
         if request.args.get('id') != 'None':
-            eventhandler = classes.get('eventhandler').getEventhandlers(request.args.get('id'))  # db
+            eventhandler = Eventhandler.getEventhandlers(request.args.get('id'))  # db
         else:
-            eventhandler = classes.get('eventhandler')(request.args.get('event'), '', '', '')  # db
+            eventhandler = Eventhandler(request.args.get('event'), '', '', '')  # db
             
         # previous parameters
         inparameters = eventhandler.getInParameters()
