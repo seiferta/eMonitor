@@ -1,0 +1,34 @@
+<div style="margin-left:10px;">
+    {%- for extfield in field.getFields() %}
+        {%- if not extfield.getLabel().startswith(' ') %}
+            {%- if extfield.id == '' %}  {# label field #}
+                <div style="width:100%;padding-bottom:5px;">{{ extfield.getLabel() }}</div>
+            {%- else %}
+                {%- if extfield.getLabel()[0] == '<' and extfield.getLabel()[-1] == '>' %}{# else field #}
+                    <div style="width:100%;padding-bottom:5px;">
+                        <label style="width:99%;">{{ _('alarms.field.else.title') }}:
+                            <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="margin-left:15px;width:80%;"/>
+                        </label>
+                    </div>
+                {%- else %} {# normal field #}
+                    <div style="float:left;padding:4px 0 0 0;margin:0;width:49%;overflow:hidden;min-height:35px;">
+                        <label>
+                            {% if extfield.getArg('check') == 'false' %}
+                                <input type="checkbox" name="{{ extfield.getName() }}" value="1"{% if extfield.getValue(alarm) == '1' %} checked="checked"{% endif %}" style="margin:0 19px;"/>
+                            {% else %}
+                                <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="width:50px;"/>
+                            {% endif %}
+                            {{ extfield.getLabel() }}
+                        </label>
+                    </div>
+                {%- endif %}
+            {%- endif %}
+        {%- else %}
+            <div style="padding-left:40px;float:left;">
+                <label >
+                    <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="width:20%;"> {{ extfield.getLabel() }}
+                </label>
+            </div>
+        {%- endif %}
+    {%- endfor %}
+</div>

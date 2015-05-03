@@ -23,6 +23,7 @@
         .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
         .extended{border:1px solid silver!important}
         body{background-color: #fff!important}
+        .deptcars{cursor:pointer; padding-left:5px;}
     </style>
 {% endblock %}
 
@@ -51,7 +52,7 @@
 
             <div class="smallmodulesarea">
                 <button type="button" onclick="return addMessage('{{ alarm.id }}')" style="min-width:50px;white-space: nowrap">{{ alarm.history|count }} <i class="fa fa-comment-o fa-lg"></i></button>
-                <button type="button" {%- if ([frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd)|length >1 %}style="margin-right:10px"{%- endif  %} onclick="return toggleDetails()" ><i class="fa fa-indent fa-lg" id="detailswitch"></i></button>
+                <button type="button" {%- if ([frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd)|length >1 %}style="margin-right:10px"{%- endif  %} name="showalarmdetails"><i class="fa fa-indent fa-lg" id="detailswitch"></i></button>
                 {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
                 {%- if mod != 'alarms' %} {# exclude current module #}
                 <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
@@ -124,15 +125,15 @@
                             <input type="hidden" name="edit_keyid" id="edit_keyid" value="{% if alarm.key %}{{ alarm.key.id }}{% endif %}"/>
 
                         </p>
-                        <div style="width:100%;position:relative">
+                        <div style="width:100%;position:relative;overflow:hidden;">
                             <p style="width:50%;float:left;background-color:#fff;padding-right:20px;position:relative">
                                 <label style="width:99%;">{{ _('alarms.date') }}:<br/>
-                                    <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date"/>
+                                    <input type="text" value="{{ alarm.timestamp|datetime('dd.MM.yyyy') }}" name="edit_timestamp_date" style="width:100%" class="date" maxlength="10"/>
                                 </label>
                             </p>
                             <p style="width:50%;float:left;background-color:#fff;position:relative">
                                 <label style="width:99%">{{ _('alarms.time') }}:<br/>
-                                    <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" class="time"/>
+                                    <input type="text" value="{{ alarm.timestamp|datetime('HH:mm:ss') }}" name="edit_timestamp_time" style="width:100%" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" title="hh:mm:ss" placeholder="00:00:00" maxlength="8" class="time"/>
                                 </label>
                             </p>
                         </div>
@@ -181,7 +182,7 @@
                                 </div>
                                 <ul id="cars1" class="group" style="min-height:100px;">
                                     {%- for car in alarm.cars1 %}
-                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
                                         {{ carname(car) }}
                                     </li>
                                     {%- endfor %}
@@ -191,7 +192,7 @@
                                 <small>{{ _('alarms.cars2') }}</small>
                                 <ul id="cars2" class="group" style="min-height:102px;">
                                     {%- for car in alarm.cars2 %}
-                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                    <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
                                         {{ carname(car) }}
                                     </li>
                                     {%- endfor %}
@@ -202,23 +203,30 @@
                             <small>{{ _('alarms.material') }}</small>
                             <ul id="material" class="group" style="width:99%;min-height:50px;">
                                 {%- for car in alarm.material %}
-                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
                                     {{ carname(car) }}
                                 </li>
                                 {%- endfor %}
                             </ul>
                             <div class="clear" style="clear:left;"> </div>
 
-                            <small>{{ _('alarms.unused') }}</small><br/>
-                            <ul id="unused" class="group" style="width:99%;">
+                            <small>{{ _('alarms.unused') }}</small>
+                            {%- for dept in departments[1:] %}
+                                <span class="deptcars"><a onclick="return togglecars({{ dept.id }})" title="{{ _('alarms.otherdeptcars') }}">{{ dept.name }}</a></span>
+                            {%- endfor %}
+                            <br/>
+                            {%- for dept in departments %}
+
+                            <ul id="unused_{{ dept.id }}" class="group" style="width:99%;{% if not loop.first %}display:none;{% endif %}">
                                 {%- for car in cars %}
-                                {%- if car not in alarm.cars1+alarm.cars2+alarm.material %}
-                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}">
+                                {%- if car not in alarm.cars1+alarm.cars2+alarm.material and car.dept==dept and car.active==1 %}
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
                                     {{ carname(car) }}
                                 </li>
                                 {%- endif %}
                                 {%- endfor %}
                             </ul>
+                            {%- endfor %}
                         </div>
                         <div style="clear:left"></div>
                         <p>
@@ -258,6 +266,18 @@
         {%- endfor  %}
 
         var mymarker = null;
+
+        jQuery.fn.sortCars = function sortCars() {
+            $("> li", this[0]).sort(dec_sort).appendTo(this[0]);
+            function dec_sort(a, b){
+                return ($(b).attr("data-dept")+$(b).text().trim()) < ($(a).attr("data-dept")+$(a).text().trim()) ? 1 : -1;
+            }
+        };
+
+        function togglecars(id){
+            $('#unused_'+id).toggle();
+            return false;
+        }
 
         function addMessage(alarmid){
             if (alarmid=='None'){return false;}
@@ -311,8 +331,11 @@
 
         function clearCars(){
             $.each($("#cars1>li, #cars2>li, #material>li"), function(index, val){
-                $(val).detach().appendTo('#unused');
+                $(val).detach().appendTo('#unused_'+$(val).attr('data-dept'));
             });
+            {% for dept in departments %}
+            $('#unused_{{ dept.id }}').sortCars();
+            {% endfor %}
             return false;
         }
 
@@ -342,10 +365,12 @@
         $(document).ready(function() {
 
             $('.date').mask("99.99.9999");
+            $('.time').mask("99:99:99");
             $('#edit_address').change(function(){ $('#edit_addressid').val('')});
 
             parent.maps.map.clearHouseNumbers();
             parent.maps.map.clearMarkers();
+            parent.maps.map.clearRoute();
 
             if($('#marker').val()=='1' && $('#lat').val()!=''){ // only add marker, if exact position is given
                 mymarker = parent.maps.map.addMarker($('#lat').val(), $('#lng').val(), $('#priority').val(), true);
@@ -366,7 +391,7 @@
                 }
             });
 
-            $("#cars1, #cars2, #material, #unused").sortable({connectWith: '.group'});
+            $("#cars1, #cars2, #material,{% for dept in departments %} #unused_{{ dept.id }}{%- if not loop.last %}, {%- endif %}{% endfor %}").sortable({connectWith: '.group'});
 
             // init autcomplete of streets
             $.ajax({ type : "POST", url : "/data/streets?action=streetslookup&format=json",
@@ -449,10 +474,20 @@
                     });
                 }
             });
+
+            $("button[name='showalarmdetails']").click(function(){
+                $.ajax({ type: "POST", url: "/data/alarms?action=showdetailsform&alarmid={{ alarm.id }}",
+                    success: function (result) {
+                        parent.$('#overlaycontent').html(result);
+                        parent.$('.overlay').toggle();
+                        return false;
+                    }
+                });
+             });
         });
 
-
         function toggleDetails(){
+            /* unused */
             $('#detailswitch').toggleClass('fa-indent fa-outdent');
             return false;
         }

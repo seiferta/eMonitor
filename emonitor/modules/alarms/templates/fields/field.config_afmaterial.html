@@ -1,0 +1,69 @@
+{% extends "fields/field.config.html" %}
+
+{% block parameters %}
+<style>
+    #afmaterialfields input[type=text]{width:99%;}
+    div.fieldrow_material{width:90%;overflow:hidden;min-height:28px;position:relative;padding-left:20px;margin:0;}
+    div.fieldrow_material:hover{background-color: #fff;cursor:pointer;}
+    div.fieldrow_material i.background{position:absolute;left:5px;top:8px;color:#aaaaaa;}
+</style>
+<div id="afmaterialfields">
+    <form name="field_material" id="field_afmaterial_{{ dept }}" method="post" action="">
+        <h5>{{ _('alarms.field.material.title') }}</h5>
+        <small>{{ _('alarms.field.material.fieldinfo') }}</small>
+        <div id="fields_{{ dept }}" style="position:relative;overflow:hidden;">
+            <div style="position:absolute;bottom:0;right:0;width:10%;">
+                <button type="button" id="addmaterialfield_{{ dept }}" style="float:left;margin-bottom:2px;"><i class="fa fa-plus fa-lg"></i></button>
+            </div>
+            <div style="width:90%;padding-left:20px;">
+                <div class="rowcell" style="width:40%;">{{ _('alarms.parameterfield.name') }}</div>
+                <div class="rowcell" style="width:50%;">{{ _('alarms.parameterfield.value') }}</div>
+                <div class="rowcell" style="width:10%;text-align:center;">{{ _('alarms.parameterfield.number') }}</div>
+            </div>
+            <div id="field_material_sortable{{ dept }}">
+                {%- for param in field.parameters %}
+                <div class="fieldrow_material">
+                    <i class="fa fa-arrows-v background"></i>
+                    <div class="rowcell" style="width:40%;"><input type="text" name="material.field.name" value="{{ param[0] }}"/></div>
+                    <div class="rowcell" style="width:50%;"><input type="text" name="material.field.value" value="{{ param[1] }}"/></div>
+                    <div class="rowcell" style="width:10%;text-align:center;"><input type="checkbox" class="check{{ dept }}"{% if param[2] == 'true' %} checked="checked"{% endif %}/>
+                    <input type="hidden" name="material.field.check" value="{{ param[2] }}"/></div>
+                </div>
+                {%- endfor %}
+                <div class="fieldrow_material">
+                    <i class="fa fa-arrows-v background"></i>
+                    <div class="rowcell" style="width:40%;"><input type="text" name="material.field.name"/></div>
+                    <div class="rowcell" style="width:50%;"><input type="text" name="material.field.value"/></div>
+                    <div class="rowcell" style="width:10%;text-align:center;"><input type="checkbox" value="" class="check{{ dept }}"/>
+                    <input type="hidden" name="material.field.check"/></div>
+                </div>
+            </div>
+        </div>
+        <div style="width:90%;text-align:center;">
+            <button type="submit" name="action" value="save_AFMaterial_{{ dept }}" style="float:none;width:auto;margin:10px 0;padding:3px 5px;"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+        </div>
+        <input type="hidden" name="fieldid" value="{{ field.id }}"/>
+    </form>
+    <div id="materialtemplate_{{ dept }}" style="display:none;">
+        <div class="fieldrow_material">
+            <i class="fa fa-arrows-v background"></i>
+            <div class="rowcell" style="width:40%;"><input type="text" name="material.field.name"/></div>
+            <div class="rowcell" style="width:50%;"><input type="text" name="material.field.value"/></div>
+            <div class="rowcell" style="width:10%;text-align:center;"><input type="checkbox" value="" class="check{{ dept }}"/>
+            <input type="hidden" name="material.field.check"/></div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#addmaterialfield_{{ dept }}').click(function(){
+        var item = $('#materialtemplate_{{ dept }} > div').clone();
+        item.appendTo('#field_material_sortable{{ dept }}');
+        $(item).find('input[type=checkbox]').click(function(){$(this).nextAll('input[name="material.field.check"]').val($(this).is(':checked'));});
+    });
+    $('#field_material_sortable{{ dept }}').sortable().disableSelection();
+
+    $('input.check{{ dept }}').click(function(){
+        $(this).nextAll('input[name="material.field.check"]').val($(this).is(':checked'));
+    });
+</script>
+{% endblock %}

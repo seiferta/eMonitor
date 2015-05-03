@@ -1,0 +1,74 @@
+{%  extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarms.report.header.overview') }}</h2>
+    <p><small>{{ _('alarms.report.info') }}</small></p>
+
+    <form method="post" style="padding-bottom:20px;" enctype="multipart/form-data" id="reportform">
+        <p>
+            <label style="width:99%;">{{ _('alarms.report.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ report.name }}" style="width:99%;"/>
+            </label>
+        </p>
+        <p>
+            {{ _('alarms.report.departments') }}:<br/>
+            {%- for department in departments %}
+                <label>
+                    <input type="checkbox" name="edit_department" value="{{ department.id }}"{%- if department.id in report.departments %} checked="checked"{%- endif %}/> {{ department.name }}
+                </label>
+            {%- endfor %}
+        </p>
+        <p>
+            {{ _('alarms.report.reporttype') }}:<br/>
+            <span id="templates">
+            {%- for reporttype in reporttypes %}
+                <label><input type="radio" name="template" value="{{ reporttype.filename }}"{% if report.reporttype.filename == reporttype.filename %} checked="checked"{% endif %}/> {{ reporttype }}</label>
+            {%- endfor %}
+            </span>
+            <br/>
+            <br/>
+            {{ _('alarms.report.updload.template') }}:<br/>
+            <input type="file" name="templatefile" id="file"/>
+
+        </p>
+        <div id="definition"></div>
+
+        <p style="padding-top:10px;">
+            <button type="submit" name="action" value="updatereport" class="save"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
+        </p>
+        <input type="hidden" name="report_id" value="{{ report.id }}"/>
+        <input type="hidden" name="form_id" value="admin.alarms.report.edit"/>
+    </form>
+
+{% endblock %}
+
+{% block script_end %}
+    {{  super() }}
+
+    $('input[type=file]').on('change', readFileData);
+
+    var data = new FormData($('#reportform'));
+    function readFileData(){
+        jQuery.each(jQuery('#file')[0].files, function(i, file) {
+            data.append('template', file);
+        });
+
+        jQuery.ajax({
+            url: '/admin/data/alarms?action=addreport&format=json',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                $('#templates').append(data.content);
+            }
+        });
+    }
+
+{% endblock %}

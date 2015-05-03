@@ -3,20 +3,29 @@ import xml.etree.ElementTree as ET
 import logging
 import datetime, time
 import requests
+import json
 from collections import OrderedDict
 from sqlalchemy import inspect
 from flask import current_app
-from emonitor.extensions import classes, events, signal, babel
+from emonitor.extensions import events, signal, babel
 from emonitor.widget.monitorwidget import MonitorWidget
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.alarmkeys.alarmkey import Alarmkey
+from emonitor.modules.cars.car import Car
+from emonitor.modules.streets.city import City
+from emonitor.modules.streets.housenumber import Housenumber
+from emonitor.modules.events.eventhandler import Eventhandler
+from emonitor.modules.streets.street import Street
+from emonitor.modules.settings.settings import Settings
 
 
 # helper methods for object attributes
 def get_street_proto(self, stype):  # deliver street object
     _t = {1: 'address', 2: 'address2'}
     if self.get('id.%s' % _t[stype]) and self.get('id.%s' % _t[stype], '0') not in ['-1', '0']:
-        return classes.get('street').getStreet(int(self.get('id.%s' % _t[stype], '0')))
+        return Street.getStreets(id=self.get('id.%s' % _t[stype], '0'))
     else:
-        return classes.get('street')(self.get(_t[stype], ''), '', '', 1, '', float(classes.get('settings').get('defaultLat', '0')), float(classes.get('settings').get('defaultLng', '0')), float(classes.get('settings').get('defaultZoom', '13')), 1)
+        return Street(self.get(_t[stype], ''), '', '', 1, '', float(Settings.get('defaultLat', '0')), float(Settings.get('defaultLng', '0')), float(Settings.get('defaultZoom', '13')), 1)
 
 
 def set_street_proto(self, value, stype):
@@ -35,6 +44,8 @@ def set_street(self, value):
 
 
 def get_housenumber(self):
+    if self.get('id.streetno', '') != '':
+        return Housenumber.getHousenumbers(self.get('id.streetno'))
     try:
         n = [n for n in self.street.housenumbers if u'{}'.format(n.number) == self.get('streetno').split(' ')[0]]
         if len(n) == 1:
@@ -66,12 +77,12 @@ def get_endtimestamp(self):
 def get_object(self):
     if not inspect(self).session:
         return None
-    objs = inspect(self).session.query(classes.get('alarmobject'))
+    objs = inspect(self).session.query(AlarmObject)
     if self.get('id.object') and self.get('id.object') != '0':
         return objs.filter_by(id=int(self.get('id.object'))).first()
     else:
         if self.get('object'):
-            return classes.get('alarmobject')(self.get('object'), 0, '', '', '', '', self.get('alarmplan'), 0, '', 0, 0)
+            return AlarmObject(self.get('object'), 0, '', '', '', '', self.get('alarmplan'), 0, '', 0, 0)
         return None
 
 
@@ -86,8 +97,8 @@ def get_cars_proto(self, ctype):
     ret = []
     if not inspect(self).session:
         return ret
-    cars = classes.get('car').getCars()
-    for _c in [int(c) for c in self.get(_t[ctype], []).split(',') if c != '']:
+    cars = Car.getCars()
+    for _c in [int(c) for c in self.get(_t[ctype], '').split(',') if c != '']:
         try:
             ret.append(filter(lambda c: c.id == _c, cars)[0])
         except IndexError:
@@ -115,22 +126,20 @@ def set_material(self, material):
 
 def get_key(self):  # deliver alarmkey object
     if self.get('id.key') and self.get('id.key') not in ['None', '0']:
-        return classes.get('alarmkey').getAlarmkeys(self.get('id.key'))
+        return Alarmkey.query.filter_by(id=self.get('id.key')).one()
     else:
-        k = classes.get('alarmkey')(u'', u'%s' % self._key, u'', u'-not in list-')
+        k = Alarmkey(u'', u'%s' % self._key, u'', u'-not in list-')
         k.id = 0
         return k
 
 
 def get_city(self):  # deliver city object
-    if not inspect(self).session:
-        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
-    if self.get('id.city') and self.get('id.city') != '0':  # city found
-        return classes.get('city').get_byid(self.get('id.city'))
+    if self.get('id.city', '0') != '0':  # city found
+        return City.getCities(id=self.get('id.city'))
     elif self.get('id.city', '0') == '0':  # not in list
-        return classes.get('city')(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
+        return City(self.get('city', ''), 1, 'osmap', 0, '', '', 0, '')
     else:
-        return classes.get('city').getDefaultCity()
+        return City.getDefaultCity()
 
 
 def set_city(self, city):  # set city parameters from object
@@ -155,15 +164,15 @@ def get_remark(self):  # deliver remark string
     
 
 def get_lat(self):  # deliver lat float
-    return float(self.get('lat', classes.get('settings').settings.Settings.get('defaultLat', '0')))
+    return float(self.get('lat', Settings.get('defaultLat', '0')))
 
 
 def get_lng(self):  # deliver lng float
-    return float(self.get('lng', classes.get('settings').settings.Settings.get('defaultLng', '0')))
+    return float(self.get('lng', Settings.get('defaultLng', '0')))
 
 
 def get_zoom(self):  # deliver zoom  integer
-    return int(self.get('zoom', classes.get('settings').settings.Settings.get('defaultZoom', '13')))
+    return int(self.get('zoom', Settings.get('defaultZoom', '13')))
 
 
 def get_marker(self):  # deliver markerinfo: 0=no marker
@@ -176,7 +185,7 @@ def get_position(self):
 
     :return: dict with lat, lng, zoom
     """
-    return dict(lat=self.get_lat(), lng=self.get_lng(), zoom=self.get_zoom())
+    return dict(lat=get_lat(self), lng=get_lng(self), zoom=get_zoom(self))
 
 
 def set_position(self, position):
@@ -248,11 +257,14 @@ def getAlarmRoute(alarm):
     get routing from webservice, points and description
     """
     if alarm.get('lat', '') != '':
-        params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+        params = {'format': 'kml', 'flat': Settings.get('homeLat'), 'flon': Settings.get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
     else:
-        params = {'format': 'kml', 'flat': classes.get('settings').get('homeLat'), 'flon': classes.get('settings').get('homeLng'), 'tlat': alarm.object.lat, 'tlon': alarm.object.lng, 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
-    r = requests.get(alarm.ROUTEURL, params=params)
-    tree = ET.fromstring(r.content)
+        params = {'format': 'kml', 'flat': Settings.get('homeLat'), 'flon': Settings.get('homeLng'), 'tlat': alarm.object.lat, 'tlon': alarm.object.lng, 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+    try:
+        r = requests.get(alarm.ROUTEURL, params=params)
+        tree = ET.fromstring(r.content)
+    except:
+        return {}
     data = {}
 
     def getText(items, elementname):
@@ -315,23 +327,28 @@ def processFile(incomepath, filename):
     """
     run processing in test mode
     """
-    params = dict(dict(incomepath=incomepath, filename=filename, mode='test'))
+    params = dict(incomepath=incomepath, filename=filename, mode='test')
     handlers = events.getEvents('file_added').getHandlerList()
-    dbhandlers = classes.get('eventhandler').getEventhandlers(event='file_added')
+    dbhandlers = Eventhandler.getEventhandlers(event='file_added')
     for handler in dbhandlers:  # db
         for hdl in handlers:
             if handler.handler == hdl[0]:
-                hdl[1]('file_added', params)
+                #p = hdl[1]('file_added', params)
+                params.update(hdl[1]('file_added', **params))
                 res = []
                 for p in handler.getParameterList():
                     try:
-                        res.append('%s:%s' % (p, params[p.split('.')[1]].decode('utf-8')))
+                        res.append(u'{}:{}'.format(p, params[p.split('.')[1]]))
                     except:
-                        if p.split('.')[1] in params.keys():
-                            res = ['%s:%s' % (p, params[p.split('.')[1]])]
-                        else:
-                            res = ['error: key not found - %s' % p.split('.')[1]]
-                            params['error'] = 'error: key not found - %s' % p.split('.')[1]
+                        try:
+                            if p.split(u'.')[1] in params.keys():
+                                res = [u'{}:{}'.format(p, params[p.split('.')[1]])]
+                            else:
+                                res = [u'error: key not found - {}'.format(p.split('.')[1])]
+                                params['error'] = u'error: key not found - {}'.format(p.split('.')[1])
+                        except:
+                            import traceback
+                            print traceback.format_exc()
                 if u'error' in params.keys():
                     signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1], error=params['error'])
                 else:

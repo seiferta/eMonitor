@@ -1,0 +1,25 @@
+<div style="margin-left:10px;">
+    {%- for extfield in field.getFields() %}
+        {%- if not extfield.getArg('child') %}
+            <p style="clear:left;padding:10px 0 0 0;margin:0;">
+                <label style="clear:left;">
+                    {%- if extfield.getArg('freetext') %}
+                       <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="margin-left:15px;width:500px;"/>
+                    {%- else %}
+                        <label>
+                            <input type="radio" name="ext.afalerting" value="{{ extfield.getName() }}"{%- if extfield.getValue(alarm) %} checked="checked"{%- endif %}/>
+                            {{ extfield.getLabel() }}
+                        </label>
+                    {%- endif %}
+                </label>
+            </p>
+        {%- else %}
+            <div style="padding-left:40px;float:left;width:30%;">
+                <label>
+                    <input type="checkbox" name="ext.afalerting" value="{{ extfield.getName() }}"{%- if extfield.getValue(alarm) %} checked="checked"{%- endif %}>
+                    {{ extfield.getLabel() }}
+                </label>
+            </div>
+        {%- endif %}
+    {%- endfor %}
+</div>

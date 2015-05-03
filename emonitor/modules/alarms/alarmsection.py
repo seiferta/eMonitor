@@ -53,8 +53,8 @@ class AlarmSection(db.Model):
         :return: list of :py:class:`emonitor.modules.alarms.alarmsection.AlarmSection`
         """
         if id != 0:
-            return db.session.query(AlarmSection).filter_by(id=id).first()
+            return AlarmSection.query.filter_by(id=id).first()
         elif tid != 0:
-            return db.session.query(AlarmSection).filter_by(tid=int(tid)).order_by('orderpos').all()
+            return AlarmSection.query.filter_by(tid=int(tid)).order_by('orderpos').all()
         else:
-            return db.session.query(AlarmSection).order_by('orderpos').all()
+            return AlarmSection.query.order_by('orderpos').all()

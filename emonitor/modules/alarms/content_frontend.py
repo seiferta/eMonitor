@@ -1,8 +1,22 @@
 import datetime
+import os
+from collections import Counter
 from operator import attrgetter
-from flask import render_template, request, flash, session, render_template_string, jsonify, redirect
-from emonitor.extensions import classes, monitorserver, scheduler, db, signal
-from emonitor.frontend import frontend
+from flask import current_app, render_template, request, flash, session, render_template_string, jsonify, redirect
+from emonitor.extensions import scheduler, db, signal
+from emonitor.modules.alarms.alarm import Alarm
+from emonitor.modules.alarms.alarmhistory import AlarmHistory
+from emonitor.modules.alarms.alarmfield import AlarmField
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.streets.city import City
+from emonitor.modules.streets.street import Street
+from emonitor.modules.cars.car import Car
+from emonitor.modules.settings.settings import Settings
+from emonitor.modules.settings.department import Department
+from emonitor.modules.printers.printers import Printers
+from emonitor.modules.monitors.monitor import Monitor
+from emonitor.modules.monitors.monitorlayout import MonitorLayout
+from emonitor.frontend.frontend import frontend
 
 
 def getFrontendContent(**params):
@@ -11,11 +25,11 @@ def getFrontendContent(**params):
 
     :return: data of alarms
     """
-    alarmstates = classes.get('alarm').ALARMSTATES
+    from emonitor.extensions import monitorserver
 
     if 'alarmfilter' not in session:
         session['alarmfilter'] = '7'
-    if request.args.get('alarmfilter', '7') != '7':  # filter for alarms last x days, -1 no filter set
+    if request.args.get('alarmfilter'):  # filter for alarms last x days, -1 no filter set
         session['alarmfilter'] = request.args.get('alarmfilter', '7')
 
     if 'area' in request.args:
@@ -25,14 +39,16 @@ def getFrontendContent(**params):
 
     if request.form.get('action') == 'updatealarm':
         if request.form.get('alarm_id') != 'None':  # update alarm
-            alarm = classes.get('alarm').getAlarms(request.form.get('alarm_id'))
+            alarm = Alarm.getAlarms(request.form.get('alarm_id'))
         else:  # create new alarm
             d = datetime.datetime.strptime('%s %s' % (request.form.get('edit_timestamp_date'), request.form.get('edit_timestamp_time')), "%d.%m.%Y %H:%M:%S")
-            alarm = classes.get('alarm')(d, request.form.get('edit_keyid'), 2, 0)
+            alarm = Alarm(d, request.form.get('edit_keyid'), 2, 0)
             db.session.add(alarm)
             params['activeacc'] = 1
-
-        alarm.timestamp = datetime.datetime.strptime('%s %s' % (request.form.get('edit_timestamp_date'), request.form.get('edit_timestamp_time')), "%d.%m.%Y %H:%M:%S")
+        try:
+            alarm.timestamp = datetime.datetime.strptime('%s %s' % (request.form.get('edit_timestamp_date'), request.form.get('edit_timestamp_time')), "%d.%m.%Y %H:%M:%S")
+        except ValueError:
+            alarm.timestamp = datetime.datetime.now()
         alarm._key = request.form.get('edit_key')
 
         alarm.set(u'id.key', request.form.get('edit_keyid'))
@@ -42,14 +58,14 @@ def getFrontendContent(**params):
 
         alarm.set(u'marker', request.form.get('marker'))
         alarm.set(u'id.city', request.form.get('edit_city'))
-        _city = classes.get('city').get_byid(request.form.get('edit_cityname'))
+        _city = City.getCities(id=request.form.get('edit_cityname'))
         if _city:
             alarm.set(u'city', _city.name)
         else:
             alarm.set(u'city', request.form.get('edit_cityname'))
 
         alarm.set(u'streetno', request.form.get('edit_streetno'))
-        street = classes.get('street').getStreet(request.form.get('edit_addressid'))
+        street = Street.getStreets(id=request.form.get('edit_addressid'))
         hnumber = None
         if street:
             alarm.set(u'id.address', street.id)
@@ -78,13 +94,15 @@ def getFrontendContent(**params):
             alarm.set(u'lat', request.form.get('lat'))
             alarm.set(u'lng', request.form.get('lng'))
             alarm.set(u'zoom', request.form.get('zoom'))
-
-        d = datetime.datetime.strptime('%s %s' % (request.form.get('edit_endtimestamp_date'), request.form.get('edit_endtimestamp_time')), "%d.%m.%Y %H:%M:%S")
+        try:
+            d = datetime.datetime.strptime('%s %s' % (request.form.get('edit_endtimestamp_date'), request.form.get('edit_endtimestamp_time')), "%d.%m.%Y %H:%M:%S")
+        except ValueError:
+            d = datetime.datetime.now()
         alarm.set(u'endtimestamp', d)
         db.session.commit()
         signal.send('alarm', 'updated', alarmid=alarm.id)
         if request.form.get('alarm_id') == u'None':  # create new
-            classes.get('alarm').changeState(alarm.id, 0)  # prepare alarm
+            Alarm.changeState(alarm.id, 0)  # prepare alarm
             return redirect('/alarms?area=%s&state=1' % params['area'])
         elif alarm.state == 1:  # active alarm update
             monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
@@ -92,30 +110,37 @@ def getFrontendContent(**params):
 
     elif request.args.get('action') == 'editalarm':
         if request.args.get('alarmid', '0') == '0':  # add new alarm
-            alarm = classes.get('alarm')(datetime.datetime.now(), '', 2, 0)
+            alarm = Alarm(datetime.datetime.now(), '', 2, 0)
             #flash(babel.gettext(u'alarms.alarmadded'), 'alarms.add')
         else:  # edit alarm
-            alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
-        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=classes.get('city').getCities(), objects=classes.get('alarmobject').getAlarmObjects(), cars=classes.get('car').getCars(), frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'))
+            alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
+        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=City.getCities(), objects=AlarmObject.getAlarmObjects(), cars=Car.getCars(), departments=Department.getDepartments(), frontendarea=params['area'], frontendmodules=frontend.modules, frontendmoduledef=Settings.get('frontend.default'))
 
     elif request.args.get('action') == 'refresh':  # refresh alarm section
         params['area'] = request.args.get('area')
         params['activeacc'] = int(request.args.get('activeacc'))
 
     elif request.args.get('action') == 'finishalarm':  # finish selected alarm
-        classes.get('alarm').changeState(int(request.args.get('alarmid')), 2)
+        Alarm.changeState(int(request.args.get('alarmid')), 2)
         params['area'] = request.args.get('area')
 
     elif request.args.get('action') == 'activatealarm':  # activate selected alarm
-        ret = classes.get('alarm').changeState(int(request.args.get('alarmid')), 1)
+        ret = Alarm.changeState(int(request.args.get('alarmid')), 1)
         if len(ret) > 0:
             flash(render_template_string("{{ _('alarms.carsinuse') }}</br><b>" + ", ".join([r.name for r in sorted(ret, key=attrgetter('name'))]) + "</b>"), 'alarms')
         params['area'] = request.args.get('area')
         params['activeacc'] = 0
 
     elif request.args.get('action') == 'deletealarm':  # delete selected alarm
-        alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
+        alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
         refresh = 1 or alarm.state == 1  # check if alarm is active
+        try:
+            if os.path.exists("{}{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename'))):
+                os.remove("{}{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename')))
+        except:
+            pass
+        alarm.state = -1
+        alarm.updateSchedules()
         db.session.delete(alarm)
         db.session.commit()
         if refresh:
@@ -124,16 +149,16 @@ def getFrontendContent(**params):
 
     elif request.args.get('action') == 'archivealarm':  # archive selected alarms, id=0 == all
         if ";" in request.args.get('alarmid'):  # archive selected alarms
-            for alarmid in request.args.get('alarmid')[:-1].split(';'):
-                classes.get('alarm').changeState(int(alarmid), 3)
+            for alarmid in request.args.get('alarmid').split(';'):
+                Alarm.changeState(int(alarmid), 3)
         elif int(request.args.get('alarmid')) == 0:  # archive all alarms
-            classes.get('alarm').changeStates(3)
+            Alarm.changeStates(3)
         else:  # archive single selected alarm
-            classes.get('alarm').changeState(int(request.args.get('alarmid')), 3)
+            Alarm.changeState(int(request.args.get('alarmid')), 3)
         params['area'] = request.args.get('area')
 
-    stats = dict.fromkeys(classes.get('alarm').ALARMSTATES.keys() + ['3'], 0)
-    for s, c in classes.get('alarm').getAlarmCount(days=int(session['alarmfilter'])):  # s=state, c=count(ids of state)
+    stats = dict.fromkeys(Alarm.ALARMSTATES.keys() + ['3'], 0)
+    for s, c in Alarm.getAlarmCount(days=int(session['alarmfilter'])):  # s=state, c=count(ids of state)
         if str(s) in stats.keys():
             stats[str(s)] = c
 
@@ -141,7 +166,7 @@ def getFrontendContent(**params):
         params['area'] = 'center'
     if 'activeacc' not in params:
         params['activeacc'] = 0
-    return render_template('frontend.alarms_smallarea.html', alarmstates=alarmstates, stats=stats, frontendarea=params['area'], activeacc=params['activeacc'], printdefs=classes.get('printer').getActivePrintersOfModule('alarms'), frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), alarmfilter=session['alarmfilter'])
+    return render_template('frontend.alarms_smallarea.html', alarmstates=Alarm.ALARMSTATES, stats=stats, frontendarea=params['area'], activeacc=str(params['activeacc']), printdefs=Printers.getActivePrintersOfModule('alarms'), frontendmodules=frontend.modules, frontendmoduledef=Settings.get('frontend.default'), alarmfilter=session['alarmfilter'])
 
 
 def getFrontendData(self):
@@ -150,66 +175,61 @@ def getFrontendData(self):
 
     :return: rendered template as string or json dict
     """
+    from emonitor.extensions import monitorserver
     if request.args.get('action') == 'editalarm':
         
         if request.args.get('alarmid', '0') == '0':  # add new alarm
-            alarm = classes.get('alarm')(datetime.datetime.now(), '', 2, 0)
-            #flash(babel.gettext(u'alarms.alarmadded'), 'alarms.add')
-            
+            alarm = Alarm(datetime.datetime.now(), '', 2, 0)
+
         else:  # edit alarm
-            alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
-        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=classes.get('city').getCities(), objects=classes.get('alarmobject').getAlarmObjects(), cars=classes.get('car').getCars(), frontendarea=request.args.get('frontendarea'))
+            alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
+        return render_template('frontend.alarms_edit.html', alarm=alarm, cities=City.getCities(), objects=AlarmObject.getAlarmObjects(), cars=Car.getCars(), frontendarea=request.args.get('frontendarea'))
 
     elif request.args.get('action') == 'alarmmonitor':  # send alarm to monitor
-        for monitor in classes.get('monitor').getMonitors():
+        for monitor in Monitor.getMonitors():
             scheduler.deleteJobForEvent('changeLayout')  # send update to monitors
-            for l in classes.get('monitorlayout').getLayouts(mid=int(monitor.id)):
+            for l in MonitorLayout.getLayouts(mid=int(monitor.id)):
                 if l.trigger == 'alarm_added':
-                    #monitorserver.sendMessage(str(monitor.id), 'load', ['layoutid=%s' % l.id, 'alarmid=%s' % request.args.get('alarmid')])
-                    monitorserver.sendMessage(str(monitor.id), 'load', layoutid='%s' % l.id, alarmid='%s' % request.args.get('alarmid'))  # TODO check
+                    #monitorserver.sendMessage(str(monitor.id), 'load', ['layoutid=%s' % l.id, 'alarmid=%s' % request.args.get('alarmid')])  TODO changed from list
+                    monitorserver.sendMessage(str(monitor.id), 'load', layoutid=l.id, alarmid=request.args.get('alarmid'))
 
     elif request.args.get('action') == 'printalarm':
-        classes.get('printer').getPrinters(pid=int(request.args.get('printerdef'))).doPrint(object=classes.get('alarm').getAlarms(id=int(request.args.get('alarmid'))), id=request.args.get('alarmid'), copies=1)
+        Printers.getPrinters(pid=int(request.args.get('printerdef'))).doPrint(object=Alarm.getAlarms(id=int(request.args.get('alarmid'))), id=request.args.get('alarmid'), copies=1)
         return ""
 
     elif request.args.get('action') == 'routeinfo':
-        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
-        data = alarm.getRouting()
-        return render_template('frontend.alarms_routing.html', routing=data)
+        return render_template('frontend.alarms_routing.html', routing=Alarm.getAlarms(id=request.args.get('alarmid')).getRouting())
 
     elif request.args.get('action') == 'routecoords':
-        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
-        data = alarm.getRouting()
-        return jsonify(data)
+        return jsonify(Alarm.getAlarms(id=request.args.get('alarmid')).getRouting())
 
     elif request.args.get('action') == 'message':
-        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'), reload=request.args.get('reload', 'true'))
+        return render_template('frontend.alarms_message.html', alarm=Alarm.getAlarms(id=request.args.get('alarmid')), messagestates=AlarmHistory.historytypes, area=request.args.get('area'), reload=request.args.get('reload', 'true'))
 
     elif request.args.get('action') == 'addmessage':  # add message
         if request.form.get('messagetext') != "":
-            alarm = classes.get('alarm').getAlarms(request.form.get('alarmid'))
+            alarm = Alarm.getAlarms(request.form.get('alarmid'))
             alarm.addHistory(request.form.get('messagestate'), request.form.get('messagetext'))
             db.session.commit()
-        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.form.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))
+        return render_template('frontend.alarms_message.html', alarm=Alarm.getAlarms(request.form.get('alarmid')), messagestates=AlarmHistory.historytypes, area=request.args.get('area'))
 
     elif request.args.get('action') == 'deletemessage':  # delete selected message
-        #print "delete message with timestamp", request.args.get('datetime'), request.args.get('alarmid')
-        alarm = classes.get('alarm').getAlarms(request.args.get('alarmid'))
+        alarm = Alarm.getAlarms(request.args.get('alarmid'))
         for msg in alarm.history:
             if str(msg.timestamp) == request.args.get('datetime'):
                 db.session.delete(msg)
         db.session.commit()
-        return render_template('frontend.alarms_message.html', alarm=classes.get('alarm').getAlarms(request.args.get('alarmid')), messagestates=classes.get('alarmhistory').historytypes, area=request.args.get('area'))
+        return render_template('frontend.alarms_message.html', alarm=Alarm.getAlarms(request.args.get('alarmid')), messagestates=AlarmHistory.historytypes, area=request.args.get('area'))
 
     elif request.args.get('action') == 'housecoordinates':  # return a dict with coordinats of housenumber
         if request.args.get('alarmid') != "None":
-            alarm = classes.get('alarm').getAlarms(id=int(request.args.get('alarmid')))
+            alarm = Alarm.getAlarms(id=int(request.args.get('alarmid')))
             if alarm and alarm.housenumber:
                 return {'lat': map(lambda x: x[0], alarm.housenumber.points), 'lng': map(lambda x: x[1], alarm.housenumber.points)}
         return []
 
     elif request.args.get('action') == 'evalhouse':  # try to eval housenumer
-        street = classes.get('street').getStreet(request.args.get('streetid'))
+        street = Street.getStreets(id=request.args.get('streetid'))
         if street:
             points = dict(lat=[], lng=[])
             for hn in street.housenumbers:
@@ -222,5 +242,33 @@ def getFrontendData(self):
     elif request.args.get('action') == 'alarmsforstate':  # render alarms for given state
         if 'alarmfilter' not in session:
             session['alarmfilter'] = 7
-        return render_template('frontend.alarms_alarm.html', alarms=classes.get('alarm').getAlarms(days=int(session['alarmfilter']), state=int(request.args.get('state', '-1'))), printdefs=classes.get('printer').getActivePrintersOfModule('alarms'))
+        return render_template('frontend.alarms_alarm.html', alarms=Alarm.getAlarms(days=int(session['alarmfilter']), state=int(request.args.get('state', '-1'))), printdefs=Printers.getActivePrintersOfModule('alarms'))
+
+    elif request.args.get('action') == 'collective':  # render collective form
+        return render_template('frontend.alarms_collective.html', alarms=Alarm.getAlarms(state=2))
+
+    elif request.args.get('action') == 'alarmpriocars':  # show prio cars
+        cars = []
+        c = Settings.getIntList('alarms.spc_cars.{}'.format(request.args.get('state')))
+        if len(c) == 0:
+            return ""
+        for alarm in Alarm.getAlarms(state=request.args.get('state')):
+            cars.extend([car for car in alarm.cars1 if car.id in c])
+        cars = Counter(cars)
+        return render_template('frontend.alarms_cars.html', cars=cars)
+
+    elif request.args.get('action') == 'showdetailsform':  # build alarmdetails edtit form
+        alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
+        if alarm.street.city:
+            fields = AlarmField.getAlarmFields(dept=alarm.street.city.dept)
+        else:
+            fields = AlarmField.getAlarmFields(dept=Department.getDefaultDepartment().id)
+        return render_template('frontend.alarms_fields.html', alarm=alarm, fields=fields)
+
+    elif request.args.get('action') == 'saveextform':  # store ext-form values
+        alarm = Alarm.getAlarms(id=request.form.get('alarmid'))
+        for field in AlarmField.getAlarmFields(dept=alarm.street.city.dept):
+            field.saveForm(request, alarm)
+        db.session.commit()
+
     return ""

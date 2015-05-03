@@ -11,7 +11,7 @@
                 height: 742px;width: 495px;
                 top:50px;left:50px;right:50px;bottom:50px;
                 @frame content_frame{-pdf-frame-content:content;-pdf-frame-border: 1;top: 80px;left: 50px;right: 150px;height: {{ contentheight[0] }}px;}
-                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 1;right: 50px;top: 50px;left: 50px; height: 23px;}
+                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 0;right: 50px;top: 50px;left: 50px; height: 23px;}
                 @frame header_frame {-pdf-frame-content:header_content;-pdf-frame-border: 1;left: 50px;right: 50px;top: 50px;height:23px;}
                 @frame cars_frame {-pdf-frame-content:cars_content;-pdf-frame-border: 1;top:80px;right:50px;width:90px;height:{{ contentheight[0] }}px;}
                 @frame map_frame{-pdf-frame-content:map_content;-pdf-frame-border: 0;left: 50px;width: 693px;height: {{ contentheight[1] }}px;bottom:50px;margin: 0;}
@@ -21,7 +21,7 @@
             @page second_page{
                 height: 742px;width: 495px;
                 @frame content_second{-pdf-frame-border: 1;top: 80px;left: 50px;right: 50px;bottom: 50px;}
-                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 1;right: 50px;top: 50px;left: 50px;height: 23px;}
+                @frame pages{-pdf-frame-content:pages;-pdf-frame-border: 0;right: 50px;top: 50px;left: 50px;height: 23px;}
                 @frame header_frame{-pdf-frame-content:header_content;-pdf-frame-border: 1;left: 50px;right: 50px;top: 50px;height:23px;}
                 @frame description_route{border: 0;padding:10px;}
                 @frame map_route {-pdf-frame-content:route_content;left: 50px;right: 50px;bottom: 50px;margin: 0;top:450px;}
@@ -70,14 +70,14 @@
         <div id="content">
             <h1 style="font-size:3em;padding-top:10px;padding-bottom:0;">{{ alarm.key.category }}{% if alarm.key.category %}: {% endif %}{{  alarm.key.key }}</h1>
             <h1 style="font-size:3em;padding:0">{{ alarm.city.name }}: {{ alarm.street.name }} {{ alarm.streetno }}</h1>
-            <h1 style="font-size:2em;padding:0">{{ alarm.street2.name }}</h1>
-            <hr style="margin: 1em 0;"/>
+            <h1 style="font-size:2em;padding:0;">{{ alarm.street2.name }}</h1>
+            <div style="border-top:0.1px solid black;color:#ffffff"> _</div>
 
             {%- if alarm.object %}
                 <p style="font-size:1em;">{{ _('alarms.object') }}:</p>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.object.name }}</h3>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">Einsatzplan: {{ alarm.get('alarmplan') }}</h3>
-                <hr style="margin: 1em 0;"/>
+                <div style="border-top:0.1px solid black;color:#ffffff"> _</div>
             {%- endif %}
 
             {%- if alarm.person %}
@@ -86,7 +86,7 @@
             {%- endif %}
 
             {%- if alarm.remark %}
-                <hr style="margin: 1em 0;"/>
+                <div style="border-top:0.1px solid black;color:#ffffff"> _</div>
                 <p style="font-size:1em;">{{ _('alarms.remark') }}:</p>
                 <h3 style="font-size:1.5em;padding-bottom:10px;">{{ alarm.remark }}</h3>
             {%- endif %}
@@ -101,14 +101,14 @@
                     {{ car.name }}
                 </p>
             {%- endfor %}
-            <p>&nbsp;</p>
+            <div style="border-top:0.1px solid black;color:#ffffff"> _</div>
             {%- for car in alarm.cars2 %}
                 <p class="car">
                     {{ car.dept.name }}<br/>
                     {{ car.name }}
                 </p>
             {%- endfor %}
-            <p>&nbsp;</p>
+            <div style="border-top:0.1px solid black;color:#ffffff"> _</div>
             {%- for car in alarm.material %}
                 <p class="car">
                     {{ car.dept.name }}<br/>

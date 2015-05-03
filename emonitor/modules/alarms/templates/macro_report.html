@@ -1,0 +1,10 @@
+{% macro formatField(value, len, spacefront=3, spaceend=3) -%}
+    {% set vlength = ((len - (value|length))/2) | int or 4 %}
+    {%- if spacefront > 0 %}
+    <span style="color:#ffffff;">{{ '_' * spacefront }}</span>
+    {% endif %}
+    <span><u>{{ ('&#160;' * vlength) | safe }}{{ value }}{{ ('&#160;' * vlength) | safe }}</u></span>
+    {%- if spaceend > 0 %}
+    <span style="color:#ffffff;">{{ '_' * spaceend }}</span>
+    {% endif %}
+{% endmacro %}

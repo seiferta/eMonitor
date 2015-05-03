@@ -1,0 +1,42 @@
+<style>
+    div#fieldsaccordion{border:1px solid silver;}
+    div#fieldsaccordion .selectable{overflow-x:hidden!important;}
+    div#fieldsaccordion h3.btn-default{cursor:pointer;margin:0;padding: 2px;background-color:#adadad;border-bottom:1px solid #ddd;border-left:1px solid #ababab;border-right:1px solid #ababab;}
+</style>
+<script type="text/javascript" language="javascript" src="/js/jquery.form.min.js"> </script>
+<h3>{{ _('alarms.details.form.title') }}</h3>
+
+<form id="extalarmfields" method="post" action="/data/alarms?action=saveextform" style="height:420px;">
+<div style="height:300px;overflow:visible;">
+    <div id="fieldsaccordion">
+            {%- for field in fields %}
+                {%- if field.hasEditForm %}
+                <h3 a_name="field__{{ field.id }}" class="btn-default" key="{{ field.id }}">
+                    {{ field.name }}
+                </h3>
+                <div id="field_{{ field.id }}" class="selectable">
+                    {{ field.editForm(alarm)|safe }}
+                </div>
+                {%- endif %}
+            {%- endfor %}
+        </div>
+        <div>
+        <p style="text-align:center;padding-top:10px;">
+            <input type="hidden" name="alarmid" value="{{ alarm.id }}"/>
+            <button type="submit" name="action" value="">{{ _('alarms.save') }}</button>
+        </p>
+    </div>
+  </div>
+</form>
+
+
+<script>
+    $(function() {
+        $("#fieldsaccordion").accordion({heightStyle: "fill", "autoHeight": false});
+    });
+    $('#extalarmfields').submit(function() {
+        $(this).ajaxSubmit();
+        parent.$('.overlay').toggle();
+        return false;
+    });
+</script>

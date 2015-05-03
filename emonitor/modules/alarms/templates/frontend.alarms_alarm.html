@@ -41,13 +41,12 @@
                 {%- if alarm.object %}> {{ alarm.object.name }}{%- endif %}
             </span>
             <div class="alarmdetails">
+                <a href="javascript:void(0)" onclick="return showDetails({{ alarm.id }})" title="{{ _('alarms.detailtitle') }}"><i class="fa fa-indent" style="padding-right:4px"></i></a>
                 {%- if alarm.type==1 %}<a href="javascript:void(0)" onclick="return openPDF('/file/fax/{{ alarm.get('filename') }}')" class="alarmfax"><i class="fa fa-paperclip" title="{{ _('alarms.showfax') }}"></i></a>{%- endif %}
                 <a href="javascript:void(0)" onclick="return addMessage({{ alarm.id }})" title="{{ _('alarms.messagestitle', number=alarm.history|count) }}">{{ alarm.history|count }}<i class="fa fa-comment-o" style="padding-left:2px;"></i></a>
                 {%- if alarm.type==1 %}<i class="fa fa-print" title="{{ _('alarms.typeautomatic') }}"></i>{%- endif %}
                 {%- if alarm.type==2 %}<i class="fa fa-user" title="{{ _('alarms.typemanual') }}"></i>{%- endif %}
-                {%- if alarm.get('lat', '0')!='' %}
-                <i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>
-                {%- endif %}
+                {%- if alarm.get('lat') != '' %}<i class="fa fa-map-marker" title="{{ _('alarms.titlemap') }}"></i>{%- endif %}
             </div>
         </div>
         {{ contextmenu(alarm.id, alarm.state, printdefs) }}

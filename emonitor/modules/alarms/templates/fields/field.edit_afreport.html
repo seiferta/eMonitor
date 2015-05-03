@@ -1,0 +1,13 @@
+<style>
+    ::-moz-placeholder {color:rgb(172,172,172);}
+    :-ms-input-placeholder {color:rgb(172,172,172);}
+    .afreport{width:100%;min-height:100%;margin-top:20px;border:solid silver;border-width:1px 0 0 0;}
+    .afreport_container{padding:5px;margin:0;position:relative;width:100%;height:100%;}
+    .afreport_textareacontainer{position:absolute;left:0;right:0;top:40px;bottom:20px;}
+</style>
+<div class="afreport_container">
+    <small>{{ _('alarms.field.reportinfo') }}</small>
+    <div class="afreport_textareacontainer">
+        <textarea class="afreport" placeholder="{{ _('alarms.fields.reportplaceholder') }}" name="{{ field.getFields()[0].getName() }}">{{ field.getFields()[0].getValue(alarm) }}</textarea>
+    </div>
+</div>

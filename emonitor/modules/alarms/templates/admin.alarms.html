@@ -43,7 +43,7 @@
     <div id="subcenter" style="padding:1px">
         <div id="accordion">
             {% for k in alarmstates.keys() %}
-                <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
+                <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;" id="tabstate{{ k }}">
                     {{ _('alarmstate.'+alarmstates[k]) }}
                     <span class="badge badge-info pull-right">
                         {% if k|int in alarms.keys() %}{{ alarms[k|int] }}{% else %}0{% endif %}
@@ -51,7 +51,7 @@
                 </h3>
                 <div id="alarmsstate_{{ k }}" style="position:relative"><div class="loading"><img src="/img/loading.gif"/></div></div>
             {% endfor %}
-            <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;">
+            <h3 class="btn-default" style="background-color:#adadad;padding-right:5px;" id="tabstate3">
                 {{ _('alarmstate.archive') }}
                 <span class="badge pull-right">{% if 3 in alarms.keys() %}{{ alarms[3] }}{% else %}0{% endif %}</span>
             </h3>
@@ -106,8 +106,8 @@
         return false;
     }
 
-    {%- for k in alarmstates.keys() %}
-    getAlarmsforState({{ k }});
+    getAlarmsforState(1);
+    {%- for k in [0, 2, 3] %}
+        $('#tabstate{{ k }}').one('click', function(event){getAlarmsforState({{ k }})});
     {%- endfor %}
-    getAlarmsforState(3);
 {% endblock %}

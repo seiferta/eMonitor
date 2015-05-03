@@ -1,0 +1,46 @@
+{% extends "fields/field.config.html" %}
+
+{% block parameters %}
+<style>
+    p.personsfield{width:50%;float:left;}
+</style>
+
+<div id="afpersonsfields">
+    <form name="field_persons" id="field_afpersons_{{ dept }}" method="post" action="">
+        <h5>{{ _('alarms.field.persons.title') }}</h5>
+        <small>{{ _('alarms.field.persons.fieldinfo') }}</small>
+
+        <div id="fields_{{ dept }}" style="position:relative;overflow:hidden;padding-top:10px;">
+            {%- for personsfield in field.getFields() %}
+            <p class="personsfield">
+            {%- if personsfield.getArg('fieldtype') == 'checkbox' %}
+                <label>
+                    <input type="checkbox" name="{{ personsfield.getName() }}"{% if personsfield.getArg('active') == 'true' %} checked="checked"{% endif %}/>
+                    {{ _('alarms.fields.persons.field.'+personsfield.getLabel()) }} <input type="text" disabled="disabled"/>
+                </label>
+            {%- elif personsfield.getArg('fieldtype') == 'list' %}
+                <label>
+                    <input type="checkbox" name="{{ personsfield.getName() }}"{% if personsfield.getArg('active') == 'true' %} checked="checked"{% endif %}/>
+                    {{ _('alarms.fields.persons.field.'+personsfield.getLabel()) }}
+                    <select disabled="disabled">
+                        {%- for o in personsfield.getArg('listvalues') %}<option>{{ o }}</option>{%- endfor %}
+                    </select>
+                </label>
+            {% elif personsfield.getArg('fieldtype') == 'radio' %}
+                {%- for o in personsfield.getArg('listvalues') %}
+                <label>
+                    <input type="radio" value="{{ o }}" name="{{ personsfield.getName() }}"{%- if personsfield.getArg('active') == o %} checked="checked"{%- endif %}/>
+                    {{ _('alarms.fields.persons.field.style.'+o) }}
+                </label>
+                {%- endfor %}
+            {%- endif %}
+            </p>
+            {%- endfor %}
+        </div>
+        <div style="width:90%;text-align:center;">
+            <button type="submit" name="action" value="save_AFPersons_{{ dept }}" style="float:none;width:auto;margin:10px 0;padding:3px 5px;"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+        </div>
+        <input type="hidden" name="fieldid" value="{{ field.id }}"/>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% for car,n in cars.iteritems() %}
+<small>{{ car.name }}: ({{ n }}){% if not loop.last %}, {% endif %}</small>
+{% endfor %}

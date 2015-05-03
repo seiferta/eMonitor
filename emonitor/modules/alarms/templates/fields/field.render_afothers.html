@@ -1,0 +1,36 @@
+{% from 'macro_report.html' import formatField %}
+
+<div class="afothers" style="border-bottom:0.1px solid black;margin-bottom:10px;padding-left:40px;">
+    {%- for extfield in field.getFields() %}
+        {%- if extfield.id == '' %}  {# label field #}
+            <strong>{{ extfield.getLabel() }}<span style="color:#ffffff;">{{ '_'*2 }}</span></strong>
+        {%- else %}
+            {%- if extfield.getLabel()[0] == '<' and extfield.getLabel()[-1] == '>' %}{# else field #}
+                <div style="display:inline;padding-bottom:5px;">
+                    <label style="width:99%;">{{ _('alarms.field.else.title') }}:
+                        <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="margin-left:15px;width:80%;"/>
+                    </label>
+                </div>
+            {%- else %} {# normal field #}
+                <div style="display:inline-block;float:left;width:230px;padding:4px 0 0 0;margin:0;overflow:hidden;min-height:35px;">
+                    <label>
+                        {{ extfield.getLabel() }}
+                        {% if extfield.getArg('check') == 'false' %}
+                            {% if extfield.getValue(alarm) == '1' %}&#10006; {% else %}O {% endif %}
+                        {% else %}
+                            {{ formatField(extfield.getValue(alarm), 16, 0, 1) }}
+                        {% endif %}
+                        {% set l = extfield.getLabel()|length %}
+                        {%- if not extfield.getArg('child') and not extfield.getArg('newline') %}
+                            <span style="color:#ffffff;">{{ '_' * (5 - l) }}</span>
+                        {%- elif not extfield.getArg('newline') %}
+                            <span style="color:#ffffff;">{{ '_' * 4 }}</span>
+                        {%- endif %}
+                    </label>
+                </div>
+            {%- endif %}
+        {%- endif %}
+        {%- if extfield.getArg('newline') %}<br/>{%- endif %}
+    {%- endfor %}
+
+</div>

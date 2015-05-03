@@ -1,0 +1,60 @@
+{% extends "admin.html" %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('alarms.report.delquestion') }}');
+        }
+    </script>
+{% endblock %}
+
+{% block style %}
+    {{ super() }}
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarms.report.header.overview') }}</h2>
+    <p><small>{{ _('alarms.report.info') }}</small></p>
+
+    <form method="post" action="" style="padding-bottom:20px;">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:25%;">{{ _('alarms.report.name') }}</div>
+                <div class="headcell" style="width:40%;">{{ _('alarms.report.reporttype') }}</div>
+                <div class="headcell" style="width:15%;text-align:center;">{{ _('alarms.report.multi') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('alarms.report.departments') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createreport" title="{{ _('alarms.report.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+
+        {% if reports|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('alarms.report.nodata') }}</p>
+        </div>
+        {% endif %}
+        <div id="sortable">
+            {% for report in reports %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:25%;">{{ report.name }}</div>
+                    <div class="rowcell" style="width:40%;">{{ report.reporttype }}</div>
+                    <div class="rowcell" style="width:15%;text-align:center;">{% if report.reporttype.multi %}<i title="{{ _('alarms.report.multi.title') }}" class="fa fa-check" style="cursor:pointer"></i>{% endif %}</div>
+                    <div class="rowcell" style="width:20%;">{%- for department in departments %}{%- if department.id in report.departments %}{{ department.name }}{% if loop.index < report.departments|length %}, {% endif %}{%- endif %}{% endfor %}</div>
+                </div>
+                <button type="submit" name="action" value="deletereport_{{ report.id }}" title="{{ _('alarms.report.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editreport_{{ report.id }}" title="{{ _('alarms.report.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('alarms.report.itemscount', count=reports|count) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.alarms.report.overview"/>
+    </form>
+
+{% endblock %}

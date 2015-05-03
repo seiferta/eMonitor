@@ -1,0 +1,20 @@
+<div class="ui-state-default">
+    <div class="row{% if not field.id %} deactivated{% endif %} {{ field.fieldtype }}">
+        <a href="#" class="morelink" title="{{ _('alarms.fields.detailtitle') }}" onclick="return details({{ dept }}, '{{ field.fieldtype }}', this)"> </a>
+        <div style="margin-right:70px;margin-left:30px;">
+            <div class="rowcell" style="width:40%;">{{ _(field.name) }}</div>
+            <div class="rowcell" style="width:60%;"><small>{{ field.fieldtype }}</small></div>
+        </div>
+        <form name="field_operation" id="field_operation_{{ field.id }}" method="post" action="" accept-charset="utf-8">
+            {%- if field.id %}
+            <button type="submit" name="action" value="field_delete_{{ field.id }}" onclick="return questionDelField()" title="{{ _('alarms.field.deletetype') }}"><i class="fa fa-trash fa-lg"></i></button>
+            {% else %}
+            <button type="submit" name="action" value="field_add_{{ field.fieldtype }}_{{ dept }}" title="{{ _('alarms.field.addtype') }}"><i class="fa fa-plus fa-lg"></i></button>
+            {%- endif %}
+        </form>
+    </div>
+    <div class="subrow" style="display:none" id="details_{{ dept }}_{{ field.fieldtype }}">
+        {% block parameters %} {% endblock %}
+    </div>
+    <input type="hidden" name="field_{{ dept }}" value="{{ field.fieldtype }}"/>
+</div>

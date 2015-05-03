@@ -1,0 +1,11 @@
+<div class="afcars" style="border-bottom:0.1px solid black;margin-bottom:10px;padding-left:40px;">
+{%- for extfield in field.getFields(dept=alarm.getDepartment()) %}
+    <span style="white-space: nowrap;">
+        {%- if extfield.id in alarm.get('k.cars1').split(',') or extfield.id in alarm.get('k.cars2').split(',') or extfield.id in alarm.get('k.material').split(',') %}
+            <span>&#10006;</span>
+        {%- else %}
+            <span>O</span>
+        {%- endif %}&nbsp;{{ extfield.getLabel() }}<span style="color:#ffffff;">{{ '_'*3 }}</span>
+    </span>
+{%- endfor %}
+</div>

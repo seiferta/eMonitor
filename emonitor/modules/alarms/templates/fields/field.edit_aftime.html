@@ -1,0 +1,61 @@
+<style>
+    .aftime_container input{padding-top:1px;}
+    .aftime_container button.date{height:20px; width:25px;padding:0!important;margin:0!important}
+</style>
+<script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
+<div class="aftime_container" style="margin-left:10px;">
+    <small>{{ _('alarms.timeform.info') }}</small>
+
+    <p>
+        <label>{{ _('alarms.alarmtime') }}:</label><br/>
+        <input type="text" name="alarmtime" class="time" value="{{ alarm.timestamp|datetime }}" maxlength="8" disabled>
+    </p>
+    <div style="width:50%;float:left;">
+        <p>
+            <label>{{ _('alarms.time_3') }}:</label><br/>
+            <input type="text" name="alarmtime3" class="time" value="{{ alarm.get('alarmtime3') }}" maxlength="8">
+            <button type="button" onclick="return setDatetime('alarmtime3')" class="date"><i class="fa fa-clock-o"></i></button>
+        </p>
+        <p>
+            <label>{{ _('alarms.time_4') }}:</label><br/>
+            <input type="text" name="alarmtime4" class="time" value="{{ alarm.get('alarmtime4') }}" maxlength="8">
+            <button type="button" onclick="return setDatetime('alarmtime4')" class="date"><i class="fa fa-clock-o"></i></button>
+        </p>
+    </div>
+    <div style="padding-bottom:30px;">
+        <p>
+            <label>{{ _('alarms.time_1') }}:</label><br/>
+            <input type="text" name="alarmtime1" class="time" value="{{ alarm.get('alarmtime1') }}" maxlength="8">
+            <button type="button" onclick="return setDatetime('alarmtime1')" class="date"><i class="fa fa-clock-o"></i></button>
+        </p>
+        <p>
+            <label>{{ _('alarms.time_2') }}:</label><br/>
+            <input type="text" name="alarmtime2" class="time" value="{{ alarm.get('alarmtime2') }}" maxlength="8">
+            <button type="button" onclick="return setDatetime('alarmtime2')" class="date"><i class="fa fa-clock-o"></i></button>
+        </p>
+        <p>
+            <label>{{ _('alarms.alarmend') }}:</label><br/>
+            <input type="text" name="alarmend" class="time" value="{{ alarm.get('alarmend') }}" maxlength="8">
+            <button type="button" onclick="return setDatetime('alarmend')" class="date"><i class="fa fa-clock-o"></i></button>
+        </p>
+    </div>
+</div>
+
+<script>
+    $('.time').mask("99:99:99");
+
+    $('.savetime').click(function(){
+        $.ajax({ type : "POST", url : "/data/alarms?action=savealarmtime&alarmid="+$('input[name=alarmid]').val()+"&time1="+$("input[name=alarmtime1]").val()+"&time2="+$("input[name=alarmtime2]").val()+"&time3="+$("input[name=alarmtime3]").val()+"&time4="+$("input[name=alarmtime4]").val(),
+            success: function() {
+                parent.$('.overlay').toggle();
+                return false;
+            }
+        });
+    });
+
+    function setDatetime(fieldname){
+        var d = new Date();
+        $('input[name="'+fieldname+'"]').val(("0"+ d.getHours()).slice(-2) + ":" + ("0"+ d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2));
+        return false;
+    }
+</script>

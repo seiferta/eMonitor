@@ -1,15 +1,13 @@
 import os
-import time
 import imp
 import logging
 from flask import send_from_directory, abort, Response, request
-from emonitor.sockethandler import SocketHandler
+from emonitor.socketserver import SocketHandler
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, events, scheduler, babel, signal
-from emonitor.modules.settings.settings import Settings
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendContent, getFrontendData
-from .alarmutils import AlarmFaxChecker, AlarmRemarkWidget, AlarmWidget, AlarmIncomeWidget, AlarmTimerWidget
+from emonitor.extensions import events, babel, signal
+from emonitor.modules.alarms.content_admin import getAdminContent, getAdminData
+from emonitor.modules.alarms.content_frontend import getFrontendContent, getFrontendData
+from emonitor.modules.alarms.alarmutils import AlarmFaxChecker, AlarmRemarkWidget, AlarmWidget, AlarmIncomeWidget, AlarmTimerWidget
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -32,34 +30,28 @@ class AlarmsModule(Module):
         """
         Module.__init__(self, app)
         # add template path
-        app.jinja_loader.searchpath.append("%s/emonitor/modules/alarms/templates" % app.config.get('PROJECT_ROOT'))
+        app.jinja_loader.searchpath.append("{}/emonitor/modules/alarms/templates".format(app.config.get('PROJECT_ROOT')))
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/alarms', 'alarms.base'), ('/admin/alarms/types', 'module.alarms.types'), ('/admin/alarms/test', 'module.alarms.test')]
+        self.adminsubnavigation = [('/admin/alarms', 'alarms.base'), ('/admin/alarms/types', 'module.alarms.types'), ('/admin/alarms/report', 'module.alarms.report'), ('/admin/alarms/config', 'module.alarms.config'), ('/admin/alarms/test', 'module.alarms.test')]
         
         # create database tables
-        from .alarm import Alarm
-        from .alarmhistory import AlarmHistory 
-        from .alarmattribute import AlarmAttribute
-        from .alarmsection import AlarmSection
-        from .alarmtype import AlarmType
-        classes.add('alarm', Alarm)
-        classes.add('alarmattribute', AlarmAttribute)
-        classes.add('alarmhistory', AlarmHistory)
-        classes.add('alarmsection', AlarmSection)
-        classes.add('alarmtype', AlarmType)
-        db.create_all()
+        from emonitor.modules.alarms.alarm import Alarm
+        from emonitor.modules.alarms.alarmhistory import AlarmHistory
+        from emonitor.modules.alarms.alarmattribute import AlarmAttribute
+        from emonitor.modules.alarms.alarmsection import AlarmSection
+        from emonitor.modules.alarms.alarmtype import AlarmType
 
         self.widgets = [AlarmIncomeWidget('alarms_income'), AlarmWidget('alarms'), AlarmTimerWidget('alarms_timer'), AlarmRemarkWidget('alarms_remark')]
         
         # eventhandlers
-        for f in [f for f in os.listdir('%s/emonitor/modules/alarms/inc/' % app.config.get('PROJECT_ROOT')) if f.endswith('.py')]:
+        for f in [f for f in os.listdir('{}/emonitor/modules/alarms/inc/'.format(app.config.get('PROJECT_ROOT'))) if f.endswith('.py')]:
             if not f.startswith('__'):
-                cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % f)
+                cls = imp.load_source('emonitor.modules.alarms.inc', '{}/emonitor/modules/alarms/inc/{}'.format(app.config.get('PROJECT_ROOT'), f))
                 checker = getattr(cls, cls.__all__[0])()
                 if isinstance(checker, AlarmFaxChecker) and checker.getId() != 'Dummy':
-                    events.addEvent('alarm_added.%s' % checker.getId(), handlers=[], parameters=['out.alarmid'])
-                    events.addEvent('alarm_changestate.%s' % checker.getId(), handlers=[], parameters=['out.alarmid', 'out.state'])
+                    events.addEvent('alarm_added.{}'.format(checker.getId()), handlers=[], parameters=['out.alarmid'])
+                    events.addEvent('alarm_changestate.{}'.format(checker.getId()), handlers=[], parameters=['out.alarmid', 'out.state'])
 
         events.addEvent('alarm_added', handlers=[], parameters=['out.alarmid'])  # for all checkers
         events.addEvent('alarm_changestate', handlers=[], parameters=['out.alarmid', 'out.state'])  # for all checkers
@@ -81,25 +73,35 @@ class AlarmsModule(Module):
         # static folders
         @app.route('/alarms/inc/<path:filename>')
         def alarms_static(filename):
-            return send_from_directory("%s/emonitor/modules/alarms/inc/" % app.config.get('PROJECT_ROOT'), filename)
+            return send_from_directory("{}/emonitor/modules/alarms/inc/".format(app.config.get('PROJECT_ROOT')), filename)
 
         @app.route('/alarms/export/<path:filename>')  # filename = [id]-[style].pdf
         def export_static(filename):
             filename, extension = os.path.splitext(filename)
-            id, template = filename.split('-')
-            if extension not in ['.pdf', '.html', '.png']:
-                abort(404)
-            elif extension == '.pdf':
-                return Response(Module.getPdf(Alarm.getExportData('.html', id=id, style=template, args=request.args)), mimetype="application/pdf")
-            elif extension == '.html':
-                return Response(Alarm.getExportData(extension, id=id, style=template, args=request.args), mimetype="text/html")
-            elif extension == '.png':
-                return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename, args=request.args), mimetype="image/png")
+            try:
+                id, template = filename.split('-')
+                print ">>>", id, template, extension
+                if extension not in ['.pdf', '.html', '.png']:
+                    abort(404)
+                elif extension == '.pdf':
+                    return Response(Module.getPdf(Alarm.getExportData('.html', id=id, style=template, args=request.args)), mimetype="application/pdf")
+                elif extension == '.html':
+                    return Response(Alarm.getExportData(extension, id=id, style=template, args=request.args), mimetype="text/html")
+                elif extension == '.png':
+                    return Response(Alarm.getExportData(extension, id=id, style=template, filename=filename, args=request.args), mimetype="image/png")
+            except ValueError:
+                return abort(404)
+
+        # add reportfolder
+        if not os.path.exists('{}/alarmreports/'.format(app.config.get('PATH_DATA'))):
+            os.makedirs('{}/alarmreports/'.format(app.config.get('PATH_DATA')))
             
         # translations
         babel.gettext(u'module.alarms')
         babel.gettext(u'alarms.base')
         babel.gettext(u'module.alarms.types')
+        babel.gettext(u'module.alarms.report')
+        babel.gettext(u'module.alarms.config')
         babel.gettext(u'module.alarms.test')
         babel.gettext(u'alarms_income')
         babel.gettext(u'alarms_timer')
@@ -148,24 +150,35 @@ class AlarmsModule(Module):
         babel.gettext(u'alarms.filter.7')
         babel.gettext(u'alarms.filter.31')
 
-        # init
-        # Do init script for alarms at start and add active alarms (state = 1)
-        #from modules.alarms.alarm import Alarm
-        #from core.extensions import classes, scheduler, events
-        aalarms = classes.get('alarm').getActiveAlarms()  # get last active alarm
-        
-        if aalarms:  # add active alarm and closing time
-            try:
-                for aalarm in aalarms:
-                    scheduler.add_job(events.raiseEvent, args=['alarm_added', dict({'alarmid': aalarm.id})])
-                    closingtime = time.mktime(aalarm.timestamp.timetuple()) + float(Settings.get('alarms.autoclose', 1800))
+        babel.gettext(u'internal')
+        babel.gettext(u'external')
 
-                    if closingtime > time.time():  # add close event
-                        scheduler.add_job(Alarm.changeState, args=[aalarm.id, 2])
-                    else:
-                        scheduler.add_job(Alarm.changeState, args=[aalarm.id, 2])
-            except:
-                logger.exception('error in aalarm')
+        babel.gettext(u'AFAlerting')
+        babel.gettext(u'AFCars')
+        babel.gettext(u'AFMaterial')
+        babel.gettext(u'AFReport')
+        babel.gettext(u'AFTime')
+        babel.gettext(u'AFDamage')
+        babel.gettext(u'AFOthers')
+        babel.gettext(u'AFPersons')
+
+        babel.gettext(u'alarms.fields.simple')
+        babel.gettext(u'alarms.fields.extended')
+        babel.gettext(u'alarms.fields.persons.field.sum')
+        babel.gettext(u'alarms.fields.persons.field.alarm')
+        babel.gettext(u'alarms.fields.persons.field.house')
+        babel.gettext(u'alarms.fields.persons.field.pa_alarm')
+        babel.gettext(u'alarms.fields.persons.field.pa')
+        babel.gettext(u'alarms.fields.persons.field.pa_house')
+        babel.gettext(u'alarms.fields.persons.field.el')
+        babel.gettext(u'alarms.fields.persons.field.elgrade')
+        babel.gettext(u'alarms.fields.persons.field.style.simple')
+        babel.gettext(u'alarms.fields.persons.field.style.extended')
+
+        # init
+        # Do init script for alarms at start and add alarms (state = 1 or 2) (active or done)
+        for aalarm in Alarm.query.filter(Alarm.state in [1, 2]).all():
+            aalarm.updateSchedules(reference=1)
 
     def frontendContent(self):
         return 1
@@ -228,4 +241,4 @@ class adminAlarmHandler(SocketHandler):
         :param sender: event sender
         :param extra: extra parameters for event
         """
-        SocketHandler.send_message(extra)
+        SocketHandler.send_message(sender, **extra)

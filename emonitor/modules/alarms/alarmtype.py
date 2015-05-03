@@ -1,8 +1,9 @@
 import imp
 import time
 import yaml
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from emonitor.modules.settings.settings import Settings
 
 
 class AlarmType(db.Model):
@@ -70,7 +71,7 @@ class AlarmType(db.Model):
 
     @staticmethod
     def getVariables():
-        return classes.get('settings').get('alarms.evalfields').split('\r\n')
+        return Settings.get('alarms.evalfields').split('\r\n')
 
     @staticmethod
     def getAlarmTypes(id=0):
@@ -81,9 +82,9 @@ class AlarmType(db.Model):
         :return: list of single object :py:class:`emonitor.modules.alarms.alarmtype.AlarmType`
         """
         if id != 0:
-            return db.session.query(AlarmType).filter_by(id=id).first()
+            return AlarmType.query.filter_by(id=id).first()
         else:
-            return db.session.query(AlarmType).order_by('id').all()
+            return AlarmType.query.order_by('id').all()
 
     @staticmethod
     def getAlarmTypeByClassname(name):
@@ -93,10 +94,10 @@ class AlarmType(db.Model):
         :param name: name of interpreter class
         :return: list of :py:class:`emonitor.modules.alarms.alarmtype.AlarmType`
         """
-        return db.session.query(AlarmType).filter_by(interpreter=name).all() or []
+        return AlarmType.query.filter_by(interpreter=name).all() or []
 
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         """
         Eventhandler for alarm type class: do type detection
 
@@ -106,21 +107,21 @@ class AlarmType(db.Model):
         """
         stime = time.time()
         
-        if 'text' in kwargs[0]:
-            text = kwargs[0]['text']
+        if 'text' in kwargs.keys():
+            text = kwargs['text']
             atype = None
-            for alarmtype in classes.get('alarmtype').getAlarmTypes():
+            for alarmtype in AlarmType.getAlarmTypes():
                 for kw in alarmtype.keywords.split('\n'):
                     if kw in text:
                         atype = alarmtype
                         break
             
-            kwargs[0]['type'] = 0
+            kwargs['type'] = 0
             if atype:
-                kwargs[0]['type'] = atype.id
+                kwargs['type'] = atype.id
 
-        if 'time' not in kwargs[0]:
-            kwargs[0]['time'] = []
-        kwargs[0]['time'].append('alarmtype: alarmtype detection done in %s sec.' % (time.time() - stime))
+        if 'time' not in kwargs.keys():
+            kwargs['time'] = []
+        kwargs['time'].append('alarmtype: alarmtype detection done in %s sec.' % (time.time() - stime))
         
         return kwargs

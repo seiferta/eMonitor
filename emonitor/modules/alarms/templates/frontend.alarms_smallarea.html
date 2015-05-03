@@ -1,59 +1,16 @@
 {% extends "frontend.area.html" %}
 
-{% block style %}
-    <style>
-        #alarmssubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0 0 1px 0;}
-        #alarmssubcenter {border-width:0;padding:0;}
-        #alarmssubnorth button{width:36px;height:25px;}
-        #alarmssubnorth select{height:25px;background-color:#dbdbdb;border:1px solid #707070;}
-
-        h3 {font-size: 1.1em; background: #ababab;margin:0;cursor:pointer;padding:10px 0 10px 10px;overflow:hidden;position:relative;z-index:0;}
-        h3:hover{background-color:silver!important;}
-        .alarmrow {position:relative;clear:left;padding:4px 2px 0 15px;border-bottom:1px solid silver;background-color:#fff;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
-        .alarmrow a{color:#818181;}
-        .alarmrow.selected{background-color: #dedede!important;}
-        .alarmrow a:hover{color:#b40431;}
-        .btn {padding:2px!important;background-color:transparent!important;color:#b40431;border-width:0;}
-        .btn:hover {color:#428bca;}
-
-        .filter i{color:#818181;}
-        .filterdiv{display:none;background-color:#d3d3d3;margin-left:10px;border:1px solid black;width:146px;}
-        .filterdiv a{text-align:right;cursor: pointer;padding:2px 5px;margin:2px;color:black;display:block;}
-        .filterdiv a:hover{background-color:#ababab;text-decoration:none;}
-        .filterdiv .selected{background-color:#ababab;}
-
-        button.disabled i{color:#818181;}
-
-        .alarmrow:hover {background-color: #dedede;cursor:pointer;}
-        .prio {position:absolute; top:0; left:2px; bottom:0; width:5px;}
-        .prio0 {background-color:green!important;}
-        .prio1 {background-color:orange!important;}
-        .prio2 {background-color:red!important;}
-
-        .alarmrow .address {float:left; width:100%;font-weight:bold;margin-top:4px;}
-        .alarmrow .alarmdetails{position:absolute;top:4px;right:30px;color:#818181 !important;}
-        .alarmrow .alarmdetails i{margin-right:3px;}
-        .mapimage {position:absolute;right:60px;top:10px;display:none;}
-        .addalarm {position:absolute;right:5px;top:5px;}
-        .maphidden {visibility:hidden!important;}
-        .dropdown button {background-color:transparent;cursor:pointer;padding:1px;margin:0;border-width:0;}
-        .showroute{background-color:red;}
-        .showroute:hover{background-color:red!important;}
-        p.noalarms{margin-top:50%;text-align:center;color:#818181;font-size:1.4em;}
-        .selectable .ui-selecting {background: #dedede;}
-        .selectable .ui-selected {background: #dedede;}
-    </style>
-{% endblock %}
-
 {% block headscript %}
+    <link rel="stylesheet" href="/alarms/inc/frontend.alarms.min.css" />
     <script type="text/javascript" src="/js/jquery.layout.resizePaneAccordions-latest.min.js"> </script>
     <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
-    <script>
-        var states = ['0', '0', '0', '0'];
 
+    <script>
         if (typeof parent.maps != "undefined"){
             parent.maps.alarmHouses = L.layerGroup();
         }
+
+        var current_alarmid = 0;
 
         $(document).ready(function() {
             var innerLayout = $('#alarmcontainer').layout({
@@ -64,11 +21,9 @@
                 togglerTip_closed: '{{ _('layout.closed') }}'
             });
 
-            $("#alarmaccordion").accordion({ heightStyle: "fill", active: {{ activeacc }}});
-            $("#alarmaccordion h3").eq($('#alarmaccordion').accordion( "option", "active" )).click();
+            $("#alarmaccordion").accordion({ heightStyle: "fill", active: {{ activeacc }}, create: loadAlarms({{ alarmstates.keys()[activeacc|int] }})});
             $(".selectable").selectable({
                         stop: function () {
-                            //$(this).find('.dropdown-toggle').show();
                             $(this).find('.dropdown-toggle').removeAttr("disabled");
                             if ($(".ui-selected", this).length > 1) {
                                 $(".ui-selected", this).each(function () {
@@ -82,11 +37,12 @@
         });
 
         parent.ws.onmessage=function(e){
-            $('#ws').html('<i class="fa fa-eye fa-lg"></i>');
-            d = JSON.parse(e.data);
-            if(d.sender=='alarm.updated' || d.sender=='alarm.deleted' || d.sender=='alarm.changestate'){
+            $('#ws').html('<i class="fa fa-link fa-lg"></i>');
+            var d = JSON.parse(e.data);
+            console.log(d);
+            if(d.sender=='alarm.updated' || d.sender=='alarm.deleted' || (d.sender=='alarm.changestate' && d.newstate!=0)){
                 location.reload();
-            }else if(d.sender=='alarm.added'){
+            }else if(d.sender=='alarm.added' || (d.sender=='alarm.changestate' && d.newstate==0)) {
                 location.reload();
                 alert('{{ _('alarm.addedalert') }}');
             }
@@ -95,12 +51,13 @@
 {% endblock %}
 
 {% block content %}
-    <div style="height:100%;width:100%;padding:0;margin:0;" id="alarmcontainer" class="alarmcontainer">
+    <div id="alarmcontainer" class="alarmcontainer">
 
         <div class="pane" id="alarmssubnorth" style="padding-top:5px;overflow:hidden;">
-            <button type="button" name="action" value="addalarm" onclick="window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'" title="{{ _('alarms.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
-            <button type="button" name="action" value="activatealarm" title="{{ _('alarms.autorefresh') }}" onclick="window.location.href='/alarms?area={{ frontendarea }}'"><i class="fa fa-refresh fa-lg"></i></button>
-            <button type="button" name="archive" title="{{ _('alarms.archivetitle') }}" onclick="questionArchive(0)"><i class="fa fa-shield fa-lg"></i></button>
+            <button type="button" name="action" value="addalarm" title="{{ _('alarms.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+            <button type="button" name="action" value="refresh" title="{{ _('alarms.autorefresh') }}"><i class="fa fa-refresh fa-lg"></i></button>
+            <button type="button" name="collective" value="collective" title="{{ _('alarms.collectivereport') }}"><i class="fa fa-file-text-o fa-lg"></i></button>
+            <button type="button" name="archive" value="archive" title="{{ _('alarms.archivetitle') }}"><i class="fa fa-shield fa-lg"></i></button>
             <button type="button" name="filter" class="filter" title="{%- if alarmfilter=="0" %}{{ _('alarms.filter.title') }}{% else %}{{ _('alarms.filter.activetitle')}}: {{ _('alarms.filter.'+alarmfilter|string) }} {%- endif %}"><i class="fa fa-filter fa-lg"{%- if alarmfilter!="0" %} style="color:black;"{%- endif %}></i></button>
             <div id="filterdiv" class="filterdiv">
                 {%- for d in ["0", "1", "7", "31"] %}
@@ -111,7 +68,7 @@
             <div class="smallmodulesarea">
                 {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
                 {%- if mod != 'alarms' %} {# exclude current module #}
-                <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
+                <button value="{{ mod }}" id="module" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
                 {%- endif %}
                 {%- endfor %}
             </div>
@@ -120,28 +77,29 @@
         <div id="alarmssubcenter">
             <div id="alarmaccordion">
                 {%- for k in alarmstates.keys() %}
-                <h3 a_name="alarmstate__{{ k }}" class="btn-default" style="background-color:#adadad;padding-right:5px;border-bottom:1px solid #ddd;" onclick="return showMappoints({{ k }}, {{ stats[k] }})" key="{{ k }}">
+                <h3 a_name="alarmstate__{{ k }}" class="btn-default" key="{{ k }}">
                     {{ _('alarmstate.'+alarmstates[k]) }}
+                    <span id="priocar_{{ k }}" class="priocars"></span>
                     <span class="badge badge-info pull-right">{{ stats[k] }}</span>
                 </h3>
 
-                <div id="alarmstate_{{ k }}" style="overflow-x:hidden!important;border:solid silver;border-width:0 1px" class="selectable">
+                <div id="alarmstate_{{ k }}" class="selectable">
                     <p class="noalarms">{{ _('alarms.noactive') }}</p>
                 </div>
-                {% endfor %}
+                {%- endfor %}
             </div>
-            {% with messages = get_flashed_messages(category_filter=["alarms"]) %}
-                {% if messages %}
+            {%- with messages = get_flashed_messages(category_filter=["alarms"]) %}
+                {%- if messages %}
                 <div style="position:absolute;top:50%;width:80%;left:10%;">
                 <div class="alert alert-info alert-dismissable" style="width:100%;">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {% for message in messages %}
+                    {%- for message in messages %}
                         <p>{{ message|safe }}</p>
-                    {% endfor %}
+                    {%- endfor %}
                 </div>
                 </div>
-                {% endif %}
-            {% endwith %}
+                {%- endif %}
+            {%- endwith %}
 
         </div>
             <script>
@@ -152,7 +110,7 @@
                 }
 
                 $('button[name="filter"]').click(function(){
-                    $('#filterdiv').toggle();
+                    $('#filterdiv').css('margin-left', $(this).offset().left - 120).toggle();
                 });
 
                 function filteralarms(d){
@@ -174,43 +132,40 @@
                     return false;
                 }
 
+                function showTimeForm(alarmid) {
+                    $.ajax({ type : "POST", url : "/data/alarms?action=timeform&alarmid="+alarmid,
+                        success: function(result) {
+                            parent.$('#overlaycontent').html(result);
+                            parent.$('.overlay').toggle();
+                            return false;
+                        }
+                    });
+                    return false;
+                }
+
                 function questionFinish(alarmid){
                     if (confirm('{{ _('alarms.finishquestion') }}')){
                         $.ajax({ type : "POST", url : "/alarms?action=finishalarm&alarmid="+alarmid+"&area={{ frontendarea }}",
-                            success: function(result) {
-                                window.location.href='/alarms?area={{ frontendarea }}';
-                                return false;
-                            }
+                            success: function() {window.location.href='/alarms?area={{ frontendarea }}';}
                         });
                     }
-                    return false;
                 }
 
                 function questionActivate(alarmid){
                     if (confirm('{{ _('alarms.activatequestion') }}')){
                         $.ajax({ type : "POST", url : "/alarms?action=activatealarm&alarmid="+alarmid+"&area={{ frontendarea }}",
-                            success: function(result) {
-                                window.location.href='/alarms?area={{ frontendarea }}';
-                                return false;
-                            }
+                            success: function() {window.location.href='/alarms?area={{ frontendarea }}';}
                         });
                     }
-                    return false;
                 }
 
                 function questionArchive(alarmid){
                     var selection = $(".ui-selected");
                     if (selection.length > 0) {
                         if (confirm('{{ _('alarms.archivequestion') }}')) {
-                            alarmid = '';
-                            selection.each(function(){
-                                alarmid += $(this).attr('alarmid') + ';';
-                            });
+                            alarmid = $.map(selection, function(alarm){return $(alarm).attr('alarmid');}).join(';');
                             $.ajax({ type: "POST", url: "/alarms?action=archivealarm&alarmid=" + alarmid + "&area={{ frontendarea }}",
-                                success: function (result) {
-                                    window.location.href = '/alarms?area={{ frontendarea }}';
-                                    return false;
-                                }
+                                success: function () {window.location.href = '/alarms?area={{ frontendarea }}';}
                             });
                         }
                     }else{
@@ -222,20 +177,14 @@
                 function questionDelete(alarmid){
                     if (confirm('{{ _('alarms.deletequestion') }}')){
                         $.ajax({ type : "POST", url : "/alarms?action=deletealarm&alarmid="+alarmid+"&area={{ frontendarea }}",
-                            success: function(result) {
-                                window.location.href='/alarms?area={{ frontendarea }}';
-                                return false;
-                            }
+                            success: function() {window.location.href='/alarms?area={{ frontendarea }}';}
                         });
                     }
-                    return false;
                 }
 
                 function sendtomonitor(id){
                     $.ajax({ type : "POST", url : "/data/alarms?action=alarmmonitor&alarmid="+id,
-                         success: function(ret) {
-                            /* */
-                        }
+                         success: function(ret) {}
                     });
                     return false;
                 }
@@ -243,7 +192,7 @@
                 function printAlarm(id, printerdefid){
                     $('.dropdown-menu').hide();
                     $.ajax({ type : "POST", url : "/data/alarms?action=printalarm&alarmid="+id+"&printerdef="+printerdefid,
-                        success: function(ret) {
+                        success: function() {
                             $('.options').find('.dropdown-menu').stop(true, true).hide();
                             return false;
                         }
@@ -255,7 +204,7 @@
                     $.ajax({ type : "POST", url : "/data/alarms?action=routeinfo&alarmid="+id,
                         success: function(ret) {
                             parent.$('#overlaycontent').html(ret);
-                            parent.$('.overlay').toggle();
+                            parent.$('.overlay').toggle().clearQueue();
                             return false;
                         }
                     });
@@ -263,17 +212,15 @@
                 }
 
                 function showRoute(id){
-                    $('#route_'+id).toggleClass('fa-random');
                     parent.maps.map.clearRoute();
-
-                    if($('#route_'+id).hasClass('fa-random')) {
+                    if($('#route_'+id).toggleClass('fa-random').hasClass('fa-random')) {
                         $.ajax({ type: "POST", url: "/data/alarms?action=routecoords&alarmid=" + id,
                             success: function (ret) {
                                 if (ret.error=='1') {
                                     alert(ret.errormessage);
-                                    return false;
+                                }else {
+                                    parent.maps.map.addRoute(ret);
                                 }
-                                parent.maps.map.addRoute(ret);
                                 return false;
                             }
                         });
@@ -282,6 +229,11 @@
                 }
 
                 function mapPanTo(obj){
+                    if (current_alarmid == $(obj).attr('alarmid')){
+                        return false;
+                    }
+                    $('#route_'+current_alarmid).removeClass('fa-random')
+                    current_alarmid = $(obj).attr('alarmid');
                     parent.maps.map.clearMarkers();
                     parent.maps.map.clearRoute();
 
@@ -306,17 +258,75 @@
                     });
                 }
 
-                function showMappoints(state, s_count) {
-                    if(states[state]=='0' && s_count != 0) {
-                        $('#alarmstate_' + state).html('<p class="noalarms"><img src="/img/loading.gif"/></p>');
-                        $.ajax({ type: "POST", url: "/data/alarms?action=alarmsforstate&state=" + state,
-                            success: function (alarms) {
-                                $('#alarmstate_' + state).html(alarms);
-                            }
-                        });
-                        states[state] = 1;
-                    }
+                function showPrioCars(state) {
+                    $.ajax({ type: "POST", url: "/data/alarms?action=alarmpriocars&state=" + state,
+                        success: function (cars) {
+                             $('#priocar_'+state).html(cars);
+                            return false;
+                        }
+                    });
+                }
 
+                {%- for k in alarmstates.keys() %}
+                showPrioCars({{ k }});
+                {%- endfor %}
+
+                function showDetails(id){
+                    $.ajax({ type: "POST", url: "/data/alarms?action=showdetailsform&alarmid="+id,
+                        success: function (result) {
+                            parent.$('#overlaycontent').html(result);
+                            parent.$('.overlay').toggle();
+                            return false;
+                        }
+                    });
+                }
+
+                function loadAlarms(state, activate){
+                    $('#alarmstate_' + state).html('<p class="noalarms"><img src="/img/loading.gif"/></p>');
+                    $.ajax({ type: "POST", url: "/data/alarms?action=alarmsforstate&state=" + state,
+                        success: function (alarms) {
+                            $('#alarmstate_' + state).html(alarms);
+                            if (activate) {
+                                showMappoints(state);
+                            }
+                            return false;
+                        }
+                    });
+                }
+
+                $("h3[a_name^='alarmstate__']").each(function() {
+                    $(this).click(function () { showMappoints($(this).attr('key')); });
+                    /*if ($(this).attr('key') != '{{ alarmstates.keys()[activeacc] }}') {
+                        $(this).one("click", function () { loadAlarms($(this).attr('key')); });
+                    }*/
+                });
+
+                {%- for k in alarmstates.keys() %}
+                loadAlarms({{ k }}, {{ (loop.index0|string == activeacc|string)|string|lower }});
+                {%- endfor %}
+
+                $("button[value=refresh]").click(function(){window.location.href='/alarms?area={{ frontendarea }}'});
+                $("button[value=addalarm]").click(function(){window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'});
+                $("button[value=archive]").click(function(){questionArchive(0)});
+                $("button[value=collective]").click(function(){loadCollective()});
+
+
+                $("button[id=module]").each(function(){
+                    $(this).click(function(){window.location.href='/'+$(this).val()+'?area={{ frontendarea }}'});
+                });
+
+                function loadCollective(){
+                    $.ajax({ type : "POST", url : "/data/alarms?action=collective",
+                        success: function(result) {
+                            $('#overlaycontent', parent.document).html(result);
+                            $('.overlay', parent.document).toggle();
+                            return false;
+                        }
+                    });
+                    return false;
+                }
+
+                function showMappoints(state) {
                     if (typeof parent.maps.map != "undefined") {
                         $('.alarmrow').removeClass('selected');
                         parent.maps.map.clearMarkers();
@@ -329,7 +339,7 @@
                             $("button[name='archive']").attr("disabled", "disabled").addClass("disabled");
                         }
 
-                        $('#alarmstate_' + state).children().each(function (i) {
+                        $('#alarmstate_' + state).children().each(function() {
                             if ($(this).attr('lat')!="") {
                                 var m = parent.maps.map.addMarker($(this).attr('lat'), $(this).attr('lng'), $(this).attr('priority'), false);
                                 if (m) {
@@ -344,19 +354,9 @@
                         return false;
                     }
                 }
-
-                function onAlarmMarkerMouseOver(e){
-                    this.openPopup();
-                }
-
-                function onAlarmMarkerMouseOut(e){
-                    this.closePopup();
-                }
-
-                function onAlarmMarkerClick(e){
-                    $('#editalarm_'+this.options['alarmid']).click();
-                }
-
+                function onAlarmMarkerMouseOver(){this.openPopup();}
+                function onAlarmMarkerMouseOut(){this.closePopup();}
+                function onAlarmMarkerClick(){$('#editalarm_'+this.options['alarmid']).click();}
             </script>
     </div>
 {% endblock %}

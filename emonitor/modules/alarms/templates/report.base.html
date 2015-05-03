@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>Einsatzbericht</title>
+        <style>
+            body{font-family: Arial, Helvetica, sans-serif; font-size:14px;line-height: 1.5;}
+            h1 {text-align: center;}
+            legend{font-weight:bold;}
+            strong{margin:10px;padding:20px;}
+
+            @page {
+                size: a4 portrait;
+                margin: 1cm;
+
+                @frame logo_frame {-pdf-frame-content:logo;top:40px;right:650px;left:40px;bottom:950px;padding:0;border: 0;}
+                @frame barcode_frame {-pdf-frame-content:barcode;top:65px;right:20px;left:660px;bottom:900px;padding:0;}
+                @frame base_frame {-pdf-frame-content:baseinfo;top:40px;right:160px;left:160px;bottom:940px;padding:30px 10px 0 10px;}
+                @frame paragraph_frame {-pdf-frame-content:paragraph;-pdf-frame-border:1;right:40px;left:40px;bottom:90px;top:170px;}
+                @frame footer_frame {-pdf-frame-content:footer;right:40px;left:40px;bottom:20px;top:1050px;}
+            }
+
+            @media screen {
+                div.field{}
+                div.field div.value{text-decoration: underline;}
+            }
+        </style>
+    </head>
+
+    <body>
+        {% set department = alarm.getDepartment() %}
+        <div id="logo">
+            {%- if department.attributes['logo'] %}
+            <img src="data:image/{{ department.attributes['logo'].split('.')[-1] }};base64,{{ department.getLogoStream() }}"/>
+            {%- endif %}
+        </div>
+        <div id="barcode">
+            <pdf:barcode value="/alarms/export/{{ alarm.id }}-report.pdf" type="QR" barHeight="80" barWidth="80"/>
+        </div>
+        <h1 style="padding-top:10px;">Einsatzbericht</h1>
+        <div id="baseinfo">
+            <div>
+                <div>
+                    <strong>Datum:</strong> <span style="color:#ffffff;">{{ '_'*2 }}</span>{{ alarm.timestamp|datetime('dd.MM.yyyy') }}<span style="color:#ffffff;">{{ '_'*4 }}</span>
+                    <strong>Einsatznummer:</strong> <span style="color:#ffffff;">{{ '_'*3 }}</span><u>{{ ('&#160;' * 15) | safe }}</u> / <span class="field"><u>{{ ('&#160;' * 15) | safe }}</u></span>
+
+                    <h4><strong>Einsatzort:</strong><span style="color:#ffffff;">{{ '_'*3 }}</span>{{ alarm.city.name }} - {{ alarm.street.name }} {{ alarm.streetno }} <br/>{{ alarm.street2.name }}<br/>
+                    <strong>Meldung:</strong><span style="color:#ffffff;">{{ '_'*3 }}</span>{{ alarm.key.category }} - {{ alarm.key.key }}</h4>
+                </div>
+            </div>
+        </div>
+        <div id="paragraph">
+        {% for alarmfield in alarm.getAlarmFields() %}
+            <strong>{{ alarmfield.name }}</strong>
+            {{ alarmfield.renderField(alarm)|safe }}
+        {% endfor %}
+        </div>
+        <div id="footer">
+            <p style="text-align:center;"><strong>{{ department.address_name }} - {{ department.address_street }} - {{ department.address_city }}</strong><br/>
+            Tel: {{ department.address_phone }} - Fax: {{ department.address_fax }} - E-Mail: {{ department.address_email }}</p>
+        </div>
+    </body>
+</html>

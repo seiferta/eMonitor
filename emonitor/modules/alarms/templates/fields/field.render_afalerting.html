@@ -1,0 +1,34 @@
+<div class="afalerting" style="border-bottom:0.1px solid black;margin-bottom:10px;padding-left:40px;">
+{%- for extfield in field.getFields() %}
+    {%- if extfield.getArg('freetext') %}
+        {% set textlen = extfield.getValue(alarm)|length %}
+        <div style="display:inline;padding:10px 0 0 0;margin:0;width:auto;border-bottom:1px solid black;">
+            <u> {{ extfield.getValue(alarm) }}{% for i in range(0, 70-textlen) %}&#160;{% endfor %}</u>
+            <span style="color:#ffffff;">{{ '_'*3 }}</span>
+        </div>
+    {%- elif not extfield.getArg('child') %}
+        <div style="display:inline;padding:10px 0 0 0;margin:0;">
+            <strong>
+                {%- if extfield.getValue(alarm) %}
+                    <span>&#10006;</span>
+                {%- else %}
+                    <span>O</span>
+                {%- endif %}
+                {{ extfield.getLabel() }}
+            </strong>
+            <span style="color:#ffffff;">{{ '_'*3 }}</span>
+        </div>
+    {%- else %}
+        <div style="padding:40px;display:inline;margin:40px;">
+            {%- if extfield.getValue(alarm) %}
+                <span>&#10006;</span>
+            {%- else %}
+                <span>O</span>
+            {%- endif %}
+            {{ extfield.getLabel() }}
+            <span style="color:#ffffff;">{{ '_'*3 }}</span>
+        </div>
+    {%- endif %}
+    {% if extfield.getArg('newline') %}<br/>{% endif %}
+{%- endfor %}
+</div>

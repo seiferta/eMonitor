@@ -2,7 +2,12 @@ from collections import OrderedDict
 import re
 import difflib
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker
-from emonitor.extensions import classes
+from emonitor.modules.streets.street import Street
+from emonitor.modules.streets.city import City
+from emonitor.modules.cars.car import Car
+from emonitor.modules.settings.department import Department
+from emonitor.modules.alarmkeys.alarmkey import Alarmkey
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
 
 __all__ = ['FezAlarmFaxChecker']
 
@@ -12,7 +17,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     fax checker implementation for Feuerwehreinsatzzentrale Muenchen Land (FEZ) with special layout
     """
     __name__ = "FEZ"
-    __version__ = '0.1'
+    __version__ = '0.2'
 
     fields = {}
     sections = OrderedDict()
@@ -53,127 +58,125 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if 'options' in params:
             options = params['options']
 
-        streets = classes.get('street').getAllStreets()
+        streets = Street.getStreets()
         _str = FezAlarmFaxChecker().fields[fieldname][0]
         if 'part' in options:  # addresspart, remove city names
-            for c in classes.get('city').getCities():
+            for c in City.getCities():
                 if _str.endswith(c.name):
                     _str = _str.replace(c.name, '')
+            pattern = re.compile(r'(?P<street>(^(\D+))) (?P<housenumber>(?P<hn>([0-9]{1,3}((\s?)[a-z])?)).*)'  # street with housenumber
+                                 r'|((?P<streetname>(^(\D+))))'
+                                 r'|((?P<bab>((.*) (\>) )(?P<direction>(.*))))'  # highway
+                                 r'|((.*) (?P<train>(KM .*).*))')  # train
+        else:
+            pattern = re.compile(r'(?P<street>(^(\D+))) (?P<housenumber>(?P<hn>([0-9]{1,3}((\s?)[a-z])?)).*)'  # street with housenumber
+                                 r'|((?P<bab>A[0-9]{2,3} [A-Za-z]+) (?P<direction>(\D*))(( (?P<as>[0-9]*))|(.*)))'  # highway
+                                 r'|((.*)(?P<train>(Bahnstrecke .*)) (?P<km>[0-9]+(.*)))'  # train
+                                 r'|((?P<streetname>(^(\D+))))'
+                                 )
 
-        # try special handling for bab and bahn
-        repl = difflib.get_close_matches(_str, [s.name for s in streets], 1)
-        if len(repl) == 1:  # found street
-            _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
-            if len(_streets) > 0:
-                _street = _streets[0]
-                FezAlarmFaxChecker().fields[fieldname] = (_street.name, _street.id)
-                FezAlarmFaxChecker().logger.debug('street: "%s" (%s) found' % (_street.name, _street.id))
-                if unicode(_street.subcity) in [alarmtype.translation(u'_bab_'), alarmtype.translation(u'_train_')]:  # only bab and train type
-                    return
-
-        _str = _str.split()
-        if FezAlarmFaxChecker().fields['city'][1] != 0:  # city found
-            if len(_str) >= 2:  # streetname + no
-                # try streets with space in name
-                i = 1
-                while i < len(_str):
-                    repl = difflib.get_close_matches(u' '.join(_str[0:i]), [s.name for s in streets], 1)
-                    if len(repl) > 0:
-                        if i == 1:
-                            i += repl[0].count(u' ')
-                        break
-                    i += 1
-
-                if len(repl) >= 1:  # found in db + houseno.
+        m = pattern.match(_str)
+        if m:
+            if m.groupdict()['street'] or m.groupdict()['streetname']:  # normal street, fields: 'street', 'housenumber' with sub 'hn'
+                repl = difflib.get_close_matches(m.groupdict()['street'] or m.groupdict()['streetname'], [s.name for s in streets], 1)
+                if len(repl) > 0:
                     _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
-                    FezAlarmFaxChecker().fields[fieldname] = (u'%s' % repl[0], u';'.join('%s' % s.id for s in _streets))
-                    try:
-                        _str[i] = _str[i].replace(u'B', u'6')
-                        _str[i] = u' '.join(_str[i:])
-                    except IndexError:
-                        i = len(_str) - 1
-                        _str[i] = u''
-                    if 'part' not in options:
-                        FezAlarmFaxChecker().fields['streetno'] = (u'%s' % _str[i].replace(alarmtype.translation(u'_street_'), u'').strip(), FezAlarmFaxChecker().fields[fieldname][1])
+                    if len(_streets) > 0:
+                        if FezAlarmFaxChecker().fields['city'][1] != 0:  # own city
+                            _street = _streets[0]
+                            FezAlarmFaxChecker().fields[fieldname] = (_street.name, _street.id)
+                            FezAlarmFaxChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
+                        else:
+                            FezAlarmFaxChecker().fields[fieldname] = (m.groupdict()['street'] or m.groupdict()['streetname'], 0)
+                            if not re.match(alarmtype.translation(u'_street_'), _str[1]) and 'part' not in options:  # ignore 'street' value and part-address
+                                FezAlarmFaxChecker().fields['streetno'] = (m.groupdict()['housenumber'], 0)
 
-                    if len(_streets) == 1 and 'part' not in options:  # housenumber of street
-                        _hn = None
-                        if len(FezAlarmFaxChecker().fields['streetno'][0].split()) > 0:
-                            _hn = FezAlarmFaxChecker().fields['streetno'][0].split()[0].replace(u'O', u'0')
+                    if m.groupdict()['hn'] and FezAlarmFaxChecker().fields['city'][1] != 0:
+                        if m.groupdict()['housenumber'] != m.groupdict()['housenumber'].replace('B', '6').replace(u'\xdc', u'0'):
+                            _housenumber = m.groupdict()['housenumber'].replace('B', '6').replace(u'\xdc', u'0')
+                            _hn = _housenumber
+                        else:
+                            _housenumber = m.groupdict()['housenumber'].replace('B', '6').replace(u'\xdc', u'0')
+                            _hn = m.groupdict()['hn']
+                        if m.groupdict()['hn']:
+                            db_hn = filter(lambda h: h.number.replace(' ', '') == _hn.replace(' ', ''), _streets[0].housenumbers)
+                            if len(db_hn) == 0:
+                                db_hn = filter(lambda h: h.number == _hn.split()[0], _streets[0].housenumbers)
+                            if len(db_hn) > 0:
+                                FezAlarmFaxChecker().fields['id.streetno'] = (db_hn[0].number, db_hn[0].id)
+                                FezAlarmFaxChecker().fields['streetno'] = (_housenumber, db_hn[0].id)
+                                FezAlarmFaxChecker().fields['lat'] = (db_hn[0].points[0][0], db_hn[0].id)
+                                FezAlarmFaxChecker().fields['lng'] = (db_hn[0].points[0][1], db_hn[0].id)
+                            elif _housenumber:
+                                FezAlarmFaxChecker().fields['streetno'] = (_housenumber, 0)
+                                FezAlarmFaxChecker().fields['lat'] = (_streets[0].lat, 0)
+                                FezAlarmFaxChecker().fields['lng'] = (_streets[0].lng, 0)
+                            else:
+                                FezAlarmFaxChecker().fields['lat'] = (_streets[0].lat, 0)
+                                FezAlarmFaxChecker().fields['lng'] = (_streets[0].lng, 0)
 
-                        for hnumber in _streets[0].housenumbers:
-                            if _hn and str(hnumber.number) == _hn:
-                                FezAlarmFaxChecker().fields['id.streetno'] = (hnumber.number, hnumber.id)
-                                nr = hnumber.number
-                                if FezAlarmFaxChecker().fields['streetno'][0].split() > 1:
-                                    nr += u' ' + u' '.join(FezAlarmFaxChecker().fields['streetno'][0].split()[1:]).replace(u'.0G', u'. OG')
-                                FezAlarmFaxChecker().fields['streetno'] = (nr, hnumber.id)
-                                FezAlarmFaxChecker().fields['lat'] = (hnumber.points[0][0], hnumber.id)
-                                FezAlarmFaxChecker().fields['lng'] = (hnumber.points[0][1], hnumber.id)
-                                break
-
-                        if 'id.streetno' not in FezAlarmFaxChecker().fields:  # spaces in house number
-                            _hn = FezAlarmFaxChecker().fields['streetno'][0].replace(u' ', u'')
-                            for hnumber in _streets[0].housenumbers:
-                                if _hn and str(hnumber.number) == _hn:
-                                    FezAlarmFaxChecker().fields['id.streetno'] = (hnumber.number, hnumber.id)
-                                    FezAlarmFaxChecker().fields['streetno'] = (hnumber.number, hnumber.id)
-                                    FezAlarmFaxChecker().fields['lat'] = (hnumber.points[0][0], hnumber.id)
-                                    FezAlarmFaxChecker().fields['lng'] = (hnumber.points[0][1], hnumber.id)
-                                    break
-
-                else:  # street not found
-                    if fieldname not in FezAlarmFaxChecker().fields:
-                        FezAlarmFaxChecker().fields[fieldname] = (u" ".join(_str), 0)
+            elif m.groupdict()['bab']:  # highway, fields: 'bab', 'direction', 'as'
+                repl = difflib.get_close_matches(u"{} {}".format(m.groupdict()['bab'], m.groupdict()['direction']), [s.name for s in streets], 1)
+                if len(repl) > 0:
+                    _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
+                    if len(_streets) > 0:
+                        _street = _streets[0]
+                        FezAlarmFaxChecker().fields[fieldname] = (_street.name, _street.id)
+                        FezAlarmFaxChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
                 return
 
-            else:
-                repl = difflib.get_close_matches(u" ".join(_str), [s.name for s in streets])
+            elif m.groupdict()['train']:  # train, fields: 'train', 'km'
+                repl = difflib.get_close_matches(m.groupdict()['train'], [s.name for s in streets], 1)
+                if len(repl) > 0:
+                    _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
+                    if len(_streets) > 0:
+                        _street = _streets[0]
+                        FezAlarmFaxChecker().fields[fieldname] = (_street.name, _street.id)
+                        FezAlarmFaxChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
+
+                return
+
+            else:  # not found
+                repl = difflib.get_close_matches(_str, [s.name for s in streets])
                 if len(repl) >= 1:
                     try:
-                        street_id = u';'.join([u'%s' % s.id for s in filter(lambda s: s.name == repl[0], streets)])
+                        street_id = u';'.join([u'{}'.format(s.id) for s in filter(lambda s: s.name == repl[0], streets)])
                     except:
                         street_id = u''
 
-                    FezAlarmFaxChecker().fields[fieldname] = (u'%s' % repl[0], street_id)
+                    FezAlarmFaxChecker().fields[fieldname] = (u'{}'.format(repl[0]), street_id)
                     if 'streetno' not in FezAlarmFaxChecker().fields or FezAlarmFaxChecker().fields['streetno'] == u"":
-                        FezAlarmFaxChecker().fields['streetno'] = (u'%s' % u" ".join(_str[repl[0].count(" ") + 1:]).replace(alarmtype.translation(u'_street_'), u'').strip(), street_id)
+                        FezAlarmFaxChecker().fields['streetno'] = (u'{}'.format(u" ".join(_str[repl[0].count(u' ') + 1:])).replace(alarmtype.translation(u'_street_'), u'').strip(), street_id)
                 return
-
-        else:  # other city
-            if len(_str) == 2:  # streetname + no
-                FezAlarmFaxChecker().fields[fieldname] = (u'%s' % _str[0], 0)
-                if not re.match(alarmtype.translation(u'_street_'), _str[1]):  # ignore 'street' value
-                    FezAlarmFaxChecker().fields['streetno'] = (_str[1], 0)
-            else:
-                FezAlarmFaxChecker().fields[fieldname] = (u" ".join(_str), 0)
+        else:
+            FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
             return
 
     @staticmethod
     def evalMaterial(fieldname, **params):
-        cars = classes.get('car').getCars(params=['onlyactive'])
-        carlist = ['%s %s' % (c.dept.name, c.name) for c in cars]
+        cars = Car.getCars(params=['onlyactive'])
+        carlist = [u'{} {}'.format(c.dept.name, c.name) for c in cars]
         c = [[], []]
 
-        departements = classes.get('department').getDepartments()
-        for p in [l for l in re.split(u"\s\s|\\\\n", FezAlarmFaxChecker().fields[fieldname][0])]:
+        departements = Department.getDepartments()
+        for p in [l for l in re.split(r"[\s]{2,}|[\n]+", FezAlarmFaxChecker().fields[fieldname][0])]:
             addcar = None
             if len([d for d in departements if d.name == p.strip()]) == 1:  # department default found
                 c = [[u'default'], [0]]
-                FezAlarmFaxChecker().logger.debug('material: "%s" default department found' % p.strip())
+                FezAlarmFaxChecker().logger.debug(u'material: "{}" default department found'.format(p.strip()))
                 continue
 
             # try list or car names
             repl = difflib.get_close_matches(p.strip(), carlist, 1, cutoff=0.7)
             if len(repl) == 1:
-                addcar = filter(lambda x: u'%s %s' % (x.dept.name, x.name) == repl[0], cars)[0]
+                addcar = filter(lambda x: u'{} {}'.format(x.dept.name, x.name) == repl[0], cars)[0]
                 addcar = addcar.name, addcar.id
 
             else:  # try list of car descriptions
-                descriptionlist = [u'%s %s' % (cn.dept.name, cn.description) for cn in cars]
+                descriptionlist = [u'{} {}'.format(cn.dept.name, cn.description) for cn in cars]
                 repl = difflib.get_close_matches(p.strip(), descriptionlist, 1, cutoff=0.7)
                 if len(repl) == 1:
-                    addcar = filter(lambda x: u'%s %s' % (x.dept.name, x.description) == repl[0], cars)[0]
+                    addcar = filter(lambda x: u'{} {}'.format(x.dept.name, x.description) == repl[0], cars)[0]
                     addcar = addcar.name, addcar.id
                 else:
                     t = ""
@@ -181,7 +184,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                         t += x
                         repl = difflib.get_close_matches(t, carlist, 1, cutoff=0.7)
                         if len(repl) == 1:
-                            addcar = filter(lambda x: u'%s %s' % (x.dept.name, x.name) == repl[0], cars)[0]
+                            addcar = filter(lambda x: u'{} {}'.format(x.dept.name, x.name) == repl[0], cars)[0]
                             addcar = addcar.name, addcar.id
                             break
             if addcar and addcar[1] not in c[1]:
@@ -189,7 +192,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 c[1].append(addcar[1])
 
         if len(c[0]) > 0:
-            FezAlarmFaxChecker().logger.debug('material: done with %s, %s' % (c[0], c[1]))
+            FezAlarmFaxChecker().logger.debug(u'material: done with {}, {}'.format(c[0], c[1]))
             FezAlarmFaxChecker().fields[fieldname] = (u','.join(c[0]), u','.join([str(_c) for _c in c[1]]))
 
     @staticmethod
@@ -202,29 +205,30 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         try:
             d = _str[4]
             t = _str[5]
-            if len(re.findall("\d{2}.\d{2}.\d{4}", d)) == 1 and len(re.findall("\d{2}:\d{2}", t)) == 1:
-                FezAlarmFaxChecker().fields[fieldname] = (u'%s - %s:00' % (d, t), 1)
-                FezAlarmFaxChecker().logger.debug('time: done with %s - %s:00' % (d, t))
+            if len(re.findall(r"\d{2}.\d{2}.\d{4}", d)) == 1 and len(re.findall(r"\d{2}:\d{2}", t)) == 1:
+                FezAlarmFaxChecker().fields[fieldname] = (u'{} - {}:00'.format(d, t), 1)
+                FezAlarmFaxChecker().logger.debug(u'time: done with {} - {}:00'.format(d, t))
             else:
                 d = d.replace(u'B', u'6')
                 t = t.replace(u'B', u'6')
-                if len(re.findall("\d{2}.\d{2}.\d{4}", d)) == 1 and len(re.findall("\d{2}:\d{2}", t)) == 1:
-                    FezAlarmFaxChecker().fields[fieldname] = (u'%s - %s:00' % (d, t), 1)
-                    FezAlarmFaxChecker().logger.debug('time: done with %s - %s:00' % (d, t))
+                if len(re.findall(r"\d{2}.\d{2}.\d{4}", d)) == 1 and len(re.findall(r"\d{2}:\d{2}", t)) == 1:
+                    FezAlarmFaxChecker().fields[fieldname] = (u'{} - {}:00'.format(d, t), 1)
+                    FezAlarmFaxChecker().logger.debug(u'time: done with {} - {}:00'.format(d, t))
         except:
-            FezAlarmFaxChecker().fields[fieldname] = (u'%s - %s:00' % (d, t), 0)
-            FezAlarmFaxChecker().logger.error('time: error done with %s - %s:00' % (d, t))
+            import traceback
+            FezAlarmFaxChecker().fields[fieldname] = (u'{} - {}:00'.format(d, t), 0)
+            FezAlarmFaxChecker().logger.error(u'time: error done with {} - {}:00\n{}'.format(d, t, traceback.format_exc()))
         return
 
     @staticmethod
     def evalObject(fieldname, **params):
         _str = FezAlarmFaxChecker().fields[fieldname][0].replace('\xc3\x9c'.decode('utf-8'), u'0')
-        objects = classes.get('alarmobject').getAlarmObjects()
+        objects = AlarmObject.getAlarmObjects()
         repl = difflib.get_close_matches(_str, [o.name for o in objects], 1)
         if repl:
             o = filter(lambda o: o.name == repl[0], objects)
             FezAlarmFaxChecker().fields[fieldname] = (repl[0], o[0].id)
-            FezAlarmFaxChecker().logger.debug('object: "%s" objectlist -> %s' % (_str, repl[0]))
+            FezAlarmFaxChecker().logger.debug(u'object: "{}" objectlist -> {}'.format(_str, repl[0]))
         else:
             s = ""
             for p in _str.split():
@@ -234,7 +238,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 if len(repl) == 1:
                     o = filter(lambda o: o.name == repl[0], objects)
                     FezAlarmFaxChecker().fields[fieldname] = (repl[0], o[0].id)
-                    FezAlarmFaxChecker().logger.debug('object: "%s" special handling -> %s' % (_str, repl[0]))
+                    FezAlarmFaxChecker().logger.debug(u'object: "{}" special handling -> {}'.format(_str, repl[0]))
                     return
 
             FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
@@ -251,25 +255,28 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if fieldname in FezAlarmFaxChecker().fields:
             _str = FezAlarmFaxChecker().fields[fieldname][0]
         else:  # key not found
-            FezAlarmFaxChecker().fields[fieldname] = ('----', 0)
+            FezAlarmFaxChecker().fields[fieldname] = (u'----', 0)
             raise
+        if _str == '':
+            FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
+            return
         keys = {}
         try:
-            for k in classes.get('alarmkey').getAlarmkeys():
+            for k in Alarmkey.getAlarmkeys():
                 keys[k.key] = k.id
 
             repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1, cutoff=0.8)  # default cutoff 0.6
             if len(repl) == 0:
                 repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1)  # try with default cutoff
             if len(repl) > 0:
-                k = classes.get('alarmkey').getAlarmkeys(int(keys[repl[0]]))
-                FezAlarmFaxChecker().fields[fieldname] = (u'%s: %s' % (k.category, k.key), k.id)
-                FezAlarmFaxChecker().logger.debug('key: found "%s: %s"' % (k.category, k.key))
+                k = Alarmkey.getAlarmkeys(int(keys[repl[0]]))
+                FezAlarmFaxChecker().fields[fieldname] = (u'{}: {}'.format(k.category, k.key), k.id)
+                FezAlarmFaxChecker().logger.debug(u'key: found "{}: {}"'.format(k.category, k.key))
                 return
-            FezAlarmFaxChecker().logger.info('key: "%s" not found in alarmkeys' % _str)
+            FezAlarmFaxChecker().logger.info(u'key: "{}" not found in alarmkeys'.format(_str))
             FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
         except:
-            FezAlarmFaxChecker().logger.error('key: error in key evaluation')
+            FezAlarmFaxChecker().logger.error(u'key: error in key evaluation')
         finally:
             return
 
@@ -278,7 +285,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if fieldname in FezAlarmFaxChecker().fields:
             _str = FezAlarmFaxChecker().fields[fieldname][0]
         else:  # city not found -> use default city
-            city = classes.get('city').getDefaultCity()
+            city = City.getDefaultCity()
             FezAlarmFaxChecker().fields[fieldname] = (city.name, city.id)
             raise
 
@@ -289,10 +296,10 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if _str.strip() == '':
             FezAlarmFaxChecker().fields[fieldname] = ('', 0)
 
-        cities = classes.get('city').getCities()
+        cities = City.getCities()
         for city in cities:  # test first word with defined subcities of cities
             try:
-                repl = difflib.get_close_matches(_str.split()[0], city.getSubCityList() + [city.name], 1, cutoff=0.7)
+                repl = difflib.get_close_matches(_str.split()[0], city.subcities + [city.name], 1, cutoff=0.7)
                 if len(repl) > 0:
                     FezAlarmFaxChecker().fields[fieldname] = (repl[0], city.id)
                     return
@@ -300,7 +307,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 pass
 
         for city in cities:  # test whole string with subcities
-            repl = difflib.get_close_matches(_str, city.getSubCityList() + [city.name], 1)
+            repl = difflib.get_close_matches(_str, city.subcities + [city.name], 1)
             if len(repl) > 0:
                 FezAlarmFaxChecker().fields[fieldname] = (repl[0], city.id)
                 return
@@ -319,7 +326,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 return
 
             # use default city
-            city = classes.get('city').getDefaultCity()
+            city = City.getDefaultCity()
             FezAlarmFaxChecker().fields[fieldname] = (city.name, city.id)
             return
 
@@ -338,31 +345,31 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if 'options' in params:
             options = params['options']
         _str = FezAlarmFaxChecker().fields[fieldname][0].strip().replace(u'\r', u'').replace(u'\n', u'')
+        FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
         options.append('part')
         params['options'] = filter(None, options)
         FezAlarmFaxChecker().evalStreet(fieldname, **params)
-        try:
-            _str = unicode(_str)
-        except:
-            pass
+
         if _str.endswith(')') and alarmtype.translation(u'_interchange_') in _str:  # bab part found
-            part = '%s' % _str[_str.rfind('(') + 1:-1].replace(u'\n', u' ')
-            FezAlarmFaxChecker().fields[fieldname] = (u'%s: %s' % (alarmtype.translation(u'_kilometer_'), part), 1)
-            numbers = classes.get('street').getStreet(FezAlarmFaxChecker().fields['address'][1]).housenumbers
-            hn = difflib.get_close_matches(part, [n.number for n in numbers], 1)
-            FezAlarmFaxChecker().fields['zoom'] = (u'14', 1)
-            if len(hn) == 1:
-                nr = [n for n in numbers if n.number == hn[0]][0]
-                FezAlarmFaxChecker().fields['streetno'] = (nr.number, nr.id)
-                FezAlarmFaxChecker().fields['id.streetno'] = (nr.id, nr.id)
-                FezAlarmFaxChecker().fields['lat'] = (nr.points[0][0], nr.id)
-                FezAlarmFaxChecker().fields['lng'] = (nr.points[0][1], nr.id)
-            return
+            part = '{}'.format(_str[_str.rfind('(') + 1:-1].replace(u'\n', u' '))
+            FezAlarmFaxChecker().fields[fieldname] = (u'{}: {}'.format(alarmtype.translation(u'_kilometer_'), part), -1)
+            if FezAlarmFaxChecker().fields['address'][1] != 0:
+                _streets = Street.getStreets(id=FezAlarmFaxChecker().fields['address'][1])
+                numbers = _streets.housenumbers
+                hn = difflib.get_close_matches(part, [n.number for n in numbers], 1)
+                FezAlarmFaxChecker().fields['zoom'] = (u'14', 1)
+                if len(hn) == 1:
+                    nr = [n for n in numbers if n.number == hn[0]][0]
+                    FezAlarmFaxChecker().fields['streetno'] = (nr.number, nr.id)
+                    FezAlarmFaxChecker().fields['id.streetno'] = (nr.id, nr.id)
+                    FezAlarmFaxChecker().fields['lat'] = (nr.points[0][0], nr.id)
+                    FezAlarmFaxChecker().fields['lng'] = (nr.points[0][1], nr.id)
+                return
 
         elif alarmtype.translation(u'_train_identifier_') in _str:  # found train position
-            part = u'%s' % _str[_str.find(alarmtype.translation(u'_train_identifier_')):]
-            FezAlarmFaxChecker().fields[fieldname] = (u'%s' % part, 1)
-            numbers = classes.get('street').getStreet(FezAlarmFaxChecker().fields['address'][1]).housenumbers
+            part = u'{}'.format(_str[_str.find(alarmtype.translation(u'_train_identifier_')):])
+            FezAlarmFaxChecker().fields[fieldname] = (u'{}'.format(part), 1)
+            numbers = Street.getStreets(id=FezAlarmFaxChecker().fields['address'][1]).housenumbers
 
             for nr in numbers:
                 if part.startswith(nr.number):
@@ -394,13 +401,14 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
         curr_field = ""
 
-        for l in rawtext.decode('utf-8').split(u"\n"):
-            field = difflib.get_close_matches(re.split(u':|= ', l)[0], sectionnames.keys(), 1)  # test line ->:|=
+        #for l in rawtext.decode('utf-8').split(u"\n"):
+        for l in rawtext.split(u"\n"):
+            field = difflib.get_close_matches(re.split(u':|=|i ', l)[0], sectionnames.keys(), 1)  # test line ->:|=
             if len(field) == 0 and u" " in l:
                 field = difflib.get_close_matches(l.split()[0], sectionnames.keys(), 1)  # test line first word
 
             if len(field) == 1:
-                value = u":".join(re.split(u':|= ', l)[1:]).strip()
+                value = u":".join(re.split(u':|=|i ', l)[1:]).strip()
             else:
                 field = []  # field has to be empty -> prevent overwriting
                 value = l
@@ -411,7 +419,11 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 curr_field = field[0]
             elif curr_field != '':
                 if sectionnames[curr_field] != u'':
-                    FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (FezAlarmFaxChecker().fields[sectionnames[curr_field]][0] + u'\n' + value, FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
+                    #FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (FezAlarmFaxChecker().fields[sectionnames[curr_field]][0] + u'\n' + value, FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
+                    if value[0] == u' ':
+                        FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (u"\n".join((FezAlarmFaxChecker().fields[sectionnames[curr_field]][0], value)), FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
+                    else:
+                        FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (u"".join((FezAlarmFaxChecker().fields[sectionnames[curr_field]][0], value)), FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
 
         for section in sections:  # sections in order
             k = section.key
@@ -428,8 +440,9 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 except:
                     if u'error' not in values:
                         values['error'] = ''
-                    values['error'] += 'error in method: %s\n' % method
-                    FezAlarmFaxChecker().logger.error('error in section %s %s' % (k, method))
+                    values['error'] = u"".join((values['error'], u'error in method: {}\n'.format(method)))
+                    import traceback
+                    FezAlarmFaxChecker().logger.error(u'error in section {} {}\n{}'.format(k, method, traceback.format_exc()))
 
         for k in FezAlarmFaxChecker().fields:
             try:

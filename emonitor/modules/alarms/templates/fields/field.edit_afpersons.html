@@ -1,0 +1,19 @@
+<div style="margin-left:10px;">
+    {%- for extfield in field.getFields() %}
+        {%- if extfield.getArg('active') == 'true' %}
+            <p style="float:left;width:49%;">
+            <label style="width:100%">{{ _('alarms.fields.persons.field.'+extfield.getLabel()) }}:<br/>
+                {%- if extfield.getArg('fieldtype') == 'list' %}
+                    <select name="{{ extfield.getName() }}" style="width:80%;">
+                    {%- for o in extfield.getArg('listvalues') %}
+                        <option value="{{ o }}"{%- if extfield.getValue(alarm) == o %} selected="selected"{%- endif %}>{{ o }}</option>
+                    {%- endfor %}
+                    </select>
+                {%- else %}
+                    <input type="text" name="{{ extfield.getName() }}" value="{{ extfield.getValue(alarm) }}" style="width:80%;"/>
+                {%- endif %}
+            </label>
+        {%- endif %}
+        </p>
+    {%- endfor %}
+</div>

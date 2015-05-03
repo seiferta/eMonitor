@@ -1,0 +1,189 @@
+{%- from 'cars.macro.html' import carname with context -%}
+{% extends "admin.html" %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="/js/jquery.form.min.js"> </script>
+{% endblock %}
+
+{% block style %}
+    {{ super() }}
+    <style>
+        .clear{clear:both;}
+        .lists {float:left;width:100%;}
+        .lists div{overflow:hidden;}
+        .lists .group{min-height:50px;border:1px solid #ddd;padding-left:5px;width:99%;}
+        .lists ul { list-style: none; float:left  }
+        .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width: 60px; height:40px; float:left; border:2px solid #333;}
+        .lists li:hover { background:#bbb; }
+        .lists li:active { background:#999; }
+        .cars0{background:#ddd !important;}
+        .cars1{background:#fff !important;}
+        .cars2{background:#f6cece !important;}
+        legend{font-size:16px;font-weight:bold;margin-top:20px;margin-bottom:10px;}
+        .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
+        div.deactivated div{color:#999;}
+        #sortable .row:hover{cursor: move;}
+        button.saveorder{position:absolute;left:6px;top:5px;}
+    </style>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <fieldset>
+        <legend>{{ _('alarms.field.definition') }}</legend>
+        <small>{{ _('alarms.field.definition.info') }}</small>
+
+        <ul class="nav nav-tabs" id="myTabDepartment">
+            {%- for department in departments %}
+                <li{%- if loop.index0==0 %} class="active"{%- endif %}><a href="#deptab{{ loop.index0 }}" onclick="$('#myTabDepartment li:eq({{ loop.index0 }}) a').tab('show');return false;">{{ department.name }}</a></li>
+            {%- endfor %}
+        </ul>
+
+        <div class="tab-content">
+        {%- for department in departments %}
+            <div class="tab-pane{%- if loop.index0 == 0 %} active{%- endif %}" id="deptab{{ loop.index0 }}">
+                <div class="headrow">
+                    <div style="margin-right:60px;margin-left:30px;">
+                        <div class="headcell" style="width:40%;">{{ _('alarms.field.name') }}</div>
+                        <div class="headcell" style="width:60%;">{{ _('alarms.field.type') }}</div>
+                    </div>
+                </div>
+                <div id="sortable">
+                {% for field in fields[department.id] %}
+                    <div id="field.{{ department.id }}.{{ field.fieldtype }}">{{ field.configForm(dept=department.id)|safe }}</div>
+                {% endfor %}
+                </div>
+                <div class="headrow" style="position:relative;">
+                    <small style="float:right;margin-right:50px">{{ _('alarms.fields.itemscount', count=fields[department.id]|count) }}</small><br/>
+                    <button type="button" name="saveorder_{{ department.id }}" class="saveorder" onclick="saveFieldOrder({{ department.id }})">{{ _('alarms.fieldorder.save') }}</button>
+                </div>
+                <input type="hidden" name="form_id" value="admin.alarms.fields.overview"/>
+            </div>
+        {%- endfor %}
+        </div>
+    </fieldset>
+
+    <form method="post" name="alarmcarsprio" action="">
+        <fieldset>
+            <legend>{{ _('alarms.config.alarmstates') }}</legend>
+            <small>{{ _('alarms.config.alarmstates.info') }}</small>
+
+            <ul class="nav nav-tabs" id="myTabPrioCars">
+            {%- for k in alarmstates.keys() %}
+                <li{%- if loop.index0==0 %} class="active"{%- endif %}><a href="#tab{{ loop.index0 }}" onclick="$('#myTabPrioCars li:eq({{ loop.index0 }}) a').tab('show');return false;">{{ _('alarmstate.'+alarmstates[k]) }}</a></li>
+            {%- endfor %}
+            </ul>
+            <div class="tab-content">
+            {%- for k in alarmstates.keys() %}
+                <div class="tab-pane{%- if loop.index0 == 0 %} active{%- endif %}" id="tab{{ loop.index0 }}">
+                    <div class="lists">
+                        <div>
+                            <small>{{ _('alarms.config.priocars') }}:</small><br/>
+                            <ul id="cars{{ k }}" class="group" style="width:99%;">
+                                {%- for car in cars %}
+                                {%- if car.id|string in settings.get('alarms.spc_cars.'+k).split(',') %}
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
+                                    {{ carname(car) }}
+                                </li>
+                                {%- endif %}
+                                {%- endfor %}
+                            </ul>
+                        </div>
+
+                        <small>{{ _('alarmkeys.allcars') }}:</small><br/>
+                        <ul id="unused{{ k }}" class="group" style="width:99%;">
+                            {%- for car in cars %}
+                                {%- if car.id|string not in settings.get('alarms.spc_cars.'+k).split(',') %}
+                                <li data-post-id="{{ car.id }}" value="{{ car.id }}" style="border-color:{{ car.dept.color }}!important;background-color:{{ car.getColor() }}" title="{{ car.type }}" data-dept="{{ car.dept.id }}">
+                                    {{ carname(car) }}
+                                </li>
+                                {%- endif %}
+                            {%- endfor %}
+                        </ul>
+                    </div>
+                    <input type="hidden" id="val_usedcars{{ k }}" name="used_cars{{ k }}" value="{{ settings.get('alarms.spc_cars.'+k) }}">
+                </div>
+            {%- endfor %}
+            </div>
+            <button type="submit" name="action" value="alarmcarsprio" onclick="getPrioValues()"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+        </fieldset>
+    </form>
+
+    <form method="post" name="paths" action="">
+        <fieldset>
+            <legend>{{ _('alarms.autoclose.title') }}</legend>
+            <small>{{ _('alarms.autoclose.info') }}</small>
+            <p>
+                <label>{{ _('alarms.autoclose') }}:<br/>
+                    <input type="text" name="settings.autoclose" value="{{ settings.get('alarms.autoclose') }}"/>
+                </label>
+            </p>
+
+            <button type="submit" name="action" value="alarmsettings"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+        </fieldset>
+    </form>
+
+    <form method="post" name="paths" action="">
+        <fieldset>
+            <legend>{{ _('alarms.autoarchive.title') }}</legend>
+            <small>{{ _('alarms.autoarchive.info') }}</small>
+            <p>
+                <label>{{ _('alarms.autoarchive') }}:<br/>
+                    <input type="text" name="alarms.autoarchive" value="{{ settings.get('alarms.autoarchive') }}"/>
+                </label>
+            </p>
+
+            <button type="submit" name="action" value="archivesettings"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
+        </fieldset>
+    </form>
+
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+
+    $(function() {
+        $( "#sortable" ).sortable();
+        $( "#sortable" ).disableSelection();
+    });
+
+    $(document).ready(function() {
+        $('{% for k in alarmstates %}#cars{{ k }}, {% endfor %} {% for k in alarmstates %}#unused{{ k }}{% if not loop.last %}, {% endif %}{% endfor %}').sortable({connectWith: '.group'});
+    });
+
+    function getPrioValues(){
+        {%- for k in alarmstates.keys() %}
+        $('#val_usedcars{{ k }}').val($( "#cars{{ k }}" ).sortable( "toArray", {attribute:'value'}));
+        {% endfor %}
+    }
+
+    function details(dept, id, obj){
+        $('#details_'+dept+'_'+id).toggle();
+        if ($(obj).hasClass('expanded')){
+            $(obj).removeClass('expanded');
+        }else{
+            $(obj).addClass('expanded');
+        }
+        return false;
+    }
+
+    function saveFieldOrder(dept){
+        var items = [];
+        $('#sortable > div[id^="field.'+dept+'."]').each(function(){
+            items.push($(this).attr('id'));
+        });
+        $.ajax({ type : "POST", url : "/admin/data/alarms?action=savefieldorder&order="+items,
+            success: function() {
+                window.location.href='/admin/alarms/config';
+            }
+        });
+    }
+
+    function questionDelField(){
+        return confirm('{{ _('alarms.fields.delete') }}');
+    }
+
+{% endblock %}
