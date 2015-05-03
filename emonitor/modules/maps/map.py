@@ -1,6 +1,8 @@
 import os
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from emonitor.widget.monitorwidget import MonitorWidget
+from emonitor.modules.mapitems.mapitem import MapItem
+from emonitor.modules.settings.settings import Settings
 
 DEFAULTZOOM = 12
 
@@ -25,10 +27,10 @@ class Map(db.Model):
         self.default = default
 
     def getMapItems(self, itemtype=""):
-        return classes.get('mapitems').getMapitems(itemtype)
+        return MapItem.getMapitems(itemtype)
 
     def getMapItemDefinitions(self):
-        return classes.get('settings').get('mapitemdefinition')
+        return Settings.get('mapitemdefinition')
 
     @staticmethod
     def getMapBox(tilepath="", mappath="", zoom=DEFAULTZOOM):
@@ -54,8 +56,8 @@ class Map(db.Model):
                     if int(lng) < ret['min_lngtile']: ret['min_lngtile'] = int(lng)
                     if int(lng) > ret['max_lngtile']: ret['max_lngtile'] = int(lng)
 
-                    lat1, lng1 = classes.get('settings').num2deg(ret['min_lattile'], ret['min_lngtile'], zoom)
-                    lat2, lng2 = classes.get('settings').num2deg(ret['max_lattile'] + 1, ret['max_lngtile'] + 1, zoom)
+                    lat1, lng1 = Settings.num2deg(ret['min_lattile'], ret['min_lngtile'], zoom)
+                    lat2, lng2 = Settings.num2deg(ret['max_lattile'] + 1, ret['max_lngtile'] + 1, zoom)
 
                     lat = [lat1, lat2]
                     lng = [lng1, lng2]
@@ -81,9 +83,9 @@ class Map(db.Model):
         :return: list or single object :py:class:`emonitor.modules.maps.map.Map`
         """
         if id != 0:
-            return db.session.query(Map).filter_by(id=id).first()
+            return Map.query.filter_by(id=id).first()
         else:
-            return db.session.query(Map).all()
+            return Map.query.all()
 
     @staticmethod
     def getDefaultMap():
@@ -91,7 +93,7 @@ class Map(db.Model):
         Get default map defined in database, field default=1
         :return: :py:class:`emonitor.modules.maps.map.Map`
         """
-        return db.session.query(Map).filter_by(default=1).first()
+        return Map.query.filter_by(default=1).first()
 
 
 class MapWidget(MonitorWidget):

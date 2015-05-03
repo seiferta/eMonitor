@@ -1,8 +1,9 @@
 import os
 from flask import request, render_template, current_app
 
-from emonitor.extensions import classes, db, babel, signal
+from emonitor.extensions import db, babel, signal
 from emonitor.modules.maps.map import Map
+from emonitor.modules.settings.settings import Settings
 import map_utils
 
 OBSERVERACTIVE = 1
@@ -21,23 +22,23 @@ def getAdminContent(self, **params):
         if module[1] == 'position':
             if request.method == 'POST':
                 if request.form.get('action') == 'saveposition':  # safe default map position and home position
-                    classes.get('settings').set('defaultLat', request.form.get('default_lat', ''))
-                    classes.get('settings').set('defaultLng', request.form.get('default_lng', ''))
-                    classes.get('settings').set('defaultZoom', request.form.get('default_zoom', ''))
+                    Settings.set('defaultLat', request.form.get('default_lat', ''))
+                    Settings.set('defaultLng', request.form.get('default_lng', ''))
+                    Settings.set('defaultZoom', request.form.get('default_zoom', ''))
 
-                    classes.get('settings').set('homeLat', request.form.get('home_lat', ''))
-                    classes.get('settings').set('homeLng', request.form.get('home_lng', ''))
+                    Settings.set('homeLat', request.form.get('home_lat', ''))
+                    Settings.set('homeLng', request.form.get('home_lng', ''))
 
                     db.session.commit()
 
-            params.update({'settings': classes.get('settings')})
+            params.update({'settings': Settings})
             return render_template('admin.map.position.html', **params)
 
     else:
         if request.method == 'POST':
             if request.form.get('action') == 'savemap':  # save map
                 if request.form.get('map_id') != 'None':  # update
-                    _map = classes.get('map').getMaps(request.form.get('map_id'))
+                    _map = Map.getMaps(request.form.get('map_id'))
                     _map.name = request.form.get('map_name')
                     _map.path = request.form.get('map_path')
                     _map.maptype = int(request.form.get('map_type'))
@@ -49,11 +50,11 @@ def getAdminContent(self, **params):
                 db.session.commit()
 
             elif request.form.get('action') == 'createmap':  # add map
-                params.update({'map': Map('', '', 0, '', 0), 'tilebase': current_app.config.get('PATH_TILES'), 'settings': classes.get('settings')})
+                params.update({'map': Map('', '', 0, '', 0), 'tilebase': current_app.config.get('PATH_TILES'), 'settings': Settings})
                 return render_template('admin.map_actions.html', **params)
 
             elif request.form.get('action').startswith('detailmap_'):  # edit map
-                params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': classes.get('settings'), 'tilebase': current_app.config.get('PATH_TILES'), 'tiles': '\', \''.join(classes.get('settings').getMapTiles(int(request.form.get('action').split('_')[-1])))})
+                params.update({'map': Map.getMaps(request.form.get('action').split('_')[-1]), 'settings': Settings, 'tilebase': current_app.config.get('PATH_TILES'), 'tiles': '\', \''.join(Settings.getMapTiles(int(request.form.get('action').split('_')[-1])))})
                 return render_template('admin.map_actions.html', **params)
 
             elif request.form.get('action').startswith('deletemap_'):  # delete map
@@ -65,12 +66,12 @@ def getAdminContent(self, **params):
                 for _id in request.form.getlist('mapids'):
                     _map = Map.getMaps(int(_id))
                     maps.append(dict(name=_map.__dict__['name'], path=_map.__dict__['path'], maptype=_map.__dict__['maptype'], tileserver=_map.__dict__['tileserver'], default=_map.__dict__['default']))
-                db.session.query(Map).delete()  # delete all maps
+                Map.query.delete()  # delete all maps
                 for _map in maps:  # add maps in new order
                     db.session.add(Map(_map['name'], _map['path'], _map['maptype'], _map['tileserver'], _map['default']))
                 db.session.commit()
 
-    params.update({'maps': classes.get('map').getMaps()})
+    params.update({'maps': Map.getMaps()})
     return render_template('admin.map.html', **params)
 
 
@@ -124,16 +125,16 @@ def getAdminData(self, **params):
         return {}
 
     elif request.args.get('action') == 'maptiles':
-        _map = classes.get('map').getMaps(id=request.args.get('id'))
+        _map = Map.getMaps(id=request.args.get('id'))
         if _map:
-            return classes.get('map').getMapBox(tilepath=current_app.config.get('PATH_TILES'), mappath=_map.path)
-        return classes.get('map').getMapBox()
+            return Map.getMapBox(tilepath=current_app.config.get('PATH_TILES'), mappath=_map.path)
+        return Map.getMapBox()
 
     elif request.args.get('action') == 'loadosmdata':  # load all data from openstreetmap
         from emonitor.extensions import scheduler
         from emonitor.lib.osm.loaddata import parseOsmData
         #import time, datetime
-        mapdata = classes.get('map').getMaps()[0].getMapBox(tilepath=current_app.config.get('PATH_TILES'))
+        mapdata = Map.getMaps()[0].getMapBox(tilepath=current_app.config.get('PATH_TILES'))
 
         lat = [mapdata['min_latdeg']]
         while lat[-1] + .05 < mapdata['max_latdeg']:

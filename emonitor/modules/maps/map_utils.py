@@ -7,7 +7,7 @@ from xml.dom import minidom
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
 from emonitor.extensions import signal, babel
-from emonitor.sockethandler import SocketHandler
+from emonitor.socketserver import SocketHandler
 
 CURRENTLOADING = []
 LOADTILES = []
@@ -205,7 +205,7 @@ def loadTiles(path, tilelist):
             try:
                 getTile(err[0], err[1])
             except:
-                print "error in %s" % err
+                print "error in {}".format(err)
         signal.send('map', 'tiledownloaddone', tiles=tilelist[min(tilelist.keys())][0])
 
     scheduler.add_job(doLoadTiles, kwargs={'path': path, 'tilelist': tilelist})

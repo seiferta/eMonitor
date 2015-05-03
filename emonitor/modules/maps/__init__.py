@@ -1,9 +1,9 @@
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel, signal
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendContent, getFrontendData
-from emonitor.modules.maps.map import MapWidget
+from emonitor.extensions import db, babel, signal
+from emonitor.modules.maps.content_admin import getAdminContent, getAdminData
+from emonitor.modules.maps.content_frontend import getFrontendContent, getFrontendData
+from emonitor.modules.maps.map import Map, MapWidget
 from emonitor.modules.maps.map_utils import adminMapHandler
 
 
@@ -29,11 +29,6 @@ class MapsModule(Module):
         # subnavigation
         self.adminsubnavigation = [('/admin/maps', 'maps.base'), ('/admin/maps/position', 'module.maps.position')]
 
-        # create database tables
-        from .map import Map
-        classes.add('map', Map)
-        db.create_all()
-
         self.widgets = [MapWidget('maps_map')]
 
         # signals and handlers
@@ -54,14 +49,14 @@ class MapsModule(Module):
         babel.gettext(u'module.maps.position')
 
     def checkDefinition(self):
-        if db.session.query(classes.get('map')).count() == 0:
+        if Map.query.count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
 
     def fixDefinition(self, id):
         if id == 1:  # add default values
-            if db.session.query(classes.get('map')).count() == 0:  # add default map
-                db.session.add(classes.get('map')('Bing (online)', '', maptype=2, tileserver="//ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236", default=1))
+            if Map.query.count() == 0:  # add default map
+                db.session.add(Map('Bing (online)', '', maptype=2, tileserver="//ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236", default=1))
                 db.session.commit()
 
     def frontendContent(self):
