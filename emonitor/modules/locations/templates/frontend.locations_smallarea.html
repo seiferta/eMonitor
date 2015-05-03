@@ -56,7 +56,7 @@
             {%- for city in cities %}
                 <h3 c_name="{{ city.name }}_{{ city.name }}" onclick="loadStreets({{ city.id }}, '{{ city.name }}')">
                     <span onclick="selectall('{{ city.name|e }}_')">{{ city.name }}</span><br/>
-                    {%- set subcities = city.getSubCityList() %}
+                    {%- set subcities = city.subcities %}
                     <p class="subcity">
                         {%- for subcity in subcities %}
                          <span id="{{ city.name|e }}_{{ subcity|e }}" onclick="filtersubcity('{{ city.name|e }}', '{{ subcity|e }}')">{{ subcity }}</span>{%- if not loop.last %} | {%- endif %}
