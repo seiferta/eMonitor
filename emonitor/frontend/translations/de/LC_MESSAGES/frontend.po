@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-07 21:02+0200\n"
+"POT-Creation-Date: 2015-04-26 22:46+0200\n"
 "PO-Revision-Date: 2014-08-14 09:50+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,58 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: emonitor/frontend/frontend.py:10
+#: emonitor/frontend/frontend.py:21
 msgid "emonitor.monitorserver.MonitorServer"
 msgstr "MonitorServer"
 
-#: emonitor/frontend/frontend.py:11
+#: emonitor/frontend/frontend.py:22
 msgid "trigger.default"
 msgstr "Standard-Trigger"
 
-#: emonitor/frontend/web/templates/frontend.area.html:12
-#: emonitor/frontend/web/templates/frontend.html:13
-#: emonitor/frontend/web/templates/frontend.html:80
-#: emonitor/frontend/web/templates/frontendframe.html:13
-#: emonitor/frontend/web/templates/frontendframe.html:73
+#: emonitor/frontend/web/templates/frontend.area.html:13
+#: emonitor/frontend/web/templates/frontend.default.html:12
+#: emonitor/frontend/web/templates/frontendframe.html:14
+#: emonitor/frontend/web/templates/frontendframe.html:58
 msgid "frontend.titlemain"
 msgstr "eMonitor"
 
-#: emonitor/frontend/web/templates/frontend.default.html:1
+#: emonitor/frontend/web/templates/frontend.default.html:20
 msgid "frontend.default.module"
 msgstr "- kein Modul gewählt -"
 
-#: emonitor/frontend/web/templates/frontend.html:37
-#: emonitor/frontend/web/templates/frontendframe.html:36
+#: emonitor/frontend/web/templates/frontendframe.html:37
 msgid "layout.resize"
 msgstr "Verschieben"
 
-#: emonitor/frontend/web/templates/frontend.html:38
-#: emonitor/frontend/web/templates/frontendframe.html:37
+#: emonitor/frontend/web/templates/frontendframe.html:38
 msgid "layout.open"
 msgstr "Schließen"
 
-#: emonitor/frontend/web/templates/frontend.html:39
-#: emonitor/frontend/web/templates/frontendframe.html:38
+#: emonitor/frontend/web/templates/frontendframe.html:39
 msgid "layout.closed"
 msgstr "Öffnen"
 
-#: emonitor/frontend/web/templates/frontend.html:82
-#: emonitor/frontend/web/templates/frontendframe.html:75
+#: emonitor/frontend/web/templates/frontendframe.html:60
 msgid "frontend.adminlink"
 msgstr "Administrationsoberfläche"
 
-#: emonitor/frontend/web/templates/frontend.html:84
-#: emonitor/frontend/web/templates/frontendframe.html:77
+#: emonitor/frontend/web/templates/frontendframe.html:62
 msgid "admin.logout"
 msgstr "Abmelden"
 
-#: emonitor/frontend/web/templates/frontend.html:88
-#: emonitor/frontend/web/templates/frontendframe.html:81
+#: emonitor/frontend/web/templates/frontendframe.html:66
 msgid "frontend.login"
 msgstr "Anmelden"
 
-#: emonitor/frontend/web/templates/frontend.html:116
-#: emonitor/frontend/web/templates/frontendframe.html:97
+#: emonitor/frontend/web/templates/frontendframe.html:81
 msgid "frontend.show.monitors"
 msgstr "Monitore zeigen"
 

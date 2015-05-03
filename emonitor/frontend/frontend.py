@@ -13,13 +13,15 @@ from collections import OrderedDict
 from flask import Blueprint, current_app, render_template, send_from_directory, request, jsonify
 from flask.ext import login
 from emonitor.user import User
-from emonitor.extensions import classes, babel
+from emonitor.extensions import babel
 
 frontend = Blueprint('frontend', __name__, template_folder="web/templates")
 frontend.modules = OrderedDict()
 
 babel.gettext(u'emonitor.monitorserver.MonitorServer')
 babel.gettext(u'trigger.default')
+
+from emonitor.modules.settings.settings import Settings
 
 
 def _addModule(module):
@@ -52,7 +54,7 @@ def frontendContent(module=u''):
             current_mod = frontend.modules['startpages']
         return current_mod.getFrontendContent()
     current_mod = frontend.modules['startpages']
-    return render_template('frontendframe.html', user=User.getUsers(login.current_user.get_id() or -1), current_mod=current_mod, modules=frontend.modules, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), areas=classes.get('settings').getFrontendSettings())
+    return render_template('frontendframe.html', user=User.getUsers(login.current_user.get_id() or -1), current_mod=current_mod, modules=frontend.modules, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'), areas=Settings.getFrontendSettings())
 
 
 @frontend.route('/data/<path:module>', methods=['GET', 'POST'])

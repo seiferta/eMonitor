@@ -7,7 +7,7 @@ if(!window.WebSocket){
 }else {
     ws = new WebSocket("ws://"+location.host+"/ws");
     ws.onclose=function(){
-        $('#ws').html('<i class="fa fa-eye-slash fa-lg"></i>');
+        $('#ws').html('<i class="fa fa-unlink fa-lg"></i>');
     }
 }
 
@@ -22,15 +22,29 @@ function showMonitorDefinition(){
         success: function(result) {
             $('#overlaycontent').html(result);
             $('.overlay').toggle();
+            $('.overlay').on('hide', function(){stopMonitorPing();});
             return false;
         }
     });
     return false;
 }
 
+function stopMonitorPing(){
+    clearTimeout(nextrun);
+}
 
 $('.usermenu').hover(function() {
     $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
     }, function() {
         $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
 });
+
+(function ($) {
+      $.each(['show', 'hide'], function (i, ev) {
+          var el = $.fn[ev];
+          $.fn[ev] = function () {
+              this.trigger(ev);
+              return el.apply(this, arguments);
+          };
+      });
+})(jQuery);
