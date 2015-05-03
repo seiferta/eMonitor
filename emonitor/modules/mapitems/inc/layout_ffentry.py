@@ -1,5 +1,5 @@
 import os
-from emonitor import webapp
+from emonitor import app
 from emonitor.modules.mapitems.mapitem import ItemLayout
 from emonitor.modules.mapitems.mapitem_utils import deg2num
 from emonitor.extensions import babel
@@ -20,7 +20,7 @@ class LayoutFFEntry(ItemLayout):
     attributes = ['id', 'lat', 'lon']
 
     ZOOMLEVELS = 16, 17, 18
-    DESTPATH = '%s%s' % (webapp.config.get('PATH_TILES'), __name__)
+    DESTPATH = '{}{}'.format(app.config.get('PATH_TILES'), __name__)
 
     LINECOLOR = (255, 0, 0)  # yellow
 
@@ -34,16 +34,16 @@ class LayoutFFEntry(ItemLayout):
         matrix = {}
 
         def addItem(tx, ty, px, py, **itemparams):
-            if '%s|%s' % (tx, ty) not in matrix:
-                matrix['%s|%s' % (tx, ty)] = []
-            matrix['%s|%s' % (tx, ty)].append([px, py, itemparams])
+            if '{}|{}'.format(tx, ty) not in matrix:
+                matrix['{}|{}'.format(tx, ty)] = []
+            matrix['{}|{}'.format(tx, ty)].append([px, py, itemparams])
 
         params = {}
 
         for zoom in self.ZOOMLEVELS:
 
-            if not os.path.exists('%s/%s' % (self.DESTPATH, zoom)):  # create directory
-                os.makedirs('%s/%s' % (self.DESTPATH, zoom))
+            if not os.path.exists('{}/{}'.format(self.DESTPATH, zoom)):  # create directory
+                os.makedirs('{}/{}'.format(self.DESTPATH, zoom))
 
             for item in items:
                 _last = None
@@ -67,13 +67,13 @@ class LayoutFFEntry(ItemLayout):
                                 lstart = (_last[2] + (_last[0] - x) * 256, _last[3] + (_last[1] - y) * 256)  # start point
                                 lend = (coord[2] + (coord[0] - x) * 256, coord[3] + (coord[1] - y) * 256)  # end point
 
-                                if os.path.exists('%s/%s/%s-%s.png' % (self.DESTPATH, zoom, x, y)):
-                                    img = Image.open('%s/%s/%s-%s.png' % (self.DESTPATH, zoom, x, y))
+                                if os.path.exists('{}/{}/{}-{}.png'.format(self.DESTPATH, zoom, x, y)):
+                                    img = Image.open('{}/{}/{}-{}.png'.format(self.DESTPATH, zoom, x, y))
                                 else:
                                     img = Image.new('RGBA', (256, 256))
                                 draw = ImageDraw.Draw(img)
 
                                 draw.line([lstart, lend], fill=self.LINECOLOR, width=(zoom - 15) * 2)  # draw line
-                                img.save('%s/%s/%s-%s.png' % (self.DESTPATH, zoom, x, y))
+                                img.save('{}/{}/{}-{}.png'.format(self.DESTPATH, zoom, x, y))
 
                     _last = coord

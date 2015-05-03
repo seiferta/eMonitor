@@ -1,9 +1,10 @@
 import re
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.modules.settings.settings import Settings
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import babel
+from emonitor.modules.mapitems.mapitem import MapItem
 from emonitor.modules.mapitems.content_admin import getAdminContent, getAdminData
+from emonitor.modules.settings.settings import Settings
 
 
 class MapitemsModule(object, Module):
@@ -26,18 +27,10 @@ class MapitemsModule(object, Module):
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/mapitems/templates" % app.config.get('PROJECT_ROOT'))
 
-        # create database tables
-        from emonitor.modules.mapitems.mapitem import MapItem
-        classes.add('mapitem', MapItem)
-        db.create_all()
-
         # static folders
         @app.route('/mapitem/inc/<path:filename>')
         def mapitm_static(filename):
             return send_from_directory("%s/emonitor/modules/mapitem/inc/" % app.config.get('PROJECT_ROOT'), filename)
-
-        # subnavigation
-        self.updateAdminSubNavigation()
 
         # translations
         babel.gettext(u'module.mapitems')
@@ -48,9 +41,13 @@ class MapitemsModule(object, Module):
         """
         Add submenu entries for admin area
         """
+        from sqlalchemy.exc import OperationalError
         self.adminsubnavigation = []
-        for maptype in Settings.get('mapitemdefinition'):
-            self.adminsubnavigation.append(('/admin/mapitems/%s' % maptype['name'], '%s' % maptype['name']))
+        try:
+            for maptype in Settings.get('mapitemdefinition'):
+                self.adminsubnavigation.append(('/admin/mapitems/%s' % maptype['name'], '%s' % maptype['name']))
+        except OperationalError:
+            pass
         self.adminsubnavigation.append(('/admin/mapitems/definition', 'mapitems.definition'))
 
     def getHelp(self, area="frontend", name=""):
@@ -72,6 +69,7 @@ class MapitemsModule(object, Module):
 
         :param params: send given parameters to :py:class:`emonitor.modules.mapitems.content_admin.getAdminContent`
         """
+        self.updateAdminSubNavigation()
         return getAdminContent(self, **params)
 
     def getAdminData(self):

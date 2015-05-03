@@ -1,6 +1,6 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
-from emonitor import webapp
+from emonitor import app
 from emonitor.modules.mapitems.mapitem import ItemLayout
 from emonitor.modules.mapitems.mapitem_utils import deg2num
 from emonitor.extensions import babel
@@ -20,7 +20,7 @@ class LayoutHydrant(ItemLayout):
     attributes = ['id', 'lat', 'lon', 'fire_hydrant:type', 'fire_hydrant:diameter']
 
     ZOOMLEVELS = 16, 17, 18
-    DESTPATH = '%s%s' % (webapp.config.get('PATH_TILES'), __name__)
+    DESTPATH = '{}{}'.format(app.config.get('PATH_TILES'), __name__)
 
     HALFX = 10  # half icon width in pixels
     HALFY = 14  # half icon height in pixels
@@ -36,16 +36,16 @@ class LayoutHydrant(ItemLayout):
 
         for zoom in self.ZOOMLEVELS:
             matrix = {}
-            if not os.path.exists('%s/%s' % (self.DESTPATH, zoom)):
-                os.makedirs('%s/%s' % (self.DESTPATH, zoom))
+            if not os.path.exists('{}/{}'.format(self.DESTPATH, zoom)):
+                os.makedirs('{}/{}'.format(self.DESTPATH, zoom))
 
             for item in items:
                 coord = deg2num(float(item.parameters['lat']), float(item.parameters['lon']), zoom)
 
                 def addItem(tx, ty, px, py, **itemparams):
-                    if '%s|%s' % (tx, ty) not in matrix:
-                        matrix['%s|%s' % (tx, ty)] = []
-                    matrix['%s|%s' % (tx, ty)].append([px, py, itemparams])
+                    if '{}|{}'.format(tx, ty) not in matrix:
+                        matrix['{}|{}'.format(tx, ty)] = []
+                    matrix['{}|{}'.format(tx, ty)].append([px, py, itemparams])
 
                 params = {}
                 for param in [a for a in attributes if a in item.parameters]:
@@ -78,7 +78,7 @@ class LayoutHydrant(ItemLayout):
                     for p in matrix[tile]:
                         draw.ellipse((p[0] - 10, p[1] - 10, p[0] + 10, p[1] + 10), outline=(255, 0, 0))
                         if 'fire_hydrant:diameter' in p[2]['params']:
-                            draw.text((p[0] - self.HALFX, p[1] + self.HALFY), "%s" % p[2]['params']['fire_hydrant:diameter'], (255, 0, 0), font=font)
+                            draw.text((p[0] - self.HALFX, p[1] + self.HALFY), "{}".format(p[2]['params']['fire_hydrant:diameter']), (255, 0, 0), font=font)
                 if zoom == 17:
                     """
                     icon=ellipse;10;10 # objecttype, x dimension, y dimension
@@ -94,4 +94,4 @@ class LayoutHydrant(ItemLayout):
                     for p in matrix[tile]:
                         draw.ellipse((p[0] - 2, p[1] - 2, p[0] + 2, p[1] + 2), fill=(255, 0, 0))
 
-                img.save('%s/%s/%s-%s.png' % (self.DESTPATH, zoom, tile.split('|')[0], tile.split('|')[1]))
+                img.save('{}/{}/{}-{}.png'.format(self.DESTPATH, zoom, tile.split('|')[0], tile.split('|')[1]))

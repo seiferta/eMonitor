@@ -1,8 +1,10 @@
 import os, imp
 from flask import render_template, request, current_app
-from emonitor.extensions import classes, db, babel, scheduler
+from emonitor.extensions import db, babel, scheduler
 from emonitor.utils import Pagination
-from mapitem import MapItem, ItemLayout
+from emonitor.modules.mapitems.mapitem import MapItem, ItemLayout
+from emonitor.modules.settings.settings import Settings
+from emonitor.modules.streets.city import City
 
 PER_PAGE = 25
 
@@ -24,32 +26,32 @@ def getAdminContent(self, **params):
 
                 if request.form.get('action').startswith('edititemtype_'):  # edit/add definition TODO: fix
                     typename = request.form.get('action').split('_')
-                    itemtype = [d for d in classes.get('settings').get('mapitemdefinition') if d['name'] == typename[1]]
+                    itemtype = [d for d in Settings.get('mapitemdefinition') if d['name'] == typename[1]]
                     if len(itemtype) > 0:
                         itemtype = itemtype[0]
-                        if not 'parameters' in itemtype:
+                        if 'parameters' not in itemtype:
                             itemtype['parameters'] = {'layout': '', 'tileserver': 0}
-                        if not 'key' in itemtype:
+                        if 'key' not in itemtype:
                             itemtype['key'] = []
-                        if not 'cities' in itemtype:
+                        if 'cities' not in itemtype:
                             itemtype['cities'] = []
-                        if not 'itemtype' in itemtype:
+                        if 'itemtype' not in itemtype:
                             itemtype['itemtype'] = 'node'
                     else:
                         itemtype = {'name': '', 'filter': '', 'attributes': [], 'parameters': {'layout', 'tileserver'}, 'key': [], 'cities': [], 'itemtype': 'node'}
-                    params.update({'itemtype': itemtype, 'cities': classes.get('city').getCities(), 'layouters': classes.get('mapitem').getLayouters()})
+                    params.update({'itemtype': itemtype, 'cities': City.getCities(), 'layouters': MapItem.getLayouters()})
                     return render_template('admin.mapitems.definition_actions.html', **params)
 
                 elif request.form.get('action').startswith('deleteitemtype_'):  # delete definition
-                    itemtypes = classes.get('settings').get('mapitemdefinition')
+                    itemtypes = Settings.get('mapitemdefinition')
                     for itemtype in itemtypes:
                         if itemtype['name'] == request.form.get('action').split('_')[1]:
                             del itemtypes[itemtypes.index(itemtype)]
-                    classes.get('settings').set('mapitemdefinition', itemtypes)
+                    Settings.set('mapitemdefinition', itemtypes)
                     db.session.commit()
 
                 elif request.form.get('action') == 'updateitemtypes':  # save definition
-                    itemtypes = classes.get('settings').get('mapitemdefinition')
+                    itemtypes = Settings.get('mapitemdefinition')
                     position = -1
                     for itemtype in itemtypes:
                         if itemtype['name'] == request.form.get('edit_name'):
@@ -76,15 +78,15 @@ def getAdminContent(self, **params):
                         else:
                             itemtypes.append(it)
                         it['key'] = request.form.get('edit_keys').split('\r\n')
-                    classes.get('settings').set('mapitemdefinition', itemtypes)
+                    Settings.set('mapitemdefinition', itemtypes)
                     db.session.commit()
                     current_app.blueprints['admin'].modules['mapitems'].updateAdminSubNavigation()
 
-            params.update({'itemtypes': classes.get('settings').get('mapitemdefinition', []), 'layouters': classes.get('mapitem').getLayouters()})
+            params.update({'itemtypes': Settings.get('mapitemdefinition', []), 'layouters': MapItem.getLayouters()})
             return render_template('admin.mapitems.definition.html', **params)
 
     # deliver default list
-    itemdefinition = [t for t in classes.get('settings').get('mapitemdefinition') if t['name'] == module[1]][0]
+    itemdefinition = [t for t in Settings.get('mapitemdefinition') if t['name'] == module[1]][0]
     itemtypes = MapItem.getMapitems(itemtype=module[1])
     page = 0
     if len(module) == 3:  # pagination active
@@ -102,12 +104,12 @@ def getAdminData(self):
     :return: rendered template as string or json dict
     """
     if request.args.get('action') == 'loadfromosm':  # load all objects from osm
-        itemdefinition = [t for t in classes.get('settings').get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
+        itemdefinition = [t for t in Settings.get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
         dbodmids = [int(i.osmid) for i in MapItem.getMapitems(itemtype=itemdefinition['name'])]
 
         for cid in itemdefinition['cities']:
-            city = classes.get('city').get_byid(cid)
-            for item in classes.get('mapitem').loadFromOSM(itemdefinition, city.name):
+            city = City.getCities(id=cid)
+            for item in MapItem.loadFromOSM(itemdefinition, city.name):
                 if int(item['id']) > 0 and int(item['id']) not in dbodmids:  # add item
                     attrs = item.copy()
                     del attrs['id']
@@ -133,10 +135,10 @@ def getAdminData(self):
         return ""
 
     elif request.args.get('action') == 'buildtiles':
-        itemdefinition = [t for t in classes.get('settings').get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
+        itemdefinition = [t for t in Settings.get('mapitemdefinition') if t['name'] == request.args.get('type')][0]
         for layouter in MapItem.getLayouters():
             if layouter.getName() == itemdefinition['parameters']['layout']:
-                scheduler.add_job(layouter.buildTiles, args=[classes.get('mapitem').getMapitems(itemdefinition['name']), itemdefinition['attributes']])
+                scheduler.add_job(layouter.buildTiles, args=[MapItem.getMapitems(itemdefinition['name']), itemdefinition['attributes']])
                 break
 
     return ""

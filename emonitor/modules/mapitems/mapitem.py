@@ -38,16 +38,16 @@ class MapItem(db.Model):
 
     @staticmethod
     def getitemtypes():  # TODO deprecated
-        return db.session.query(MapItem.itemtype).distinct().all()
+        return MapItem.itemtype.query.distinct().all()
 
     @staticmethod
     def getMapitems(itemtype='', osmid=0):
         if itemtype == '' and osmid == 0:
-            return db.session.query(MapItem).all()
+            return MapItem.query.all()
         elif osmid == 0:
-            return db.session.query(MapItem).filter_by(itemtype='%s' % itemtype).all()
+            return MapItem.query.filter_by(itemtype='%s' % itemtype).all()
         elif itemtype == '':
-            return db.session.query(MapItem).filter_by(osmid='%s' % osmid).first()
+            return MapItem.query.filter_by(osmid='%s' % osmid).first()
 
     @staticmethod
     def loadFromOSM(itemtype, city):
