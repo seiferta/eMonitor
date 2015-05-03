@@ -1,7 +1,8 @@
 import re
 from emonitor.utils import Module
 from emonitor.widget.monitorwidget import MonitorWidget
-from emonitor.extensions import classes, db, babel
+from emonitor.extensions import babel
+from emonitor.modules.cars.car import Car
 from emonitor.modules.cars.content_admin import getAdminContent
 from emonitor.modules.cars.content_frontend import getFrontendData
 from emonitor.modules.cars.car import CarWidget
@@ -25,16 +26,13 @@ class CarsModule(object, Module):
         Module.__init__(self, app)
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/cars/templates" % app.config.get('PROJECT_ROOT'))
-        
-        # subnavigation
-        self.updateAdminSubNavigation()
-       
+
         self.widgets = [CarWidget('cars')]
 
         # create database tables
-        from .car import Car
-        classes.add('car', Car)
-        db.create_all()
+        from emonitor.modules.cars.car import Car
+        #classes.add('car', Car)
+        #db.create_all()
 
         # translations
         babel.gettext(u'module.cars')
@@ -66,6 +64,7 @@ class CarsModule(object, Module):
 
         :param params: send given parameters to :py:class:`emonitor.modules.cars.content_admin.getAdminContent`
         """
+        self.updateAdminSubNavigation()
         return getAdminContent(self, **params)
 
     def getAdminData(self):

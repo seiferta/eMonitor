@@ -1,5 +1,8 @@
 from flask import request, render_template
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
+from emonitor.modules.settings.department import Department
+from emonitor.modules.settings.settings import Settings
+from emonitor.modules.cars.car import Car
 
 
 def getAdminContent(self, **params):
@@ -16,15 +19,15 @@ def getAdminContent(self, **params):
         
     if request.method == 'POST':
         if request.form.get('action') == 'createcars':  # add car
-            params.update({'car': classes.get('car')('', '', '', '', '', int(module[1])), 'departments': classes.get('department').getDepartments(), 'cartypes': classes.get('settings').getCarTypes()})
+            params.update({'car': Car('', '', '', '', '', int(module[1])), 'departments': Department.getDepartments(), 'cartypes': Settings.getCarTypes()})
             return render_template('admin.cars_edit.html', **params)
 
         elif request.form.get('action') == 'updatecars':  # save car
             if request.form.get('car_id') != 'None':  # update car
-                car = classes.get('car').getCars(id=request.form.get('car_id'))
+                car = Car.getCars(id=request.form.get('car_id'))
                 
             else:  # add car
-                car = classes.get('car')('', '', '', '', '', module[1])
+                car = Car('', '', '', '', '', module[1])
                 db.session.add(car)
 
             car.name = request.form.get('edit_name')
@@ -39,14 +42,15 @@ def getAdminContent(self, **params):
             pass
             
         elif request.form.get('action').startswith('editcars_'):  # edit car
-            params.update({'car': classes.get('car').getCars(id=request.form.get('action').split('_')[-1]), 'departments': classes.get('department').getDepartments(), 'cartypes': classes.get('settings').getCarTypes()})
+            params.update({'car': Car.getCars(id=request.form.get('action').split('_')[-1]), 'departments': Department.getDepartments(), 'cartypes': Settings.getCarTypes()})
             return render_template('admin.cars_edit.html', **params)
 
         elif request.form.get('action').startswith('deletecars_'):  # delete car
-            db.session.delete(classes.get('car').getCars(id=request.form.get('action').split('_')[-1]))
+            db.session.delete(Car.getCars(id=request.form.get('action').split('_')[-1]))
             db.session.commit()
-    try:
-        params.update({'cars': classes.get('department').getDepartments(module[1]).getCars()})
-    except AttributeError:
-        params.update({'cars': []})
+    #try:
+    #    params.update({'cars': classes.get('department').getDepartments(module[1]).getCars()})
+    #except AttributeError:
+    #    params.update({'cars': []})
+    params.update({'cars': Department.getDepartments(module[1]).getCars()})
     return render_template('admin.cars.html', **params)

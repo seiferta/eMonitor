@@ -1,6 +1,7 @@
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from emonitor.widget.monitorwidget import MonitorWidget
+from emonitor.modules.settings.settings import Settings
 
 
 class Car(db.Model):
@@ -32,7 +33,7 @@ class Car(db.Model):
 
         :return: colorcode
         """
-        for t in classes.get("settings").getCarTypes():
+        for t in Settings.getCarTypes():
             if t[0] == self.type:
                 return t[1]
         return "#ffffff"
@@ -51,14 +52,14 @@ class Car(db.Model):
         :return: list of :py:class:`emonitor.modules.cars.car.Car`
         """
         if id != 0:
-            return db.session.query(Car).filter_by(id=int(id)).first()
+            return Car.query.filter_by(id=int(id)).first()
         elif int(deptid) != 0:
-            return db.session.query(Car).filter_by(_dept=int(deptid)).order_by('name').all()
+            return Car.query.filter_by(_dept=int(deptid)).order_by('name').all()
         else:
             if 'onlyactive' in params:
-                return db.session.query(Car).filter_by(active=1).order_by('dept', 'name').all()
+                return Car.query.filter_by(active=1).order_by('dept', 'name').all()
             else:
-                return db.session.query(Car).order_by('dept', 'name').all()
+                return Car.query.order_by('dept', 'name').all()
 
     @staticmethod
     def getCarsDict():
@@ -68,7 +69,7 @@ class Car(db.Model):
         :return: dict with :py:class:`emonitor.modules.cars.car.Car`
         """
         ret = {}
-        for car in db.session.query(Car):
+        for car in Car.getCars():
             ret[car.id] = car
         return ret
 
