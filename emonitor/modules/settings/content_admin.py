@@ -1,10 +1,12 @@
 import os
+import werkzeug
 from flask import request, render_template, current_app, redirect
+from emonitor.modules.settings.department import Department
 from emonitor.modules.settings.settings import Settings
-
-from emonitor.extensions import alembic, classes, db, babel
-
-OBSERVERACTIVE = 1
+from emonitor.modules.streets.city import City
+from emonitor.extensions import alembic, db, babel, scheduler
+from emonitor.scheduler import eMonitorIntervalTrigger
+from emonitor.modules.alarms.alarm import Alarm
 
 
 def getAdminContent(self, **params):
@@ -24,37 +26,55 @@ def getAdminContent(self, **params):
             if request.method == 'POST':
                 if request.form.get('action') == 'savedept':  # save department
                     if request.form.get('dep_id') != 'None':  # update
-                        department = classes.get('department').getDepartments(request.form.get('dep_id'))
+                        department = Department.getDepartments(request.form.get('dep_id'))
                         l = request.form.get('dep_pos')
                     else:  # add
-                        l = len(classes.get('department').getDepartments()) + 1
-                        department = classes.get('department')('', '', '', 0)
+                        l = len(Department.getDepartments()) + 1
+                        department = Department('', '', '', 0)
                         db.session.add(department)
                     department.name = request.form.get('dep_name')
                     department.shortname = request.form.get('dep_shortname')
                     department.color = request.form.get('dep_color')
+                    department.set('address_name', request.form.get('dep_address_name'))
+                    department.set('address_street', request.form.get('dep_address_street'))
+                    department.set('address_city', request.form.get('dep_address_city'))
+                    department.set('address_phone', request.form.get('dep_address_phone'))
+                    department.set('address_fax', request.form.get('dep_address_fax'))
+                    department.set('address_email', request.form.get('dep_address_email'))
+                    if len(request.files) > 0:
+                        uploadfile = request.files.get('dep_logo')
+                        if uploadfile.filename != '':
+                            _fname, _fext = os.path.splitext(uploadfile.filename)
+                            db.session.flush()  # flush to get department id of new department
+                            fname = os.path.join(current_app.config.get('PATH_DATA'), 'departmentlogo_{}{}'.format(department.id, _fext))
+                            uploadfile.save(fname)
+                            department.set('logo', 'departmentlogo_{}{}'.format(department.id, _fext))  # store relative path from data directory
+                        elif request.form.get('logoaction') == 'deletelogo':
+                            if os.path.exists('{}{}'.format(current_app.config.get('PATH_DATA'), department.attributes['logo'])):
+                                os.remove('{}{}'.format(current_app.config.get('PATH_DATA'), department.attributes['logo']))
+                                department.set('logo', '')
                     department.orderpos = l
                     department.defaultcity = request.form.get('dep_city')
                     db.session.commit()
                     
                 elif request.form.get('action') == 'createdepartment':  # add department
-                    params.update({'department': classes.get('department')('', '', '', 0)})
+                    params.update({'department': Department('', '', '', 0)})
                     return render_template('admin.settings.department_actions.html', **params)
 
                 elif request.form.get('action').startswith('detaildept_'):  # edit department
-                    params.update({'department': classes.get('department').getDepartments(request.form.get('action').split('_')[-1]), 'cities': classes.get('city').getCities()})
+                    params.update({'department': Department.getDepartments(id=request.form.get('action').split('_')[-1]), 'cities': City.getCities()})
                     return render_template('admin.settings.department_actions.html', **params)
 
                 elif request.form.get('action').startswith('deletedept_'):  # delete department
-                    db.session.delete(classes.get('department').getDepartments(int(request.form.get('action').split('_')[-1])))
+                    db.session.delete(Department.getDepartments(id=request.form.get('action').split('_')[-1]))
                     db.session.commit()
                     
                 elif request.form.get('action') == 'ordersetting':  # change department order
                     for _id in request.form.getlist('departmentids'):
-                        classes.get('department').getDepartments(int(_id)).orderpos = request.form.getlist('departmentids').index(_id) + 1
+                        Department.getDepartments(id=_id).orderpos = request.form.getlist('departmentids').index(_id) + 1
                     db.session.commit()
             
-            params.update({'departments': classes.get('department').getDepartments(), 'cities': classes.get('city').getCities()})
+            params.update({'departments': Department.getDepartments(), 'cities': City.getCities()})
             return render_template('admin.settings.department.html', **params)
 
         elif module[1] == 'cars':
@@ -67,7 +87,7 @@ def getAdminContent(self, **params):
 
                     cartypes.value = [i for i in chunks(request.form.getlist('cartype'), 2) if i[0] != '']
                     db.session.commit()
-            params.update({'cartypes': classes.get('settings').getCarTypes()})
+            params.update({'cartypes': Settings.getCarTypes()})
             return render_template('admin.settings.cars.html', **params)
 
         elif module[1] == 'start':
@@ -86,22 +106,29 @@ def getAdminContent(self, **params):
                 _t = "module.%s" % obj.info['name']
                 return babel.gettext(_t)
 
-            params.update({'mods': sorted([m for m in current_app.blueprints['frontend'].modules.values() if m.frontendContent() == 1], key=modname), 'center': classes.get('settings').getFrontendSettings('center'), 'west': classes.get('settings').getFrontendSettings('west'), 'east': classes.get('settings').getFrontendSettings('east')})
+            params.update({'mods': sorted([m for m in current_app.blueprints['frontend'].modules.values() if m.frontendContent() == 1], key=modname), 'center': Settings.getFrontendSettings('center'), 'west': Settings.getFrontendSettings('west'), 'east': Settings.getFrontendSettings('east')})
             return render_template('admin.settings.start.html', **params)
 
     else:
 
         if request.method == 'POST':  # save settings
             if request.form.get('action') == 'observerstate':
-                classes.get('settings').set('obeserver.active', request.form.get('observerstate'))
-            elif request.form.get('action') == 'alarmsettings':
-                classes.get('settings').set('alarms.autoclose', request.form.get('settings.autoclose'))
-            elif request.form.get('action') == 'archivesettings':
-                classes.get('settings').set('alarms.autoarchive', request.form.get('settings.autoarchive'))
+                Settings.set('observer.interval', request.form.get('observerinterval'))
+                _jobserver = scheduler.get_jobs('observerinterval')[0]
+                if Settings.get('observer.interval', '0') == '0':
+                    _jobserver.pause()
+                else:
+                    scheduler.reschedule_job(_jobserver.id, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL', 2)))))
+            elif request.form.get('action') == 'monitorping':
+                Settings.set('monitorping', request.form.get('monitorping'))
+                _jping = scheduler.get_jobs('monitorping')[0]
+                if Settings.get('monitorping', '0') == '0':
+                    _jping.pause()
+                else:
+                    scheduler.reschedule_job(_jping.id, trigger=eMonitorIntervalTrigger(minutes=int(Settings.get('monitorping', current_app.config.get('MONITORPING', 2)))))
 
         paths = dict(pathdata=current_app.config.get('PATH_DATA'), pathtmp=current_app.config.get('PATH_TMP'), pathincome=current_app.config.get('PATH_INCOME'), pathdone=current_app.config.get('PATH_DONE'))
-
-        params.update({'paths': paths, 'observerstate': OBSERVERACTIVE, 'alarmsettings': classes.get('settings').get('alarms.autoclose'), 'archivesettings': classes.get('settings').get('alarms.autoarchive'), 'alarmsevalfields': classes.get('settings').get('alarms.evalfields'), 'alembic': alembic})
+        params.update({'paths': paths, 'observerinterval': Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL')), 'monitorping': Settings.get('monitorping', current_app.config.get('MONITORPING')), 'alarmsevalfields': Settings.get('alarms.evalfields'), 'alembic': alembic})
         return render_template('admin.settings.html', **params)
     return redirect("/admin/settings", code=302)
 

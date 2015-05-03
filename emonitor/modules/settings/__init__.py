@@ -1,8 +1,10 @@
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel
-from .content_admin import getAdminContent, getAdminData
+from emonitor.extensions import babel, db
+from emonitor.modules.settings.content_admin import getAdminContent, getAdminData
 from emonitor.modules.settings import settings_utils
+from emonitor.modules.settings.department import Department
+from emonitor.modules.settings.settings import Settings
 
 
 class SettingsModule(Module):
@@ -21,14 +23,7 @@ class SettingsModule(Module):
 
         # subnavigation
         self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'module.settings.department'), ('/admin/settings/cars', 'module.settings.cars'), ('/admin/settings/start', 'module.settings.start')]
-       
-        # create database tables
-        from .settings import Settings
-        from .department import Department
-        classes.add('settings', Settings)
-        classes.add('department', Department)
-        db.create_all()
-        
+
         # static folders
         @app.route('/settings/inc/<path:filename>')
         def settings_static(filename):
@@ -47,7 +42,7 @@ class SettingsModule(Module):
         babel.gettext(u'settings.pathtype.pathincome')
 
         # add default values
-        if db.session.query(Settings).count() == 0:  # add default values
+        if Settings.query.count() == 0:  # add default values
             db.session.add(Settings.set('defaultZoom', 15))
             db.session.add(Settings.set('startLat', ''))
             db.session.add(Settings.set('startLng', ''))
@@ -58,7 +53,7 @@ class SettingsModule(Module):
             db.session.commit()
 
     def checkDefinition(self):
-        if len(classes.get('department').getDepartments()) == 0:
+        if len(Department.getDepartments()) == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
 

@@ -44,12 +44,22 @@
         <fieldset>
             <legend>{{ _('settings.observerstatus') }}</legend>
             <small>{{ _('settings.observerstatusinfo') }}</small>
-            <h4>{{ _('settings.actobserverstatus') }}</h4>
             <p>
-                <label><input type="radio" name="observerstate" value="1" {% if observerstate==1 %}checked="checked"{% endif %}/> {{ _('settings.observeractive') }}</label><br/>
-                <label><input type="radio" name="observerstate" value="0" {% if observerstate==0 %}checked="checked"{% endif %}/> {{ _('settings.observerinactive') }}</label>
+                <label>{{ _('settings.observerinterval') }}:</label><br/>
+                <input type="number" min="0" step="1" name="observerinterval" value="{{ observerinterval }}"/> {{ _('settings.oberserverunit') }}
             </p>
             <button type="submit" name="action" value="observerstate"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+        </fieldset>
+    </form>
+
+    <form method="post" name="monitorping" action="">
+        <fieldset>
+            <legend>{{ _('settings.monitorpingtitle') }}</legend>
+            <small>{{ _('settings.monitorpinginfo') }}</small>
+            <p>
+                <input type="number" min="0" step="1" name="monitorping" value="{{ monitorping }}"/> {{ _('settings.monitorpinginterval') }}
+            </p>
+            <button type="submit" name="action" value="monitorping"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
         </fieldset>
     </form>
 
@@ -62,34 +72,6 @@
                 <button type="button" onclick="return doUpgrade()">{{ _('settings.db.upgradebutton') }}</button>
                 <button type="button" onclick="return doDowngrade()">{{ _('settings.db.downgradebutton') }}</button>
             </p>
-        </fieldset>
-    </form>
-    
-    <form method="post" name="paths" action="">
-        <fieldset>
-            <legend>{{ _('settings.autoclose.title') }}</legend>
-            <small>{{ _('settings.autoclose.info') }}</small>
-            <p>
-                <label>{{ _('settings.autoclose') }}:<br/>
-                    <input type="text" name="settings.autoclose" value="{{ alarmsettings }}"/>
-                </label>
-            </p>
-        
-            <button type="submit" name="action" value="alarmsettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
-        </fieldset>
-    </form>
-
-    <form method="post" name="paths" action="">
-        <fieldset>
-            <legend>{{ _('settings.autoarchive.title') }}</legend>
-            <small>{{ _('settings.autoarchive.info') }}</small>
-            <p>
-                <label>{{ _('settings.autoarchive') }}:<br/>
-                    <input type="text" name="settings.autoarchive" value="{{ archivesettings }}"/>
-                </label>
-            </p>
-
-            <button type="submit" name="action" value="archivesettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
         </fieldset>
     </form>
 

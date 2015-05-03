@@ -1,5 +1,5 @@
 import os, math, yaml
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 
 
 class Settings(db.Model):
@@ -10,7 +10,6 @@ class Settings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     _value = db.Column('value', db.Text)
-    #value = db.Column(db.PickleType)
 
     def __init__(self, name, value=""):
         self.name = name
@@ -25,7 +24,7 @@ class Settings(db.Model):
         self._value = yaml.safe_dump(val, encoding='utf-8')
 
     @staticmethod
-    def num2deg(xtile, ytile, zoom=db.app.config.get('DEFAULTZOOM')):
+    def num2deg(xtile, ytile, zoom=17 or db.config.get('DEFAULTZOOM')):
         """
         Translate tile into coordinate (lat, lon)
 
@@ -44,18 +43,16 @@ class Settings(db.Model):
 
     @staticmethod
     def getCarTypes():
-        val = db.session.query(Settings).filter_by(name='cartypes').first()
-        if val:
-            return val.value
-        return []
+        return Settings.query.filter_by(name='cartypes').one().value
 
     @staticmethod
     def get_byType(type):
-        return db.session.query(Settings).filter_by(name=type).first()
+        return Settings.query.filter_by(name=type).first() or ""
 
     @staticmethod
-    def getMapTiles(mid=0, zoom=db.app.config.get('DEFAULTZOOM')):
-        _map = classes.get('map').getMaps(mid)
+    def getMapTiles(mid=0, zoom=17 or db.app.config.get('DEFAULTZOOM')):
+        from emonitor.modules.maps.map import Map
+        _map = Map.getMaps(mid)
         tiles = []
         try:
             for ts in [f for f in os.listdir(_map.path + str(zoom) + '/') if f.endswith('png')]:
@@ -66,7 +63,7 @@ class Settings(db.Model):
 
     @staticmethod
     def getFrontendSettings(area=""):
-        s = db.session.query(Settings).filter_by(name='frontend.default')
+        s = Settings.query.filter_by(name='frontend.default')
         if s.count() == 1:
             if area == "":
                 return s.first().value
@@ -83,7 +80,7 @@ class Settings(db.Model):
         :param optional default: default value if not found in database
         :return: value of option
         """
-        s = db.session.query(Settings).filter_by(name=option)
+        s = Settings.query.filter_by(name=option)
         if s.count() == 1:  # update
             return s.first().value
         return default  # deliver default value
@@ -97,7 +94,7 @@ class Settings(db.Model):
         :param val: value of option
         :return: value of option
         """
-        s = db.session.query(Settings).filter_by(name=option).first()
+        s = Settings.query.filter_by(name=option).first()
         if s:  # update settings
             s.value = val
         else:  # add value
@@ -105,3 +102,10 @@ class Settings(db.Model):
             db.session.add(s)
         db.session.commit()
         return s
+
+    @staticmethod
+    def getIntList(option, default=[]):
+        try:
+            return map(int, Settings.get(option, '').split(','))
+        except ValueError:
+            return default

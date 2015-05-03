@@ -2,6 +2,12 @@
 
 {% block style %}
     <link rel="stylesheet" type="text/css" href="/settings/inc/spectrum.min.css">
+    <style>
+        div#previewcontainer{position:relative;}
+        div#preview {border:1px solid silver; width:100%;height:250px;margin-bottom:5px;position:relative;overflow:hidden;text-align: center;}
+        div#preview img{height:250px;position:relative;}
+        div#dellink{position:absolute;right:2px;top:2px;cursor:pointer;z-index:20;}
+    </style>
 {% endblock %}
 
 {%  block subnavigation %}
@@ -12,7 +18,7 @@
     <script type="text/javascript" src="/settings/inc/spectrum.min.js"></script>
     <h2>{{ _('settings.department.edittitle') }}</h2>
     <p><small>{{ _('settings.department.info') }}</small></p>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <p>
             <label>
                 {{ _('settings.department.name') }}:<br/>
@@ -25,13 +31,60 @@
                 <input type="text" name="dep_shortname" value="{{ department.shortname }}" style="width:99%;"/>
             </label>
         </p>
+        <div style="clear:left;">
+            <fieldset style="padding-left:20px;width:47%;float:left;">
+                <legend>{{ _('settings.department.address.title') }}</legend>
+                <p>
+                    <label>{{ _('settings.department.addressname') }}:<br/>
+                    <input type="text" name="dep_address_name" value="{{ department.address_name }}" style="width:99%;">
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('settings.department.addressstreet') }}:<br/>
+                    <input type="text" name="dep_address_street" value="{{ department.address_street }}" style="width:99%;">
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('settings.department.addresscity') }}:<br/>
+                    <input type="text" name="dep_address_city" value="{{ department.address_city }}" style="width:99%;">
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('settings.department.addressphone') }}:<br/>
+                    <input type="text" name="dep_address_phone" value="{{ department.address_phone }}" style="width:99%;">
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('settings.department.addressfax') }}:<br/>
+                    <input type="text" name="dep_address_fax" value="{{ department.address_fax }}" style="width:99%;">
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('settings.department.addressemail') }}:<br/>
+                    <input type="text" name="dep_address_email" value="{{ department.address_email }}" style="width:99%;">
+                    </label>
+                </p>
+            </fieldset>
+            <fieldset style="float:left;width:47%;margin-left:4%;">
+                <legend>{{ _('settings.department.logo.title') }}</legend>
+                {{ _('settings.department.logo.act') }}
+                <div id="previewcontainer">
+                    <div id="dellink"><a href="#" onclick="return deleteLogo()"><i class="fa fa-trash-o fa-lg"></i></a></div>
+                    <div id="preview">{%- if department.attributes['logo'] !='' %}<img src="data:image/{{ department.attributes['logo'].split('.')[-1] }};base64,{{ department.getLogoStream() }}"/>{%- endif %}</div>
+                </div>
+                <p>
+                    <input name="dep_logo" type="file" style="width:100%;" accept="image/*">
+                    <input type="hidden" name="logoaction" id="logoaction"/>
+                </p>
+            </fieldset>
+        </div>
         <p>
             <label>
                 {{ _('settings.department.defaultcity') }}:<br/>
                 <select name="dep_city">
                     <option>{{ _('settings.department.notset') }}</option>
                     {% for city in cities %}
-                    <option value="{{ city.id }}"{% if department.defaultcity == city.id %} selected="selected"{% endif %}>{{ city.name }}</option>
+                    <option value="{{ city.id }}"{%- if department.defaultcity == city.id %} selected="selected"{%- endif %}>{{ city.name }}</option>
                     {% endfor %}
                 </select>
             </label>
@@ -63,4 +116,32 @@
             hideAfterPaletteSelect:true,
         });
     });
+    var files;
+    $('input[type=file]').on('change', prepareUpload);
+
+    function prepareUpload(event){
+        files = event.target.files;
+        preview = document.getElementById("preview");
+        preview.innerHTML = '';
+        var img = document.createElement("img");
+        img.classList.add("obj");
+        img.file = files[files.length -1];
+        preview.appendChild(img);
+
+        var reader = new FileReader();
+        reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+        #reader.readAsDataURL(files[files.length -1]);
+        reader.readAsText(files[files.length -1]);
+    }
+
+    function deleteLogo(){
+        if (confirm('{{ _('settings.logo.delquestion') }}')){
+            $('#logoaction').val('deletelogo');
+            $('#preview').empty();
+        }else{
+            $('#logoaction').val('');
+        }
+        return false;
+    }
+
 {% endblock %}

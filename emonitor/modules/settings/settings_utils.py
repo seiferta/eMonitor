@@ -49,7 +49,7 @@ def loadTiles(path, tilelist):
             try:
                 getTile(err[0], err[1])
             except:
-                print "error in %s" % err
+                print "error in {}".format(err)
             
         LOADINPROGRESS = [0, 0]
     
