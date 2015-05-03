@@ -1,5 +1,6 @@
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db, cache
+from emonitor.modules.streets.street import Street
 
 
 class City(db.Model):
@@ -17,7 +18,7 @@ class City(db.Model):
     osmid = db.Column(db.Integer, default=0)
     osmname = db.Column(db.String(30), default="")
     
-    streets = db.relationship("Street", collection_class=attribute_mapped_collection('id'), cascade="all, delete-orphan")
+    streets = db.relationship("Street", collection_class=attribute_mapped_collection('id'), backref=db.backref('City', remote_side=[Street.cityid]), cascade="all, delete-orphan")
     department = db.relationship("Department", collection_class=attribute_mapped_collection('id'))
     
     def __init__(self, name, dept, mapname, default, subcity, color, osmid, osmname):
@@ -34,38 +35,16 @@ class City(db.Model):
     def serialize(self):
         return dict(id=self.id, name=self.name)
 
-    def getSubCityList(self):
-        """
-        Get list of subcities
+    @property
+    def subcities(self):
+        return filter(None, self.subcity.split("\r\n"))
 
-        :return: list of strings with subcity names
-        """
-        try:
-            return [s for s in self.subcity.split("\r\n") if s.strip() != ""]
-        except:
-            return []
-
-    def getSubCityListLine(self):
-        try:
-            return ", ".join([s for s in self.subcity.split("\r\n") if s.strip() != ""])
-        except:
-            return ""
-    
     def getColorName(self):
         return '#%s' % self.color
         
     def __repr__(self):
         return '<City %r>' % self.name
-        
-    @cache.memoize()
-    def getStreets(self):
-        """
-        Get sorted list of streets
 
-        :return: list of :py:class:`emonitor.modules.streeets.city.City`
-        """
-        return sorted(self.streets.values(), key=lambda x: x.name)
-        
     def addStreet(self, street):
         """
         Add street to current city
@@ -88,10 +67,10 @@ class City(db.Model):
         :return: list of :py:class:`emonitor.modules.streets.city.City`
         """
         if id == 0:
-            return db.session.query(City).order_by(City.default.desc(), City.name).all()
+            return City.query.order_by(City.default.desc(), City.name).all()
         else:
-            return db.session.query(City).filter_by(id=id).one() or None
-        
+            return City.query.filter_by(id=id).first()
+
     @staticmethod
     def getCitiesDict():
         """
@@ -99,37 +78,10 @@ class City(db.Model):
 
         :return: dict of :py:class:`emonitor.modules.streets.city.City`, id as key
         """
-        ret = {}
-        for city in db.session.query(City).order_by('id'):
-            ret[city.id] = city
-            if city.default == 1:
-                ret[0] = city
+        ret = dict(db.get(City.id, City).order_by(City.id))
+        ret[0] = City.getDefaultCity()
         return ret
-        
-    @staticmethod
-    def get_byid(cityid):
-        """
-        Get city by id
 
-        :param cityid: id of city
-        :return: :py:class:`emonitor.modules.streets.city.City`
-        """
-        return db.session.query(City).filter_by(id=cityid).first() or None
-        
-    @staticmethod
-    def get_byname(cityname):
-        """
-        Get city by name
-
-        :param cityname: name of city
-        :return: :py:class:`emonitor.modules.streets.city.City`
-        """
-        city = db.session.query(City).filter_by(name=cityname).first()
-        #if city[0]:
-        #    return city[0]
-        #return None
-        return city or None
-        
     @staticmethod
     def getDefaultCity():
         """
@@ -137,5 +89,4 @@ class City(db.Model):
 
         :return: :py:class:`emonitor.modules.streets.city.City`
         """
-        city = db.session.query(City).filter_by(default=1).first()
-        return city or None
+        return City.query.filter_by(default=1).first()

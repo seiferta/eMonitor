@@ -1,6 +1,7 @@
 import requests
 from xml.dom import minidom
-from emonitor.extensions import classes, signal
+from emonitor.extensions import signal
+from emonitor.modules.streets.city import City
 
 URL = 'http://overpass-api.de/api/interpreter'
 """url for data download from OpenStreetMap (overpass)"""
@@ -18,10 +19,10 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
     for street in streets:
         nodes = {}
         ways = []
-        city = classes.get('city').get_byid(street.cityid)
+        city = City.getCities(id=street.cityid)
         SEARCHSTRING = 'area[name~"%s"];way(area)[building]["addr:street"="%s"];(._;>;);out;' % (city.osmname, street.name)
         r = requests.post(URL, data={'data': SEARCHSTRING})
-        xmldoc = minidom.parseString(r._content)
+        xmldoc = minidom.parseString(r.content)
         for node in xmldoc.getElementsByTagName('node'):
             nodes[node.attributes['id'].value] = [float(node.attributes['lat'].value), float(node.attributes['lon'].value)]
         for way in xmldoc.getElementsByTagName('way'):
@@ -30,7 +31,7 @@ def loadHousenumbersFromOsm(streets):  # load all housenumbers from osm
         # try with associatedStreet
         SEARCHSTRING = 'area[name~"%s"];rel[type=associatedStreet](area)->.allASRelations;way(r.allASRelations:"street")[name="%s"];rel(bw:"street")[type=associatedStreet]->.relationsWithRoleStreet;way(r.relationsWithRoleStreet)[building];(._;>;);out;' % (city.osmname, street.name)
         r = requests.post(URL, data={'data': SEARCHSTRING})
-        xmldoc = minidom.parseString(r._content)
+        xmldoc = minidom.parseString(r.content)
         for node in xmldoc.getElementsByTagName('node'):
             nodes[node.attributes['id'].value] = [float(node.attributes['lat'].value), float(node.attributes['lon'].value)]
         for way in xmldoc.getElementsByTagName('way'):

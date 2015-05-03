@@ -1,5 +1,9 @@
 from flask import request
-from emonitor.extensions import classes
+from emonitor.modules.settings.settings import Settings
+from emonitor.modules.streets.street import Street
+from emonitor.modules.streets.city import City
+from emonitor.modules.alarms.alarm import Alarm
+from emonitor.modules.maps.map import Map
 
 
 def getFrontendData(self):
@@ -11,28 +15,28 @@ def getFrontendData(self):
     if request.args.get('action') == 'streetcoords':  # get map parameter for given streetid
 
         if request.args.get('id') not in ['', 'None']:
-            street = classes.get('street').getStreet(request.args.get('id'))
+            street = Street.getStreets(id=request.args.get('id'))
             return {'lat': street.lat, 'lng': street.lng, 'zoom': street.zoom, 'way': street.navigation,
                     'cityid': street.cityid, 'cityname': street.city.name}
 
     elif request.args.get('action') == 'housecoords':  # deliver center of housenumbers
         if request.args.get('streetid') != '' and request.args.get('housenumber') != '':
-            street = classes.get('street').getStreet(request.args.get('streetid'))
-            hnumber = [h for h in street.housenumbers if h.number == request.args.get('housenumber').split()[0]]
-            if len(hnumber) > 0:
-                return {'lat': hnumber[0].points[0][0], 'lng': hnumber[0].points[0][1]}
+            street = Street.getStreet(id=request.args.get('streetid'))
+            hnumber = street.getHouseNumber(number=request.args.get('housenumber').split()[0])
+            if hnumber:
+                return hnumber.getPosition(0)
 
             return {'lat': street.lat, 'lng': street.lng}
         return {}
 
     elif request.args.get('action') == 'defaultposition':
 
-        return {'defaultlat': float(classes.get('settings').get('defaultLat')),
-                'defaultlng': float(classes.get('settings').get('defaultLng')),
-                'defaultzoom': int(classes.get('settings').get('defaultZoom'))}
+        return {'defaultlat': float(Settings.get('defaultLat')),
+                'defaultlng': float(Settings.get('defaultLng')),
+                'defaultzoom': int(Settings.get('defaultZoom'))}
 
     elif request.args.get('action') == 'alarmposition':
-        alarm = classes.get('alarm').getAlarms(id=request.args.get('alarmid'))
+        alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
         if alarm:
             return {'id': request.args.get('alarmid'), 'alarmlat': alarm.lat, 'alarmlng': alarm.lng,
                     'alarmzoom': alarm.zoom, 'marker': alarm.marker, 'alarmprio': alarm.priority,
@@ -45,9 +49,9 @@ def getFrontendData(self):
     elif request.args.get('action') == 'streetslookup':
         streets = {}
         cities = {}
-        for c in classes.get('city').getCities():
+        for c in City.getCities():
             cities[c.id] = c.name
-            for street in c.getStreets():
+            for k, street in c.streets.iteritems():
                 if street.active:
                     try:
                         streets[str(street.id)] = '%s (%s)' % (street.name, c.name)
@@ -56,7 +60,7 @@ def getFrontendData(self):
         return streets
 
     elif request.args.get('action') == 'defaultmap':
-        dmap = classes.get('map').getDefaultMap()
+        dmap = Map.getDefaultMap()
         return {'tileserver': dmap.tileserver, 'name': dmap.name}
 
     return ""

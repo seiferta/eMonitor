@@ -22,7 +22,7 @@ def loadCitiesFromOsm():
     requests.session()
     r = requests.post(URL, data={'data': SEARCHSTRING})
 
-    xmldoc = minidom.parseString(r._content)
+    xmldoc = minidom.parseString(r.content)
     relations = xmldoc.getElementsByTagName('relation')
     
     osmids = [c.osmid for c in City.getCities()]

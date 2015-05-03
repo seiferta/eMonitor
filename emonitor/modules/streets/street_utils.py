@@ -67,7 +67,7 @@ def loadStreetsFromOsm(city=None, format="html"):
     nodes = xmldoc.getElementsByTagName('node') 
     ways = xmldoc.getElementsByTagName('way')
 
-    dbosmids = [int(s.osmid or 0) for s in city.getStreets()]
+    dbosmids = [int(s.osmid or 0) for s in city.getCities()]
     
     streets = OrderedDict()
     n = {}

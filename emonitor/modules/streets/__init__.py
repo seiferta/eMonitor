@@ -1,14 +1,15 @@
 import re
 from flask import send_from_directory
-from emonitor.sockethandler import SocketHandler
+from emonitor.socketserver import SocketHandler
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel, signal
+from emonitor.extensions import babel, signal
 from street import StreetWidget
 
-from.city import City
-from.street import Street
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendData
+from emonitor.modules.streets.city import City
+from emonitor.modules.streets.street import Street
+from emonitor.modules.streets.housenumber import Housenumber
+from emonitor.modules.streets.content_admin import getAdminContent, getAdminData
+from emonitor.modules.streets.content_frontend import getFrontendData
 
 
 class StreetsModule(object, Module):
@@ -23,19 +24,9 @@ class StreetsModule(object, Module):
     def __init__(self, app):
         Module.__init__(self, app)
         # add template path
-        app.jinja_loader.searchpath.append("%s/emonitor/modules/streets/templates" % app.config.get('PROJECT_ROOT'))
-
-        # create database tables
-        from .street import Street
-        from .city import City
-        from .housenumber import Housenumber
-        classes.add('city', City)
-        classes.add('housenumber', Housenumber)
-        classes.add('street', Street)
-        db.create_all()
+        app.jinja_loader.searchpath.append(u"{}/emonitor/modules/streets/templates".format(app.config.get('PROJECT_ROOT')))
 
         # subnavigation
-        self.updateAdminSubNavigation()
         self.widgets = [StreetWidget('streets_street')]
 
         signal.addSignal('housenumber', 'osm')
@@ -45,7 +36,7 @@ class StreetsModule(object, Module):
         # static folders
         @app.route('/streets/inc/<path:filename>')
         def streets_static(filename):
-            return send_from_directory("%s/emonitor/modules/streets/inc/" % app.config.get('PROJECT_ROOT'), filename)
+            return send_from_directory(u"{}/emonitor/modules/streets/inc/".format(app.config.get('PROJECT_ROOT')), filename)
             
         # translations
         babel.gettext(u'module.streets')
@@ -59,7 +50,7 @@ class StreetsModule(object, Module):
         from .city import City
         self.adminsubnavigation = []
         for c in City.getCities():
-            self.adminsubnavigation.append(('/admin/streets/%s' % c.id, c.name))
+            self.adminsubnavigation.append((u"/admin/streets/{}".format(c.id), c.name))
         self.adminsubnavigation.append(('/admin/streets/0', babel.gettext('admin.streets.cities.edit...')))
 
     def getHelp(self, area="frontend", name=""):  # frontend help template
@@ -68,17 +59,13 @@ class StreetsModule(object, Module):
             name = re.sub(".\d+", "", name)
         return super(StreetsModule, self).getHelp(area=area, name=name)
 
-    # @cache.cached(timeout=8000, key_prefix='streets')
-    #def getFrontendContent(self, params={}):
-    #    return getFrontendContent(self, params=params)
-
     def checkDefinition(self):
         """
         Check required definition entries
 
         :return: :py:attr:`emonitor.utils.Module.INITNEEDED` or :py:attr:`emonitor.utils.Module.INITNEEDED`
         """
-        if db.session.query(classes.get('city')).count() == 0:
+        if City.query.count() == 0:
             return Module.INITNEEDED
         return Module.CHECKOK
         
@@ -94,6 +81,7 @@ class StreetsModule(object, Module):
 
         :param params: send given parameters to :py:class:`emonitor.modules.streets.content_admin.getAdminContent`
         """
+        self.updateAdminSubNavigation()
         return getAdminContent(self, **params)
 
     def getAdminData(self):

@@ -75,7 +75,7 @@
         {%- endif %}
         <div id="sortable">
             {%- if city %}
-            {%- for street in city.getStreets() %}
+            {%- for street in city.streets.values() %}
             <div class="row" id="{{ street.name[0].upper() }}" {% if street.active!=1 %}title="{{ _('streets.inactive') }}"{% endif %}>
                 <div style="margin-right:80px;margin-left:15px;" {% if street.active!=1 %}class="inactive"{% endif %}>
                     <div class="rowcell" style="width:33%;">{{ street.name }}</div>

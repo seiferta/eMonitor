@@ -11,6 +11,7 @@ class Housenumber(db.Model):
     streetid = db.Column(db.Integer, db.ForeignKey('streets.id'))
     number = db.Column(db.String(10))
     _points = db.Column('points', db.Text)
+    street = db.relationship("Street", backref="streets", lazy='joined')
 
     def __init__(self, streetid, number, points):
         self.streetid = streetid
@@ -35,6 +36,13 @@ class Housenumber(db.Model):
         :return: list of :py:class:`emonitor.modules.streets.housenumber.Housenumber`
         """
         if id == 0:
-            return db.session.query(Housenumber).all()
+            return Housenumber.query.order_by(Housenumber.number).all()
         else:
-            return db.session.query(Housenumber).filter_by(id=int(id)).first()
+            return Housenumber.query.filter_by(id=id).one()
+
+    def getPosition(self, index=0):
+        try:
+            p = self.points[index]
+            return dict(lat=p[0], lng=p[1])
+        except:
+            return dict(lat=self.street.lat, lng=self.street.lng)

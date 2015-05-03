@@ -58,37 +58,32 @@ class Street(db.Model):
             db.session.add(Housenumber(self.id, number, yaml.dump(points)))
             db.session.commit()
 
-    @staticmethod
-    def getStreet(id=0):
-        """
-        Get list of streets filtered by parameter
-
-        :param optional id: id of street, *0* for all
-        :return: list of :py:class:`emonitor.modules.streets.street.Street`
-        """
-        try:
-            if int(id):
-                street = db.session.query(Street).filter_by(id=int(id))
-                if street:
-                    return street.first()
-        except ValueError:
-            return None
+    def getHouseNumber(self, **kwargs):
+        ret = []
+        if "id" in kwargs:
+            ret = filter(lambda x: x.id == kwargs['id'], self.housenumbers)
+        elif "number" in kwargs:
+            ret = filter(lambda x: x.number == kwargs['number'], self.housenumbers)
+        if len(ret) > 0:
+            return ret[0]
         return None
 
     @staticmethod
-    #@cache.memoize()
-    def getAllStreets(cityid=0):
+    def getStreets(id=0, cityid=0):
         """
         Get all streets of city given by id, *0* for all streets
 
+        :param optional id: id of street, *0* for all
         :param optional cityid: id of city, *0* for all
         :return: list of :py:class:`emonitor.modules.streets.street.Street`
         """
-        if cityid == 0:
-            return db.session.query(Street).order_by(Street.name).all()
+        if id != 0:
+            return Street.query.filter_by(id=id).one()
+        if cityid != 0:
+            return Street.query.filter_by(cityid=cityid).order_by(Street.name).all()
         else:
-            return db.session.query(Street).filter_by(cityid=cityid).all()
-            
+            return Street.query.order_by(Street.name).all()
+
     @staticmethod
     def getStreetsDict():
         """
@@ -96,9 +91,7 @@ class Street(db.Model):
 
         :return: cict of :py:class:`emonitor.modules.streets.street.Street`
         """
-        ret = {}
-        for street in db.session.query(Street).filter_by(active=1).order_by('name'):
-            ret[street.id] = street
+        ret = dict(db.get(Street.id, Street).filter_by(active=1).order_by(Street.name))
         ret[0] = Street('', '', 0, '', 0, 0, 0, 1, 0)
         return ret
 

@@ -46,7 +46,7 @@
                     {%- for city in cities %}
                         <optgroup label="{{ city.name }}">
                             <option value="{{ city.id }}">{{ city.name }}</option>
-                            {%- for subcity in city.getSubCityList() %}
+                            {%- for subcity in city.subcities %}
                                 <option value="{{city.id }}_{{ subcity }}"{% if street.subcity==subcity %} selected="selected"{% endif %}>{{ subcity }}</option>
                             {%- endfor %}
                         </optgroup>
@@ -198,7 +198,7 @@
     showOSMHousenumbers({{ street.id }});
 
     function questionDelHn(id){
-        if (confirm('{{ _('alarms.type.delquestion') }}')){
+        if (confirm('{{ _('streets.streethn.delquestion') }}')){
             $.ajax({ type : "POST", url : "/admin/data/streets?action=delhousenumber&housenumberid="+id,
                 success: function(ret) {
                     $('#sortable').html(ret);
