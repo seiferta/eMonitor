@@ -1,5 +1,5 @@
-from sqlalchemy import inspect
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
+from emonitor.modules.cars.car import Car
 
 
 class AlarmkeyCars(db.Model):
@@ -17,9 +17,7 @@ class AlarmkeyCars(db.Model):
     def _get_cars_proto(self, cartype):  # type 1:cars1, 2:cars2, 3:material
         ret = []
         l = []
-        if not inspect(self).session:
-            return ret
-        cars = inspect(self).session.query(classes.get('car'))
+        cars = Car.getCars()
         try:
             if cartype == 1:
                 l = [int(i) for i in self._cars1.split(';') if i != '']
@@ -99,10 +97,10 @@ class AlarmkeyCars(db.Model):
         :return: list of :py:class:`emonitor.modules.alarmkeys.alarmkeycar.AlarmkeyCars`
         """
         if int(kid) != 0 and dept != '':
-            return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
+            return AlarmkeyCars.query.filter_by(kid=int(kid), dept=int(dept)).first()
         elif int(kid) == 0 and dept != '':  # default aao cars for dept
-            return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid), dept=int(dept)).first()
+            return AlarmkeyCars.query.filter_by(kid=int(kid), dept=int(dept)).first()
         elif dept != '':
-            return db.session.query(classes.get('alarmkeycar')).filter_by(dept=int(dept)).all()
+            return AlarmkeyCars.query.filter_by(dept=int(dept)).all()
         else:
-            return db.session.query(classes.get('alarmkeycar')).filter_by(kid=int(kid)).all()
+            return AlarmkeyCars.query.filter_by(kid=int(kid)).all()

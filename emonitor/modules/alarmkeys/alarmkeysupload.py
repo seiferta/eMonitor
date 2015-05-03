@@ -1,7 +1,9 @@
 import xlrd
 import xlsxwriter
 from flask import current_app
-from emonitor.extensions import classes
+from emonitor.modules.cars.car import Car
+from emonitor.modules.alarmkeys.alarmkey import Alarmkey
+from emonitor.modules.alarmkeys.alarmkeycar import AlarmkeyCars
 
 
 class XLSFile:
@@ -64,10 +66,10 @@ class XLSFile:
         cars = {}
         notfound = {}
         states = {'-1': 0, '0': 0, '1': 0}
-        for c in classes.get('car').getCars(deptid=coldefinition['dept']):
+        for c in Car.getCars(deptid=coldefinition['dept']):
             cars[unicode(c.name)] = c
 
-        keys = classes.get('alarmkey').getAlarmkeys()
+        keys = Alarmkey.getAlarmkeys()
         worksheet = self.book.sheet_by_name(self.book.sheet_names()[int(coldefinition['sheet'])])
         
         def getPosForCol(name):
@@ -100,7 +102,7 @@ class XLSFile:
                         item[field + '_ids'].append(str(cars[unicode(cell_val)].id))
                     elif cell_val.strip() != '':
                         if unicode(cell_val) not in notfound.keys():
-                            n_c = classes.get('car')('<em style="color:#ff0000">%s</em>' % cell_val, '', '', 0, 'new', coldefinition['dept'])
+                            n_c = Car('<em style="color:#ff0000">%s</em>' % cell_val, '', '', 0, 'new', coldefinition['dept'])
                             notfound[unicode(cell_val)] = n_c
                         else:
                             n_c = notfound[unicode(cell_val)]
@@ -134,14 +136,14 @@ def buildDownloadFile(department, dtype=0):
     :param dtype: 0|1: add default definition if no material definition found for keyword
     :return: filename of created file, on error ''
     """
-    alarmkeys = classes.get('alarmkey').getAlarmkeys()
+    alarmkeys = Alarmkey.getAlarmkeys()
     
     header = ['dbid', 'category', 'key', 'key internal']
     _maxcars1 = 1
     _maxcars2 = 1
     _maxmaterial = 1
 
-    counted_keys = classes.get('alarmkeycar').query.from_statement("select kid, dept, (LENGTH(cars1)-LENGTH(REPLACE(cars1, ';', '')))as cars1, (LENGTH(cars2)-LENGTH(REPLACE(cars2, ';', ''))) as cars2, (LENGTH(material)-LENGTH(REPLACE(material, ';', ''))) as material from alarmkeycars where dept='1';")
+    counted_keys = AlarmkeyCars.query.from_statement("select kid, dept, (LENGTH(cars1)-LENGTH(REPLACE(cars1, ';', '')))as cars1, (LENGTH(cars2)-LENGTH(REPLACE(cars2, ';', ''))) as cars2, (LENGTH(material)-LENGTH(REPLACE(material, ';', ''))) as material from alarmkeycars where dept='1';")
     
     for c_k in counted_keys:
         if _maxcars1 < c_k._cars1: _maxcars1 = c_k._cars1

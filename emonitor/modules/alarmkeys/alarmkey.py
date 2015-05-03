@@ -1,4 +1,5 @@
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
+from emonitor.modules.alarmkeys.alarmkeycar import AlarmkeyCars
 
 
 class Alarmkey(db.Model):
@@ -26,11 +27,11 @@ class Alarmkey(db.Model):
         :param department: id of department as integer
         :return: list of cars, material
         """
-        alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first()
+        alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=self.id or 0, dept=department)
 
         if not alarmcars:
             # try default
-            alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=0, dept=department).first()
+            alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=0, dept=department)
 
         if alarmcars:
             if cartype == 1:
@@ -52,9 +53,9 @@ class Alarmkey(db.Model):
             - *cars2*: list of :py:class:`emonitor.modules.cars.car.Car` objects for cars2
             - *material*: list of :py:class:`emonitor.modules.cars.car.Car` objects for material
         """
-        alarmcars = db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id, dept=department).first()
+        alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=self.id, dept=department)
         if not alarmcars:
-            alarmcars = classes.get('alarmkeycar')(self.id, department, '', '', '')
+            alarmcars = AlarmkeyCars(self.id, department, '', '', '')
             db.session.add(alarmcars)
         if "cars1" in kwargs.keys():
             alarmcars._cars1 = kwargs['cars1']
@@ -97,7 +98,7 @@ class Alarmkey(db.Model):
         :param department: id of department
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` or *None*
         """
-        return db.session.query(classes.get('alarmkeycar')).filter_by(kid=self.id or 0, dept=department).first() is None
+        return AlarmkeyCars.getAlarmkeyCars(kid=self.id or 0, dept=department) is None
 
     @staticmethod
     def getAlarmkeys(id=''):
@@ -108,9 +109,9 @@ class Alarmkey(db.Model):
         :return: list of defintions or single definition
         """
         if id not in ['', 'None']:
-            return db.session.query(classes.get('alarmkey')).filter_by(id=int(id)).first()
+            return Alarmkey.query.filter_by(id=int(id)).first()
         else:
-            return db.session.query(classes.get('alarmkey')).order_by('category').all()
+            return Alarmkey.query.order_by('category').all()
 
     @staticmethod
     def getAlarmkeysByName(name):
@@ -120,7 +121,7 @@ class Alarmkey(db.Model):
         :param name: name as string (like)
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object
         """
-        return db.session.query(classes.get('alarmkey')).filter(classes.get('alarmkey').key.like('%' + name + '%')).all()
+        return Alarmkey.query.filter(Alarmkey.key.like('%' + name + '%')).all()
 
     @staticmethod
     def getAlarmkeysByCategory(category):
@@ -130,7 +131,7 @@ class Alarmkey(db.Model):
         :param category: category as string
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object list
         """
-        return db.session.query(classes.get('alarmkey')).filter_by(category=category).all()
+        return Alarmkey.query.filter_by(category=category).all()
 
     @staticmethod
     def getAlarmkeysDict():
@@ -138,10 +139,7 @@ class Alarmkey(db.Model):
         Get dict of all alarmkeys with alarmkey.id as dict key
         :return: dict of alarmkeys
         """
-        ret = {}
-        for k in db.session.query(classes.get('alarmkey')):
-            ret[k.id] = k
-        return ret
+        return dict(db.get(Alarmkey.id, Alarmkey).order_by(Alarmkey.key).all())
 
     @staticmethod
     def getDefault(department):
@@ -151,5 +149,4 @@ class Alarmkey(db.Model):
         :param department: id as integer
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object
         """
-        return db.session.query(classes.get('alarmkeycar')).filter_by(kid=0, dept=department).first() or classes.get(
-            'alarmkeycar')(0, department, '', '', '')
+        return AlarmkeyCars.query.filter_by(kid=0, dept=department).first() or AlarmkeyCars(0, department, '', '', '')

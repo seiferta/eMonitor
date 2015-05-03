@@ -4,7 +4,11 @@ from sqlalchemy import func
 from flask import current_app, render_template, request, send_from_directory
 import werkzeug
 
-from emonitor.extensions import classes, db
+from emonitor.extensions import db
+from emonitor.modules.alarmkeys.alarmkey import Alarmkey
+from emonitor.modules.alarmkeys.alarmkeycar import AlarmkeyCars
+from emonitor.modules.settings.department import Department
+from emonitor.modules.cars.car import Car
 from alarmkeysupload import XLSFile, buildDownloadFile
 
 uploadfiles = {}
@@ -36,13 +40,13 @@ def getAdminContent(self, **params):
             
         if request.method == 'POST':
             if request.form.get('action') == 'adddefault':  # add default aao
-                params.update({'alarmkey': classes.get('alarmkey')('', '', '', ''), 'depid': depid, 'departments': classes.get('department').getDepartments(), 'cars': classes.get('car').getCars(), 'type': 0})
+                params.update({'alarmkey': Alarmkey('', '', '', ''), 'depid': depid, 'departments': Department.getDepartments(), 'cars': Car.getCars(), 'type': 0})
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savedefault':  # save default aao
-                alarmkeycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
+                alarmkeycar = AlarmkeyCars.getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
                 if not alarmkeycar:  # add
-                    alarmkeycar = classes.get('alarmkeycar')(0, request.form.get('deptid'), '', '', '')
+                    alarmkeycar = AlarmkeyCars(0, request.form.get('deptid'), '', '', '')
                     db.session.add(alarmkeycar)
 
                 alarmkeycar.cars1 = request.form.get('cars1')
@@ -53,21 +57,21 @@ def getAdminContent(self, **params):
                 db.session.commit()
                 
             elif request.form.get('action') == 'editdefault':  # edit default aao
-                params.update({'alarmkey': classes.get('alarmkey')('', '', '', ''), 'depid': depid, 'departments': classes.get('department').getDepartments(), 'cars': classes.get('car').getCars(), 'type': -1})
+                params.update({'alarmkey': Alarmkey('', '', '', ''), 'depid': depid, 'departments': Department.getDepartments(), 'cars': Car.getCars(), 'type': -1})
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'addkey':  # add key
-                params.update({'alarmkey': classes.get('alarmkey')('', '', '', ''), 'depid': depid, 'departments': classes.get('department').getDepartments(), 'cars': classes.get('car').getCars(), 'type': -2})
+                params.update({'alarmkey': Alarmkey('', '', '', ''), 'depid': depid, 'departments': Department.getDepartments(), 'cars': Car.getCars(), 'type': -2})
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savekey':  # save key
                 if request.form.get('keyid') == 'None':  # add new
-                    alarmkey = classes.get('alarmkey')('', '', '', '')
+                    alarmkey = Alarmkey('', '', '', '')
                     db.session.add(alarmkey)
                     db.session.commit()
 
                 else:  # update existing
-                    alarmkey = classes.get('alarmkey').getAlarmkeys(request.form.get('keyid'))
+                    alarmkey = Alarmkey.getAlarmkeys(request.form.get('keyid'))
 
                 alarmkey.category = request.form.get('category')
                 alarmkey.key = request.form.get('key')
@@ -78,31 +82,31 @@ def getAdminContent(self, **params):
                 
             elif request.form.get('action').startswith('deletecars_'):  # delete car definition
                 _op, _kid, _dept = request.form.get('action').split('_')
-                keycar = classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid, dept=_dept)
+                keycar = AlarmkeyCars.getAlarmkeyCars(kid=_kid, dept=_dept)
                 if keycar:
                     db.session.delete(keycar)
                     db.session.commit()
 
                 # delete key if no definied cars
-                if len(classes.get('alarmkeycar').getAlarmkeyCars(kid=_kid)) == 0:
-                    key = classes.get('alarmkey').getAlarmkeys(id=_kid)
+                if len(AlarmkeyCars.getAlarmkeyCars(kid=_kid)) == 0:
+                    key = Alarmkey.getAlarmkeys(id=_kid)
                     db.session.delete(key)
                 db.session.commit()
                 
             elif request.form.get('action').startswith('editcars_'):  # edit key with cars
                 _op, _kid, _dept = request.form.get('action').split('_')
-                params.update({'alarmkey': classes.get('alarmkey').getAlarmkeys(id=_kid), 'depid': _dept, 'departments': classes.get('department').getDepartments(), 'cars': classes.get('car').getCars(), 'type': 1})
+                params.update({'alarmkey': Alarmkey.getAlarmkeys(id=_kid), 'depid': _dept, 'departments': Department.getDepartments(), 'cars': Car.getCars(), 'type': 1})
                 return render_template('admin.alarmkeys_actions.html', **params)
 
         alarmkeys_count = []
-        ak = classes.get('alarmkey')
-        counted_keys = db.session.query(ak.category.label('category'), func.count(ak.key).label('key'), ak.id.label('id')).group_by(ak.category)
+        ak = Alarmkey
+        counted_keys = db.get(ak.category.label('category'), func.count(ak.key).label('key'), ak.id.label('id')).group_by(ak.category)
         _sum = 0
         for r in counted_keys.all():
             alarmkeys_count.append((r.category, r.key))
             _sum += int(r.key)
 
-        params.update({'alarmkeys_count': alarmkeys_count, 'depid': depid, 'defaultcars': classes.get('alarmkey').getDefault(depid), 'sum': _sum})
+        params.update({'alarmkeys_count': alarmkeys_count, 'depid': depid, 'defaultcars': Alarmkey.getDefault(depid), 'sum': _sum})
         return render_template('admin.alarmkeys.html', **params)
 
 
@@ -113,7 +117,7 @@ def getAdminData(self):
     :return: rendered template as string or json dict
     """
     if request.args.get('action') == 'loaddetails':  # details for given key
-        return render_template('admin.alarmkeys.detail.html', keys=classes.get('alarmkey').getAlarmkeysByCategory(request.args.get('category').replace('__', ' ')), department=request.args.get('department'))  # macro='detail_row' TODO
+        return render_template('admin.alarmkeys.detail.html', keys=Alarmkey.getAlarmkeysByCategory(request.args.get('category').replace('__', ' ')), department=request.args.get('department'))  # macro='detail_row' TODO
 
     elif request.args.get('action') == 'upload':
         if request.files:
@@ -172,7 +176,7 @@ def getAdminData(self):
             if key['state'] in states:  # import only with correct state
                 
                 if key['state'] == '-1':  # add key
-                    k = classes.get('alarmkey')(key['category'], key['key'], key['keyinternal'], key['remark'])
+                    k = Alarmkey(key['category'], key['key'], key['keyinternal'], key['remark'])
                     db.session.add(k)
                     db.session.commit()
                     k.setCars(coldefinition['dept'],
@@ -183,7 +187,7 @@ def getAdminData(self):
                     key['state'] = '0'
 
                 elif key['state'] == '1':  # update key
-                    k = classes.get('alarmkey').getAlarmkeys(id=int(key['dbid']))
+                    k = Alarmkey.getAlarmkeys(id=int(key['dbid']))
                     k.category = key['category']
                     k.key = key['key']
                     k.key_internal = key['keyinternal']
@@ -204,12 +208,12 @@ def getAdminData(self):
     elif request.args.get('action') == 'keyslookup':
         keys = {}
         
-        for k in classes.get('alarmkey').getAlarmkeys():
+        for k in Alarmkey.getAlarmkeys():
             keys[str(k.id)] = '%s: %s' % (k.category, k.key)
         return keys
         
     elif request.args.get('action') == 'categorylookup':
-        key = classes.get('alarmkey').getAlarmkeys(id=int(request.args.get('keyid')))
+        key = Alarmkey.getAlarmkeys(id=int(request.args.get('keyid')))
         return {'id': key.id, 'category': key.category}
 
     if "/download/" in request.url:  # deliver file

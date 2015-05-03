@@ -1,5 +1,7 @@
 from flask import request
-from emonitor.extensions import classes
+from emonitor.modules.alarmkeys.alarmkey import Alarmkey
+from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.streets.city import City
 
 
 def getFrontendData(self, params={}):
@@ -9,32 +11,32 @@ def getFrontendData(self, params={}):
     :param params: given parameters of current request
     :return: data of alarmkeys
     """
-    if request.args.get('action') == 'keyslookup':
+    if request.args.get(u'action') == u'keyslookup':
         keys = {}
 
-        for k in classes.get('alarmkey').getAlarmkeys():
-            keys[str(k.id)] = '%s: %s' % (k.category, k.key)
+        for k in Alarmkey.getAlarmkeys():
+            keys[u"{}".format(k.id)] = u'{}: {}'.format(k.category, k.key)
         return keys
 
-    elif request.args.get('action') == 'categorylookup':
-        key = classes.get('alarmkey').getAlarmkeys(id=int(request.args.get('keyid')))
-        return {'id': key.id, 'category': key.category}
+    elif request.args.get(u'action') == u'categorylookup':
+        key = Alarmkey.getAlarmkeys(id=request.args.get(u'keyid'))
+        return {u'id': key.id, u'category': key.category}
 
-    elif request.args.get('action') == 'carslookup':
-        ret = {'cars1': [], 'cars2': [], 'material': []}
+    elif request.args.get(u'action') == u'carslookup':
+        ret = {u'cars1': [], u'cars2': [], u'material': []}
         try:
-            city = classes.get('city').get_byid(int(request.args.get('cityid')))
+            city = City.getCities(id=request.args.get(u'cityid'))
         except ValueError:
             city = None
-        key = classes.get('alarmkey').getAlarmkeys(id=int(request.args.get('keyid')))
-        if request.args.get('objectid') != '0':  # use alarmobject and test for aao
-            aobject = classes.get('alarmobject').getAlarmObjects(id=request.args.get('objectid'))
+        key = Alarmkey.getAlarmkeys(id=request.args.get(u'keyid'))
+        if request.args.get(u'objectid') != u'0':  # use alarmobject and test for aao
+            aobject = AlarmObject.getAlarmObjects(id=request.args.get(u'objectid'))
             if aobject.hasOwnAAO():
-                return {'cars1': [c.id for c in aobject.getCars1()], 'cars2': [c.id for c in aobject.getCars2()],
-                        'material': [m.id for m in aobject.getMaterial()]}
+                return {u'cars1': [c.id for c in aobject.getCars1()], u'cars2': [c.id for c in aobject.getCars2()],
+                        u'material': [m.id for m in aobject.getMaterial()]}
         if key and city:
-            ret = {'cars1': [c.id for c in key.getCars1(city.dept)], 'cars2': [c.id for c in key.getCars2(city.dept)],
-                   'material': [m.id for m in key.getMaterial(city.dept)]}
+            ret = {u'cars1': [c.id for c in key.getCars1(city.dept)], u'cars2': [c.id for c in key.getCars2(city.dept)],
+                   u'material': [m.id for m in key.getMaterial(city.dept)]}
         return ret
 
-    return ""
+    return u""
