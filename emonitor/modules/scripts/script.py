@@ -1,5 +1,7 @@
 import time
-from emonitor.extensions import monitorserver, classes
+from emonitor.extensions import monitorserver
+from emonitor.modules.monitors.monitor import Monitor
+from emonitor.modules.events.eventhandler import Eventhandler
 
 
 class Script:
@@ -8,7 +10,7 @@ class Script:
         pass
 
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         """
         Event handler for scripts class, adds own processing time
 
@@ -17,20 +19,20 @@ class Script:
         :return: kwargs
         """
         stime = time.time()
-        hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.scripts.script.Script']
+        hdl = [hdl for hdl in Eventhandler.getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.scripts.script.Script']
 
         scriptname = ""
         if len(hdl) == 1:
             if "in.scriptname" in hdl[0].getParameterList('in'):
                 scriptname = hdl[0].getParameterValue("in.scriptname")
 
-        for m in classes.get('monitor').getMonitors():
+        for m in Monitor.getMonitors():
             for l in m.getLayouts():
                 if l.trigger == eventname:  # find client id for defined event
-                    if 'mode' in kwargs[0].keys() and kwargs[0]['mode'] != 'test':
+                    if 'mode' in kwargs.keys() and kwargs['mode'] != 'test':
                         monitorserver.sendMessage(str(m.id), 'execute|%s' % scriptname)  # execute script on client
 
         if 'time' not in kwargs[0]:
-            kwargs[0]['time'] = []
-        kwargs[0]['time'].append('scripts: script "%s" done in %s sec.' % (scriptname, time.time() - stime))
+            kwargs['time'] = []
+        kwargs['time'].append(u'scripts: script "{}" done in {} sec.'.format(scriptname, time.time() - stime))
         return kwargs
