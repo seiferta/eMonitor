@@ -69,8 +69,8 @@ class PrintLayout:
         self.parameters = []
         env = Environment(loader=PackageLoader('emonitor.modules.{}'.format(self.module), 'templates'))
         if not current_app:
-            import emonitor.webapp as wa
-            env.filters.update(wa.jinja_env.filters)
+            from emonitor import app
+            env.filters.update(app.jinja_env.filters)
         else:
             env.filters.update(current_app.jinja_env.filters)
         parsed_content = env.parse(env.loader.get_source(env, self.filename)[0])

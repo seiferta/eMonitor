@@ -1,8 +1,9 @@
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.extensions import babel, classes, db, events
-from .content_frontend import getFrontendContent, getFrontendData
-from .content_admin import getAdminContent, getAdminData
+from emonitor.extensions import babel, events
+from emonitor.modules.printers.printers import Printers
+from emonitor.modules.printers.content_frontend import getFrontendContent, getFrontendData
+from emonitor.modules.printers.content_admin import getAdminContent, getAdminData
 
 
 class PrintersModule(Module):
@@ -17,12 +18,7 @@ class PrintersModule(Module):
     def __init__(self, app):
         Module.__init__(self, app)
         # add template path
-        app.jinja_loader.searchpath.append("{}/emonitor/modules/printers/templates".format(app.config.get('PROJECT_ROOT')))
-
-        # create database tables
-        from .printers import Printers
-        classes.add('printer', Printers)
-        db.create_all()
+        app.jinja_loader.searchpath.append(u"{}/emonitor/modules/printers/templates".format(app.config.get('PROJECT_ROOT')))
 
         # add events and handler
         events.addHandlerClass('*', 'emonitor.modules.printers.printers.Printers', Printers.handleEvent, ['in.printerid'])
@@ -33,7 +29,7 @@ class PrintersModule(Module):
         # static folders
         @app.route('/printer/inc/<path:filename>')
         def printer_static(filename):
-            return send_from_directory("{}/emonitor/modules/printers/inc/".format(app.config.get('PROJECT_ROOT')), filename)
+            return send_from_directory(u"{}/emonitor/modules/printers/inc/".format(app.config.get('PROJECT_ROOT')), filename)
 
         # translations
         babel.gettext(u'module.printers')
