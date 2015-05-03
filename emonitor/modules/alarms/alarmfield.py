@@ -114,6 +114,8 @@ class AlarmField(db.Model):
     def renderField(self, alarm, **params):
         try:
             return render_template('fields/field.render_{}.html'.format(self.fieldtype.lower()), field=self, alarm=alarm, params=params)
+        except:
+            pass
 
     @staticmethod
     def getAlarmFields(id=0, dept=0):
