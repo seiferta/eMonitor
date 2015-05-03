@@ -1,12 +1,13 @@
 import os
-import subprocess
 import codecs
+import subprocess
 import time
 import logging
 from PIL import Image
 
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
 from emonitor.modules.settings.settings import Settings
+from emonitor.modules.events.eventhandler import Eventhandler
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -23,7 +24,7 @@ class Ocr(Settings):
     """OCR class"""
     @staticmethod  # convert [pdf, tif, jpg] -> jpg or png
     def convertFileType(path, inname):
-        from main import webapp as wa
+        from emonitor import app
         i = t = 0
         params = Ocr.getOCRParams()
         convertparams = Ocr.getConvertParams()
@@ -34,7 +35,7 @@ class Ocr(Settings):
         if ext[1:] not in params['inputformat']:
             return 0, 0.0
         
-        path2 = wa.config.get('PATH_TMP')
+        path2 = app.config.get('PATH_TMP')
         if "/" in inname or "\\" in inname or ":" in inname:
             path = path2 = ""
 
@@ -42,18 +43,18 @@ class Ocr(Settings):
             try:
                 stime = time.time()
                 callstring = convertparams['callstring']
-                callstring = callstring.replace('[basepath]', wa.config.get('PROJECT_ROOT'))
+                callstring = callstring.replace('[basepath]', app.config.get('PROJECT_ROOT'))
                 callstring = callstring.replace('[incomepath]', path)
-                callstring = callstring.replace('[filename]', '%s%s[%s]' % (inname, ext, i))
-                callstring = callstring.replace('[tmppath]', '%s%s%s' % (path2, inname + '-%d.', convertparams['format']))
-                logger.debug('run image conversion with %s' % callstring)
+                callstring = callstring.replace('[filename]', '{}{}[{}]'.format(inname, ext, i))
+                callstring = callstring.replace('[tmppath]', '{}{}-%d.{}'.format(path2, inname, convertparams['format']))
+                logger.debug('run image conversion with {}'.format(callstring))
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
 
                 if i > -1:
-                    im = Image.open('%s%s-%s.%s' % (path2, inname, i, convertparams['format']))
+                    im = Image.open('{}{}-{}.{}'.format(path2, inname, i, convertparams['format']))
                     w, h = im.size
                     # remove header line = 1/4 of quality
-                    im.crop((0, 100, w, h - 100)).save('%s%s-%s.%s' % (path2, inname, i, convertparams['format']), convertparams['format'].upper())
+                    im.crop((0, 100, w, h - 100)).save('{}{}-{}.{}'.format(path2, inname, i, convertparams['format']), convertparams['format'].upper())
 
                 i += 1
                 t = time.time() - stime
@@ -74,26 +75,30 @@ class Ocr(Settings):
         :param pages: number of pages
         :return: tuple of recognized text and time
         """
-        from main import webapp as wa
+        from emonitor import app
         i = t = 0
-        text = ""
+        text = u""
         params = Ocr.getOCRParams()
         convertparams = Ocr.getConvertParams()
 
         ext = os.path.splitext(inname)[-1]
         if ext[1:] in params['inputtextformat']:  # text format from external application as text given
             stime = time.time()
-            text = open('%s%s' % (path, inname), 'r').read()
             try:
-                text = text.decode('latin-1').encode('utf-8')
+                text = codecs.open('{}{}'.format(path, inname), 'r', encoding='utf-8').read()
             except:
-                pass
+                text = codecs.open('{}{}'.format(path, inname), 'r', encoding="latin-1").read()
+            #try:
+            #    text = text.decode('latin-1').encode('utf-8')
+            #except:
+            #
+            #    pass
             return text, time.time() - stime
 
         inname = os.path.splitext(inname)[0]
 
-        if path != wa.config.get('PATH_TMP'):
-            path = wa.config.get('PATH_TMP')
+        if path != app.config.get('PATH_TMP'):
+            path = app.config.get('PATH_TMP')
         
         if "/" in inname or "\\" in inname or ":" in inname:
             path = ""
@@ -102,23 +107,23 @@ class Ocr(Settings):
             stime = time.time()
             
             callstring = params['callstring']
-            callstring = callstring.replace('[basepath]', wa.config.get('PROJECT_ROOT'))
+            callstring = callstring.replace('[basepath]', app.config.get('PROJECT_ROOT'))
             callstring = callstring.replace('[incomepath]', path)
-            callstring = callstring.replace('[filename]', '%s-%s.%s' % (inname, i, convertparams['format']))
-            callstring = callstring.replace('[tmppath]', '%s%s-%s' % (path, inname, i))
-            logger.debug('run ocr with %s' % callstring)
+            callstring = callstring.replace('[filename]', '{}-{}.{}'.format(inname, i, convertparams['format']))
+            callstring = callstring.replace('[tmppath]', '{}{}-{}'.format(path, inname, i))
+            logger.debug('run ocr with {}'.format(callstring))
             subprocess.call(callstring, shell=True)
 
             try:
-                text += open('%s%s-%s.txt' % (path, inname, i), 'r').read()
+                text = u'{}{}'.format(text, codecs.open('{}{}-{}.txt'.format(path, inname, i), 'r', 'utf-8').read())
             except:
                 pass
             try:
-                os.remove('%s%s-%s.%s' % (path, inname, i, 'png'))
+                os.remove('{}{}-{}.png'.format(path, inname, i))
             except:
                 pass
             try:
-                os.remove('%s%s-%s.txt' % (path, inname, i))
+                os.remove('{}{}-{}.txt'.format(path, inname, i))
             except:
                 pass
             finally:
@@ -134,12 +139,12 @@ class Ocr(Settings):
         :return: *callstring*, *format*
         """
         ret = {'callstring': '', 'format': ''}
-        for v in db.session.query(Settings).filter(Settings.name.like('convert.%')):
+        for v in Settings.query.filter(Settings.name.like('convert.%')):
             if v.name == 'convert.format':
                 ret['format'] = v.value
             elif v.name == 'convert.callstring':
                 ret['callstring'] = v.value
-        if db.session.query(Settings).filter(Settings.name.like('convert.%')).count() == 0:  # use default values
+        if Settings.query.filter(Settings.name.like('convert.%')).count() == 0:  # use default values
             db.session.add(Settings.set('convert.format', DEFAULTIMAGECONVERTFORMAT))
             db.session.add(Settings.set('convert.callstring', DEFAULTIMAGECONVERTCALL))
             db.session.commit()
@@ -154,9 +159,9 @@ class Ocr(Settings):
         :return: *callstring*, *inputformat*, *inputtextformat*
         """
         ret = {'callstring': '', 'inputformat': '', 'inputtextformat': ''}
-        for v in db.session.query(Settings).filter(Settings.name.like('ocr.%')):
+        for v in Settings.query.filter(Settings.name.like('ocr.%')).all():
             ret[v.name.split('.')[-1]] = v.value
-        if db.session.query(Settings).filter(Settings.name.like('ocr.%')).count() == 0:  # use default values
+        if Settings.query.filter(Settings.name.like('ocr.%')).count() == 0:  # use default values
             db.session.add(Settings.set('ocr.inputformat', DEFAULTINPUTFORMAT))
             db.session.add(Settings.set('ocr.inputtextformat', DEFAULTINPUTTEXTFORMAT))
             db.session.add(Settings.set('ocr.callstring', DEFAULTCALLSTRING))
@@ -165,7 +170,7 @@ class Ocr(Settings):
         return ret
         
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         """
         Event handler for OCR textmod module
 
@@ -173,17 +178,17 @@ class Ocr(Settings):
         :param kwargs: *time*, *incomepath*, *filename*
         :return: add *text* to kwargs
         """
-        hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
+        hdl = [hdl for hdl in Eventhandler.getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
         in_params = [v[1] for v in hdl.getParameterValues('in')]  # required parameters for method
-        if sorted(in_params) != sorted(list(set(in_params) & set(kwargs[0].keys()))):
-            if 'time' not in kwargs[0]:
-                kwargs[0]['time'] = []
-            kwargs[0]['time'].append('replace: missing parameters for replace, nothing done.')
+        if sorted(in_params) != sorted(list(set(in_params) & set(kwargs.keys()))):
+            if 'time' not in kwargs.keys():
+                kwargs['time'] = []
+            kwargs['time'].append(u'replace: missing parameters for replace, nothing done.')
         else:
-            p, t1 = Ocr.convertFileType(kwargs[0]['incomepath'], kwargs[0]['filename'])
-            text, t2 = Ocr.convertText(kwargs[0]['incomepath'], kwargs[0]['filename'], p)
-            if 'time' not in kwargs[0]:
-                kwargs[0]['time'] = []
-            kwargs[0]['time'].append('ocr: text conversion and recognition done in %s sec.' % (t1 + t2))
-            kwargs[0]['text'] = text
+            p, t1 = Ocr.convertFileType(kwargs['incomepath'], kwargs['filename'])
+            text, t2 = Ocr.convertText(kwargs['incomepath'], kwargs['filename'], p)
+            if 'time' not in kwargs.keys():
+                kwargs['time'] = []
+            kwargs['time'].append(u'ocr: text conversion and recognition done in {} sec.'.format(t1 + t2))
+            kwargs['text'] = text
         return kwargs

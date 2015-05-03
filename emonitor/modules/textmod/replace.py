@@ -1,6 +1,7 @@
 import time
 import re
-from emonitor.extensions import db, classes
+from emonitor.extensions import db
+from emonitor.modules.events.eventhandler import Eventhandler
 
 
 class Replace(db.Model):
@@ -25,12 +26,12 @@ class Replace(db.Model):
         :return: list of :py:class:`emonitor.modules.textmod.replace.Replace`
         """
         if id == 0:
-            return db.session.query(Replace).order_by('id')
+            return db.session.query(Replace).order_by('id').all()
         else:
-            return db.session.query(Replace).filter_by(id=id)[0]
-            
+            return db.session.query(Replace).filter_by(id=id).one()
+
     @staticmethod
-    def handleEvent(eventname, *kwargs):
+    def handleEvent(eventname, **kwargs):
         """
         Event handler for replacements
 
@@ -38,30 +39,31 @@ class Replace(db.Model):
         :param kwargs: *time*, *text*
         :return: kwargs
         """
-        hdl = [hdl for hdl in classes.get('eventhandler').getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
+        hdl = [hdl for hdl in Eventhandler.getEventhandlers(event=eventname) if hdl.handler == 'emonitor.modules.textmod.ocr.Ocr'][0]
         in_params = [v[1] for v in hdl.getParameterValues('in')]  # required parameters for method
 
-        if sorted(in_params) != sorted(list(set(in_params) & set(kwargs[0].keys()))):
-            if 'time' not in kwargs[0]:
-                kwargs[0]['time'] = []
-            kwargs[0]['time'].append('replace: missing parameters for replace, nothing done.')
+        if sorted(in_params) != sorted(list(set(in_params) & set(kwargs.keys()))):
+            if 'time' not in kwargs:
+                kwargs['time'] = []
+            kwargs['time'].append(u'replace: missing parameters for replace, nothing done.')
             return kwargs
         else:
             stime = time.time()
-            text = ''
-            for l in kwargs[0]['text'].split("\n"):
+            text = u''
+
+            for l in kwargs['text'].split("\n"):
                 if "__" in l or l.strip() == "" or "===" in l or l.strip() == "":  # leave empty and lines
                     continue
-                text += l + " \n"
+                text = u'{}{}\n'.format(text, l)
 
             for r in Replace.getReplacements():
-                text = re.sub(r.text.encode('utf-8'), r.replace.encode('utf-8'), text)
+                text = re.sub(r.text, r.replace, text)
 
-            kwargs[0]['text'] = text
+            kwargs['text'] = text
             t = time.time() - stime
             
-        if 'time' not in kwargs[0]:
-            kwargs[0]['time'] = []
-        kwargs[0]['time'].append('replace: replace done in %s sec.' % t)
+        if 'time' not in kwargs.keys():
+            kwargs['time'] = []
+        kwargs['time'].append(u'replace: replace done in {} sec.'.format(t))
         
         return kwargs

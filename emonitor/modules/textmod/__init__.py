@@ -1,5 +1,5 @@
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, events, babel
+from emonitor.extensions import events, babel
 from .content_admin import getAdminContent, getAdminData
 
 
@@ -23,10 +23,7 @@ class TextmodModule(Module):
         # create database tables
         from .replace import Replace
         from .ocr import Ocr
-        classes.add('replace', Replace)
-        classes.add('ocr', Ocr)
-        db.create_all()
-        
+
         # eventhandlers
         events.addHandlerClass('file_added', 'emonitor.modules.textmod.ocr.Ocr', Ocr.handleEvent, ['in.path', 'in.filename', 'out.text'])
         events.addHandlerClass('file_added', 'emonitor.modules.textmod.replace.Replace', Replace.handleEvent, ['in.text', 'out.text'])
