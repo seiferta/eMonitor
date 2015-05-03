@@ -12,7 +12,9 @@ Widgets are parts of the monitor area to display information about the module
 import re
 import datetime, time
 from flask import Blueprint, current_app, render_template, request, send_from_directory
-from emonitor.extensions import classes, monitorserver, scheduler
+from emonitor.extensions import monitorserver, scheduler
+from emonitor.modules.alarms.alarm import Alarm
+from emonitor.modules.monitors.monitor import Monitor
 
 
 monitor = Blueprint('monitor', __name__, template_folder="templates")
@@ -34,14 +36,14 @@ def monitorContent(clientid=0):
 
     if 'alarmid' in request.args:  # eval active alarms or defined id
         alarmid = int(request.args.get('alarmid'))
-        if len(classes.get('alarm').getActiveAlarms()) > 0:
-            count = classes.get('alarm').getActiveAlarms()
-    elif len(classes.get('alarm').getActiveAlarms()) > 0:
-        alarmid = classes.get('alarm').getActiveAlarms()[0].id
-        count = classes.get('alarm').getActiveAlarms()
-    alarm = classes.get('alarm').getAlarms(id=alarmid)
+        if len(Alarm.getActiveAlarms()) > 0:
+            count = Alarm.getActiveAlarms()
+    elif len(Alarm.getActiveAlarms()) > 0:
+        alarmid = Alarm.getActiveAlarms()[0].id
+        count = Alarm.getActiveAlarms()
+    alarm = Alarm.getAlarms(id=alarmid)
 
-    defmonitor = classes.get('monitor').getMonitors(clientid=int(clientid))
+    defmonitor = Monitor.getMonitors(clientid=int(clientid))
     try:
         layout = defmonitor.currentlayout
     except AttributeError:
@@ -76,7 +78,8 @@ def monitorContent(clientid=0):
                 for tr in l.trigger.split(';'):  # support more than one trigger for layout
                     if ('.' in tr and tr.split('.')[-1] == nextalarm.get('alarmtype')) or ('.' not in tr and nextalarm.get('alarmtype', '') == ""):
                         if int(l.mintime) != 0:
-                            scheduler.add_job(monitorserver.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), args=[defmonitor.clientid, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
+                            #scheduler.add_job(monitorserver.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), args=[defmonitor.clientid, l.id, [('alarmid', nextalarm.id), ('monitorid', defmonitor.id)]])
+                            scheduler.add_job(monitorserver.changeLayout, next_run_time=datetime.datetime.fromtimestamp(time.time() + float(l.mintime)), args=[defmonitor.clientid, l.id], kwargs=dict(alarmid=nextalarm.id))  # TODO
 
     # render content for monitor
     content = '<div id="content">%s</div>' % layout.htmllayout
