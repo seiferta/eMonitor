@@ -1,7 +1,7 @@
 from flask import render_template
 from emonitor.extensions import babel
 from emonitor.widget.monitorwidget import MonitorWidget
-from emonitor.extensions import classes
+from emonitor.modules.settings.settings import Settings
 
 __all__ = ['TextWidget']
 
@@ -25,7 +25,7 @@ class TextWidget(MonitorWidget):
         :param params: list of all currently used parameters
         :return: rendered template of text message type
         """
-        params.update({'settings': classes.get('settings')})
+        params.update({'settings': Settings})
         return render_template('admin.message.text.html', **params)
 
     def getMonitorContent(self, **params):
@@ -56,7 +56,7 @@ class TextWidget(MonitorWidget):
             content = kwargs['message'].get('content')
             template = kwargs['message'].get('template')  # todo: define templates
         else:
-            content = classes.get('settings').get('messages.text.content')
+            content = Settings.get('messages.text.content')
             template = ""  # todo define templates
 
         kwargs.update({'content': content, 'template': template})

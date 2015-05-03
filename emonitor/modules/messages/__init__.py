@@ -1,10 +1,11 @@
 from flask import send_from_directory
 from emonitor.utils import Module
-from emonitor.extensions import classes, db, babel
-from .message_weather import WeatherWidget
-from .message_base import MessageWidget
-from .content_admin import getAdminContent, getAdminData
-from .content_frontend import getFrontendContent, getFrontendData
+from emonitor.extensions import babel
+from emonitor.modules.messages.messages import Messages
+from emonitor.modules.messages.message_weather import WeatherWidget
+from emonitor.modules.messages.message_base import MessageWidget
+from emonitor.modules.messages.content_admin import getAdminContent, getAdminData
+from emonitor.modules.messages.content_frontend import getFrontendContent, getFrontendData
 
 
 class MessagesModule(Module):
@@ -21,11 +22,6 @@ class MessagesModule(Module):
         # subnavigation
         self.adminsubnavigation = [('/admin/messages', 'messages.main'), ('/admin/messages/types', 'messages.types')]
         self.widgets = [MessageWidget('messages', size=(4, 2), template='widget.message.messages.html'), WeatherWidget('weather', size=(5, 4), template='widget.message.weather.html')]
-
-        # create database tables
-        from .messages import Messages
-        classes.add('message', Messages)
-        db.create_all()
 
         # static folders
         @app.route('/messages/inc/<path:filename>')
@@ -45,7 +41,7 @@ class MessagesModule(Module):
 
         # init
         # Do init script for messages at start and add active messages
-        classes.get('message').initMessageTrigger()
+        Messages.initMessageTrigger()
 
     def frontendContent(self):
         return 1

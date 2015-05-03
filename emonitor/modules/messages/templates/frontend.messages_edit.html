@@ -3,26 +3,26 @@
 {% block style %}
     <style>
         #messagessubnorth {padding:0 10px 0 10px;background-color: #dedede;border-width:0;}
-        #messagessubcenter {border-width:0;padding:0;}
+        #messagessubcenter {padding:0;border:solid silver;border-width:1px 1px 0 0;}
         #messagessubnorth button{width:36px;height:25px;}
-        #messagessubnorth p{font-size:14px;font-weight:bold;margin:5px 0!important}
+        #messagessubnorth p{font-size:14px;font-weight:bold;margin:5px 0!important;}
 
-        ::-webkit-input-placeholder {color: #999}
-        :-ms-input-placeholder {color: #999}
-        :-moz-placeholder {color: #999}
+        ::-webkit-input-placeholder {color: #999;}
+        :-ms-input-placeholder {color: #999;}
+        :-moz-placeholder {color: #999;}
         .lists {float:left;}
         .lists div{overflow:hidden;}
         .lists .group{min-height:50px;border:1px solid #ddd;padding:0;width:99%;}
-        .lists ul { list-style: none; float:left}
+        .lists ul { list-style: none; float:left;}
         .lists li { margin:5px; padding:2px; text-align:center; background:#ddd; cursor:move; width:60px; height:40px; float:left; border:2px solid #333;}
-        .lists li:hover { background:#bbb; }
-        .lists li:active { background:#999; }
+        .lists li:hover { background:#bbb;}
+        .lists li:active { background:#999;}
         .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:100px;overflow:hidden;margin-bottom:5px;}
-        .extended{border:1px solid silver!important; }
-        body{background-color: #fff!important; }
+        .extended{border:1px solid silver!important;}
+        body{background-color: #fff!important;}
         .float{width:40px;}
         .half{width:40%;}
-        #cronlabel{ cursor: pointer; }
+        #cronlabel{ cursor: pointer;}
         #crondetails{border:1px solid silver;padding:2px;}
     </style>
 {% endblock %}
@@ -31,24 +31,24 @@
     <script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
     <script>
         $(document).ready(function() {
-            var innerLayout = $('#messagescontainer').layout({
+            $('#messagescontainer').layout({
                 center:{paneSelector: "#messagessubcenter",onresize: $.layout.callbacks.resizePaneAccordions},
                 north: {paneSelector: "#messagessubnorth", size: 40, slidable: false, resizable: false, closable:false, spacing_open: 0},
                 resizerTip:'{{ _('layout.resize') }}',
                 togglerTip_open: '{{ _('layout.open') }}',
                 togglerTip_closed: '{{ _('layout.closed') }}'
-            })
+            });
 
             $('.date').mask("99.99.9999");
             $('.time').mask("99:99:00");
 
             $('#cronlabel').click(function(){$('#crondetails').toggle()});
 
-            $("button[value='cancel']").click(function(){
+            $('button[value="cancel"]').click(function(){
                 window.location.href='/messages?area={{ frontendarea }}';
             });
 
-            $("input[name='allday']").change(function(){
+            $('input[name="allday"]').change(function(){
                if ($(this).val()=='*'){
                    $('#cron_days').find("input").prop('checked', false).prop('disabled', true);
                }else{
@@ -58,7 +58,7 @@
             {%- if message.get('cron.day_of_week') in ['*', ''] %}
             $('#cron_days').find("input").prop('checked', false).prop('disabled', true);
             {%- endif %}
-            $("input[name='allhour']").change(function(){
+            $('input[name="allhour"]').change(function(){
                if ($(this).val()=='*'){
                    $('#cron_hours').find("input").prop('checked', false).prop('disabled', true);
                }else{

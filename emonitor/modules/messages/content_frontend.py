@@ -1,8 +1,12 @@
 import datetime
 from flask import render_template, request
-from emonitor.extensions import classes, db
+from emonitor.extensions import db
+from emonitor.utils import getreStructuredText
 from emonitor.frontend import frontend
+from emonitor.modules.messages.messages import Messages
+from emonitor.modules.monitors.monitor import Monitor
 from emonitor.modules.messages.messagetype import MessageType
+from emonitor.modules.settings.settings import Settings
 
 
 def getFrontendContent(**params):
@@ -23,11 +27,11 @@ def getFrontendContent(**params):
         sd = datetime.datetime.strptime('%s %s' % (request.form.get('messages.startdate'), '00:00:00'), "%d.%m.%Y %H:%M:%S")
         ed = datetime.datetime.strptime('%s %s' % (request.form.get('messages.enddate'), '23:59:59'), "%d.%m.%Y %H:%M:%S")
         if request.form.get('messages.id') != 'None':  # update message
-            msg = classes.get('message').getMessages(id=request.form.get('messages.id'))
+            msg = Messages.getMessages(id=request.form.get('messages.id'))
             msg.startdate = sd
             msg.enddate = ed
         else:  # create new message
-            msg = classes.get('message')('', '', sd, ed, 0, request.form.get('messages.type'))
+            msg = Messages('', '', sd, ed, 0, request.form.get('messages.type'))
             db.session.add(msg)
         msg.name = request.form.get('messages.name')
         msg.remark = request.form.get('messages.remark')
@@ -46,23 +50,23 @@ def getFrontendContent(**params):
 
         msg.attributes = attributes
         db.session.commit()
-        classes.get('message').updateMessageTrigger()
+        Messages.updateMessageTrigger()
 
     elif request.args.get('action') == 'deletemessage':
-        db.session.delete(classes.get('message').getMessages(id=int(request.args.get('messageid'))))
+        db.session.delete(Messages.getMessages(id=int(request.args.get('messageid'))))
         db.session.commit()
 
     elif request.args.get('action') == 'editmessage':
-        monitors = classes.get('monitor').getMonitors()
+        monitors = Monitor.getMonitors()
         if request.args.get('messageid', '0') == '0':  # add new message
-            message = classes.get('message')('', '', datetime.datetime.now(), datetime.datetime.now(), 0, '')
+            message = Messages('', '', datetime.datetime.now(), datetime.datetime.now(), 0, '')
             message.monitors = [str(m.id) for m in monitors]
         else:  # edit message
-            message = classes.get('message').getMessages(id=int(request.args.get('messageid')))
-        return render_template('frontend.messages_edit.html', message=message, implementations=filter(lambda x: str(x[1]) != 'base', MessageType.getMessageTypes()), frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), monitors=monitors)
+            message = Messages.getMessages(id=int(request.args.get('messageid')))
+        return render_template('frontend.messages_edit.html', message=message, implementations=filter(lambda x: str(x[1]) != 'base', MessageType.getMessageTypes()), frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=Settings.get('frontend.default'), monitors=monitors)
 
-    messages = {'1': classes.get('message').getMessages(state=1), '0': classes.get('message').getMessages(state=0)}
-    return render_template('frontend.messages_smallarea.html', messages=messages, frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=classes.get('settings').get('frontend.default'), monitors=classes.get('monitor').getMonitors())
+    messages = {'1': Messages.getMessages(state=1), '0': Messages.getMessages(state=0)}
+    return render_template('frontend.messages_smallarea.html', messages=messages, frontendarea=params['area'], frontendmodules=frontend.frontend.modules, frontendmoduledef=Settings.get('frontend.default'), monitors=Monitor.getMonitors())
 
 
 def getFrontendData(self):
@@ -74,5 +78,8 @@ def getFrontendData(self):
     if request.args.get('action') == 'messagetypefields':
         impl = filter(lambda x: x[0] == request.args.get('messagetypename'), MessageType.getMessageTypes())
         if len(impl) > 0:
-            return impl[0][1].getEditorContent(**dict(message=classes.get('message')('', '', '', '', 0, impl[0][0])))
+            return impl[0][1].getEditorContent(**dict(message=Messages('', '', '', '', 0, impl[0][0])))
+
+    elif request.args.get('action') == 'render':
+        return {'text': getreStructuredText(request.form.get('template'))}
     return ""

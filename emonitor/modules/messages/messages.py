@@ -2,10 +2,12 @@ import yaml
 import datetime
 import pytz
 import logging
-from emonitor.extensions import db, scheduler, classes, monitorserver
+from sqlalchemy.exc import OperationalError
+from emonitor.extensions import db, scheduler, monitorserver
 from messageutils import calcNextStateChange, MessageTrigger
 from emonitor.modules.messages.message_text import TextWidget  # MessageText
 from emonitor.modules.messages.messagetype import MessageType
+from emonitor.modules.settings.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +97,7 @@ class Messages(db.Model):
         :return: :py:class:`emonitor.modules.messages.messagetype.MessageType`
         """
         if self._type == '':
-            self._type = classes.get('settings').get('messages.base.type')
+            self._type = Settings.get('messages.base.type')
         impl = filter(lambda x: x[0].split('.')[0] == self._type, MessageType.getMessageTypes())
         if len(impl) == 1:
             return impl[0][1]
@@ -156,11 +158,11 @@ class Messages(db.Model):
         """
         if id == 0:
             if state == -1:
-                return db.session.query(Messages).order_by('messages.startdate').all()
+                return Messages.query.order_by('messages.startdate').all()
             else:
-                return db.session.query(Messages).filter(Messages.state == state).order_by('messages.startdate').all()
+                return Messages.query.filter(Messages.state == state).order_by('messages.startdate').all()
         else:
-            return db.session.query(Messages).filter(Messages.id == int(id)).first()
+            return Messages.query.filter(Messages.id == int(id)).first()
 
     @staticmethod
     def getActiveMessages():
@@ -169,7 +171,10 @@ class Messages(db.Model):
 
         :return: :py:class:`emonitor.modules.messages.messages.Messages` list
         """
-        return db.session.query(Messages).filter(Messages.state > 0).filter(Messages.startdate <= datetime.datetime.now()).filter(Messages.enddate >= datetime.datetime.now()).order_by(Messages.startdate.asc()).all()
+        try:
+            return Messages.query.filter(Messages.state > 0).filter(Messages.startdate <= datetime.datetime.now()).filter(Messages.enddate >= datetime.datetime.now()).order_by(Messages.startdate.asc()).all()
+        except OperationalError:
+            return []
 
     @staticmethod
     def initMessageTrigger():

@@ -1,7 +1,27 @@
 <p>
-    <label style="width:100%">
-        {{ _('messages.text.content') }}:</br>
+    <label style="width:100%;position:relative;">
+        {{ _('messages.text.content') }}:<br/>
         <textarea name="messages.content" style="width:100%;height:200px;font-family:monospace">{{ message.get('content') }}</textarea><br/>
         <small>{{ _('messages.text.content.info') }}</small>
+        <span style="position:absolute;top:0;right:0;"><a href="#" onclick="return showPreview()" title="{{ _('messages.text.preview.title') }}"><i class="fa fa-eye fa-lg"></i></a></span>
     </label>
 </p>
+<script>
+    function showPreview() {
+        var data = new FormData();
+        data.append('template', $('textarea[name="messages.content"]').val());
+        $.ajax({url: "/data/messages?action=render&format=json",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result) {
+                parent.$('#overlaycontent').html(result.text);
+                parent.$('.overlay').toggle();
+                return false;
+            }
+        });
+        return false;
+    }
+</script>

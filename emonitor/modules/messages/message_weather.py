@@ -2,7 +2,8 @@ import datetime
 import urllib2, urllib, json
 from flask import render_template
 from emonitor.widget.monitorwidget import MonitorWidget
-from emonitor.extensions import babel, classes
+from emonitor.extensions import babel
+from emonitor.modules.settings.settings import Settings
 
 __all__ = ['WeatherWidget']
 
@@ -30,7 +31,7 @@ class WeatherWidget(MonitorWidget):
 
     def getAdminContent(self, **params):
         """Deliver admin content for current message module"""
-        params.update({'settings': classes.get('settings')})
+        params.update({'settings': Settings})
         return render_template('admin.message.weather.html', **params)
 
     def getMonitorContent(self, **params):
@@ -40,7 +41,7 @@ class WeatherWidget(MonitorWidget):
 
     def getEditorContent(self, **params):
         """Deliver editor content for current message module"""
-        params.update({'settings': classes.get('settings')})
+        params.update({'settings': Settings})
         return render_template('frontend.messages_edit_weather.html', **params)
 
     def addParameters(self, **kwargs):
@@ -55,9 +56,9 @@ class WeatherWidget(MonitorWidget):
             icons = kwargs['message'].attributes['weather.icons']
             forecast = kwargs['message'].attributes['weather.forecast']
         else:
-            location = classes.get('settings').get('messages.weather.location')
-            icons = classes.get('settings').get('messages.weather.icons')
-            forecast = classes.get('settings').get('messages.weather.forecast')
+            location = Settings.get('messages.weather.location')
+            icons = Settings.get('messages.weather.icons')
+            forecast = Settings.get('messages.weather.forecast')
 
         if not self.lastcall or datetime.datetime.now() > self.lastcall + datetime.timedelta(hours=1):
             # reload data from web
@@ -65,9 +66,12 @@ class WeatherWidget(MonitorWidget):
             baseurl = "https://query.yahooapis.com/v1/public/yql?"
             yql_query = 'select * from weather.forecast where woeid in (select woeid from geo.placefinder where text="%s" and gflags="R" limit 1) and u="c"' % location
             yql_url = baseurl + urllib.urlencode({'q': yql_query}) + "&format=json"
-            result = urllib2.urlopen(yql_url).read()
-            self.data = json.loads(result)
-            self.data = self.data['query']['results']['channel']
+            try:
+                result = urllib2.urlopen(yql_url).read()
+                self.data = json.loads(result)
+                self.data = self.data['query']['results']['channel']
+            except urllib2.URLError:
+                self.data = {}
             try:
                 self.data['wind']['directionstring'] = compass[int(int(self.data['wind']['direction']) / 22.5)]
             except ValueError:
