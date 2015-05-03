@@ -4,8 +4,9 @@ import importlib
 import logging
 import traceback
 from flask import render_template, current_app
-from emonitor.extensions import classes, babel
+from emonitor.extensions import babel, db
 from emonitor.utils import Module
+from emonitor.modules.settings.settings import Settings
 
 from flask import Blueprint
 
@@ -42,9 +43,9 @@ class StartModule(Module):
         """
         if 'area' in params:
             defaultarea = dict()
-            defaultarea['center'] = classes.get('settings').getFrontendSettings('center')
-            defaultarea['west'] = classes.get('settings').getFrontendSettings('west')
-            defaultarea['east'] = classes.get('settings').getFrontendSettings('east')
+            defaultarea['center'] = Settings.getFrontendSettings('center')
+            defaultarea['west'] = Settings.getFrontendSettings('west')
+            defaultarea['east'] = Settings.getFrontendSettings('east')
 
             # load module data
             if defaultarea[params['area']]['module'] == 'default':
@@ -91,6 +92,8 @@ def init_app(app):
             _count += 1
         except AttributeError:
             logger.error('module "%s" could not be loaded: %s' % (name, traceback.format_exc()))
+
+    db.create_all(app=app)
 
     logger.info('%s modules loaded' % _count)
 
