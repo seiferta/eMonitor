@@ -113,6 +113,7 @@ def configure_extensions(app):
     # flask-sqlalchemy
     db.init_app(app)
     db.app = app
+    db.create_all()
 
     with app.app_context():
         if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
@@ -216,13 +217,14 @@ def configure_logging(app):
             return logRecord.levelno == self.__level
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-    tornadologger = logging.getLogger('tornado.access')
+    accesslogger = logging.getLogger('werkzeug')
 
     if app.debug:
-        tornadologger.propagate = False
-        file_handler = RotatingFileHandler('%s%s-access.log' % (app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
+        accesslogger.propagate = False
+        file_handler = RotatingFileHandler('{}{}-access.log'.format(app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
         file_handler.setFormatter(formatter)
-        tornadologger.addHandler(file_handler)
+        accesslogger.addHandler(file_handler)
+        app.logger.addHandler(accesslogger)
 
         # set debug mode to all other loggers of emonitor, use loglevel definition of emonitor.cfg
         for l in [l for l in logging.Logger.manager.loggerDict if l.startswith(app.name.lower())]:
@@ -230,7 +232,7 @@ def configure_logging(app):
             if lo.level > logging.DEBUG:
                 lo.setLevel(app.config.get('LOGLEVEL', logging.DEBUG))
     else:
-        tornadologger.setLevel(logging.ERROR)
+        accesslogger.setLevel(logging.ERROR)
 
     logger = logging.getLogger('alembic.migration')
     logger.setLevel(logging.ERROR)
