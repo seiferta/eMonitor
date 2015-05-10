@@ -46,9 +46,9 @@
 
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('admin.alarmobjects.basedata') }}</a></li>
-        <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('admin.alarmobjects.extended') }}</a></li>
-        <li><a href="#tab2" onclick="$('#myTab li:eq(2) a').tab('show');return false;">{{ _('admin.alarmobjects.aao') }}</a></li>
-        <li><a href="#tab3" onclick="$('#myTab li:eq(3) a').tab('show');return false;">{{ _('admin.alarmobjects.files') }}</a></li>
+        <li{%- if alarmobject.id < 1 %} class="disabled"{%- endif %}><a href="#tab1"{%- if alarmobject.id > 0 %} onclick="$('#myTab li:eq(1) a').tab('show');return false;"{%- endif %}>{{ _('admin.alarmobjects.extended') }}</a></li>
+        <li{%- if alarmobject.id < 1 %} class="disabled"{%- endif %}><a href="#tab2"{%- if alarmobject.id > 0 %} onclick="$('#myTab li:eq(2) a').tab('show');return false;"{%- endif %}>{{ _('admin.alarmobjects.aao') }}</a></li>
+        <li{%- if alarmobject.id < 1 %} class="disabled"{%- endif %}><a href="#tab3"{%- if alarmobject.id > 0 %} onclick="$('#myTab li:eq(3) a').tab('show');return false;"{%- endif %}>{{ _('admin.alarmobjects.files') }}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -64,7 +64,7 @@
                 <div style="width:50%;float:left;padding-right:20px;">
                     <p>
                         <label>{{ _('admin.alarmobjects.name') }}:<br/>
-                            <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%"/>
+                            <input type="text" name="edit_name" value="{{ alarmobject.name }}" style="width:99%" required autofocus/>
                         </label>
                     </p>
                     <p style="width:80%;background-color:#fff;float:left;padding-right:5px;">
@@ -81,9 +81,11 @@
                     </p>
                     <p style="clear:left;">
                         <label>{{ _('admin.alarmobjects.objecttype') }}:<br/>
-                            <select name="edit_objecttype" style="width:100%">
+                            <select name="edit_objecttype" style="width:100%" required>
                                 {%- for alarmobjecttype in alarmobjecttypes %}
                                 <option value="{{ alarmobjecttype.id }}"{%- if alarmobject.objecttype.id==alarmobjecttype.id %} selected="selected"{%- endif %}>{{ alarmobjecttype.name }}</option>
+                                {% else %}
+                                <option value="">{{ _('alarmobjects.types.nodata') }}</option>
                                 {%- endfor %}
                             </select>
                         </label>
@@ -120,7 +122,7 @@
                     <input type="hidden" name="edit_zoom" id="zoom" value="{{ alarmobject.zoom }}"/>
                     <p>
                         <button type="submit" name="action" value="savealarmobject" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
-                        <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                        <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
                     </p>
                     <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
                     <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
@@ -136,10 +138,13 @@
                             <textarea class="navigation" name="edit_{{ field[0] }}" style="width:100%;min-height:100px!important">{{ alarmobject.get(field[0]) }}</textarea>
                         </label>
                     </p>
+                {%- else %}
+                    <p style="text-align:center;">{{ _('admin.alarmobject.nofields') }}</p>
+
                 {%- endfor %}
                 <p>
                     <button type="submit" name="action" value="savealarmobjectattributes" class="save" onclick="setPosition()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
-                    <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                    <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
                 </p>
                 <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
                 <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
@@ -188,6 +193,8 @@
                                 {{ carname(car) }}
                             </li>
                             {%- endif %}
+                        {%- else %}
+                            <p style="text-align:center;">{{ _('alarmkeys.nocars') }}</p>
                         {%- endfor %}
                     </ul>
                 </div>
@@ -196,7 +203,7 @@
                 <input type="hidden" name="material" id="val_material"/>
                 <p>
                     <button type="submit" name="action" value="savealarmobjectaao" class="save" onclick="getCars()"><i class="fa fa-check"></i> {{ _('admin.alarmobjects.save') }}</button>
-                    <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
+                    <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('admin.alarmobjects.cancel') }}</button>
                 </p>
                 <input type="hidden" name="alarmobject_id" value="{{ alarmobject.id }}"/>
                 <input type="hidden" name="form_id" value="admin.alarmobject.edit"/>
@@ -234,7 +241,9 @@
 
     cloudmade = new L.TileLayer('{{ map.tileserver }}', {minZoom: 12, maxZoom: 18});
 
-    map.setView(new L.LatLng($('#lat').val(), $('#lng').val()), $('#zoom').val()).addLayer(cloudmade);
+    if ($('#lat').val()!=''){
+        map.setView(new L.LatLng($('#lat').val(), $('#lng').val()), $('#zoom').val()).addLayer(cloudmade);
+    }
     map.on('dblclick', function(e){map.panTo(new L.LatLng(e.latlng.lat, e.latlng.lng));});
     map.on('moveend', function(e){
         $('#edit_position').attr('checked', true);
@@ -242,10 +251,14 @@
     });
 
     function setPosition(){
-        var pos = map.getCenter();
-        $('#lat').val(pos.lat);
-        $('#lng').val(pos.lng);
-        $('#zoom').val(map.getZoom());
+        try{
+            var pos = map.getCenter();
+            $('#lat').val(pos.lat);
+            $('#lng').val(pos.lng);
+            $('#zoom').val(map.getZoom());
+        }catch(err){
+            return false;
+        }
     }
     
     function getMapPosition(streetid){

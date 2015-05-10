@@ -10,7 +10,7 @@
     <form method="post" action="">
         <p>
             <label>{{ _('cars.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ car.name }}" style="width:99%"/>
+                <input type="text" name="edit_name" value="{{ car.name }}" style="width:99%" required autofocus/>
             </label>
         </p>
         <p>
@@ -20,7 +20,7 @@
         </p>
         <p>
             <label>{{ _('cars.dept') }}:<br/>
-                <select name="edit_department" style="width:99%">
+                <select name="edit_department" style="width:99%" required>
                     {% for department in departments %}
                     <option value="{{ department.id }}" {% if department.id==car.dept.id %}selected="selected"{% endif %}>{{ department.name }}</option>
                     {% endfor %}
@@ -48,7 +48,7 @@
         </p>
         <p>
             <button type="submit" name="action" value="updatecars" class="save"><i class="fa fa-check"></i> {{ _('cars.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('cars.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('cars.cancel') }}</button>
         </p>
         <input type="hidden" name="car_id" value="{{ car.id }}"/>
         <input type="hidden" name="form_id" value="admin.cars.edit"/>

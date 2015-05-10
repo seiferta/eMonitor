@@ -101,6 +101,8 @@
                                     {{ carname(car) }}
                                 </li>
                                 {%- endif %}
+                            {%- else %}
+                                <p style="text-align:center;padding-top:10px;">{{ _('alarmkeys.nocars') }}</p>
                             {%- endfor %}
                         </ul>
                     </div>

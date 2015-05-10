@@ -68,17 +68,17 @@ def getAlarmMap(alarm, tilepath, **params):
 
     for i in range(dimx / 2 * - 1, dimx / 2 + 1):
         for j in range(dimy / 2 * -1, dimy / 2 + 1):
-            if not os.path.exists("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j)):
+            if not os.path.exists("{}{}/{}/{}-{}.png".format(tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j)):
                 from emonitor.tileserver.tileserver import getTilePath  # load tile from web
                 getTilePath(alarm.getMap().path, zoom, t[0] + i, t[1] + j)
-            img_tile = Image.open("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j))
+            img_tile = Image.open("{}{}/{}/{}-{}.png".format(tilepath, alarm.getMap().path, zoom, t[0] + i, t[1] + j))
             img_map.paste(img_tile, (dimx / 2 * 256 + (i * 256), dimy / 2 * 256 + (j * 256)))
 
             #if alarm.key.category.startswith('B'):
             for item in items:
                 if item['parameters']['tileserver'] == '1':
-                    if os.path.exists("%s%s/%s/%s-%s.png" % (tilepath, item['name'], zoom, t[0] + i, t[1] + j)):
-                        img_tmp = Image.open("%s%s/%s/%s-%s.png" % (tilepath, item['name'], zoom, t[0] + i, t[1] + j))
+                    if os.path.exists("{}{}/{}/{}-{}.png".format(tilepath, item['name'], zoom, t[0] + i, t[1] + j)):
+                        img_tmp = Image.open("{}{}/{}/{}-{}.png".format(tilepath, item['name'], zoom, t[0] + i, t[1] + j))
                         img_map.paste(img_tmp, (dimx / 2 * 256 + (i * 256), dimy / 2 * 256 + (j * 256)), mask=img_tmp)
 
     if len(points) > 0:  # draw house
@@ -127,11 +127,12 @@ def getAlarmRoute(alarm, tilepath):
     # image map
     img_map = Image.new('RGBA', ((len(tiles['lat']) - 1) * 256, (len(tiles['lng']) - 1) * 256), (255, 255, 255, 255))
     for i in range(tiles['lat'][0], tiles['lat'][-1]):
-        for j in range(tiles['lng'][0], tiles['lng'][-1]):
-            if not os.path.exists("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j)):
-                getTileFromURL(zoom, "%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j), i, j)
-            img_tile = Image.open("%s%s/%s/%s-%s.png" % (tilepath, alarm.getMap().path, zoom, i, j))
-            img_map.paste(img_tile, (tiles['lat'].index(i) * 256, tiles['lng'].index(j) * 256))
+        if alarm.getMap():
+            for j in range(tiles['lng'][0], tiles['lng'][-1]):
+                if not os.path.exists("{}{}/{}/{}-{}.png".format(tilepath, alarm.getMap().path, zoom, i, j)):
+                    getTileFromURL(zoom, "{}{}/{}/{}-{}.png".format(tilepath, alarm.getMap().path, zoom, i, j), i, j)
+                img_tile = Image.open("{}{}/{}/{}-{}.png".format(tilepath, alarm.getMap().path, zoom, i, j))
+                img_map.paste(img_tile, (tiles['lat'].index(i) * 256, tiles['lng'].index(j) * 256))
 
     img_map = img_map.convert('LA').convert('RGBA')  # convert background to grayscale
 
@@ -170,8 +171,8 @@ def loadTiles(path, tilelist):
     def doLoadTiles(**kwargs):
 
         def getTile(zoom, item):
-            response = urllib2.urlopen('http://a.tile.openstreetmap.org/%s/%s/%s.png' % (zoom, item[0], item[1]))
-            with open('%s/%s/%s-%s.png' % (path, zoom, item[0], item[1]), 'wb') as fout:
+            response = urllib2.urlopen('http://a.tile.openstreetmap.org/{}/{}/{}.png'.format(zoom, item[0], item[1]))
+            with open('{}/{}/{}-{}.png'.format(path, zoom, item[0], item[1]), 'wb') as fout:
                 fout.write(response.read())
             if item in CURRENTLOADING:
                 CURRENTLOADING.remove(item)
@@ -189,8 +190,8 @@ def loadTiles(path, tilelist):
         errortiles = []
 
         for zoom in tilelist:
-            if not os.path.exists('%s/%s' % (path, zoom)):
-                os.makedirs('%s/%s' % (path, zoom))
+            if not os.path.exists('{}/{}'.format(path, zoom)):
+                os.makedirs('{}/{}'.format(path, zoom))
             for item in tilelist[zoom]:
                 if len(CURRENTLOADING) == 0:  # loding stopped or ended
                     return
@@ -236,7 +237,7 @@ def loadPositionOfCity(name):
     :param name: name of city as string
     :return: dict with cities sorted by name
     """
-    SEARCHSTRING = 'node["name"~"%s"]["place"~"town|village"];(._;>;);out;' % name  # search all cities with given name
+    SEARCHSTRING = 'node["name"~"{}"]["place"~"town|village"];(._;>;);out;'.format(name)  # search all cities with given name
     r = requests.post('http://overpass-api.de/api/interpreter', data={'data': SEARCHSTRING})
     cities = []
     xmldoc = minidom.parseString(r.content)

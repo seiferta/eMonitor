@@ -26,4 +26,7 @@ class AlarmObjectType(db.Model):
         if id != 0:
             return AlarmObjectType.query.filter_by(id=id).first()
         else:
-            return AlarmObjectType.query.order_by(collate(AlarmObjectType.name, 'NOCASE')).all()
+            try:
+                return AlarmObjectType.query.order_by(collate(AlarmObjectType.name, 'NOCASE')).all()
+            except:
+                return AlarmObjectType.query.order_by(AlarmObjectType.name).all()

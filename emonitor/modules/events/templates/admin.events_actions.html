@@ -6,7 +6,7 @@
     <form method="post" action="" name="editeventhandler">
         <p>
             {{ _('event.event') }}:<br/>
-            <span style="font-size:12px;margin-top:3px;border:1px solid black;padding:1px 2px">{{ _('trigger.'+handler.event) }}</span>
+            <div style="font-size:12px;margin-top:3px;border:1px solid black;padding:1px 2px;width:100%;">{{ _('trigger.'+handler.event) }}</div>
             <input type="hidden" name="edit_event" id="edit_event" value="{{ handler.event }}" style="width:99%;"/>
         </p>
         <p>
@@ -21,7 +21,7 @@
         <div id="vars"></div>
         <p>
             <button type="submit" name="action" value="updateeventhandler" class="save"><i class="fa fa-check"></i> {{ _('event.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('event.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('event.cancel') }}</button>
         </p>
         <input type="hidden" name="edit_position" value="{{ handler.position }}"/>
         <input type="hidden" name="handler_id" id="handler_id" value="{{ handler.id }}"/>

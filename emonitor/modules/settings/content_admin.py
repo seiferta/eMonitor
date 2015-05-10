@@ -1,12 +1,10 @@
 import os
-import werkzeug
 from flask import request, render_template, current_app, redirect
 from emonitor.modules.settings.department import Department
 from emonitor.modules.settings.settings import Settings
 from emonitor.modules.streets.city import City
 from emonitor.extensions import alembic, db, babel, scheduler
 from emonitor.scheduler import eMonitorIntervalTrigger
-from emonitor.modules.alarms.alarm import Alarm
 
 
 def getAdminContent(self, **params):
@@ -58,7 +56,7 @@ def getAdminContent(self, **params):
                     db.session.commit()
                     
                 elif request.form.get('action') == 'createdepartment':  # add department
-                    params.update({'department': Department('', '', '', 0)})
+                    params.update({'department': Department('', '', '', 0), 'cities': City.getCities()})
                     return render_template('admin.settings.department_actions.html', **params)
 
                 elif request.form.get('action').startswith('detaildept_'):  # edit department

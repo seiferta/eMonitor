@@ -126,7 +126,7 @@ def set_material(self, material):
 
 def get_key(self):  # deliver alarmkey object
     if self.get('id.key') and self.get('id.key') not in ['None', '0']:
-        return Alarmkey.query.filter_by(id=self.get('id.key')).one()
+        return Alarmkey.query.filter_by(id=self.get('id.key')).scalar()
     else:
         k = Alarmkey(u'', u'%s' % self._key, u'', u'-not in list-')
         k.id = 0
@@ -259,7 +259,9 @@ def getAlarmRoute(alarm):
     if alarm.get('lat', '') != '':
         params = {'format': 'kml', 'flat': Settings.get('homeLat'), 'flon': Settings.get('homeLng'), 'tlat': alarm.get('lat'), 'tlon': alarm.get('lng'), 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
     else:
-        params = {'format': 'kml', 'flat': Settings.get('homeLat'), 'flon': Settings.get('homeLng'), 'tlat': alarm.object.lat, 'tlon': alarm.object.lng, 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+        params = {'format': 'kml', 'flat': Settings.get('homeLat'), 'flon': Settings.get('homeLng'), 'tlat': 0, 'tlon': 0, 'v': 'motorcar', 'fast': '1', 'layer': 'mapnik', 'instructions': '1', 'lang': current_app.config.get('BABEL_DEFAULT_LOCALE')}
+        if alarm.object:
+            params.update({'tlat': alarm.object.lat, 'tlon': alarm.object.lng})
     try:
         r = requests.get(alarm.ROUTEURL, params=params)
         tree = ET.fromstring(r.content)

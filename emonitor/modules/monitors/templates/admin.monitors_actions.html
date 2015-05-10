@@ -9,7 +9,7 @@
     <form method="post">
         <p>
             <label>{{ _('monitors.clientid') }}:<br/>
-                <input type="number" name="edit_clientid" value="{{ monitor.clientid }}" min="1" max="99" style="width:99%" required/>
+                <input type="number" name="edit_clientid" value="{{ monitor.clientid }}" min="1" max="99" style="width:99%" required autofocus/>
             </label>
         <p>
         <p>
@@ -40,7 +40,7 @@
         <p>
         <p>
             <button type="submit" name="action" value="updatemonitors" class="save"><i class="fa fa-check"></i> {{ _('monitors.save') }}</button>
-            <button type="submit" name="action" value="back" class="cancel"><i class="fa fa-times"></i> {{ _('monitors.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('monitors.cancel') }}</button>
         </p>
         <input type="hidden" name="edit_id" value="{{ monitor.id }}"/>
         <input type="hidden" name="form_id" value="monitors.update"/>

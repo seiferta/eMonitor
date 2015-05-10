@@ -8,6 +8,8 @@
         #searchresult p.loading {text-align:center; padding: 5px; }
         p.cityresult { width: 50%; float: left; padding: 5px; }
         p.cityresult #rname{ font-weight: bolder; cursor: pointer; }
+        p.cityresult:hover {cursor:pointer;background-color:silver;}
+        .leaflet-control-attribution {display:none;}
     </style>
 {% endblock %}
 
@@ -27,7 +29,7 @@
     <form name="findposition">
         <label>
             {{ _('settings.map.searchcity') }}:<br/>
-            <input type="text" name="searchcity" style="width:50%;height:22px"/>
+            <input type="text" name="searchcity" style="width:50%;height:22px" autofocus/>
             <button type="button" onclick="startsearch()">{{ _('settings.map.search') }}</button>
         </label>
         <div id="searchresult"></div>

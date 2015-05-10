@@ -31,7 +31,7 @@
     <form method="post">
         <p>
             <label>{{ _('settings.map.name') }}:<br/>
-                <input type="text" name="map_name" value="{{ map.name }}" style="width:99%;"/>
+                <input type="text" name="map_name" value="{{ map.name }}" style="width:99%;" required autofocus/>
             </label>
         </p>
         <p>
@@ -61,7 +61,7 @@
         <p>&nbsp;</p>
         <p>
             <button type="submit" name="action" value="savemap" class="save"><i class="fa fa-check"></i> {{ _('settings.map.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('settings.map.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('settings.map.cancel') }}</button>
         </p>
         <input type="hidden" name="map_id" value="{{ map.id }}"/>
         <input type="hidden" name="form_id" value="settings.map.edit"/>

@@ -22,7 +22,7 @@
         <p>
             <label>
                 {{ _('settings.department.name') }}:<br/>
-                <input type="text" name="dep_name" value="{{ department.name }}" style="width:99%;"/>
+                <input type="text" name="dep_name" value="{{ department.name }}" style="width:99%;" required autofocus/>
             </label>
         </p>
         <p>
@@ -82,10 +82,10 @@
             <label>
                 {{ _('settings.department.defaultcity') }}:<br/>
                 <select name="dep_city">
-                    <option>{{ _('settings.department.notset') }}</option>
-                    {% for city in cities %}
+                    <option value="">{{ _('settings.department.notset') }}</option>
+                    {%- for city in cities %}
                     <option value="{{ city.id }}"{%- if department.defaultcity == city.id %} selected="selected"{%- endif %}>{{ city.name }}</option>
-                    {% endfor %}
+                    {%- endfor %}
                 </select>
             </label>
         </p>
@@ -98,7 +98,7 @@
         <p>&nbsp;</p>
         <p>
             <button type="submit" name="action" value="savedept" class="save"><i class="fa fa-check"></i> {{ _('settings.department.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('settings.department.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('settings.department.cancel') }}</button>
         </p>
         <input type="hidden" name="dep_pos" value="{{ department.orderpos }}"/>
         <input type="hidden" name="dep_id" value="{{ department.id }}"/>

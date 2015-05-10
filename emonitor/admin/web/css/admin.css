@@ -43,6 +43,9 @@ div.subnavigationeast{width:200px;background-color:#ddd/*rgb(171, 171, 171)*/;bo
 div.maincontainer div.pane div.ui-layout-resizer-east{border-left:1px solid #bbb}
 
 p button.save, p button.cancel{padding:5px 40px;}
+button:disabled {color: #bbb;}
+select:required, input:required {border: 1px solid #97070b !important;}
+select:required, input:required:valid {border: 1px solid black !important;}
 
 div.headrow{background-color: #ababab;font-weight:bolder;overflow:hidden;padding:10px 4px;}
 div.headcell{float:left;}

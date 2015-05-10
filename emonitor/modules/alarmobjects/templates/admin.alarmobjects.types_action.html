@@ -15,7 +15,7 @@
         <p>
             <label>
                 {{ _('alarmobjects.type.name') }}:<br/>
-                <input type="text" name="alarmobjecttype_name" value="{{ alarmobjecttype.name }}" style="width:99%;"/>
+                <input type="text" name="alarmobjecttype_name" value="{{ alarmobjecttype.name }}" style="width:99%;" required/>
             </label>
         </p>
         <p>
@@ -27,7 +27,7 @@
         <p>&nbsp;</p>
         <p>
             <button type="submit" name="action" value="savealarmobjecttype" class="save"><i class="fa fa-check"></i> {{ _('alarmobjects.type.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarmobjects.type.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('alarmobjects.type.cancel') }}</button>
         </p>
         <input type="hidden" name="alarmobjecttype_id" value="{{ alarmobjecttype.id }}"/>
         <input type="hidden" name="form_id" value="alarmobjects.type.edit"/>

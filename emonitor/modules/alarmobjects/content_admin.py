@@ -12,7 +12,6 @@ from emonitor.modules.alarmobjects.alarmobjecttype import AlarmObjectType
 from emonitor.modules.alarmobjects.alarmobjectfile import AlarmObjectFile
 
 
-
 def getAdminContent(self, **params):
     """
     Deliver admin content of module alarmobjects
@@ -99,10 +98,11 @@ def getAdminContent(self, **params):
 
             elif request.form.get('action') == 'savealarmobjectaao':  # save aao
                 alarmobject = AlarmObject.getAlarmObjects(id=request.form.get('alarmobject_id'))
-                alarmobject.set('cars1', [c for c in request.form.get('cars1').split(';') if c != ''])
-                alarmobject.set('cars2', [c for c in request.form.get('cars2').split(';') if c != ''])
-                alarmobject.set('material', [c for c in request.form.get('material').split(';') if c != ''])
-                db.session.commit()
+                if alarmobject:
+                    alarmobject.set('cars1', [c for c in request.form.get('cars1').split(';') if c != ''])
+                    alarmobject.set('cars2', [c for c in request.form.get('cars2').split(';') if c != ''])
+                    alarmobject.set('material', [c for c in request.form.get('material').split(';') if c != ''])
+                    db.session.commit()
 
             elif request.form.get('action').startswith('editalarmobject_'):  # edit alarmobject
                 alarmobject = AlarmObject.getAlarmObjects(id=int(request.form.get('action').split('_')[-1]))

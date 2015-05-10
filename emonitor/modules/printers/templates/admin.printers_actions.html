@@ -19,7 +19,7 @@
     <form method="post" action="" name="editcity">
         <p>
             <label>{{ _('printers.name') }}:<br/>
-                <input type="text" name="printername" value="{{ printer.name }}" style="width:99%;" autofocus=""/>
+                <input type="text" name="printername" value="{{ printer.name }}" style="width:99%;" autofocus required/>
             </label>
         </p>
         <p style="float:left;width:40%;">
@@ -65,7 +65,7 @@
         </p>
         <p>
             <button type="submit" name="action" value="updateprinter" class="save"><i class="fa fa-check"></i> {{ _('printers.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('printers.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('printers.cancel') }}</button>
         </p>
         <input type="hidden" name="printer_id" value="{{ printer.id }}"/>
         <input type="hidden" name="form_id" value="printer.edit"/>

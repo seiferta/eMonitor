@@ -52,7 +52,7 @@ def getAdminContent(self, **params):
                 alarmkeycar.cars1 = request.form.get('cars1')
                 alarmkeycar.cars2 = request.form.get('cars2')
                 alarmkeycar.materials = request.form.get('material')
-                if request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
+                if alarmkeycar.kid != 0 and request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
                     db.session.delete(alarmkeycar)
                 db.session.commit()
                 

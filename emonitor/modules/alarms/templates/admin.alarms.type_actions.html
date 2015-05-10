@@ -20,17 +20,17 @@
     
     <form method="post" style="padding-bottom:20px;">
         <p>
-            <label style="width:99%;">{{ _('alarms.type.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ alarmtype.name }}" style="width:99%;"/>
-            </label>
-        </p>
-        <p>
             <label style="width:99%">{{  _('alarms.type.interpreter') }}:<br/>
                 <select name="edit_interpreter" style="width:99%;">
                     {%- for i in interpreter %}
                     <option value="{{ i[0] }}"{% if i[0]==alarmtype.interpreter %} selected="selected"{% endif %}>{{ i[1].__name__ }}</option>
                     {%- endfor %}
                 </select>
+            </label>
+        </p>
+        <p>
+            <label style="width:99%;">{{ _('alarms.type.name') }}:<br/>
+                <input type="text" name="edit_name" value="{{ alarmtype.name }}" style="width:99%;" required/>
             </label>
         </p>
         <p>
@@ -47,7 +47,7 @@
         </p>
         <p>
             <button type="submit" name="action" value="updatetype" class="save"><i class="fa fa-check"></i> {{ _('alarms.type.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.type.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('alarms.type.cancel') }}</button>
         </p>
         <input type="hidden" name="type_id" value="{{ alarmtype.id }}"/>
         <input type="hidden" name="form_id" value="admin.alarms.type.edit"/>
@@ -71,6 +71,7 @@
                     return false;
                 }
             });
+            $("input[name='edit_name']").val($("select[name='edit_interpreter'] option:selected").text());
             return false;
         });
     });

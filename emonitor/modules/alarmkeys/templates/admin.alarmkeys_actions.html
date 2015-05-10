@@ -26,12 +26,12 @@
         {%- if type>0 or type==-2 %}
         <p>
             <label>{{ _('alarmkeys.category') }}:<br/>
-                <input type="text" name="category" value="{{ alarmkey.category }}" style="width:99%;"/>
+                <input type="text" name="category" value="{{ alarmkey.category }}" style="width:99%;" autofocus required/>
             </label>
         </p>
         <p>
             <label>{{ _('alarmkeys.key') }}:<br/>
-                <input type="text" name="key" value="{{ alarmkey.key }}" style="width:99%;"/>
+                <input type="text" name="key" value="{{ alarmkey.key }}" style="width:99%;" required/>
             </label>
         </p>
         <p>
@@ -83,17 +83,19 @@
                         {{ car.dept.shortname }}<br/>{{ car.name }}
                     </li>
                     {%- endif %}
+                {% else %}
+                    <p style="text-align:center;padding-top:10px;">{{ _('alarmkeys.nocars') }}</p>
                 {%- endfor %}
             </ul>
         </div>
 
         <p>
             {%- if type in [0, -1] %}
-            <button type="submit" name="action" value="savedefault" class="save" onclick="return getCars()"><i class="fa fa-check"></i> {{ _('alarmkey.savedefault') }}</button>
+            <button type="submit" name="action" value="savedefault" class="save" onclick="return getCars()"{%- if car|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.savedefault') }}</button>
             {%- else %}
-            <button type="submit" name="action" value="savekey" class="save" onclick="return getCars()"><i class="fa fa-check"></i> {{ _('alarmkey.save') }}</button>
+            <button type="submit" name="action" value="savekey" class="save" onclick="return getCars()"{%- if car|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.save') }}</button>
             {%- endif %}
-            <button type="submit" class="cancel" name="action" value="cancel"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
         </p>
         <input type="hidden" name="deptid" value="{{ depid }}"/>
         <input type="hidden" name="cars1" id="val_cars1"/>

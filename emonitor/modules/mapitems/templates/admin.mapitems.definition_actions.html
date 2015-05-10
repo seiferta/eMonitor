@@ -16,7 +16,7 @@
     <form method="post">
         <p>
             <label>{{ _('mapitems.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ itemtype.name }}" style="width:100%"/>
+                <input type="text" name="edit_name" value="{{ itemtype.name }}" style="width:100%" autofocus required/>
             </label>
         </p>
         <p>
@@ -70,7 +70,7 @@
         </fieldset>
         <p>
             <button type="submit" name="action" value="updateitemtypes" class="save"><i class="fa fa-check"></i> {{ _('mapitems.save') }}</button>
-            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('mapitems.cancel') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('mapitems.cancel') }}</button>
         </p>
         <input type="hidden" name="form_id" value="admin.mapitem.edit"/>
     </form>

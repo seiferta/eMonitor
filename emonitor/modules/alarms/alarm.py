@@ -491,7 +491,6 @@ class Alarm(db.Model):
             t = datetime.datetime.now()
 
         alarm = Alarm(t, alarm_fields['key'][0], 1, 0)
-        db.session.add(alarm)
         alarm.set('id.key', alarm_fields['key'][1])
         alarm.material = dict(cars1='', cars2='', material='')  # set required attributes
         alarm.set('marker', '0')
@@ -684,6 +683,7 @@ class Alarm(db.Model):
         kwargs['time'].append('alarm creation done in %s sec.' % (etime - stime))
 
         if kwargs['mode'] != 'test':
+            db.session.add(alarm)
             db.session.commit()
             signal.send('alarm', 'added', alarmid=alarm.id)
             Alarm.changeState(alarm.id, 1)  # activate alarm
