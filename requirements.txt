@@ -37,7 +37,6 @@ Pygments==2.0.2
 pypdf==1.13
 PyPDF2==1.24
 pytest==2.7.0
-pytg==0.1
 pytz==2015.2
 PyYAML==3.11
 reportlab==3.1.44
