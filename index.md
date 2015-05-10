@@ -31,5 +31,5 @@ Informationen zum Client finden Sie [**hier**][2]
 
 Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows und Linux Betriebssysteme. 
 
-[1]: server/index.md
-[2]: client/index.md
+[1]: docs/server.md
+[2]: docs/client.md
