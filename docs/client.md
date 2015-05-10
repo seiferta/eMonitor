@@ -1,7 +1,3 @@
-﻿---
-layout: index
----
-
-### eMonitor-Client
+﻿### eMonitor-Client
 
 ....
