@@ -1,7 +1,0 @@
-﻿---
-layout: index
----
-
-### eMonitor-Server
-
-....
