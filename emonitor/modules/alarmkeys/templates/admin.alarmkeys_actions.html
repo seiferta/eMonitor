@@ -91,9 +91,9 @@
 
         <p>
             {%- if type in [0, -1] %}
-            <button type="submit" name="action" value="savedefault" class="save" onclick="return getCars()"{%- if car|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.savedefault') }}</button>
+            <button type="submit" name="action" value="savedefault" class="save" onclick="return getCars()"{%- if cars|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.savedefault') }}</button>
             {%- else %}
-            <button type="submit" name="action" value="savekey" class="save" onclick="return getCars()"{%- if car|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.save') }}</button>
+            <button type="submit" name="action" value="savekey" class="save" onclick="return getCars()"{%- if cars|length == 0 %} disabled{%- endif %}><i class="fa fa-check"></i> {{ _('alarmkey.save') }}</button>
             {%- endif %}
             <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
         </p>

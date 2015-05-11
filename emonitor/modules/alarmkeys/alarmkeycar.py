@@ -88,17 +88,17 @@ class AlarmkeyCars(db.Model):
             self.defaultmaterial = []
 
     @staticmethod
-    def getAlarmkeyCars(kid=0, dept=''):
+    def getAlarmkeyCars(kid=9999, dept=''):
         """
         Get a list of all car objects with given parameters
 
-        :param kid: (optional) id of alarmkey, default = *0*
+        :param kid: (optional) id of alarmkey, default = *9999*
         :param dept: (optional) id of department, default = *''*
         :return: list of :py:class:`emonitor.modules.alarmkeys.alarmkeycar.AlarmkeyCars`
         """
-        if int(kid) != 0 and dept != '':
+        if int(kid) != 9999 and dept != '':
             return AlarmkeyCars.query.filter_by(kid=int(kid), dept=int(dept)).first()
-        elif int(kid) == 0 and dept != '':  # default aao cars for dept
+        elif int(kid) == 9999 and dept != '':  # default aao cars for dept
             return AlarmkeyCars.query.filter_by(kid=int(kid), dept=int(dept)).first()
         elif dept != '':
             return AlarmkeyCars.query.filter_by(dept=int(dept)).all()

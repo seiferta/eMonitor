@@ -27,11 +27,11 @@ class Alarmkey(db.Model):
         :param department: id of department as integer
         :return: list of cars, material
         """
-        alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=self.id or 0, dept=department)
+        alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=self.id or 9999, dept=department)
 
         if not alarmcars:
             # try default
-            alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=0, dept=department)
+            alarmcars = AlarmkeyCars.getAlarmkeyCars(kid=9999, dept=department)
 
         if alarmcars:
             if cartype == 1:
@@ -98,7 +98,7 @@ class Alarmkey(db.Model):
         :param department: id of department
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` or *None*
         """
-        return AlarmkeyCars.getAlarmkeyCars(kid=self.id or 0, dept=department) is None
+        return AlarmkeyCars.getAlarmkeyCars(kid=self.id or 9999, dept=department) is None
 
     @staticmethod
     def getAlarmkeys(id=''):
@@ -109,7 +109,7 @@ class Alarmkey(db.Model):
         :return: list of defintions or single definition
         """
         if id not in ['', 'None']:
-            return Alarmkey.query.filter_by(id=int(id)).first()
+            return Alarmkey.query.filter_by(id=id).first()
         else:
             return Alarmkey.query.order_by('category').all()
 
@@ -149,4 +149,4 @@ class Alarmkey(db.Model):
         :param department: id as integer
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object
         """
-        return AlarmkeyCars.query.filter_by(kid=0, dept=department).first() or AlarmkeyCars(0, department, '', '', '')
+        return AlarmkeyCars.query.filter_by(kid=9999, dept=department).first() or AlarmkeyCars(9999, department, '', '', '')

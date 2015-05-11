@@ -44,15 +44,15 @@ def getAdminContent(self, **params):
                 return render_template('admin.alarmkeys_actions.html', **params)
 
             elif request.form.get('action') == 'savedefault':  # save default aao
-                alarmkeycar = AlarmkeyCars.getAlarmkeyCars(kid=0, dept=request.form.get('deptid'))
+                alarmkeycar = AlarmkeyCars.getAlarmkeyCars(kid=9999, dept=request.form.get('deptid'))  # 9999 = default department
                 if not alarmkeycar:  # add
-                    alarmkeycar = AlarmkeyCars(0, request.form.get('deptid'), '', '', '')
+                    alarmkeycar = AlarmkeyCars(9999, request.form.get('deptid'), '', '', '')
                     db.session.add(alarmkeycar)
 
                 alarmkeycar.cars1 = request.form.get('cars1')
                 alarmkeycar.cars2 = request.form.get('cars2')
                 alarmkeycar.materials = request.form.get('material')
-                if alarmkeycar.kid != 0 and request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
+                if alarmkeycar.kid != 9999 and request.form.get('cars1') == request.form.get('cars2') == request.form.get('material') == '':  # remove
                     db.session.delete(alarmkeycar)
                 db.session.commit()
                 
