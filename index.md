@@ -29,7 +29,7 @@ Verfügung steht.
 Informationen zum Client finden Sie [**hier**][2]
 
 
-Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows und Linux Betriebssysteme. 
+Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows und Linux Betriebssysteme.
 
-[1]: docs/server.md
-[2]: docs/client.md
+[1]: server
+[2]: client
