@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from alembic import util as alembicutil
 from sqlalchemy.exc import OperationalError
@@ -91,7 +92,11 @@ def configure_app(app, config=None):
         app.config.from_object(DEFAULT_CONFIG)
     else:
         app.config.from_object(config)
-    app.config.from_pyfile('emonitor.cfg', silent=True)
+    try:
+        app.config.from_pyfile('emonitor.cfg', silent=False)
+    except IOError:
+        print "config file 'emonitor.cfg' not found"
+        sys.exit()
 
     # create missing directories of config
     for p in [path for path in app.config.keys() if path.startswith('PATH')]:
