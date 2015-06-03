@@ -1,6 +1,7 @@
 ---
 layout: index
 permalink: /details/index.html
+breadcrumb: Funktionen
 ---
 
 ### Funktionen

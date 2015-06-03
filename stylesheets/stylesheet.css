@@ -257,6 +257,24 @@ form {
   padding: 20px;
 }
 
+.breadcrumb {
+  list-style: none;
+  overflow: hidden;
+  font: 18px Helvetica, Arial, Sans-Serif;
+}
+.breadcrumb li {
+  float: left;
+}
+.breadcrumb li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0 10px 65px;
+  background: black;                   /* fallback color */
+  position: relative;
+  display: block;
+  float: left;
+}
+
 /*******************************************************************************
 Full-Width Styles
 *******************************************************************************/

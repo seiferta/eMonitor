@@ -1,6 +1,7 @@
 ---
 layout: index
 permalink: /server/index.html
+breadcrumb: Server
 ---
 
 ### eMonitor-Server

@@ -1,6 +1,7 @@
 ---
 layout: index
 permalink: /install/windows/index.html
+breadcrumb: Windows-Installation
 ---
 
 ### Windows Installation

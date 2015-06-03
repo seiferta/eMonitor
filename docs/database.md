@@ -1,6 +1,7 @@
 ---
 layout: index
 permalink: /install/database/index.html
+breadcrumb: Datenbank
 ---
 
 ### Datenbank-Konfiguration
