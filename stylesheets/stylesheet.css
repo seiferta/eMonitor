@@ -260,16 +260,14 @@ form {
 .breadcrumb {
   list-style: none;
   overflow: hidden;
-  font: 18px Helvetica, Arial, Sans-Serif;
 }
 .breadcrumb li {
   float: left;
 }
 .breadcrumb li a {
-  color: white;
+  color: black;
   text-decoration: none;
-  padding: 10px 0 10px 65px;
-  background: black;                   /* fallback color */
+  padding: 10px 0 10px 20px;
   position: relative;
   display: block;
   float: left;

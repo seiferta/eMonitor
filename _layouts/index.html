@@ -44,7 +44,7 @@
                   {% if current_breadcrumb_url == breadcrumb_page.url or current_breadcrumb_md_url == breadcrumb_page.url  %}
                       <li {% if i == forLoopMaxInt %}class="active"{% endif %}>
                           {% capture breadcrumb_page_page_url_without_index_html %}{{ breadcrumb_page.url | remove: "index.html" }}{% endcapture %}
-                          <a href="{{ site.baseurl }}{{breadcrumb_page_page_url_without_index_html}}">{{breadcrumb_page.breadcrumb}}</a>            </li>
+                          <a href="{{ site.baseurl }}/eMonitor{{breadcrumb_page_page_url_without_index_html}}">{{breadcrumb_page.breadcrumb}}</a>            </li>
                   {% endif %}
               {% endfor %}
           {% endfor %}
