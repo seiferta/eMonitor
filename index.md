@@ -15,6 +15,7 @@ Derzeit sind folgende Funktionen verfügbar:
 * Kartendarstellung auf dem Monitor
 * Individuelle Ausrückeordnungen je Alarmstichwort
 * Drucken einer Alarmübersicht mit Kartendarstellung
+* [**weitere Details**][5]
 
 eMonitor und sämtliche genutzte Komponenten stehen **OpenSource** zur Verfügung und werden ständig weiter entwickelt.
 
@@ -28,8 +29,16 @@ Verfügung steht.
 
 Informationen zum Client finden Sie [**hier**][2]
 
+### Installation
 
 Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows und Linux Betriebssysteme.
 
+* [**Linux**][3]
+
+* [**Windows**][4]
+
 [1]: server
 [2]: client
+[3]: install/linux
+[4]: install/windows
+[5]: details
