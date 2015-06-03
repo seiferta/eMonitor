@@ -10,7 +10,7 @@ Die eMonitor Software bietet eine Reihe unterschiedlicher Oberflächen:
 
 #### Standardoberfläche
 
-![eMonitor Frontend]({{ site.url }}/eMonitor/frontend.jpg) Die Standardoberfläche ist über einen aktuellen Browser im Netzwerk erreichbar und konfigurierbar: Es wird ein Layout 
+![eMonitor Frontend]({{ site.url }}/eMonitor/images/frontend.jpg) Die Standardoberfläche ist über einen aktuellen Browser im Netzwerk erreichbar und konfigurierbar: Es wird ein Layout 
 verwendet, in dem links und rechts neben einem zentralen Bereich unterschiedliche Module einblendbar sind. Diese sind 
 auch per Mausklick ausblendbar, um im zentralen Bereich mehr Platz zur Verfügung zu haben. Man kann vordefinieren, wie 
 breit die beiden Seitenmodule sein sollen und auch zwischen allen Modulen wählen, die eine Darstellung im Frondend 
@@ -70,7 +70,7 @@ Karte dargestellt werden kann.
 
 #### Administrationsoberfläche
 
-![eMonitor Admin]({{ site.url }}/eMonitor/admin.jpg) Im Administrationsbereich kann man alle Einstellengen vornehmen, 
+![eMonitor Admin]({{ site.url }}/eMonitor/images/admin.jpg) Im Administrationsbereich kann man alle Einstellengen vornehmen, 
 die für den Betrieb erforderlich sind. Dabei ist dieser Bereich über einen Authentifikationsmechanismus geschützt, dass 
 nicht jeder an die Einstellungen heran kommt.
 
