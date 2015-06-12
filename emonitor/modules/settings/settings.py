@@ -2,6 +2,11 @@ import os, math, yaml
 from emonitor.extensions import db
 
 
+class Struct(dict):
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
+
+
 class Settings(db.Model):
     """Settings class"""
     __tablename__ = 'settings'
@@ -98,7 +103,7 @@ class Settings(db.Model):
         if s:  # update settings
             s.value = val
         else:  # add value
-            s = Settings(option, yaml.dump(val))
+            s = Settings(option, yaml.safe_dump(val, encoding='utf-8'))
             db.session.add(s)
         db.session.commit()
         return s
@@ -109,3 +114,10 @@ class Settings(db.Model):
             return map(int, Settings.get(option, '').split(','))
         except ValueError:
             return default
+
+    @staticmethod
+    def getYaml(option):
+        try:
+            return Struct(**(Settings.get(option)))
+        except TypeError:
+            return Struct()

@@ -9,3 +9,14 @@ if(!window.WebSocket){
         $('#ws').html('<i class="fa fa-unlink fa-lg"></i>');
     }
 }
+
+function showInfo(){
+    $.ajax({ type : "POST", url : "/data/frontpage?action=info",
+        success: function(result) {
+            $('#overlaycontent').html(result);
+            $('.overlay').toggle();
+            return false;
+        }
+    });
+    return false;
+}

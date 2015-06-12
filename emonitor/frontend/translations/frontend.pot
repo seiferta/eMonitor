@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-26 22:46+0200\n"
+"POT-Creation-Date: 2015-06-12 09:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: emonitor/frontend/frontend.py:21
+#: emonitor/frontend/frontend.py:22
 msgid "emonitor.monitorserver.MonitorServer"
 msgstr ""
 
-#: emonitor/frontend/frontend.py:22
+#: emonitor/frontend/frontend.py:23
 msgid "trigger.default"
 msgstr ""
 
@@ -34,6 +34,30 @@ msgstr ""
 
 #: emonitor/frontend/web/templates/frontend.default.html:20
 msgid "frontend.default.module"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:3
+msgid "app.info"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:6
+msgid "app.help.frontend"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:7
+msgid "app.help.admin"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:11
+msgid "app.restart.title"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:11
+msgid "app.restart"
+msgstr ""
+
+#: emonitor/frontend/web/templates/frontend.emonitorinfo.html:13
+msgid "app.restart.info"
 msgstr ""
 
 #: emonitor/frontend/web/templates/frontendframe.html:37

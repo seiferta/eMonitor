@@ -48,3 +48,24 @@ $('.usermenu').hover(function() {
           };
       });
 })(jQuery);
+
+
+function showInfo(){
+    $.ajax({ type : "POST", url : "/data/frontpage?action=info",
+        success: function(result) {
+            $('#overlaycontent').html(result);
+            $('.overlay').toggle();
+            return false;
+        }
+    });
+    return false;
+}
+
+function restartApp(){
+    $.ajax({ type : "POST", url : "/data/frontpage?action=restart",
+        success: function(result) {
+
+        }
+    });
+    return false;
+}

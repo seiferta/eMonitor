@@ -261,6 +261,13 @@ def configure_hook(app):
     def get_locale():
         return request.accept_languages.best_match(app.config.get('LANGUAGES').keys())
 
+    @app.teardown_appcontext
+    def shutdown_session(exception):
+        try:
+            db.session.remove()
+        except:
+            pass
+
 
 def configure_handlers(app):
     @app.errorhandler(403)

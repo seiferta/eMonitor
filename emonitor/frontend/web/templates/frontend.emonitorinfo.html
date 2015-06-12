@@ -1,0 +1,15 @@
+<div>
+    <h1><img src="/img/logo.png"/> {{ app_name }} {{ app_version }}</h1>
+    <p>{{ _('app.info') }}</p>
+    <p>&nbsp;</p>
+    <ul>
+        <li><a href="/help/frontend" target="_blank">{{ _('app.help.frontend') }}</a></li>
+        <li><a href="/help/admin" target="_blank">{{ _('app.help.admin') }}</a></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>
+        <a href="#" onclick="return restartApp()" title="{{ _('app.restart.title') }}"><i class="fa fa-refresh"></i> {{ _('app.restart') }}</a>
+        <br/>
+        <small>{{ _('app.restart.info') }}</small>
+    </p>
+</div>

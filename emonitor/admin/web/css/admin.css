@@ -68,12 +68,17 @@ div.headrow button.add{float:right;width:24px;height:21px;margin:0;padding: 0;}
 div.subheadrow button.add{float:right;width:24px;height:21px;margin:0;padding: 0;}
 div.rowadd button.save{float:right;width:46px;height:21px;padding:1px; margin: 4px 0 0 2px;}
 
-div.overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;display:none;}
-div.overlay div.overlay_back{width:100%;height:100%;background-color:#fff;opacity: 0.5; -moz-opacity: 0.5; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);}
-div.overlay div.popup{display:block;position:absolute;top:0;left:0;right:0;bottom:0;width:500px;height:300px;margin:auto;border:1px solid silver;background-color:#fff;z-index:11;box-shadow:5px 5px 5px #BBB;}
+div.overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:3;display:none;}
+div.overlay div.overlay_back{width:100%;height:100%;background-color:#000;opacity: 0.5; -moz-opacity: 0.5; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);}
+div.overlay div.popup{display:block;position:absolute;width:600px;top:20%;left:50%;margin-left:-300px;border:1px solid silver;background-color:#fff;z-index:4;}
 div.popup_close{position:absolute;top:-10px;right:-10px;}
 div.popup_close a img{border:0;}
 
 div.version{background:url(/img/logo.png) no-repeat 0 0 transparent;position:absolute;left:2px; bottom:2px;height:30px;padding-left:30px;}
 .required{margin-left:5px;color:red;}
 .navigation i{color:#aaa;padding-right:5px;}
+
+::-webkit-input-placeholder {color:silver;}
+:-moz-placeholder {color:silver; opacity:1;}
+::-moz-placeholder {color:silver; opacity:1;}
+:-ms-input-placeholder {color:silver;}

@@ -73,7 +73,7 @@
             <div class="pane ui-layout-south" style="overflow:visible">
                 {% block footer %}{% endblock %}
                 <div style="clear:both;position:fixed;bottom:5px;left:30px;">
-                    <small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small>
+                    <a href="#" onclick="return showInfo()"><small style="color:#ababab">{{ app_name }} <span>{{ app_version }}</span></small></a>
                 </div>
                 <div class="footer_functions">
                     <span id="ws"><i class="fa fa-link fa-lg"></i></span>
@@ -98,7 +98,7 @@
         <div class="overlay_back"> </div>
         <div class="popup">
             <div class="popup_close"><a href="#" onclick="return closeOverlay()"><img src="/img/close.png"/></a></div>
-            <div id="overlaycontent"> </div>
+            <div id="overlaycontent" style="padding:20px;height:100%;"> </div>
         </div>
         </div>
         <script>

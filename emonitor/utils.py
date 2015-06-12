@@ -1,8 +1,6 @@
 import os
 import codecs
 import logging
-import functools
-import inspect
 from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
@@ -299,6 +297,19 @@ class Pagination(object):
                 yield num
                 last = num
 
+def restartService():
+    """
+    try to restart emonitor app, only if installed as windows service
+
+    :return: 0 if not installed as service or error, 1 if restart done.
+    """
+    try:
+        import win32service
+        from service import win32serviceutil, eMonitorService
+        win32serviceutil.HandleCommandLine(eMonitorService, argv=['service.py', '--wait', '1', 'restart'])
+        return '1'
+    except:
+        return '0'
 
 def getmarkdown(text):
     try:

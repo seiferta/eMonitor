@@ -14,6 +14,7 @@ from flask import Blueprint, current_app, render_template, send_from_directory, 
 from flask.ext import login
 from emonitor.user import User
 from emonitor.extensions import babel
+from emonitor.utils import restartService
 
 frontend = Blueprint('frontend', __name__, template_folder="web/templates")
 frontend.modules = OrderedDict()
@@ -69,6 +70,14 @@ def getData(module=u''):
     :return: return value of `getFrontendData` method of `module`
     """
     current_mod = frontend.modules['startpages']
+
+    if module == u"frontpage" and 'action' in request.args:
+        if request.args.get('action') == 'info':
+            return render_template('frontend.emonitorinfo.html', app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+        elif request.args.get('action') == 'restart':
+            from emonitor.extensions import scheduler
+            scheduler.add_job(restartService)
+            return ""
 
     try:
         current_mod = [frontend.modules[m] for m in frontend.modules if frontend.modules[m].info['path'] == module.split('/')[0]][0]
