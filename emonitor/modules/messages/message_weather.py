@@ -84,5 +84,6 @@ class WeatherWidget(MonitorWidget):
                 self.data['astronomy']['sunset'] = ':'.join(self.data['astronomy']['sunset'])
             self.lastcall = datetime.datetime.now()
 
+        self.data['lastBuildDate'] = datetime.datetime.strptime(self.data['lastBuildDate'][:-5], '%a, %d %b %Y %I:%M %p').strftime('%d.%m.%Y %H:%M')
         kwargs.update({'location': location, 'icons': icons, 'forecast': forecast, 'data': self.data})
         self.params = kwargs
