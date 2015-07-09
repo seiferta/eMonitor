@@ -32,7 +32,7 @@ def webserver(app):
         cherrypy.config.update({'log.error_file': '{}/service.log'.format(app.config.get('PATH_DATA')), 'log.screen': False})
     cherrypy.config.update({'engine.autoreload.on': False, 'engine.SIGHUP': None, 'engine.SIGTERM': None, 'environment': 'embedded'})
     cherrypy.server.thread_pool = app.config.get('SERVER_THREADS', 30)
-    cherrypy.server.thread_pool_max = 50
+    cherrypy.server.thread_pool_max = 20
     cherrypy.server.socket_port = int(app.config.get('PORT'))
     cherrypy.server.socket_host = "0.0.0.0"
     cherrypy.log.screen = False
