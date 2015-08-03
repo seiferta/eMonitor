@@ -264,7 +264,10 @@ def configure_hook(app):
     @app.teardown_appcontext
     def shutdown_session(exception):
         try:
+            db.session.connection().close()
             db.session.remove()
+            #logger = logging.getLogger('db.connection')
+            #logger.debug(db.engine.pool.status())
         except:
             pass
 

@@ -33,12 +33,12 @@ def getAdminContent(self, **params):
                     department.name = request.form.get('dep_name')
                     department.shortname = request.form.get('dep_shortname')
                     department.color = request.form.get('dep_color')
-                    department.set('address_name', request.form.get('dep_address_name'))
-                    department.set('address_street', request.form.get('dep_address_street'))
-                    department.set('address_city', request.form.get('dep_address_city'))
-                    department.set('address_phone', request.form.get('dep_address_phone'))
-                    department.set('address_fax', request.form.get('dep_address_fax'))
-                    department.set('address_email', request.form.get('dep_address_email'))
+                    department.set(u'address_name', unicode(request.form.get('dep_address_name')))
+                    department.set(u'address_street', unicode(request.form.get('dep_address_street')))
+                    department.set(u'address_city', unicode(request.form.get('dep_address_city')))
+                    department.set(u'address_phone', unicode(request.form.get('dep_address_phone')))
+                    department.set(u'address_fax', unicode(request.form.get('dep_address_fax')))
+                    department.set(u'address_email', unicode(request.form.get('dep_address_email')))
                     if len(request.files) > 0:
                         uploadfile = request.files.get('dep_logo')
                         if uploadfile.filename != '':
@@ -46,11 +46,11 @@ def getAdminContent(self, **params):
                             db.session.flush()  # flush to get department id of new department
                             fname = os.path.join(current_app.config.get('PATH_DATA'), 'departmentlogo_{}{}'.format(department.id, _fext))
                             uploadfile.save(fname)
-                            department.set('logo', 'departmentlogo_{}{}'.format(department.id, _fext))  # store relative path from data directory
+                            department.set(u'logo', u'departmentlogo_{}{}'.format(department.id, _fext))  # store relative path from data directory
                         elif request.form.get('logoaction') == 'deletelogo':
                             if os.path.exists('{}{}'.format(current_app.config.get('PATH_DATA'), department.attributes['logo'])):
                                 os.remove('{}{}'.format(current_app.config.get('PATH_DATA'), department.attributes['logo']))
-                                department.set('logo', '')
+                                department.set(u'logo', u'')
                     department.orderpos = l
                     department.defaultcity = request.form.get('dep_city')
                     db.session.commit()
