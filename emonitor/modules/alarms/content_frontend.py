@@ -1,13 +1,16 @@
 import datetime
 import os
+import shutil
+import StringIO
 from collections import Counter
 from operator import attrgetter
-from flask import current_app, render_template, request, flash, session, render_template_string, jsonify, redirect
+from flask import current_app, render_template, request, flash, session, render_template_string, jsonify, redirect, make_response
 from emonitor.extensions import scheduler, db, signal
 from emonitor.modules.alarms.alarm import Alarm
 from emonitor.modules.alarms.alarmhistory import AlarmHistory
 from emonitor.modules.alarms.alarmfield import AlarmField
 from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from emonitor.modules.alarms.alarmreport import AlarmReport
 from emonitor.modules.streets.city import City
 from emonitor.modules.streets.street import Street
 from emonitor.modules.cars.car import Car
@@ -176,6 +179,17 @@ def getFrontendData(self):
     :return: rendered template as string or json dict
     """
     from emonitor.extensions import monitorserver
+
+    if "download" in request.path:  # deliver file
+        with open('{}{}'.format(current_app.config.get('PATH_TMP'), request.path.split('download/')[-1]), 'rb') as data:
+            si = StringIO.StringIO(data.read()).getvalue()
+            output = make_response(si)
+        if request.path.split('/')[-1].startswith('temp'):  # remove if filename starts with temp == temporary file
+            os.remove('{}{}'.format(current_app.config.get('PATH_TMP'), request.path.split('download/')[-1]))
+        output.headers["Content-Disposition"] = "attachment; filename=report.{}".format(request.path.split('.')[-1])
+        output.headers["Content-type"] = "application/x.download"
+        return output
+
     if request.args.get('action') == 'editalarm':
         
         if request.args.get('alarmid', '0') == '0':  # add new alarm
@@ -245,7 +259,20 @@ def getFrontendData(self):
         return render_template('frontend.alarms_alarm.html', alarms=Alarm.getAlarms(days=int(session['alarmfilter']), state=int(request.args.get('state', '-1'))), printdefs=Printers.getActivePrintersOfModule('alarms'))
 
     elif request.args.get('action') == 'collective':  # render collective form
-        return render_template('frontend.alarms_collective.html', alarms=Alarm.getAlarms(state=2))
+        reports = [r for r in AlarmReport.getReports() if r.reporttype.multi]
+        if len(reports) == 0:
+            return ""
+        return render_template('frontend.alarms_collective.html', alarms=Alarm.getAlarms(state=2), reports=reports)
+
+    elif request.args.get('action') == 'docollective':  # build collective form
+        if request.args.get('ids') == "":
+            ids = []
+        else:
+            ids = request.args.get('ids').split(',')
+        f = AlarmReport.getReports(request.args.get('form')).createReport(ids=ids)
+        _path, _filename = os.path.split(f)
+        shutil.move(f, "{}{}".format(current_app.config.get('PATH_TMP'), _filename))
+        return _filename
 
     elif request.args.get('action') == 'alarmpriocars':  # show prio cars
         cars = []
@@ -263,7 +290,7 @@ def getFrontendData(self):
             fields = AlarmField.getAlarmFields(dept=alarm.street.city.dept)
         else:
             fields = AlarmField.getAlarmFields(dept=Department.getDefaultDepartment().id)
-        return render_template('frontend.alarms_fields.html', alarm=alarm, fields=fields)
+        return render_template('frontend.alarms_fields.html', alarm=alarm, fields=fields, reports=AlarmReport.getReports())
 
     elif request.args.get('action') == 'saveextform':  # store ext-form values
         alarm = Alarm.getAlarms(id=request.form.get('alarmid'))

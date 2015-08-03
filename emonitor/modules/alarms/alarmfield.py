@@ -17,14 +17,16 @@ class FieldName(object):
         self.args = args
 
     def __repr__(self):
-        return '{} - {}'.format(self.id, self.name)
+        return self.id
 
     def getLabel(self):
-        ret = self.name
+        ret = unicode(self.name)
         if ret.endswith('_'):
             ret = ret[:-1]
         if ret.startswith(' '):
             ret = ret.strip()
+        if "labelprefix" in self.args:
+            ret = u"{}{}".format(self.args['labelprefix'], ret)
         return ret
 
     def getName(self):
@@ -77,6 +79,8 @@ class AlarmField(db.Model):
 
     def __init__(self, name, dept, parameters, position):
         self.fieldtype = self.__class__.__name__
+        if self.fieldtype == name:  # translate if classname an name are same
+            name = babel.gettext(name)
         self.name = name
         self.dept = dept
         self._parameters = yaml.safe_dump(parameters, encoding='utf-8')
@@ -95,6 +99,11 @@ class AlarmField(db.Model):
 
     def getFields(self, **params):
         return []
+
+    def getFieldValue(self, fieldname, alarm):
+        if fieldname.startswith('alarm.'):
+            return ">>", alarm.get(fieldname.split('.')[1])  # TODO
+        return None
 
     def getExportFields(self):
         return []
@@ -118,11 +127,13 @@ class AlarmField(db.Model):
             pass
 
     @staticmethod
-    def getAlarmFields(id=0, dept=0):
+    def getAlarmFields(id=0, dept=0, fieldtype=""):
         if id != 0:
             return AlarmField.query.filter_by(id=id).first()
         elif dept != 0:
             return AlarmField.query.filter(AlarmField.dept == dept).order_by('position').all()
+        elif fieldtype != "":
+            return AlarmField.query.filter(AlarmField.fieldtype == fieldtype).first()
         else:
             return AlarmField.query.order_by('name').all()
 
@@ -137,7 +148,7 @@ class AlarmField(db.Model):
             ret.append(field)
         i = 0
         for name, cls in inspect.getmembers(sys.modules[__name__]):
-            if inspect.isclass(cls) and cls.__bases__[0].__name__ == 'AlarmField':
+            if inspect.isclass(cls) and len(cls.__bases__) > 0 and cls.__bases__[0].__name__ == 'AlarmField':
                 if len(filter(lambda c: c.__class__.__name__ == name, ret)) == 0:
                     ret.append(cls(name, dept, [], i))
                     i += 1
@@ -154,11 +165,47 @@ class AlarmField(db.Model):
                 return cls(cls.__name__, int(dept), {}, position)
 
 
+class AFBasic:
+    """
+    deliver basic information for alarms
+    """
+    __version__ = '0.1'
+
+    def __init__(self):
+        pass
+
+    def getFields(self, **params):
+        return [FieldName('basic.address', babel.gettext('admin.alarms.address')),
+                FieldName('basic.department', babel.gettext('admin.alarms.department')),
+                FieldName('basic.department.address', babel.gettext('admin.alarms.department.address')),
+                FieldName('basic.currentdate', babel.gettext('admin.currentdate')),
+                FieldName('alarm.key', babel.gettext('alarms.key')),
+                FieldName('alarm.date', babel.gettext('alarms.date')),
+                FieldName('alarm.time', babel.gettext('alarms.time'))]
+
+    def getFieldValue(self, fieldname, alarm):
+        if fieldname == "basic.address":
+            return "%s, %s %s" % (alarm.city.name, alarm.street.name, alarm.housenumber.number)
+        elif fieldname == "basic.department":
+            if alarm.getDepartment().address_name != "":
+                return "%s" % alarm.getDepartment().address_name
+            return "%s" % alarm.getDepartment().name
+        elif fieldname == "basic.department.address":
+            return "%s - %s - %s" % (alarm.getDepartment().address_name, alarm.getDepartment().address_street, alarm.getDepartment().address_city)
+        elif fieldname == "basic.currentdate":
+            return "NOW()"
+        else:
+            return fieldname.encode('utf-8')
+
+
 class AFTime(AlarmField):
     __version__ = '0.1'
 
     def getFields(self, **params):
-        return [FieldName('alarmtime{}'.format(field), 'alarmtime{}'.format(field), prefix=u"") for field in range(1, 5)] + [FieldName('alarmend', 'alarmend', prefix=u'')]
+        return [FieldName('alarmtime{}'.format(field), 'alarmtime{}'.format(field), prefix=u"", labelprefix='alarms.') for field in range(1, 5)] + [FieldName('alarmend', 'alarmend', prefix=u'', labelprefix='alarms.')]
+
+    def getFieldValue(self, fieldname, alarm):
+        return alarm.get(fieldname).encode('utf-8')
 
     def getExportFields(self):
         return [('alarms.alarmtime', 'alarmtime'), ('alarms.time_3', 'alarmtime3'), ('alarms.time_4', 'alarmtime4'), ('alarms.time_1', 'alarmtime1'), ('alarms.time_2', 'alarmtime2'), ('alarms.alarmend', 'alarmend')]
@@ -231,6 +278,17 @@ class AFCars(AlarmField):
             cars = [c for c in Car.getCars() if c.active]
         return [FieldName(car.name, u'{}'.format(car.id), prefix=u"") for car in cars]
 
+    def getFieldValue(self, fieldname, alarm):
+        """
+        return formated value for cars of given alarm
+
+        :param fieldname:
+        :param alarm: alarm class
+        :return: string
+        """
+        if fieldname == 'list':
+            return ", ".join([c.name.encode('utf-8') for c in alarm.cars1])
+
     def getExportFields(self):
         return [('cars (list)', 'cars')]
 
@@ -240,10 +298,17 @@ class AFPersons(AlarmField):
 
     def getFields(self, **params):
         _names = ['sum', 'alarm', 'house_', 'pa', 'pa_alarm', 'pa_house_', 'el']  # 'elgrade' + 'style'
-        f = map(lambda z: (FieldName(z, z, prefix='ext.afpersons', fieldtype='checkbox', active=list(filter(lambda x: x[0] == z, self.parameters) or [[z, z, 'false']])[0][2])), _names)
-        f.append(FieldName('elgrade', 'elgrade', prefix='ext.afpersons', fieldtype='list', listvalues=['LM', 'BM', 'sonst'], active=list(filter(lambda x: x[0] == 'elgrade', self.parameters) or [['elgrade', 'elgrade', 'false']])[0][2]))
-        f.append(FieldName('style', 'style', prefix='ext.afpersons', fieldtype='radio', listvalues=['simple', 'extended'], active=list(filter(lambda x: x[0] == 'style', self.parameters) or [['style', 'style', 'false']])[0][2]))
+        f = map(lambda z: (FieldName(z, z, prefix=u'ext.afpersons', fieldtype='checkbox', active=list(filter(lambda x: x[0] == z, self.parameters) or [[z, z, 'false']])[0][2], labelprefix='alarms.fields.persons.field.')), _names)
+        f.append(FieldName('elgrade', 'elgrade', prefix=u'ext.afpersons', fieldtype='list', listvalues=['LM', 'BM', 'sonst'], active=list(filter(lambda x: x[0] == 'elgrade', self.parameters) or [['elgrade', 'elgrade', 'false']])[0][2], labelprefix='alarms.fields.persons.field.'))
+        f.append(FieldName('style', 'style', prefix=u'ext.afpersons', fieldtype='radio', listvalues=['simple', 'extended'], active=list(filter(lambda x: x[0] == 'style', self.parameters) or [['style', 'style', 'false']])[0][2], labelprefix='alarms.fields.persons.field.'))
         return f
+
+    def getFieldValue(self, fieldname, alarm):
+        vals = yaml.load(alarm.get('ext.afpersons'))
+        if vals:
+            if fieldname in vals:
+                return vals[fieldname]
+        return ""
 
     def saveConfigForm(self, request):
         params = {}
@@ -281,6 +346,24 @@ class AFMaterial(AlarmField):
     def getFields(self, **params):
         return [FieldName(field[0], field[1], prefix=u"ext.afmaterial", check=field[2]) for field in self.parameters]
 
+    def getFieldValue(self, fieldname, alarm):
+        fields = self.getFields()
+        vals = yaml.load(alarm.get('ext.afmaterial'))
+        if vals and fieldname.endswith('list'):  # deliver list of all used material
+            ret = []
+            for k, v in vals.iteritems():
+                if filter(lambda x: x.id == k, fields)[0]:
+                    item = filter(lambda x: x.id == k, fields)[0]
+                    if 'check' in item.args and item.args['check'] == 'true':
+                        ret.append(u'{}x {}'.format(v, item.getLabel()))
+                    else:
+                        ret.append(u'{}'.format(item.getLabel()))
+            return ", ".join(ret)
+        elif not vals:
+            return ""
+        else:
+            return fieldname
+
     def saveConfigForm(self, request):
         _names = request.form.getlist(u'material.field.name')
         _values = request.form.getlist(u'material.field.value')
@@ -289,7 +372,6 @@ class AFMaterial(AlarmField):
             _names = _names[:-1]
             _values = _values[:-1]
             _check = _check[:-1]
-        map(lambda x: x.encode('utf-8'), _names)
         self.parameters = zip(_names, _values, _check)
 
     def saveForm(self, request, alarm):
@@ -326,7 +408,16 @@ class AFReport(AlarmField):
     __version__ = '0.1'
 
     def getFields(self, **params):
-        return [FieldName(babel.gettext('AFReport'), 'report', prefix="ext.afreport")]
+        return [FieldName(babel.gettext('AFReport'), 'report', prefix=u'ext.afreport')]
+
+    def getFieldValue(self, fieldname, alarm):
+        vals = yaml.load(alarm.get('ext.afreport'))
+        if vals:
+            if fieldname in vals:
+                return vals[fieldname]
+            return "; ".join(vals.values())
+        else:
+            return u""
 
     def saveForm(self, request, alarm):
         """

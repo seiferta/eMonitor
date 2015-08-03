@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-08 13:16+0200\n"
-"PO-Revision-Date: 2015-07-08 14:10+0100\n"
+"POT-Creation-Date: 2015-07-29 12:44+0200\n"
+"PO-Revision-Date: 2015-08-03 11:08+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -786,7 +786,7 @@ msgid "archive"
 msgstr "archiviert"
 
 #: emonitor/modules/alarms/__init__.py:124
-#: emonitor/modules/alarms/alarm.py:351
+#: emonitor/modules/alarms/alarm.py:353
 msgid "alarms.statechangeactivated"
 msgstr "Einsatz aktiviert"
 
@@ -916,7 +916,7 @@ msgid "AFMaterial"
 msgstr "Geräte/Material"
 
 #: emonitor/modules/alarms/__init__.py:158
-#: emonitor/modules/alarms/alarmfield.py:413
+#: emonitor/modules/alarms/alarmfield.py:409
 msgid "AFReport"
 msgstr "Bericht"
 
@@ -936,37 +936,73 @@ msgstr "Sonstige Kräfte"
 msgid "AFPersons"
 msgstr "Mannschaft"
 
-#: emonitor/modules/alarms/__init__.py:164
+#: emonitor/modules/alarms/__init__.py:165
 msgid "alarms.fields.simple"
 msgstr "einfach"
 
-#: emonitor/modules/alarms/__init__.py:165
+#: emonitor/modules/alarms/__init__.py:166
 msgid "alarms.fields.extended"
 msgstr "erweitert"
 
-#: emonitor/modules/alarms/alarm.py:294
+#: emonitor/modules/alarms/__init__.py:168
+msgid "alarms.fields.persons.field.sum"
+msgstr "Mannschaft gesamt"
+
+#: emonitor/modules/alarms/__init__.py:169
+msgid "alarms.fields.persons.field.house"
+msgstr "Mannschaft in Bereitschaft"
+
+#: emonitor/modules/alarms/__init__.py:170
+msgid "alarms.fields.persons.field.pa_alarm"
+msgstr "PA im Einsatz"
+
+#: emonitor/modules/alarms/__init__.py:171
+msgid "alarms.fields.persons.field.el"
+msgstr "Einsatzleiter"
+
+#: emonitor/modules/alarms/__init__.py:172
+msgid "alarms.fields.persons.field.alarm"
+msgstr "Im Einsatz"
+
+#: emonitor/modules/alarms/__init__.py:173
+msgid "alarms.fields.persons.field.pa"
+msgstr "PA gesamt"
+
+#: emonitor/modules/alarms/__init__.py:174
+msgid "alarms.fields.persons.field.pa_house"
+msgstr "PA in Bereitschaft"
+
+#: emonitor/modules/alarms/__init__.py:175
+msgid "alarms.fields.persons.field.elgrade"
+msgstr "Dienstgrad"
+
+#: emonitor/modules/alarms/__init__.py:176
+msgid "alarms.fields.persons.field.style.simple"
+msgstr "Einfach"
+
+#: emonitor/modules/alarms/__init__.py:177
+msgid "alarms.fields.persons.field.style.extended"
+msgstr "Erweitert"
+
+#: emonitor/modules/alarms/alarm.py:296
 msgid "alarms.routingerror"
 msgstr "Fehler bei der Anfahrtsberechnung"
 
 #: emonitor/modules/alarms/alarmfield.py:178
-#, fuzzy
 msgid "admin.alarms.address"
-msgstr "Straße"
+msgstr "Einsatzadresse"
 
 #: emonitor/modules/alarms/alarmfield.py:179
-#, fuzzy
 msgid "admin.alarms.department"
-msgstr "Einheit(en)"
+msgstr "Einheit"
 
 #: emonitor/modules/alarms/alarmfield.py:180
-#, fuzzy
 msgid "admin.alarms.department.address"
-msgstr "Einheit(en)"
+msgstr "Adresse der Einheit"
 
 #: emonitor/modules/alarms/alarmfield.py:181
-#, fuzzy
 msgid "admin.currentdate"
-msgstr "Benutzerverwaltung"
+msgstr "Aktuelles Datum"
 
 #: emonitor/modules/alarms/alarmfield.py:182
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:122
@@ -978,12 +1014,12 @@ msgstr "Schlagwort/Meldebild"
 msgid "alarms.date"
 msgstr "Datum"
 
-#: emonitor/modules/alarms/alarmfield.py:183
+#: emonitor/modules/alarms/alarmfield.py:184
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:135
 msgid "alarms.time"
 msgstr "Uhrzeit"
 
-#: emonitor/modules/alarms/alarmfield.py:236
+#: emonitor/modules/alarms/alarmfield.py:232
 msgid "list"
 msgstr ""
 
@@ -1009,9 +1045,8 @@ msgid "admin.alarms.checkernotvalid"
 msgstr "Datei nicht passend"
 
 #: emonitor/modules/alarms/content_admin.py:314
-#, fuzzy
 msgid "admin.alarms.list"
-msgstr "Dateien zum Einsatzobjekt"
+msgstr "Liste"
 
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:36
 msgid "alarms.field.definition"
@@ -1121,9 +1156,8 @@ msgid "alarms.alarmarchivequestion"
 msgstr "Sollen die Einsätze wirklich archiviert werden?"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report.html:6
-#, fuzzy
 msgid "alarms.report.delquestion"
-msgstr "Soll die gewählte Einsatztyp wirklich gelöscht werden?"
+msgstr "Soll die gewählte Einsatz-Bericht wirklich gelöscht werden?"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report.html:20
 #: emonitor/modules/alarms/templates/admin.alarms.report_action.html:12
@@ -1182,9 +1216,8 @@ msgid "alarms.report.itemscount"
 msgstr "(%(count)s Einsatzberichte vorhanden)"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report_action.html:36
-#, fuzzy
 msgid "alarms.report.fielddefinition"
-msgstr "Einsatz-Felddefinition"
+msgstr "Berichtsfelder definieren"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report_action.html:43
 msgid "alarms.report.updload.template"
@@ -1196,20 +1229,18 @@ msgid "alarms.cancel"
 msgstr "Abbrechen"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report_details.html:2
-#, fuzzy
 msgid "alarms.report.fieldconfig.title"
-msgstr "Einsatzbericht bearbeiten"
+msgstr "Berichtsfelder definieren"
 
 #: emonitor/modules/alarms/templates/admin.alarms.report_details.html:3
-#, fuzzy
 msgid "alarms.report.fieldconfig.info"
 msgstr ""
-"Es können unterschiedliche Berichte definiert werden, die zur "
-"Einsatzdokumentation dienen. Die Einsatzdaten können dabei automatisch in "
-"Formulare übertragen werden."
+"Die Felder des gewählten Bericht-Templates können Feldern aus der "
+"Einsatzdatenbank zugeordnet werden, die automatisch ausgefüllt werden.\n"
+"In der linken Spalte sind die verfügaren Felder aus dem Template gelistet, "
+"jeweils mit Name, Typ und Anzahl (Wiederholungsfelder für Sammelberichte)."
 
 #: emonitor/modules/alarms/templates/admin.alarms.report_details.html:14
-#, fuzzy
 msgid "admin.save"
 msgstr "Speichern"
 
@@ -1520,7 +1551,7 @@ msgstr "Einsatz-Sammelmeldung"
 msgid "alarms.collectiveform.info"
 msgstr ""
 "Aus der Liste aller abgeschlossenen Ensätze können die gewünschten zu einer "
-"Liste zusammengefasst und automatisch in einer SAmmelmeldung zusammengefasst "
+"Liste zusammengefasst und automatisch in einer Sammelmeldung zusammengefasst "
 "werden."
 
 #: emonitor/modules/alarms/templates/frontend.alarms_collective.html:31
@@ -1533,11 +1564,10 @@ msgid "alarms.toggleselection"
 msgstr "alle wählen/abwählen"
 
 #: emonitor/modules/alarms/templates/frontend.alarms_collective.html:35
-#, fuzzy
 msgid "alarms.collectiveform.report"
-msgstr "Sammelmeldung erstellen"
+msgstr "Template für Sammelbericht auswählen"
 
-#: emonitor/modules/alarms/templates/frontend.alarms_collective.html:47
+#: emonitor/modules/alarms/templates/frontend.alarms_collective.html:44
 msgid "alarms.collectiveform.do"
 msgstr "Sammelmeldung erzeugen"
 
@@ -1749,6 +1779,15 @@ msgstr ""
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:178
 msgid "alarms.deletequestion"
 msgstr "Soll die gewählte Einsatz wirklich gelöscht werden?"
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:322
+msgid "alarms.collectivereport.noreports"
+msgstr ""
+"Sammelmeldung kann nicht erstellt werden, es ist kein Template definiert."
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:341
+msgid "alarms.collectivereport.error"
+msgstr "Fehler bei der Erstellung der Sammelmeldung"
 
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:53
 #: emonitor/modules/printers/__init__.py:39
@@ -2117,32 +2156,48 @@ msgstr "- kein Filter -"
 msgid "frontend.alamobject.details"
 msgstr "Details anzeigen/ausblenden"
 
-#: emonitor/modules/mails/__init__.py:39
+#: emonitor/modules/mails/__init__.py:37
 #, fuzzy
 msgid "module.mails"
 msgstr "Straßenkarte"
 
-#: emonitor/modules/mails/__init__.py:40
+#: emonitor/modules/mails/__init__.py:38
 #, fuzzy
 msgid "mails.base"
 msgstr "Straßenkarte"
 
-#: emonitor/modules/mails/__init__.py:41
+#: emonitor/modules/mails/__init__.py:39
 #, fuzzy
 msgid "module.mails.config"
 msgstr "Einsatz-Konfiguration"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:19
+#: emonitor/modules/mails/__init__.py:40
+msgid "imap"
+msgstr "IMAP"
+
+#: emonitor/modules/mails/__init__.py:41
+msgid "imaps"
+msgstr "IMAPs (SSL)"
+
+#: emonitor/modules/mails/__init__.py:42
+msgid "pop"
+msgstr "POP"
+
+#: emonitor/modules/mails/mails.py:121
+msgid "mails.error.subject"
+msgstr "eMonitor Fehlermeldung"
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:18
 #, fuzzy
 msgid "mails.config.title"
 msgstr "Einsätze filtern"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:20
+#: emonitor/modules/mails/templates/admin.mails.config.html:19
 #, fuzzy
 msgid "mails.config.info"
 msgstr "Priorisierte Fahrzeuge/Material"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:24
+#: emonitor/modules/mails/templates/admin.mails.config.html:23
 #, fuzzy
 msgid "mails.server.config"
 msgstr ""
@@ -2150,7 +2205,7 @@ msgstr ""
 "Kartenlayer in Tiles dargestellt werden. Das ist besonders bei einer großen "
 "Anzahl an Objekten sinnvoll."
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:25
+#: emonitor/modules/mails/templates/admin.mails.config.html:24
 #, fuzzy
 msgid "mails.server.configinfo"
 msgstr ""
@@ -2158,17 +2213,17 @@ msgstr ""
 "Kartenlayer in Tiles dargestellt werden. Das ist besonders bei einer großen "
 "Anzahl an Objekten sinnvoll."
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:27
+#: emonitor/modules/mails/templates/admin.mails.config.html:26
 #, fuzzy
 msgid "mails.servertype"
 msgstr "Tileserver bereitstellen"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
 #, fuzzy
 msgid "mails.serverinname"
 msgstr "Bereichsname im Fax"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
 #, fuzzy
 msgid "mails.serverinport"
 msgstr ""
@@ -2176,84 +2231,94 @@ msgstr ""
 "Kartenlayer in Tiles dargestellt werden. Das ist besonders bei einer großen "
 "Anzahl an Objekten sinnvoll."
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:36
-#: emonitor/modules/mails/templates/admin.mails.config.html:41
+#: emonitor/modules/mails/templates/admin.mails.config.html:38
+#: emonitor/modules/mails/templates/admin.mails.config.html:43
 #, fuzzy
 msgid "mails.servername"
 msgstr "Name"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:39
+#: emonitor/modules/mails/templates/admin.mails.config.html:44
 #, fuzzy
 msgid "mails.port"
 msgstr "Priorität"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 #, fuzzy
 msgid "mails.serveroutname"
 msgstr "Name"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 msgid "mails.serveroutport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:45
+#: emonitor/modules/mails/templates/admin.mails.config.html:47
 #, fuzzy
 msgid "mails.serveruser"
 msgstr "Tileserver bereitstellen"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:46
+#: emonitor/modules/mails/templates/admin.mails.config.html:48
 #, fuzzy
 msgid "mails.username"
 msgstr "Benutzername"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:49
+#: emonitor/modules/mails/templates/admin.mails.config.html:51
 msgid "mails.serverpassword"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:50
+#: emonitor/modules/mails/templates/admin.mails.config.html:52
 msgid "mails.password"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:53
-#: emonitor/modules/mails/templates/admin.mails.config.html:79
+#: emonitor/modules/mails/templates/admin.mails.config.html:55
+#: emonitor/modules/mails/templates/admin.mails.config.html:89
 #, fuzzy
 msgid "mails.save"
 msgstr "Speichern"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:59
+#: emonitor/modules/mails/templates/admin.mails.config.html:61
 #, fuzzy
 msgid "mails.config"
 msgstr "Einsatz-Konfiguration"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:60
+#: emonitor/modules/mails/templates/admin.mails.config.html:62
 #, fuzzy
 msgid "mails.configinfo"
 msgstr "Priorisierte Fahrzeuge/Material"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:63
+#: emonitor/modules/mails/templates/admin.mails.config.html:65
 #, fuzzy
 msgid "mails.activateobserver"
 msgstr "aktivieren"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:67
+#: emonitor/modules/mails/templates/admin.mails.config.html:69
 #, fuzzy
 msgid "mails.observeinterval"
 msgstr "Intervall"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:68
+#: emonitor/modules/mails/templates/admin.mails.config.html:70
 #, fuzzy
 msgid "mails.observerintervalinfo"
 msgstr "Intervall"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:71
+#: emonitor/modules/mails/templates/admin.mails.config.html:73
 #, fuzzy
 msgid "mails.senderfilter"
 msgstr "Filter"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:76
+#: emonitor/modules/mails/templates/admin.mails.config.html:78
 msgid "mails.useattachment"
 msgstr ""
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:83
+#, fuzzy
+msgid "mails.senderrors"
+msgstr "Filter"
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:86
+#, fuzzy
+msgid "mails.erroraddress"
+msgstr "Straße"
 
 #: emonitor/modules/mapitems/__init__.py:36
 msgid "module.mapitems"
@@ -4505,96 +4570,3 @@ msgstr "Speichern"
 #: emonitor/modules/user/templates/admin.user_actions.html:33
 msgid "users.cancel"
 msgstr "Abbrechen"
-
-#~ msgid "monitor.refreshtitle"
-#~ msgstr "Aktualisieren/erneut suchen"
-
-#~ msgid "monitor.loadingclients"
-#~ msgstr "Bildschirme/Clients werden gesucht..."
-
-#~ msgid "monitor.ping.header"
-#~ msgstr "Folgende Bildschirme/Clients wurden gefunden"
-
-#~ msgid "monitor.nodefinition"
-#~ msgstr "keine Defintion vorhanden"
-
-#~ msgid "monitor.notconnected"
-#~ msgstr "kein Client angeschlossen"
-
-#~ msgid "settings.actobserverstatus"
-#~ msgstr "Aktueller Status"
-
-#~ msgid "settings.observeractive"
-#~ msgstr "Verzeichnisüberwachung aktiv"
-
-#~ msgid "settings.autoclose"
-#~ msgstr "Einsatz schließen nach"
-
-#~ msgid "settings.autoarchive.title"
-#~ msgstr "Einsatz automatisch archivieren"
-
-#~ msgid "settings.autoarchive"
-#~ msgstr "Einsatz archivieren nach"
-
-#~ msgid "alarms.report.repartments"
-#~ msgstr "Einheit(en)"
-
-#~ msgid "alarms.report.save"
-#~ msgstr "Name"
-
-#~ msgid "alarms.report.cancel"
-#~ msgstr "Name"
-
-#~ msgid "admin.alarms.report.tenplatefield"
-#~ msgstr "Name"
-
-#~ msgid "alarms.time_3"
-#~ msgstr "Aus-Zeit"
-
-#~ msgid "alarms.time_4"
-#~ msgstr "An-Zeit"
-
-#~ msgid "alarms.time_1"
-#~ msgstr "Ab-Zeit"
-
-#~ msgid "alarms.time_2"
-#~ msgstr "Ein-Zeit"
-
-#~ msgid "message.map"
-#~ msgstr "Kartentyp"
-
-#~ msgid "car"
-#~ msgstr "Fahrzeug"
-
-#~ msgid "alarms.fields.persons.field.sum"
-#~ msgstr "Insgesamt"
-
-#~ msgid "alarms.fields.persons.field.alarm"
-#~ msgstr "Im Einsatz"
-
-#~ msgid "alarms.fields.persons.field.house"
-#~ msgstr "in Bereitschaft"
-
-#~ msgid "alarms.fields.persons.field.pa_alarm"
-#~ msgstr "PA Einsatz"
-
-#~ msgid "alarms.fields.persons.field.pa"
-#~ msgstr "PA gesamt"
-
-#~ msgid "alarms.fields.persons.field.pa_house"
-#~ msgstr "PA Bereitschaft"
-
-#~ msgid "alarms.fields.persons.field.el"
-#~ msgstr "Einsatzleiter"
-
-#~ msgid "alarms.fields.persons.field.elgrade"
-#~ msgstr "Dienstgrad"
-
-#~ msgid "alarms.fields.persons.field.style.simple"
-#~ msgstr "einfach"
-
-#~ msgid "alarms.fields.persons.field.style.extended"
-#~ msgstr "erweitert"
-
-#~ msgid "admin.alarms.template details"
-#~ msgstr "Sondermaterial"

@@ -5,6 +5,13 @@
 </style>
 <script type="text/javascript" language="javascript" src="/js/jquery.form.min.js"> </script>
 <h3>{{ _('alarms.details.form.title') }}</h3>
+<div style="position:absolute; top:35px;right:20px;">
+    {%- for report in reports %}
+        {%- if not report.reporttype.multi %}
+            <button type="button" title="{{ report.name }}" onclick="return openReport('{{ report.filename }}', {{ alarm.id }})"><i class="fa fa-table"></i></button>
+        {%- endif %}
+    {%- endfor %}
+</div>
 
 <form id="extalarmfields" method="post" action="/data/alarms?action=saveextform" style="height:420px;">
 <div style="height:300px;overflow:visible;">
@@ -39,4 +46,9 @@
         parent.$('.overlay').toggle();
         return false;
     });
+
+    function openReport(filename, alarmid){
+        window.open('/alarms/export/'+alarmid+'-'+filename.replace(/\.[^/.]+$/, "")+'.pdf');
+        return false;
+    }
 </script>

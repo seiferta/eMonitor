@@ -16,12 +16,12 @@
             {%- if personsfield.getArg('fieldtype') == 'checkbox' %}
                 <label>
                     <input type="checkbox" name="{{ personsfield.getName() }}"{% if personsfield.getArg('active') == 'true' %} checked="checked"{% endif %}/>
-                    {{ _('alarms.fields.persons.field.'+personsfield.getLabel()) }} <input type="text" disabled="disabled"/>
+                    {{ _(personsfield.getLabel()) }}: <input type="text" disabled="disabled"/>
                 </label>
             {%- elif personsfield.getArg('fieldtype') == 'list' %}
                 <label>
                     <input type="checkbox" name="{{ personsfield.getName() }}"{% if personsfield.getArg('active') == 'true' %} checked="checked"{% endif %}/>
-                    {{ _('alarms.fields.persons.field.'+personsfield.getLabel()) }}
+                    {{ _(personsfield.getLabel()) }}:
                     <select disabled="disabled">
                         {%- for o in personsfield.getArg('listvalues') %}<option>{{ o }}</option>{%- endfor %}
                     </select>
@@ -30,7 +30,7 @@
                 {%- for o in personsfield.getArg('listvalues') %}
                 <label>
                     <input type="radio" value="{{ o }}" name="{{ personsfield.getName() }}"{%- if personsfield.getArg('active') == o %} checked="checked"{%- endif %}/>
-                    {{ _('alarms.fields.persons.field.style.'+o) }}
+                    {{ _('alarms.fields.persons.field.style.'+o) }}:
                 </label>
                 {%- endfor %}
             {%- endif %}

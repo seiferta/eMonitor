@@ -8,35 +8,40 @@
     p.alarm:last-child{border-bottom-width:0;}
     p.alarm label{width:100%;}
     p.alarm input[type=checkbox]{position:absolute; left:2px;top:16px;}
-    div.alarmlist{max-height: 200px;overflow-x:auto;border:1px solid rgb(221,221,221);}
+    div.alarmlist{max-height: 200px;overflow-x:auto;border:1px solid silver;}
     span.alarmid{color:silver;position:absolute; top:1px; right:2px;}
 </style>
-<script>
-    function selectAllAlarms(){
-        $('.checkbox').each(function(){this.checked=true;});
-    }
-</script>
+
 <div>
-    <form>
+    <form method="get" action="/data/alarms?action=docollective">
         <div class="alarmlist">
-        {% for alarm in alarms %}
+        {%- for alarm in alarms %}
         <p class="alarm">
             <span class="alarmid">Id: {{ alarm.id }}</span>
             <label>
-                <input type="checkbox" name="alarm{{ alarm.id }}" class="checkbox" checked="checked">
+                <input type="checkbox" name="exportalarm_{{ alarm.id }}" class="checkbox" checked="checked" value="{{ alarm.id }}">
                 <small>{{ loop.index }}.</small> <span>{{ alarm.timestamp|datetime }}</span><br/>
                 <span><em>{{ alarm.key.category }}: {{ alarm.key.key }}</em></span>:<br/>
                 {{ alarm.city.name }} - {{ alarm.street.name }} {{ alarm.streetno }}
             </label>
         </p>
-        {% endfor %}
+        {%- endfor %}
         </div>
         <p>
             <small><a href="javascript:void(0)" onclick="$('.checkbox').each(function(){this.checked=!this.checked;});" title="{{ _('alarms.toggletitle') }}">{{ _('alarms.toggleselection') }}</a></small>
         </p>
-
+        <p>
+            <label>
+                {{ _('alarms.collectiveform.report') }}:
+                <select name="reportname">
+                    {%- for report in reports %}
+                        <option value="{{ report.id }}">{{ report.name }}</option>
+                    {%- endfor %}
+                </select>
+            </label>
+        </p>
         <p style="text-align:center;">
-            <button type="button">{{ _('alarms.collectiveform.do') }}</button>
+            <button type="submit" value="exportcollective" onclick="return window.alarms.doCollectiveReport()">{{ _('alarms.collectiveform.do') }}</button>
         </p>
     </form>
 </div>

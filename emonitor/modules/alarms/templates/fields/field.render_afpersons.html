@@ -4,7 +4,7 @@
     {%- for extfield in field.getFields() %}
     {%- if extfield.getArg('active') == 'true' %}
         <div style="display:inline">
-            <strong>{{ _('alarms.fields.persons.field.'+extfield.getLabel()) }}:</strong>
+            <strong>{{ _(extfield.getLabel()) }}:</strong>
             {{ formatField(extfield.getValue(alarm), 10, 1, 5) }}
         </div>
         {%- if extfield.getArg('newline') %}<br/>{%- endif %}

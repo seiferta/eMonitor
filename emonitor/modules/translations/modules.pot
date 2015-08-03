@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-08 13:16+0200\n"
+"POT-Creation-Date: 2015-07-29 12:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -754,7 +754,7 @@ msgstr ""
 msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:124 emonitor/modules/alarms/alarm.py:351
+#: emonitor/modules/alarms/__init__.py:124 emonitor/modules/alarms/alarm.py:353
 msgid "alarms.statechangeactivated"
 msgstr ""
 
@@ -883,7 +883,7 @@ msgid "AFMaterial"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:158
-#: emonitor/modules/alarms/alarmfield.py:413
+#: emonitor/modules/alarms/alarmfield.py:409
 msgid "AFReport"
 msgstr ""
 
@@ -903,15 +903,55 @@ msgstr ""
 msgid "AFPersons"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:164
+#: emonitor/modules/alarms/__init__.py:165
 msgid "alarms.fields.simple"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:165
+#: emonitor/modules/alarms/__init__.py:166
 msgid "alarms.fields.extended"
 msgstr ""
 
-#: emonitor/modules/alarms/alarm.py:294
+#: emonitor/modules/alarms/__init__.py:168
+msgid "alarms.fields.persons.field.sum"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:169
+msgid "alarms.fields.persons.field.house"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:170
+msgid "alarms.fields.persons.field.pa_alarm"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:171
+msgid "alarms.fields.persons.field.el"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:172
+msgid "alarms.fields.persons.field.alarm"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:173
+msgid "alarms.fields.persons.field.pa"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:174
+msgid "alarms.fields.persons.field.pa_house"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:175
+msgid "alarms.fields.persons.field.elgrade"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:176
+msgid "alarms.fields.persons.field.style.simple"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:177
+msgid "alarms.fields.persons.field.style.extended"
+msgstr ""
+
+#: emonitor/modules/alarms/alarm.py:296
 msgid "alarms.routingerror"
 msgstr ""
 
@@ -941,12 +981,12 @@ msgstr ""
 msgid "alarms.date"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmfield.py:183
+#: emonitor/modules/alarms/alarmfield.py:184
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:135
 msgid "alarms.time"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmfield.py:236
+#: emonitor/modules/alarms/alarmfield.py:232
 msgid "list"
 msgstr ""
 
@@ -1440,7 +1480,7 @@ msgstr ""
 msgid "alarms.collectiveform.report"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_collective.html:47
+#: emonitor/modules/alarms/templates/frontend.alarms_collective.html:44
 msgid "alarms.collectiveform.do"
 msgstr ""
 
@@ -1648,6 +1688,14 @@ msgstr ""
 
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:178
 msgid "alarms.deletequestion"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:322
+msgid "alarms.collectivereport.noreports"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:341
+msgid "alarms.collectivereport.error"
 msgstr ""
 
 #: emonitor/modules/alarms/templates/print.alarm_sum.html:53
@@ -1985,111 +2033,135 @@ msgstr ""
 msgid "frontend.alamobject.details"
 msgstr ""
 
-#: emonitor/modules/mails/__init__.py:39
+#: emonitor/modules/mails/__init__.py:37
 msgid "module.mails"
 msgstr ""
 
-#: emonitor/modules/mails/__init__.py:40
+#: emonitor/modules/mails/__init__.py:38
 msgid "mails.base"
 msgstr ""
 
-#: emonitor/modules/mails/__init__.py:41
+#: emonitor/modules/mails/__init__.py:39
 msgid "module.mails.config"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:19
+#: emonitor/modules/mails/__init__.py:40
+msgid "imap"
+msgstr ""
+
+#: emonitor/modules/mails/__init__.py:41
+msgid "imaps"
+msgstr ""
+
+#: emonitor/modules/mails/__init__.py:42
+msgid "pop"
+msgstr ""
+
+#: emonitor/modules/mails/mails.py:121
+msgid "mails.error.subject"
+msgstr ""
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:18
 msgid "mails.config.title"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:20
+#: emonitor/modules/mails/templates/admin.mails.config.html:19
 msgid "mails.config.info"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:24
+#: emonitor/modules/mails/templates/admin.mails.config.html:23
 msgid "mails.server.config"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:25
+#: emonitor/modules/mails/templates/admin.mails.config.html:24
 msgid "mails.server.configinfo"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:27
+#: emonitor/modules/mails/templates/admin.mails.config.html:26
 msgid "mails.servertype"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
 msgid "mails.serverinname"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
 msgid "mails.serverinport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:36
-#: emonitor/modules/mails/templates/admin.mails.config.html:41
+#: emonitor/modules/mails/templates/admin.mails.config.html:38
+#: emonitor/modules/mails/templates/admin.mails.config.html:43
 msgid "mails.servername"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:39
+#: emonitor/modules/mails/templates/admin.mails.config.html:44
 msgid "mails.port"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 msgid "mails.serveroutname"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 msgid "mails.serveroutport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:45
+#: emonitor/modules/mails/templates/admin.mails.config.html:47
 msgid "mails.serveruser"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:46
+#: emonitor/modules/mails/templates/admin.mails.config.html:48
 msgid "mails.username"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:49
+#: emonitor/modules/mails/templates/admin.mails.config.html:51
 msgid "mails.serverpassword"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:50
+#: emonitor/modules/mails/templates/admin.mails.config.html:52
 msgid "mails.password"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:53
-#: emonitor/modules/mails/templates/admin.mails.config.html:79
+#: emonitor/modules/mails/templates/admin.mails.config.html:55
+#: emonitor/modules/mails/templates/admin.mails.config.html:89
 msgid "mails.save"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:59
+#: emonitor/modules/mails/templates/admin.mails.config.html:61
 msgid "mails.config"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:60
+#: emonitor/modules/mails/templates/admin.mails.config.html:62
 msgid "mails.configinfo"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:63
+#: emonitor/modules/mails/templates/admin.mails.config.html:65
 msgid "mails.activateobserver"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:67
+#: emonitor/modules/mails/templates/admin.mails.config.html:69
 msgid "mails.observeinterval"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:68
+#: emonitor/modules/mails/templates/admin.mails.config.html:70
 msgid "mails.observerintervalinfo"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:71
+#: emonitor/modules/mails/templates/admin.mails.config.html:73
 msgid "mails.senderfilter"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:76
+#: emonitor/modules/mails/templates/admin.mails.config.html:78
 msgid "mails.useattachment"
+msgstr ""
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:83
+msgid "mails.senderrors"
+msgstr ""
+
+#: emonitor/modules/mails/templates/admin.mails.config.html:86
+msgid "mails.erroraddress"
 msgstr ""
 
 #: emonitor/modules/mapitems/__init__.py:36

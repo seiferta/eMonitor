@@ -2,7 +2,7 @@
     {%- for extfield in field.getFields() %}
         {%- if extfield.getArg('active') == 'true' %}
             <p style="float:left;width:49%;">
-            <label style="width:100%">{{ _('alarms.fields.persons.field.'+extfield.getLabel()) }}:<br/>
+            <label style="width:100%">{{ _(extfield.getLabel()) }}:<br/>
                 {%- if extfield.getArg('fieldtype') == 'list' %}
                     <select name="{{ extfield.getName() }}" style="width:80%;">
                     {%- for o in extfield.getArg('listvalues') %}

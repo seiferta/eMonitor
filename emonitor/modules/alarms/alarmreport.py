@@ -2,10 +2,11 @@ import os
 import re
 import glob
 import codecs
+import yaml
 import json
 from flask import render_template, current_app
 from emonitor.extensions import db, babel
-from emonitor.lib.pdf.pdf import getPDFInformation, getFormFields
+from emonitor.modules.alarms.alarm import Alarm
 
 reporttitle = re.compile(r'(.*)title>(?P<reportname>(.*))</title(.*)')
 
@@ -14,6 +15,7 @@ class AlarmReportType:
 
     def __init__(self, filename, rtype="internal"):
         self.filename = filename
+        self._report = None
         if os.path.exists(filename):
             # try html
             if filename.endswith('html'):
@@ -22,23 +24,38 @@ class AlarmReportType:
                     self.name = m.groupdict()['reportname']
                 else:
                     self.name = "<unnamed>"
-                self.multi = 'multi' in filename
             # try pdf
             if filename.endswith('pdf'):
-                info = getPDFInformation(filename)
-                self.name = u"{} - {}".format(info['title'], info['author'])
-                fields = getFormFields(filename)
-                self.multi = max(fields.values()) > 1
-
+                from emonitor.lib.pdf.pdf import PDFFormFile
+                self._report = PDFFormFile(self.filename)
+                self.name = u"{} - {}".format(self._report.information['title'], self._report.information['author'])
         else:
             self.name = ""
         self.type = rtype
+
+    @property
+    def multi(self):
+        if self._report:
+            return self._report.multi
+        return False
+
+    @property
+    def fields(self):
+        if self._report:
+            return self._report.fields
+        return {}
+
+    def createReport(self, alarms, fields):
+        return self._report.createReport(alarmlist=[Alarm.getAlarms(id=alarm) for alarm in alarms], fielddefinition=fields)
 
     def __str__(self):
         return u'{} ({})'.format(self.name, babel.gettext(self.type))
 
 
 class AlarmReport(db.Model):
+    """
+    alarm report class for database definition
+    """
 
     __tablename__ = 'alarmreports'
     __table_args__ = {'extend_existing': True}
@@ -55,11 +72,31 @@ class AlarmReport(db.Model):
         self.filename = filename
         self._reporttype = reporttype
         self._dept = dept
-        self._fields = json.dumps(fields)
+        self._fields = yaml.safe_dump(fields)
 
     @property
     def fields(self):
-        return []
+        """
+        load field definition from database
+        :return:
+        """
+        return yaml.load(self._fields)
+
+    @fields.setter
+    def fields(self, fields):
+        """
+        save fields in yaml format in database
+        :param fields:
+        :return:
+        """
+        self._fields = yaml.safe_dump(fields)
+
+    def getFieldsJson(self):
+        """
+        defliver field definition in json format for web-forms
+        :return:
+        """
+        return json.dumps(self.fields)
 
     @property
     def departments(self):
@@ -83,11 +120,18 @@ class AlarmReport(db.Model):
     def getHTML(self, **params):
         return render_template('reports/{}'.format(self.filename), **params)
 
+    def createReport(self, **kwargs):
+        if 'ids' in kwargs:
+            return self.reporttype.createReport(kwargs['ids'], self.fields)
+
     @staticmethod
-    def getReportTypes():
+    def getReportTypes(filename=""):
         from emonitor import app
         ret = [AlarmReportType(f.replace('\\', '/')) for f in glob.glob('{}/emonitor/modules/alarms/templates/report.*.html'.format(app.config.get('PROJECT_ROOT')))]
         ret.extend([AlarmReportType(f.replace('\\', '/'), rtype="external") for f in glob.glob('{}alarmreports/*.*'.format(app.config.get('PATH_DATA')))])
+
+        if filename != "":  # filter elements
+            return filter(lambda x: x.filename == filename, ret)[0]
         return ret
 
     @staticmethod

@@ -18,7 +18,7 @@ from emonitor.modules.alarmobjects.alarmobject import AlarmObject
 from emonitor.modules.alarmkeys.alarmkey import Alarmkey
 from emonitor.modules.alarms.alarmhistory import AlarmHistory
 from emonitor.modules.alarms.alarmattribute import AlarmAttribute
-from emonitor.modules.alarms.alarmfield import AlarmField
+from emonitor.modules.alarms.alarmfield import AlarmField, AFBasic
 from emonitor.modules.maps.map import Map
 from emonitor.modules.settings.settings import Settings
 from emonitor.modules.streets.street import Street
@@ -197,6 +197,25 @@ class Alarm(db.Model):
         else:
             fields = AlarmField.getAlarmFields(dept=Department.getDefaultDepartment().id)
         return fields
+
+    def getFieldValue(self, field):
+        value = field
+        if '-' in field:
+            value = AlarmField.getAlarmFields(fieldtype=field.split('-')[0]).getFieldValue(field.split('-')[1], self)
+        elif field.startswith('basic.'):
+            value = AFBasic().getFieldValue(field, self)
+        elif field.startswith('alarm.'):
+            if field == 'alarm.key':
+                if self.key.id:
+                    return "{}: {}".format(self.key.category, self.key.key)
+                return self.key.key
+            elif field == 'alarm.date':
+                return self.timestamp.strftime("%d.%m.%Y")
+            elif field == 'alarm.time':
+                return self.timestamp.strftime("%H:%M")
+        else:
+            value = field
+        return value
 
     @staticmethod
     def getMap():
@@ -440,7 +459,10 @@ class Alarm(db.Model):
         if not os.path.exists('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/'))):
             os.makedirs('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/')))
 
-        shutil.copy2('{}{}'.format(kwargs['incomepath'], kwargs['filename']), '{}{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/%Y%m%d-%H%M%S'), os.path.splitext(kwargs['filename'])[1]))
+        try:
+            shutil.copy2('{}{}'.format(kwargs['incomepath'], kwargs['filename']), '{}{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/%Y%m%d-%H%M%S'), os.path.splitext(kwargs['filename'])[1]))
+        except:
+            pass
         try:  # remove file
             os.remove('{}{}'.format(kwargs['incomepath'], kwargs['filename']))
         except:

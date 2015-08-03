@@ -1,5 +1,9 @@
 {%  extends "admin.html" %}
 
+{%  block script %}
+    <script type="text/javascript" src="/streets/inc/jquery.autocomplete.min.js" xmlns="http://www.w3.org/1999/html"> </script>
+{% endblock %}
+
 {%  block subnavigation %}
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
@@ -26,7 +30,12 @@
             {{ _('alarms.report.reporttype') }}:<br/>
             <span id="templates">
             {%- for reporttype in reporttypes %}
-                <label><input type="radio" name="template" value="{{ reporttype.filename }}"{% if report.reporttype.filename == reporttype.filename %} checked="checked"{% endif %}/> {{ reporttype }}</label>
+                <label>
+                    <input type="radio" name="template" value="{{ reporttype.filename }}"{% if report.reporttype.filename == reporttype.filename %} checked="checked"{% endif %}/> {{ reporttype }}
+                    {% if reporttype.fields|length > 0 %}
+                    <span><a href="#" onclick="return getFormDetails('{{ reporttype.filename }}', {{ loop.index }})">{{ _('alarms.report.fielddefinition') }}</a></span>
+                    {% endif %}
+                </label>
             {%- endfor %}
             </span>
             <br/>
@@ -35,9 +44,8 @@
             <input type="file" name="templatefile" id="file"/>
 
         </p>
-        <div id="definition"></div>
-
         <p style="padding-top:10px;">
+            <textarea id="fielddefinition" name="fielddefinition" style="display:none;">{{ report.getFieldsJson() }}</textarea>
             <button type="submit" name="action" value="updatereport" class="save"><i class="fa fa-check"></i> {{ _('alarms.save') }}</button>
             <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarms.cancel') }}</button>
         </p>
@@ -69,6 +77,20 @@
                 $('#templates').append(data.content);
             }
         });
+    }
+
+    function getFormDetails(template, index){
+        var dept = [];
+        $("input[name='edit_department']:checked").each(function(i,obj){
+            dept.push($(obj).val());
+        });
+        $.ajax({ type : "POST", url : "/admin/data/alarms?action=reportdetails&reportid={{ report.id }}&template="+template+"&departments="+dept,
+            success: function(data) {
+                $('.overlay').toggle();
+                $('#overlaycontent').html(data);
+            }
+        });
+        return false;
     }
 
 {% endblock %}

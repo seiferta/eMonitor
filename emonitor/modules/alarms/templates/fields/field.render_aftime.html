@@ -1,8 +1,8 @@
 <div class="aftime" style="border-bottom:0.1px solid black;margin-bottom:10px;">
     <strong>Alarmzeit:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.timestamp|datetime('HH:mm:ss') }}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
-    <strong>Aus:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime3') }}{%- for i in range(0, 8-(alarm.get('alarmtime3')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
-    <strong>An:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime4') }}{%- for i in range(0, 8-(alarm.get('alarmtime4')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
-    <strong>Ab:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime1') }}{%- for i in range(0, 8-(alarm.get('alarmtime1')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
-    <strong>Ein:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime2') }}{%- for i in range(0, 8-(alarm.get('alarmtime2')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
-    <strong>Ende:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmend') }}{%- for i in range(0, 8-(alarm.get('alarmend')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;"></span>
+    <strong>{{ _('alarms.alarmtime3') }}:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime3') }}{%- for i in range(0, 8-(alarm.get('alarmtime3')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
+    <strong>{{ _('alarms.alarmtime4') }}:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime4') }}{%- for i in range(0, 8-(alarm.get('alarmtime4')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
+    <strong>{{ _('alarms.alarmtime1') }}:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime1') }}{%- for i in range(0, 8-(alarm.get('alarmtime1')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
+    <strong>{{ _('alarms.alarmtime2') }}:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmtime2') }}{%- for i in range(0, 8-(alarm.get('alarmtime2')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;">{{ '_'*2 }}</span>
+    <strong>{{ _('alarms.alarmend') }}:</strong><span style="color:#ffffff;">_</span><u>{{ alarm.get('alarmend') }}{%- for i in range(0, 8-(alarm.get('alarmend')|length)) %}&#160;{%- endfor %}</u><span style="color:#ffffff;"></span>
 </div>

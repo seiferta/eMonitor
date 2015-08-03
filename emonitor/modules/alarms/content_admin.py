@@ -1,13 +1,16 @@
 import os
 import imp
 import random
+import json
+from collections import OrderedDict
 from emonitor.lib.pdf.pdf import getFormFields, getPDFInformation
 from flask import render_template, request, current_app
+from itertools import chain
 
 from emonitor.extensions import db, scheduler, babel
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker, processFile
 from emonitor.modules.alarms.alarm import Alarm
-from emonitor.modules.alarms.alarmfield import AlarmField
+from emonitor.modules.alarms.alarmfield import AlarmField, AFBasic
 from emonitor.modules.alarms.alarmtype import AlarmType
 from emonitor.modules.alarms.alarmsection import AlarmSection
 from emonitor.modules.alarms.alarmreport import AlarmReport
@@ -142,12 +145,13 @@ def getAdminContent(self, **params):
                     else:
                         report._reporttype = 'external'
                         report.filename = request.form.get('template').replace("{}".format(current_app.config.get('PATH_DATA')), "")
+                        report.fields = json.loads(request.form.get('fielddefinition'))
                     report.departments = request.form.getlist('edit_department')
                     db.session.commit()
 
                 elif request.form.get('action').startswith('editreport_'):  # edit report
                     report = AlarmReport.getReports(request.form.get('action').split('_')[-1])
-                    params.update({'report': report, 'departments': Department.getDepartments(), 'reporttypes': AlarmReport.getReportTypes()})
+                    params.update({'report': report, 'departments': Department.getDepartments(), 'reporttypes': AlarmReport.getReportTypes(), 'alarmfields': AlarmField.getAlarmFields()})
                     return render_template('admin.alarms.report_action.html', **params)
 
                 elif request.form.get('action').startswith('deletereport_'):  # delete report
@@ -281,5 +285,38 @@ def getAdminData(self):
             fields = getFormFields(fpath)
             content = render_template('admin.alarms.report_fields.html', filepath='{}alarmreports/{}'.format(current_app.config.get('PATH_DATA'), fname[2:]), fileinfo=getPDFInformation(fpath), fields=fields, multi=max(fields.values()) > 1)
         else:
+            content = ""
             fields = []
         return {'filename': fname, 'content': content}
+
+    elif request.args.get('action') == 'reportdetails':
+        return render_template('admin.alarms.report_details.html', report=AlarmReport.getReports(id=request.args.get('reportid')), reporttype=AlarmReport.getReportTypes(request.args.get('template')), departments=request.args.get('departments'))
+
+    elif request.args.get('action') == 'reportfieldlookup':
+        ret = OrderedDict()
+
+        ret['basic'] = []  # add basic information from AFBasic class
+        for f in AFBasic().getFields():
+            ret['basic'].append({'id': f.name, 'value': f.id})
+
+        alarmfields = {}
+        for alarmfield in AlarmField.getAlarmFields():
+            if str(alarmfield.dept) not in request.args.get('departments').split(','):
+                continue
+            if alarmfield.fieldtype not in alarmfields:
+                alarmfields[alarmfield.fieldtype] = []
+            alarmfields[alarmfield.fieldtype].append(alarmfield)
+
+        l = ""
+        for alarmfield in list(chain.from_iterable([f for f in alarmfields.values() if len(f) == len(request.args.get('departments').split(','))])):
+            if '%s' % alarmfield.name not in ret:
+                ret['%s' % alarmfield.name] = [{'id': '%s-list' % alarmfield.fieldtype, 'value': '%s (%s)' % (alarmfield.name, babel.gettext('admin.alarms.list'))}]
+            for f in alarmfield.getFields():
+                if f.getLabel().strip() not in ["", '<leer>']:  # dismiss empty values
+                    if f.name[0] != ' ':
+                        value = '%s' % babel.gettext(f.getLabel())
+                        l = value
+                    else:  # add name of kategory
+                        value = '%s > %s' % (l, babel.gettext(f.getLabel()))
+                    ret['%s' % alarmfield.name].append({'id': '%s-%s' % (alarmfield.fieldtype, f.id), 'value': value})
+        return ret

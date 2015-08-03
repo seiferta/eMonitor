@@ -318,8 +318,30 @@
                 function loadCollective(){
                     $.ajax({ type : "POST", url : "/data/alarms?action=collective",
                         success: function(result) {
-                            $('#overlaycontent', parent.document).html(result);
-                            $('.overlay', parent.document).toggle();
+                            if(result==""){
+                                alert('{{ _('alarms.collectivereport.noreports') }}');
+                            }else {
+                                $('#overlaycontent', parent.document).html(result);
+                                $('.overlay', parent.document).toggle();
+                            }
+                            return false;
+                        }
+                    });
+                    return false;
+                }
+
+                function doCollectiveReport() {
+                    var ids = [];
+                    parent.$('input[name^=exportalarm]:checked').each(function(){
+                        ids.push($(this).val());
+                    });
+                    $.ajax({ type : "POST", url : "/data/alarms?action=docollective&ids="+ids+'&form='+parent.$('select[name=reportname]').val(),
+                        success: function(filename) {
+                            if (filename==''){
+                                alert('{{ _('alarms.collectivereport.error') }}');
+                            }else{
+                                window.open('/data/alarms/download/'+filename);
+                            }
                             return false;
                         }
                     });

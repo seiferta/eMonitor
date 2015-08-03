@@ -1,1 +1,8 @@
-<label><input type="radio" name="template" value="{{ filepath }}" checked="checked"/> {{ fileinfo['title'] }} - {{ fileinfo['author'] }} ({{ _('external') }})</label>
+<label>
+    <input type="radio" name="template" value="{{ filepath }}" checked="checked"/> {{ fileinfo['title'] }} - {{ fileinfo['author'] }} ({{ _('external') }})
+    <ul>
+        {%- for field in fields %}
+        <li>{{ field }}</li>
+        {%- endfor %}
+    </ul>
+</label>
