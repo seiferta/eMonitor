@@ -1,0 +1,48 @@
+<div style="position:relative;">
+    <h2>{{ _('alarms.report.fieldconfig.title') }}</h2>
+    <small>{{ _('alarms.report.fieldconfig.info') }}</small>
+    <div style="padding:10px 0;">
+        <form id="fielddefinitions">
+            {%- for k, i in report.reporttype.fields.iteritems() %}
+            <div style="padding-bottom:4px;">
+                {{ k }} <em>[{{ i[0] }}]</em> ({{ i[1] }}):
+                <select id="edit_field{{ loop.index0 }}" name="edit_field_{{ k }}" style="width:300px;float:right;"></select>
+            </div>
+            {%- endfor %}
+        </form>
+    </div>
+    <p><button type="button" onclick="return formatValues()">{{ _('admin.save') }}</button></p>
+    <div id="loading" style="text-align:center;background-color: white;position:absolute;top:0;bottom:0;left:0;right:0;opacity: 0.8;filter: alpha(opacity=40); ">
+        <img src="/img/loading.gif" style="padding-top:30%;"/>
+    </div>
+</div>
+
+<script>
+    function formatValues() {
+        var data = {};
+        jQuery.each($('select[name^="edit_field"]'), function( i, field ) {
+            data[$(field).attr('name').substring(11)] = $(field).find("option:selected") ? $(field).find("option:selected").attr("id") : '';
+        });
+        $('#fielddefinition').html(JSON.stringify(data));
+        $('.overlay').toggle();
+        $('#overlaycontent').html('');
+    }
+
+    $.ajax({ type : "POST", url : "/admin/data/alarms?action=reportfieldlookup&departments={{ departments }}&format=json",
+        success: function(keys) {
+            var data = JSON.parse($('#fielddefinition').html());
+            var values = "<option></option>";
+            $.each(keys, function(key, val){
+                values+= '<optgroup label="' + key + '">';
+                $.each(val, function(k, v){values+= '<option id="' + v.id + '">' + v.value + '</option>';});
+                values+= '</optgroup>';
+            });
+            $('select[name^="edit_field"]').each(function (id, vl) {
+                var fld = $('#edit_field'+id);
+                fld.append(values).val('');
+                fld.find("option[id='"+data[fld.attr('name').substring(11)]+"']").attr('selected', 'selected');
+            });
+            $('#loading').hide();
+        }
+    });
+</script>
