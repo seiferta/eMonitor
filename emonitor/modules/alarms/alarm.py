@@ -499,7 +499,7 @@ class Alarm(db.Model):
                 pass
 
         # create alarm object
-        if 'key' not in alarm_fields.keys():
+        if 'key' not in alarm_fields.keys() or alarm_fields['key'][0] == u'':
             if alarmtype.translation(u'_bma_main_') in alarm_fields['remark'][0] or alarmtype.translation(u'_bma_main_') in alarm_fields['person'][0]:
                 alarmkey = Alarmkey.query.filter(Alarmkey.key.like(u"%{}%".format(alarmtype.translation(u'_bma_')))).all()
                 if len(alarmkey) > 0:
@@ -645,7 +645,7 @@ class Alarm(db.Model):
         if 'remark' in alarm_fields and alarm_fields['remark'][0] != '':
             alarm.set('remark', alarm_fields['remark'][0])
             if alarmtype.translation(u'_bma_main_') in alarm_fields['remark'][0] or alarmtype.translation(u'_bma_main_') in alarm_fields['person'][0]:
-                alarmkey = Alarmkey.query.filter(Alarmkey.category.like(u"%{}%".format(alarmtype.translation(u'_bma_')))).first()
+                alarmkey = Alarmkey.query.filter(Alarmkey.key.like(u"%{}%".format(alarmtype.translation(u'_bma_')))).first()
                 if alarmkey:
                     alarm.set('id.key', alarmkey.id)
                     alarm._key = u'{}: {}'.format(alarmkey.category, alarmkey.key)
