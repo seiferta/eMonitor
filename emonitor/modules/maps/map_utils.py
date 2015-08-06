@@ -77,8 +77,8 @@ def getAlarmMap(alarm, tilepath, **params):
             #if alarm.key.category.startswith('B'):
             for item in items:
                 if item['parameters']['tileserver'] == '1':
-                    if os.path.exists("{}{}/{}/{}-{}.png".format(tilepath, item['name'], zoom, t[0] + i, t[1] + j)):
-                        img_tmp = Image.open("{}{}/{}/{}-{}.png".format(tilepath, item['name'], zoom, t[0] + i, t[1] + j))
+                    if os.path.exists("{}{}/{}/{}-{}.png".format(tilepath, item['parameters']['layout'], zoom, t[0] + i, t[1] + j)):
+                        img_tmp = Image.open("{}{}/{}/{}-{}.png".format(tilepath, item['parameters']['layout'], zoom, t[0] + i, t[1] + j))
                         img_map.paste(img_tmp, (dimx / 2 * 256 + (i * 256), dimy / 2 * 256 + (j * 256)), mask=img_tmp)
 
     if len(points) > 0:  # draw house
