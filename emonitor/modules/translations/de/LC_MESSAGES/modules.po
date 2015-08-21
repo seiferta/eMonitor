@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-29 12:44+0200\n"
-"PO-Revision-Date: 2015-08-03 11:08+0100\n"
+"POT-Creation-Date: 2015-08-21 11:04+0200\n"
+"PO-Revision-Date: 2015-08-21 11:05+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -161,10 +161,12 @@ msgstr ""
 "werden."
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:26
+#: emonitor/modules/persons/templates/admin.persons.upload.html:26
 msgid "alarmkeys.upload.uploadfile"
 msgstr "Datei hochladen"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:27
+#: emonitor/modules/persons/templates/admin.persons.upload.html:27
 msgid "alarmkeys.upload.result"
 msgstr "Ergebnis anzeigen"
 
@@ -173,6 +175,7 @@ msgid "alarmkeys.upload.export"
 msgstr "Export"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:33
+#: emonitor/modules/persons/templates/admin.persons.upload.html:32
 msgid "alarmkeys.upload.step1header"
 msgstr "Schritt 1: Excel-Datei hochladen"
 
@@ -916,7 +919,7 @@ msgid "AFMaterial"
 msgstr "Geräte/Material"
 
 #: emonitor/modules/alarms/__init__.py:158
-#: emonitor/modules/alarms/alarmfield.py:409
+#: emonitor/modules/alarms/alarmfield.py:411
 msgid "AFReport"
 msgstr "Bericht"
 
@@ -936,51 +939,51 @@ msgstr "Sonstige Kräfte"
 msgid "AFPersons"
 msgstr "Mannschaft"
 
-#: emonitor/modules/alarms/__init__.py:165
+#: emonitor/modules/alarms/__init__.py:164
 msgid "alarms.fields.simple"
 msgstr "einfach"
 
-#: emonitor/modules/alarms/__init__.py:166
+#: emonitor/modules/alarms/__init__.py:165
 msgid "alarms.fields.extended"
 msgstr "erweitert"
 
-#: emonitor/modules/alarms/__init__.py:168
+#: emonitor/modules/alarms/__init__.py:166
 msgid "alarms.fields.persons.field.sum"
 msgstr "Mannschaft gesamt"
 
-#: emonitor/modules/alarms/__init__.py:169
+#: emonitor/modules/alarms/__init__.py:167
 msgid "alarms.fields.persons.field.house"
 msgstr "Mannschaft in Bereitschaft"
 
-#: emonitor/modules/alarms/__init__.py:170
+#: emonitor/modules/alarms/__init__.py:168
 msgid "alarms.fields.persons.field.pa_alarm"
 msgstr "PA im Einsatz"
 
-#: emonitor/modules/alarms/__init__.py:171
+#: emonitor/modules/alarms/__init__.py:169
 msgid "alarms.fields.persons.field.el"
 msgstr "Einsatzleiter"
 
-#: emonitor/modules/alarms/__init__.py:172
+#: emonitor/modules/alarms/__init__.py:170
 msgid "alarms.fields.persons.field.alarm"
 msgstr "Im Einsatz"
 
-#: emonitor/modules/alarms/__init__.py:173
+#: emonitor/modules/alarms/__init__.py:171
 msgid "alarms.fields.persons.field.pa"
 msgstr "PA gesamt"
 
-#: emonitor/modules/alarms/__init__.py:174
+#: emonitor/modules/alarms/__init__.py:172
 msgid "alarms.fields.persons.field.pa_house"
 msgstr "PA in Bereitschaft"
 
-#: emonitor/modules/alarms/__init__.py:175
+#: emonitor/modules/alarms/__init__.py:173
 msgid "alarms.fields.persons.field.elgrade"
 msgstr "Dienstgrad"
 
-#: emonitor/modules/alarms/__init__.py:176
+#: emonitor/modules/alarms/__init__.py:174
 msgid "alarms.fields.persons.field.style.simple"
 msgstr "Einfach"
 
-#: emonitor/modules/alarms/__init__.py:177
+#: emonitor/modules/alarms/__init__.py:175
 msgid "alarms.fields.persons.field.style.extended"
 msgstr "Erweitert"
 
@@ -1040,11 +1043,11 @@ msgstr "Auf"
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
-#: emonitor/modules/alarms/content_admin.py:247
+#: emonitor/modules/alarms/content_admin.py:246
 msgid "admin.alarms.checkernotvalid"
 msgstr "Datei nicht passend"
 
-#: emonitor/modules/alarms/content_admin.py:314
+#: emonitor/modules/alarms/content_admin.py:313
 msgid "admin.alarms.list"
 msgstr "Liste"
 
@@ -2218,12 +2221,12 @@ msgstr ""
 msgid "mails.servertype"
 msgstr "Tileserver bereitstellen"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:35
 #, fuzzy
 msgid "mails.serverinname"
 msgstr "Bereichsname im Fax"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:35
 #, fuzzy
 msgid "mails.serverinport"
 msgstr ""
@@ -2231,91 +2234,91 @@ msgstr ""
 "Kartenlayer in Tiles dargestellt werden. Das ist besonders bei einer großen "
 "Anzahl an Objekten sinnvoll."
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:38
-#: emonitor/modules/mails/templates/admin.mails.config.html:43
+#: emonitor/modules/mails/templates/admin.mails.config.html:36
+#: emonitor/modules/mails/templates/admin.mails.config.html:41
 #, fuzzy
 msgid "mails.servername"
 msgstr "Name"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:39
-#: emonitor/modules/mails/templates/admin.mails.config.html:44
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 #, fuzzy
 msgid "mails.port"
 msgstr "Priorität"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:40
 #, fuzzy
 msgid "mails.serveroutname"
 msgstr "Name"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:40
 msgid "mails.serveroutport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:47
+#: emonitor/modules/mails/templates/admin.mails.config.html:45
 #, fuzzy
 msgid "mails.serveruser"
 msgstr "Tileserver bereitstellen"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:48
+#: emonitor/modules/mails/templates/admin.mails.config.html:46
 #, fuzzy
 msgid "mails.username"
 msgstr "Benutzername"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:51
+#: emonitor/modules/mails/templates/admin.mails.config.html:49
 msgid "mails.serverpassword"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:52
+#: emonitor/modules/mails/templates/admin.mails.config.html:50
 msgid "mails.password"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:55
-#: emonitor/modules/mails/templates/admin.mails.config.html:89
+#: emonitor/modules/mails/templates/admin.mails.config.html:53
+#: emonitor/modules/mails/templates/admin.mails.config.html:87
 #, fuzzy
 msgid "mails.save"
 msgstr "Speichern"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:61
+#: emonitor/modules/mails/templates/admin.mails.config.html:59
 #, fuzzy
 msgid "mails.config"
 msgstr "Einsatz-Konfiguration"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:62
+#: emonitor/modules/mails/templates/admin.mails.config.html:60
 #, fuzzy
 msgid "mails.configinfo"
 msgstr "Priorisierte Fahrzeuge/Material"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:65
+#: emonitor/modules/mails/templates/admin.mails.config.html:63
 #, fuzzy
 msgid "mails.activateobserver"
 msgstr "aktivieren"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:69
+#: emonitor/modules/mails/templates/admin.mails.config.html:67
 #, fuzzy
 msgid "mails.observeinterval"
 msgstr "Intervall"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:70
+#: emonitor/modules/mails/templates/admin.mails.config.html:68
 #, fuzzy
 msgid "mails.observerintervalinfo"
 msgstr "Intervall"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:73
+#: emonitor/modules/mails/templates/admin.mails.config.html:71
 #, fuzzy
 msgid "mails.senderfilter"
 msgstr "Filter"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:78
+#: emonitor/modules/mails/templates/admin.mails.config.html:76
 msgid "mails.useattachment"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:83
+#: emonitor/modules/mails/templates/admin.mails.config.html:81
 #, fuzzy
 msgid "mails.senderrors"
 msgstr "Filter"
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:86
+#: emonitor/modules/mails/templates/admin.mails.config.html:84
 #, fuzzy
 msgid "mails.erroraddress"
 msgstr "Straße"
@@ -2788,39 +2791,39 @@ msgstr ""
 "Es wurde noch keine Standardposition für die Kartendarstellung gespeichert, "
 "das kann im Administrationsbereich unter 'Straßenkarte' eingestellt werden."
 
-#: emonitor/modules/messages/__init__.py:32
+#: emonitor/modules/messages/__init__.py:39
 msgid "module.messages"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:33
+#: emonitor/modules/messages/__init__.py:40
 msgid "messages.main"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:34
+#: emonitor/modules/messages/__init__.py:41
 msgid "messages.types"
 msgstr "Meldungstyp"
 
-#: emonitor/modules/messages/__init__.py:35
+#: emonitor/modules/messages/__init__.py:42
 msgid "weather"
 msgstr "Wetter"
 
-#: emonitor/modules/messages/__init__.py:36
+#: emonitor/modules/messages/__init__.py:43
 msgid "messages"
 msgstr "Mitteilung"
 
-#: emonitor/modules/messages/__init__.py:37
+#: emonitor/modules/messages/__init__.py:44
 msgid "messagestate.1"
 msgstr "Aktive Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:38
+#: emonitor/modules/messages/__init__.py:45
 msgid "messagestate.0"
 msgstr "Deaktivierte Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:39
+#: emonitor/modules/messages/__init__.py:46
 msgid "message.state.1"
 msgstr "Aktiviert"
 
-#: emonitor/modules/messages/__init__.py:40
+#: emonitor/modules/messages/__init__.py:47
 msgid "message.state.0"
 msgstr "Deaktiviert"
 
@@ -2903,6 +2906,7 @@ msgstr "Effekt"
 #: emonitor/modules/messages/templates/admin.message.text.html:11
 #: emonitor/modules/messages/templates/admin.message.weather.html:23
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:198
+#: emonitor/modules/persons/templates/admin.message.birthday.html:18
 msgid "messages.save"
 msgstr "Speichern"
 
@@ -3417,6 +3421,377 @@ msgstr "Testseite"
 #: emonitor/modules/monitors/templates/frontend.monitors.html:76
 msgid "monitor.layout.changed"
 msgstr "Der neue Inhalt wurde an den Bildschirm geschickt"
+
+#: emonitor/modules/persons/__init__.py:45
+msgid "module.persons"
+msgstr "Mitgliederverwaltung"
+
+#: emonitor/modules/persons/__init__.py:46
+msgid "module.persons.0"
+msgstr "Mitgliederverwaltung Basisdaten"
+
+#: emonitor/modules/persons/__init__.py:47
+msgid "persons.upload.states-1"
+msgstr "Mitglieder neu"
+
+#: emonitor/modules/persons/__init__.py:48
+msgid "persons.upload.states0"
+msgstr "Mitglieder unverändert"
+
+#: emonitor/modules/persons/__init__.py:49
+msgid "persons.upload.states1"
+msgstr "Mitglieder verändert"
+
+#: emonitor/modules/persons/__init__.py:50
+msgid "birthday"
+msgstr "Geburtstagsliste"
+
+#: emonitor/modules/persons/__init__.py:60
+msgid "admin.persons.edit..."
+msgstr "..."
+
+#: emonitor/modules/persons/message_birthday.py:12
+msgid "message.birthday"
+msgstr "Geburtstag"
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:3
+msgid "messages.birthday.header"
+msgstr "Geburtstagsliste"
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:7
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:4
+msgid "messages.birthday.number"
+msgstr "Anzahl Geburtstage"
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:9
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:6
+msgid "messages.birthday.number.info"
+msgstr ""
+"Anzahl der anzuzeigenden Personen, die um das aktuelle Datum herum "
+"Geburtstag haben."
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:13
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:10
+msgid "messages.birthday.orientation"
+msgstr "Orientierung"
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:14
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:11
+msgid "messages.birthday.orientation_v"
+msgstr "vertikal"
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:15
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:13
+msgid "messages.birthday.orientation_h"
+msgstr "horizontal"
+
+#: emonitor/modules/persons/templates/admin.persons.html:10
+msgid "persons.delquestion"
+msgstr "Soll das gewähle Mitglied wirklich gelöscht werden?"
+
+#: emonitor/modules/persons/templates/admin.persons.html:27
+msgid "persons.uploadtitle"
+msgstr "Mitglieder über Datei hochladen"
+
+#: emonitor/modules/persons/templates/admin.persons.html:29
+msgid "persons.header.overview"
+msgstr "Mitglieder-Übersicht"
+
+#: emonitor/modules/persons/templates/admin.persons.html:30
+msgid "persons.info"
+msgstr ""
+"Für jede Einheit können Mitglieder gespeichert werden, die an verschiedenen "
+"Stellen namentlich verwendet werden können. Falls ein Geburtsdatum angegeben "
+"wurde, wird das Mitglied in der Geburtstagsliste angezeigt."
+
+#: emonitor/modules/persons/templates/admin.persons.html:33
+msgid "persons.filterlabel"
+msgstr "Filtern"
+
+#: emonitor/modules/persons/templates/admin.persons.html:33
+msgid "persons.filterall"
+msgstr "Alle"
+
+#: emonitor/modules/persons/templates/admin.persons.html:40
+msgid "persons.fullname"
+msgstr "Name"
+
+#: emonitor/modules/persons/templates/admin.persons.html:41
+#: emonitor/modules/persons/templates/admin.persons_edit.html:33
+msgid "persons.grade"
+msgstr "Dienstgrad"
+
+#: emonitor/modules/persons/templates/admin.persons.html:42
+#: emonitor/modules/persons/templates/admin.persons.settings.html:59
+#: emonitor/modules/persons/templates/admin.persons_edit.html:43
+msgid "persons.position"
+msgstr "Dienststellung"
+
+#: emonitor/modules/persons/templates/admin.persons.html:43
+#: emonitor/modules/persons/templates/admin.persons_edit.html:64
+msgid "persons.remark"
+msgstr "Bemerkung"
+
+#: emonitor/modules/persons/templates/admin.persons.html:44
+#: emonitor/modules/persons/templates/admin.persons_edit.html:71
+msgid "persons.active"
+msgstr "Aktiv"
+
+#: emonitor/modules/persons/templates/admin.persons.html:46
+msgid "persons.addtitle"
+msgstr "Mitglied hinzufügen"
+
+#: emonitor/modules/persons/templates/admin.persons.html:51
+msgid "persons.nodata"
+msgstr "- kein Mitglied definiert -"
+
+#: emonitor/modules/persons/templates/admin.persons.html:63
+msgid "persons.deletetitle"
+msgstr "Mitglied löschen"
+
+#: emonitor/modules/persons/templates/admin.persons.html:64
+msgid "persons.edittitle"
+msgstr "Mitglied bearbeiten"
+
+#: emonitor/modules/persons/templates/admin.persons.html:67
+msgid "persons.activetitle"
+msgstr "Mitglied aktiv"
+
+#: emonitor/modules/persons/templates/admin.persons.html:75
+msgid "persons.itemscount"
+msgstr "(%(count)s Mitglieder vorhanden)"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:8
+msgid "persons.header.settings"
+msgstr "Mitglieder Grundeinstellungen"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:9
+msgid "persons.settings.info"
+msgstr ""
+"Für die Mitgliederverwaltung sind einige Grundeinstellungen vorzunehmen, "
+"dass die Personen sinnvoll verwaltet werden können."
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:11
+msgid "persons.grade.title"
+msgstr "Dienstgrad-Einstellungen"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:12
+msgid "persons.grade.info"
+msgstr ""
+"Jeder Person sollte einen Dienstgrad zugewiesen bekommen. Es ist vorgesehen, "
+"jeweils eine Abkürzung und die volle Bezeichnung zu speichern. Diese Daten "
+"können in der Einsatzverwaltung des Personals verwendet werden."
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:17
+msgid "persons.grade.short"
+msgstr "Abkürzung"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:18
+msgid "persons.grade.name"
+msgstr "Dienstgrad"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:48
+#: emonitor/modules/persons/templates/admin.persons.settings.html:64
+#: emonitor/modules/persons/templates/admin.persons_edit.html:75
+msgid "persons.save"
+msgstr "Speichern"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:55
+msgid "persons.position.title"
+msgstr "Dienststellung"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:56
+msgid "persons.position.info"
+msgstr ""
+"Jedes Mitglied hat in der aktiven Mannschaft eine Dienststellung. Diese wird "
+"für die erweiterte Personalerfassung bei Einsätzen herangezogen."
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:22
+msgid "persons.upload.headtitle"
+msgstr "Mitgliedersdatei hochladen"
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:23
+msgid "persons.upload.info"
+msgstr ""
+"Die Mitglieder können konfigurierbar über eine Excel-Datei hochgeladen "
+"werden."
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:35
+msgid "persons.upload.filename"
+msgstr "Dateiname"
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:41
+msgid "persons.upload.file"
+msgstr "Datei hochladen"
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:58
+msgid "persons.importinfo"
+msgstr "Daten werden verarbeitet und der Import gestartet..."
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:79
+msgid "persons.upload.wrongfiletype"
+msgstr ""
+"Falscher Dateityp ausgewählt. Es können nur Excel-Dateien hochgeladen werden."
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:2
+msgid "persons.upload.step2header"
+msgstr "Schritt 2: Tabellenblatt wählen"
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:3
+msgid "persons.upload.sheets"
+msgstr "Tabellenblätter"
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:5
+msgid "persons.upload.choosesheet"
+msgstr "- Tabellenblatt wählen -"
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:3
+msgid "persons.upload.step3header"
+msgstr "Schritt 3: Spalten zuordnen"
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:9
+msgid "persons.upload.choosecol"
+msgstr "- Spalte wählen -"
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:18
+msgid "persons.upload.requiredlabel"
+msgstr ""
+"Mit %(mark)s gekennzeichnete Felder sind Pflichtfelder und müssen belegt "
+"werden."
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:20
+msgid "persons.upload.evaldata"
+msgstr "Daten ermitteln"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:4
+msgid "persons.upload.step5header"
+msgstr "Folgende Mitgliederdaten wurden gefunden"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:7
+msgid "persons.upload.firstname"
+msgstr "Vorname"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:8
+msgid "persons.upload.lastname"
+msgstr "Nachname"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:9
+msgid "persons.upload.salutation"
+msgstr "Anrede"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:10
+msgid "persons.upload.grade"
+msgstr "Dienstgrad"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:11
+msgid "persons.upload.position"
+msgstr "Dienststellung"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:12
+msgid "persons.upload.identifier"
+msgstr "ext. Identifikator"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:28
+msgid "persons.upload.existingtitle"
+msgstr "Vorhandenes Mitglied aktualisieren"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:30
+msgid "persons.upload.changestitle"
+msgstr "Änderungen"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:32
+msgid "persons.upload.addtitle"
+msgstr "Mitglied hinzufügen"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:46
+msgid "persons.upload.itemscount"
+msgstr "(%(count)s Mitglieder vorhanden)"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:53
+msgid "persons.upload.step6header"
+msgstr "Importoptionen"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:54
+msgid "persons.upload.uploadoption1"
+msgstr "Nur selektierte Mitglieder bearbeiten"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:55
+msgid "persons.upload.uploadoption2"
+msgstr "Neue Mitglieder importieren"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:56
+msgid "persons.upload.uploadoption3"
+msgstr "Vorhandene Mitglieder aktualisieren"
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:58
+msgid "persons.upload.startupdate"
+msgstr "Update/Import starten"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:8
+msgid "persons.header.edit"
+msgstr "Mitglieder bearbeiten"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:12
+msgid "persons.salutation"
+msgstr "Anrede"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:14
+#: emonitor/modules/persons/templates/admin.persons_edit.html:16
+msgid "persons.mr"
+msgstr "Herr"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:15
+#: emonitor/modules/persons/templates/admin.persons_edit.html:16
+msgid "persons.mrs"
+msgstr "Frau"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:23
+msgid "persons.firstname"
+msgstr "Vorname"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:28
+msgid "persons.lastname"
+msgstr "Nachname"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:53
+msgid "persons.identifier"
+msgstr "Identifikator"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:59
+msgid "persons.birthdate"
+msgstr "Geburtsdatum"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:76
+msgid "persons.cancel"
+msgstr "Abbrechen"
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:16
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:14
+msgid "messages.birthday.monitorheader"
+msgstr "Herzlichen Glückwunsch zum Geburtstag"
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:25
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:25
+msgid "messages.birthday.today"
+msgstr "Heute"
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:27
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:23
+msgid "messages.birthday.yesterday"
+msgstr "Gestern"
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:29
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:27
+msgid "messages.birthday.tomorrow"
+msgstr "Morgen"
+
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:21
+msgid "messages.birthday.day-2"
+msgstr "Vorgestern"
+
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:29
+msgid "messages.birthday.day+2"
+msgstr "Übermorgen"
 
 #: emonitor/modules/printers/__init__.py:35
 msgid "module.printers"
@@ -4570,3 +4945,6 @@ msgstr "Speichern"
 #: emonitor/modules/user/templates/admin.user_actions.html:33
 msgid "users.cancel"
 msgstr "Abbrechen"
+
+#~ msgid "persons.position.delete"
+#~ msgstr "Startposition"

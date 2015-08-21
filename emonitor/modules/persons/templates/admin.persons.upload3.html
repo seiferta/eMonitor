@@ -1,0 +1,44 @@
+<form name="defintion" id="definitionForm" action="/admin/data/persons?action=testimport" method="post">
+    <div id="colselection" style="position:relative;">
+        <h3>{{ _('persons.upload.step3header') }}</h3>
+
+        {%  for field in ['firstname', 'lastname', 'salutation', 'grade', 'position', 'identifier', 'active', 'birthdate', 'remark'] %}
+        <div style="width:50%;float:left;padding-bottom:10px;">
+            <label>{{ _('persons.upload.'+field) }}:<span class="required">*</span><br/>
+                <select name="{{ field }}" style="width:80%">
+                    <option value="">{{ _('persons.upload.choosecol') }}</option>
+                    {%- for col in cols %}
+                    <option value="{{ col[0] }}"{%- if col[1]==_('persons.upload.'+field) %} selected="selected"{%- endif %}>{{ col[1] }}</option>
+                    {%- endfor %}
+                </select>
+            </label>
+        </div>
+        {%- endfor %}
+        <div style="width:50%;">
+            <p>{{ _('persons.upload.requiredlabel', mark='\'*\'') }}</p>
+            <p>
+                <button type="button" onclick="return sendDefinition()" id="evalData">{{ _('persons.upload.evaldata') }}</button>
+            </p>
+        </div>
+    </div>
+</form>
+<script>
+    function sendDefinition(){
+        if($('select[name="category"]').val()=='' || $('select[name="key"]').val()=='' || $('select[name="keyinternal"]').val()==''){
+            return false;
+        }
+        $('#tab0').append($('#overlay_proto').html());
+        $.ajax({
+            type: "POST",
+            url: '/admin/data/persons?action=testimport&filename='+$('#filename').val()+"&sheetname="+$('#sheetname').val()+'&department='+$('#department').val(),
+            data: ($('#definitionForm').formSerialize()),
+            dataType: "html",
+            success: function(data) {
+                $('#testimport').html(data);
+                $('#tab0 > .overlayproto').remove();
+                $('#myTab li:eq(1) a').tab('show');
+            }
+        });
+        return false;
+    }
+</script>

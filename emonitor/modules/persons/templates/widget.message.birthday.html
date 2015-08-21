@@ -1,0 +1,43 @@
+<style>
+    .timeslot {min-height:110px;width:50%; float: left; margin: 0 0 10px; padding: 10px 0 0 0; border-top: 3px solid silver; position: relative; color:#666;}
+    .timeslot span {position: absolute; right: 10px; top: 2px;}
+    .timeslot p {margin-top: 2px;}
+    .even {float: right; padding: 10px 0 0 0;}
+    .even span {left: 0; right: auto;}
+    .even p {text-align: right;margin-left:50px;}
+    .fa-birthday-cake {position: absolute; bottom: 60px; left: 20px; font-size: 8em; color: #222;}
+    div.circle{font-size:0.6em;position:absolute;top:-3px;border-radius: 50%;text-align:center;line-height:100px;width:100px;background-color:#555;border:3px solid silver;color:#222}
+    .even div.circle{float:left;left:-50px;}
+    .odd div.circle{float:right;right:-55px;}
+    p.today{color:#fff;}
+    div.today{border-color:#ff0000;color:#fff;}
+</style>
+
+<h1 style="text-align:center;">{{ _('messages.birthday.monitorheader') }}</h1>
+<i class="fa fa-birthday-cake"></i>
+<div style="padding:0 5%;position:relative;overflow:hidden;">
+{%- for key in persons %}
+    <div style="position:absolute; top:0; left:0; bottom:0; width:50%;border-right:3px solid #666;z-index:-1"></div>
+    <div style="width:100%;position:relative;overflow:hidden;">
+        <div class="timeslot {{ loop.cycle('even', 'odd') }}">
+            <div class="circle{%- if persons[key][0].birthday - daynum in [-1, 0, 1] %} today{%- endif %}">
+            {%- if persons[key][0].birthday - daynum == 0 %}
+                {{ _('messages.birthday.today') }}
+            {%- elif persons[key][0].birthday - daynum == -1 %}
+                {{ _('messages.birthday.yesterday') }}
+            {%- elif persons[key][0].birthday - daynum == 1 %}
+                {{ _('messages.birthday.tomorrow') }}
+            {%- else %}
+                {{ key }}
+            {%- endif %}
+            </div>
+            <p{%- if persons[key][0].birthday - daynum in [-1, 0, 1] %} class="today"{%- endif %}>
+            {%- set outerloop = loop %}
+            {%- for person in persons[key] %}
+                {{ person.firstname }} {{ person.lastname }} ({{ person.age }})<br/>
+            {%- endfor %}
+            </p>
+        </div>
+    </div>
+{%- endfor %}
+</div>

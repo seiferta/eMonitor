@@ -1,0 +1,74 @@
+{% extends "admin.html" %}
+
+{% block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('persons.header.settings') }}</h2>
+    <p><small>{{ _('persons.settings.info') }}</small></p>
+    <fieldset>
+        <legend>{{ _('persons.grade.title') }}</legend>
+        <small>{{ _('persons.grade.info') }}</small>
+
+        <form method="post" name="gradelist" action="" style="padding-bottom:30px;">
+            <div class="headrow">
+                <div style="margin-right:50px;margin-left:15px;">
+                    <div class="headcell" style="width:20%;">{{ _('persons.grade.short') }}</div>
+                    <div class="headcell" style="width:80%;">{{ _('persons.grade.name') }}</div>
+                </div>
+            </div>
+            <div id="sortable">
+                {% for grade in settings.grades %}
+                <div class="row">
+                    <div style="position:absolute;left:1px;top:10px;font-size:9px;color:#ababab;">{{ loop.index }}.</div>
+                    <div style="margin-right:50px;margin-left:15px;">
+                        <div class="rowcell" style="width:20%;">
+                            <label><input type="text" name="grade" value="{{ grade[0] }}"/></label>
+                        </div>
+                        <div class="rowcell" style="width:80%;">
+                            <label><input type="text" name="grade" value="{{ grade[1] }}" style="width:99%"/></label>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="row">
+                    <div style="margin-right:50px;margin-left:15px;">
+                        <div style="position:absolute;left:1px;top:10px;font-size:9px;color:#ababab;">{{ settings.grades| count +1 }}.</div>
+                        <div class="rowcell" style="width:20%;">
+                            <label><input type="text" name="grade" value=""/></label>
+                        </div>
+                        <div class="rowcell" style="width:80%;">
+                            <label><input type="text" name="grade" style="width:99%"/></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="headrow" style="padding-left:20px">
+                <button type="submit" name="action" value="updategrades" class="save"><i class="fa fa-check"></i> {{ _('persons.save') }}</button>
+            </div>
+            <input type="hidden" name="form_id" value="admin.persons.settings.grades"/>
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>{{ _('persons.position.title') }}</legend>
+        <small>{{ _('persons.position.info') }}</small>
+        <form method="post" name="positionlist" action="" style="padding-bottom:30px;">
+            <p>
+                <label>{{ _('persons.position') }}:<br/>
+                    <textarea name="positions" style="width:99%;height:200px;">{{ settings.positions | join('\n') }}</textarea>
+                </label>
+            </p>
+            <p>
+                <button type="submit" name="action" value="updatepositions" class="save"><i class="fa fa-check"></i> {{ _('persons.save') }}</button>
+            </p>
+        </form>
+    </fieldset>
+
+{% endblock %}
+
+{% block script_end %}
+    {{ super() }}
+    $(function() {$('div[id^="sortable"]').sortable({update: function(event, ui){$('#orderchange').show()}});});
+{% endblock %}

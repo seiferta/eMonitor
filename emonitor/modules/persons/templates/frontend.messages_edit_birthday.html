@@ -1,0 +1,15 @@
+<p>
+    <p>
+        <label style="width:100%;">
+            {{ _('messages.birthday.number') }}:<br/>
+            <input type="text" name="messages.number" value="{{ message.get('number', settings.get('messages.birthday.number')) }}" style="width:50px;"/>
+            <br/><small>{{ _('messages.birthday.number.info') }}</small>
+        </label>
+    </p>
+    <p>
+        {{ _('messages.birthday.orientation') }}:<br/>
+        <label><input type="radio" name="messages.orientation" value="v"{% if message.get('birthday.orientation', '') in ['v', ''] %} checked="checked"{% endif %}> {{ _('messages.birthday.orientation_v') }}</label>
+        <br/>
+        <label><input type="radio" name="messages.orientation" value="h"{% if message.get('birthday.orientation')=='h' %} checked="checked"{% endif %}> {{ _('messages.birthday.orientation_h') }}</label>
+    </p>
+</p>

@@ -1,0 +1,82 @@
+{% extends "admin.html" %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('persons.header.edit') }}</h2>
+
+    <form method="post" action="">
+        <p>
+            <label>{{ _('persons.salutation') }}:<br/>
+                <select name="salutation" style="width:99%" autofocus>
+                    <option value="{{ _('persons.mr') }}"{% if person.salutation == _('persons.mr') %} selected="selected"{% endif %}>{{ _('persons.mr') }}</option>
+                    <option value="{{ _('persons.mrs') }}"{% if person.salutation == _('persons.mrs') %} selected="selected"{% endif %}>{{ _('persons.mrs') }}</option>
+                    {%- if person.salutation not in [_('persons.mr'), _('persons.mrs')] %}
+                    <option value="{{ person.salutation }}" selected="selected">{{ person.salutation }}</option>
+                    {%- endif %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.firstname') }}:<br/>
+                <input type="text" name="firstname" value="{{ person.firstname }}" style="width:99%" required/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.lastname') }}:<br/>
+                <input type="text" name="lastname" value="{{ person.lastname }}" style="width:99%" required/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.grade') }}:<br/>
+                <select name="grade" style="width:99%">
+                    <option value=""></option>
+                    {%- for grade in settings['grades'] %}
+                    <option value="{{ grade[1] }}"{%- if grade[1] == person.grade %} selected="selected"{%- endif %}>{{ grade[1] }}</option>
+                    {%- endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.position') }}:<br/>
+                <select name="position" style="width:99%">
+                    <option value=""></option>
+                    {%- for position in settings['positions'] %}
+                    <option value="{{ position }}"{% if position == person.position %} selected="selected"{% endif %}>{{ position }}</option>
+                    {%- endfor %}
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.identifier') }}:<br/>
+                <input type="text" name="identifier" value="{{ person.identifier }}" style="width:99%"/>
+            </label>
+        </p>
+
+        <p>
+            <label>{{ _('persons.birthdate') }}:<br/>
+                <input type="text" name="birthdate" value="{{ person.birthdate|datetime('dd.MM.yyyy') }}" style="width:99%"/>
+            </label>
+        </p>
+        <p>
+            <label>{{ _('persons.remark') }}:<br/>
+            <textarea name="remark" style="width:99%;height:50px;">{{ person.remark }}</textarea>
+            </label>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="active"{%- if person.active %} checked="checked"{%- endif %}/>
+                {{ _('persons.active') }}
+            </label>
+        </p>
+        <p style="padding-top:20px;">
+            <button type="submit" name="action" value="updateperson" class="save"><i class="fa fa-check"></i> {{ _('persons.save') }}</button>
+            <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('persons.cancel') }}</button>
+        </p>
+        <input type="hidden" name="person_id" value="{{ person.id }}"/>
+        <input type="hidden" name="form_id" value="admin.person.edit"/>
+        <input type="hidden" name="dept" value="{{ person._dept }}"/>
+    </form>
+{% endblock %}

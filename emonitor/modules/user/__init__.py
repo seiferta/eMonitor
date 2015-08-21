@@ -7,7 +7,7 @@ class UserModule(Module):
     """
     Definition of users module with admin area
     """
-    info = dict(area=['admin'], name='users', path='users', icon='fa-users', version='0.1')
+    info = dict(area=['admin'], name='users', path='users', icon='fa-user', version='0.1')
     helppath = '/emonitor/modules/user/help/'
     
     def __repr__(self):

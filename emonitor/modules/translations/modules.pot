@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-29 12:44+0200\n"
+"POT-Creation-Date: 2015-08-21 11:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,10 +152,12 @@ msgid "alarmkeys.upload.info"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:26
+#: emonitor/modules/persons/templates/admin.persons.upload.html:26
 msgid "alarmkeys.upload.uploadfile"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:27
+#: emonitor/modules/persons/templates/admin.persons.upload.html:27
 msgid "alarmkeys.upload.result"
 msgstr ""
 
@@ -164,6 +166,7 @@ msgid "alarmkeys.upload.export"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:33
+#: emonitor/modules/persons/templates/admin.persons.upload.html:32
 msgid "alarmkeys.upload.step1header"
 msgstr ""
 
@@ -883,7 +886,7 @@ msgid "AFMaterial"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:158
-#: emonitor/modules/alarms/alarmfield.py:409
+#: emonitor/modules/alarms/alarmfield.py:411
 msgid "AFReport"
 msgstr ""
 
@@ -903,51 +906,51 @@ msgstr ""
 msgid "AFPersons"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:165
+#: emonitor/modules/alarms/__init__.py:164
 msgid "alarms.fields.simple"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:166
+#: emonitor/modules/alarms/__init__.py:165
 msgid "alarms.fields.extended"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:168
+#: emonitor/modules/alarms/__init__.py:166
 msgid "alarms.fields.persons.field.sum"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:169
+#: emonitor/modules/alarms/__init__.py:167
 msgid "alarms.fields.persons.field.house"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:170
+#: emonitor/modules/alarms/__init__.py:168
 msgid "alarms.fields.persons.field.pa_alarm"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:171
+#: emonitor/modules/alarms/__init__.py:169
 msgid "alarms.fields.persons.field.el"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:172
+#: emonitor/modules/alarms/__init__.py:170
 msgid "alarms.fields.persons.field.alarm"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:173
+#: emonitor/modules/alarms/__init__.py:171
 msgid "alarms.fields.persons.field.pa"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:174
+#: emonitor/modules/alarms/__init__.py:172
 msgid "alarms.fields.persons.field.pa_house"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:175
+#: emonitor/modules/alarms/__init__.py:173
 msgid "alarms.fields.persons.field.elgrade"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:176
+#: emonitor/modules/alarms/__init__.py:174
 msgid "alarms.fields.persons.field.style.simple"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:177
+#: emonitor/modules/alarms/__init__.py:175
 msgid "alarms.fields.persons.field.style.extended"
 msgstr ""
 
@@ -1007,11 +1010,11 @@ msgstr ""
 msgid "alarms.print.straightexit"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:247
+#: emonitor/modules/alarms/content_admin.py:246
 msgid "admin.alarms.checkernotvalid"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:314
+#: emonitor/modules/alarms/content_admin.py:313
 msgid "admin.alarms.list"
 msgstr ""
 
@@ -2081,86 +2084,86 @@ msgstr ""
 msgid "mails.servertype"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:35
 msgid "mails.serverinname"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:35
 msgid "mails.serverinport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:38
-#: emonitor/modules/mails/templates/admin.mails.config.html:43
+#: emonitor/modules/mails/templates/admin.mails.config.html:36
+#: emonitor/modules/mails/templates/admin.mails.config.html:41
 msgid "mails.servername"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:39
-#: emonitor/modules/mails/templates/admin.mails.config.html:44
+#: emonitor/modules/mails/templates/admin.mails.config.html:37
+#: emonitor/modules/mails/templates/admin.mails.config.html:42
 msgid "mails.port"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:40
 msgid "mails.serveroutname"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
+#: emonitor/modules/mails/templates/admin.mails.config.html:40
 msgid "mails.serveroutport"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:47
+#: emonitor/modules/mails/templates/admin.mails.config.html:45
 msgid "mails.serveruser"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:48
+#: emonitor/modules/mails/templates/admin.mails.config.html:46
 msgid "mails.username"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:51
+#: emonitor/modules/mails/templates/admin.mails.config.html:49
 msgid "mails.serverpassword"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:52
+#: emonitor/modules/mails/templates/admin.mails.config.html:50
 msgid "mails.password"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:55
-#: emonitor/modules/mails/templates/admin.mails.config.html:89
+#: emonitor/modules/mails/templates/admin.mails.config.html:53
+#: emonitor/modules/mails/templates/admin.mails.config.html:87
 msgid "mails.save"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:61
+#: emonitor/modules/mails/templates/admin.mails.config.html:59
 msgid "mails.config"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:62
+#: emonitor/modules/mails/templates/admin.mails.config.html:60
 msgid "mails.configinfo"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:65
+#: emonitor/modules/mails/templates/admin.mails.config.html:63
 msgid "mails.activateobserver"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:69
+#: emonitor/modules/mails/templates/admin.mails.config.html:67
 msgid "mails.observeinterval"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:70
+#: emonitor/modules/mails/templates/admin.mails.config.html:68
 msgid "mails.observerintervalinfo"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:73
+#: emonitor/modules/mails/templates/admin.mails.config.html:71
 msgid "mails.senderfilter"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:78
+#: emonitor/modules/mails/templates/admin.mails.config.html:76
 msgid "mails.useattachment"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:83
+#: emonitor/modules/mails/templates/admin.mails.config.html:81
 msgid "mails.senderrors"
 msgstr ""
 
-#: emonitor/modules/mails/templates/admin.mails.config.html:86
+#: emonitor/modules/mails/templates/admin.mails.config.html:84
 msgid "mails.erroraddress"
 msgstr ""
 
@@ -2593,39 +2596,39 @@ msgstr ""
 msgid "maps.nodefaultposition"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:32
+#: emonitor/modules/messages/__init__.py:39
 msgid "module.messages"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:33
+#: emonitor/modules/messages/__init__.py:40
 msgid "messages.main"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:34
+#: emonitor/modules/messages/__init__.py:41
 msgid "messages.types"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:35
+#: emonitor/modules/messages/__init__.py:42
 msgid "weather"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:36
+#: emonitor/modules/messages/__init__.py:43
 msgid "messages"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:37
+#: emonitor/modules/messages/__init__.py:44
 msgid "messagestate.1"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:38
+#: emonitor/modules/messages/__init__.py:45
 msgid "messagestate.0"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:39
+#: emonitor/modules/messages/__init__.py:46
 msgid "message.state.1"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:40
+#: emonitor/modules/messages/__init__.py:47
 msgid "message.state.0"
 msgstr ""
 
@@ -2704,6 +2707,7 @@ msgstr ""
 #: emonitor/modules/messages/templates/admin.message.text.html:11
 #: emonitor/modules/messages/templates/admin.message.weather.html:23
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:198
+#: emonitor/modules/persons/templates/admin.message.birthday.html:18
 msgid "messages.save"
 msgstr ""
 
@@ -3194,6 +3198,360 @@ msgstr ""
 
 #: emonitor/modules/monitors/templates/frontend.monitors.html:76
 msgid "monitor.layout.changed"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:45
+msgid "module.persons"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:46
+msgid "module.persons.0"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:47
+msgid "persons.upload.states-1"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:48
+msgid "persons.upload.states0"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:49
+msgid "persons.upload.states1"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:50
+msgid "birthday"
+msgstr ""
+
+#: emonitor/modules/persons/__init__.py:60
+msgid "admin.persons.edit..."
+msgstr ""
+
+#: emonitor/modules/persons/message_birthday.py:12
+msgid "message.birthday"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:3
+msgid "messages.birthday.header"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:7
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:4
+msgid "messages.birthday.number"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:9
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:6
+msgid "messages.birthday.number.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:13
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:10
+msgid "messages.birthday.orientation"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:14
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:11
+msgid "messages.birthday.orientation_v"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.message.birthday.html:15
+#: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:13
+msgid "messages.birthday.orientation_h"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:10
+msgid "persons.delquestion"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:27
+msgid "persons.uploadtitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:29
+msgid "persons.header.overview"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:30
+msgid "persons.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:33
+msgid "persons.filterlabel"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:33
+msgid "persons.filterall"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:40
+msgid "persons.fullname"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:41
+#: emonitor/modules/persons/templates/admin.persons_edit.html:33
+msgid "persons.grade"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:42
+#: emonitor/modules/persons/templates/admin.persons.settings.html:59
+#: emonitor/modules/persons/templates/admin.persons_edit.html:43
+msgid "persons.position"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:43
+#: emonitor/modules/persons/templates/admin.persons_edit.html:64
+msgid "persons.remark"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:44
+#: emonitor/modules/persons/templates/admin.persons_edit.html:71
+msgid "persons.active"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:46
+msgid "persons.addtitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:51
+msgid "persons.nodata"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:63
+msgid "persons.deletetitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:64
+msgid "persons.edittitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:67
+msgid "persons.activetitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.html:75
+msgid "persons.itemscount"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:8
+msgid "persons.header.settings"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:9
+msgid "persons.settings.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:11
+msgid "persons.grade.title"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:12
+msgid "persons.grade.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:17
+msgid "persons.grade.short"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:18
+msgid "persons.grade.name"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:48
+#: emonitor/modules/persons/templates/admin.persons.settings.html:64
+#: emonitor/modules/persons/templates/admin.persons_edit.html:75
+msgid "persons.save"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:55
+msgid "persons.position.title"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:56
+msgid "persons.position.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:22
+msgid "persons.upload.headtitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:23
+msgid "persons.upload.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:35
+msgid "persons.upload.filename"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:41
+msgid "persons.upload.file"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:58
+msgid "persons.importinfo"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload.html:79
+msgid "persons.upload.wrongfiletype"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:2
+msgid "persons.upload.step2header"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:3
+msgid "persons.upload.sheets"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload2.html:5
+msgid "persons.upload.choosesheet"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:3
+msgid "persons.upload.step3header"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:9
+msgid "persons.upload.choosecol"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:18
+msgid "persons.upload.requiredlabel"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.upload3.html:20
+msgid "persons.upload.evaldata"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:4
+msgid "persons.upload.step5header"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:7
+msgid "persons.upload.firstname"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:8
+msgid "persons.upload.lastname"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:9
+msgid "persons.upload.salutation"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:10
+msgid "persons.upload.grade"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:11
+msgid "persons.upload.position"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:12
+msgid "persons.upload.identifier"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:28
+msgid "persons.upload.existingtitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:30
+msgid "persons.upload.changestitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:32
+msgid "persons.upload.addtitle"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:46
+msgid "persons.upload.itemscount"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:53
+msgid "persons.upload.step6header"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:54
+msgid "persons.upload.uploadoption1"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:55
+msgid "persons.upload.uploadoption2"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:56
+msgid "persons.upload.uploadoption3"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.uploadpreview.html:58
+msgid "persons.upload.startupdate"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:8
+msgid "persons.header.edit"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:12
+msgid "persons.salutation"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:14
+#: emonitor/modules/persons/templates/admin.persons_edit.html:16
+msgid "persons.mr"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:15
+#: emonitor/modules/persons/templates/admin.persons_edit.html:16
+msgid "persons.mrs"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:23
+msgid "persons.firstname"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:28
+msgid "persons.lastname"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:53
+msgid "persons.identifier"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:59
+msgid "persons.birthdate"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:76
+msgid "persons.cancel"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:16
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:14
+msgid "messages.birthday.monitorheader"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:25
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:25
+msgid "messages.birthday.today"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:27
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:23
+msgid "messages.birthday.yesterday"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday.html:29
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:27
+msgid "messages.birthday.tomorrow"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:21
+msgid "messages.birthday.day-2"
+msgstr ""
+
+#: emonitor/modules/persons/templates/widget.message.birthday1.html:29
+msgid "messages.birthday.day+2"
 msgstr ""
 
 #: emonitor/modules/printers/__init__.py:35

@@ -1,0 +1,11 @@
+<div id="sheetselection">
+    <h3>{{ _('persons.upload.step2header') }}</h3>
+    <p>{{ _('persons.upload.sheets') }}:<br/>
+    <select id="sheetname" name="sheetname" onchange="return changeSheet(this)">
+        <option value="">{{ _('persons.upload.choosesheet') }}</option>
+        {%- for sheet in sheets %}
+        <option value="{{ loop.index0 }}">{{ sheet }}</option>
+        {%- endfor %}
+    </select>
+    </p>
+</div>

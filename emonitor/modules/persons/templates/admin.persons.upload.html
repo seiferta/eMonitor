@@ -1,0 +1,105 @@
+{% extends "admin.html" %}
+
+{%  block style %}
+    <style>
+        .tab-pane{border:1px solid #ddd;border-top-width:0;min-height:300px;padding:10px;}
+        .tab-pane h3{margin-top:0!important}
+        div.overlayproto{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;}
+        div.overlayproto div.overlayproto_back{width:100%;height:100%;background-color:#fff;opacity: 0.6; -moz-opacity: 0.6; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";filter:alpha(opacity=60);}
+        div.overlayproto div.overlay_popup{text-align:center;display:block;position:absolute;top:0;left:0;right:0;bottom:0;width:500px;height:300px;margin:auto;z-index:11}
+    </style>
+{%  endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/alarmkeys/inc/jquery.form.js"> </script>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('persons.upload.headtitle') }}</h2>
+    <p>{{ _('persons.upload.info') }}</p>
+
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#tab0" onclick="$('#myTab li:eq(0) a').tab('show');return false;">{{ _('alarmkeys.upload.uploadfile') }}</a></li>
+        <li><a href="#tab1" onclick="$('#myTab li:eq(1) a').tab('show');return false;">{{ _('alarmkeys.upload.result') }}</a></li>
+    </ul>
+
+    <div class="tab-content" style="position:relative;height:80%;">
+        <div class="tab-pane active" id="tab0">
+            <h3>{{ _('alarmkeys.upload.step1header') }}</h3>
+            <form name="form" id="requestForm" action="/admin/data/persons?action=upload" method="post" enctype="multipart/form-data">
+                <p>
+                    {{ _('persons.upload.filename') }}:<br/>
+                    <input id="uploadfile" type="file" size="45" name="uploadfile" class="input"/>
+                    <input type="hidden" name="filename" id="filename"/>
+                </p>
+                <p>
+                    <input type="hidden" name="department" id="department" value="{{ depid }}"/>
+                    <button type="submit" value="{{ _('persons.upload.file') }}"><i class="fa fa-upload"></i> {{ _('persons.upload.file') }}</button>
+                </p>
+                    <div id="status"> </div>
+            </form>
+            <div id="sheets"> </div>
+            <div id="cols"> </div>
+        </div>
+
+        <div class="tab-pane" id="tab1">
+            <div id="testimport"> </div>
+        </div>
+    </div>
+
+    <div style="display:none" id="overlay_proto">
+        <div class="overlayproto">
+            <div class="overlayproto_back"> </div>
+            <div class="overlay_popup">
+                <p>{{ _('persons.importinfo') }}</p>
+                <p><img src="/admin/img/loading.gif"/></p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{%  block script_end %}
+    {{ super() }}
+    $(document).ready(function(){
+        var status = $('#status');
+
+        $('#requestForm').ajaxForm({
+            beforeSubmit: function() {
+                if(strEndsWith($('#uploadfile').val(),'.xls') || strEndsWith($('#uploadfile').val(),'.xlsx')){
+                    status.empty();
+                    $('#cols').html('');
+                    $('#testimport').html('');
+                    $('#filename').val($('#uploadfile').val().split('\\').pop());
+                }else{
+                    alert('{{ _('persons.upload.wrongfiletype') }}');
+                    return false;
+                }
+            },
+            complete: function(xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+    });
+
+    function changeSheet(obj){
+        if($(obj).val()){
+            $.ajax({ type : "POST", url : "/admin/data/persons?action=upload_sheet&sheetname="+$(obj).val()+'&filename='+$('#filename').val(),
+                success: function(result){
+                    $('#cols').html(result);
+                }
+            });
+        }else{
+            $('#cols').html('');
+        }
+    }
+
+    function strEndsWith(str, suffix) {
+        return str.match(suffix+"$")==suffix;
+    }
+
+{% endblock %}

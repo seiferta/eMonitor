@@ -1,0 +1,79 @@
+{% extends "admin.html" %}
+
+{% block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{% endblock %}
+
+{% block script %}
+    <script>
+        function questionDel(){
+            return confirm('{{ _('persons.delquestion') }}');
+        }
+
+        function filter(c){
+            if (c==""){
+                $('.row').show();
+            }else {
+                $('.row').hide();
+                $('div[id=' + c + ']').show();
+            }
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div style="position:absolute;top:20px;right:20px;">
+        <a href="/admin/persons/{{ depid }}/upload" title="{{ _('persons.uploadtitle') }}" class="icon"><i class="fa fa-upload"></i></a>
+    </div>
+    <h2>{{ _('persons.header.overview') }}</h2>
+    <p><small>{{ _('persons.info') }}</small></p>
+    <form method="post" action="" style="padding-bottom:20px;">
+        <div class="headrow" style="border-bottom:1px solid black;">
+            {{ _('persons.filterlabel') }}: <a href="#" onclick="return filter('')">{{ _('persons.filterall') }}</a>
+            {%- for char in chars %}
+            | <a href="#" onclick="return filter('{{ char }}')">{{ char }}</a>
+            {%- endfor %}
+        </div>
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:30%;">{{ _('persons.fullname') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('persons.grade') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('persons.position') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('persons.remark') }}</div>
+                <div class="headcell" style="width:20%;text-align:right;">{{ _('persons.active') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createperson" title="{{ _('persons.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+
+        {%- if persons|count==0 %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('persons.nodata') }}</p>
+        </div>
+        {%- endif %}
+        <div id="sortable">
+            {%- for person in persons %}
+            <div class="row" id="{{ person.fullname[0].upper() }}">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:30%;">{{ person.fullname }}</div>
+                    <div class="rowcell" style="width:20%;">{{ person.grade }}</div>
+                    <div class="rowcell" style="width:15%;">{{ person.position }}</div>
+                    <div class="rowcell" style="width:15%;">{{ person.remark[:-2] }}</div>
+                </div>
+                <button type="submit" name="action" value="deleteperson_{{ person.id }}" title="{{ _('persons.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="editperson_{{ person.id }}" title="{{ _('persons.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                {%- if person.active==1 %}
+                <div style="float:right;margin-top:4px;margin-right:20px;">
+                    <i class="fa fa-check" title="{{ _('persons.activetitle') }}"></i>
+                </div>
+                {%- endif %}
+            </div>
+            {%- endfor %}
+        </div>
+
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('persons.itemscount', count=persons|count) }}</small><br/>
+        </div>
+        <input type="hidden" name="form_id" value="admin.persons.overview"/>
+    </form>
+{% endblock %}

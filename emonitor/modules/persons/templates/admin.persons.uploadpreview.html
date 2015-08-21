@@ -1,0 +1,77 @@
+<div>
+    <form id="importoptions" action="/admin/data/persons?action=doimport" method="post" style="position:relative">
+
+        <h3>{{ _('persons.upload.step5header') }}</h3>
+        <div class="headrow">
+            <div style="margin-right:10px;margin-left:40px;">
+                <div class="headcell" style="width:15%;">{{ _('persons.upload.firstname') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('persons.upload.lastname') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('persons.upload.salutation') }}</div>
+                <div class="headcell" style="width:20%;">{{ _('persons.upload.grade') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('persons.upload.position') }}</div>
+                <div class="headcell" style="width:15%;">{{ _('persons.upload.identifier') }}</div>
+            </div>
+        </div>
+
+        <div id="sortable" style="max-height:400px; overflow-y:auto;">
+            {%- for val in vals['persons'] %}
+            <div class="row" id="state_{{ val['state'] }}">
+                <div style="margin-right:10px;margin-left:40px;min-height:20px;">
+                    <div class="rowcell" style="width:15%;">{{ val['firstname']|safe }}</div>
+                    <div class="rowcell" style="width:20%;">{{ val['lastname']|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['salutation']|safe }}</div>
+                    <div class="rowcell" style="width:20%;">{{ val['grade']|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['position']|safe }}</div>
+                    <div class="rowcell" style="width:15%;">{{ val['identifier']|safe }}</div>
+                    <div style="position:absolute;left:2px;top:4px;">
+                        {%- if val['state']=='0' %}
+                        <i class="fa fa-check" title="{{ _('persons.upload.existingtitle') }}"></i>
+                        {%- elif val['state']=='1' %}
+                        <i class="fa fa-refresh" title="{{ _('persons.upload.changestitle') }}"></i>
+                        {%- else %}
+                        <i class="fa fa-plus" title="{{ _('persons.upload.addtitle') }}"></i>
+                        {%- endif %}
+                    </div>
+                    <div style="position:absolute;top:2px;left:20px;">
+                        {%- if val['state']!='0' %}
+                        <input name="importindex" type="checkbox" value="{{ vals['persons'].index(val) }}" checked="checked"/>
+                        {%- endif %}
+                    </div>
+                </div>
+            </div>
+            {%- endfor %}
+        </div>
+
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('persons.upload.itemscount', count=vals['persons']|count) }}</small><br/>
+            {%- for state in vals['states'].keys() %}
+                {{ vals['states'][state] }} {{ _('persons.upload.states'+state) }}
+                {%- if not loop.last %}, {%- endif %}
+            {%- endfor %}
+        </div>
+        <p> </p>
+        <h3>{{ _('persons.upload.step6header') }}</h3>
+        <input type="checkbox" name="add_selected"/> {{ _('persons.upload.uploadoption1') }}<br/>
+        <input type="checkbox" name="add_new" checked="checked"/> {{ _('persons.upload.uploadoption2') }}<br/>
+        <input type="checkbox" name="add_update" checked="checked"/> {{ _('persons.upload.uploadoption3') }}<br/>
+        <p> </p>
+        <button type="button" onclick="return doImport()" id="evalData2">{{ _('persons.upload.startupdate') }}</button>
+    </form>
+
+    <script>
+        function doImport(){
+            $('#tab1').append($('#overlay_proto').html());
+            $('#myTab li:eq(1) a').tab('show');
+            $.ajax({
+                type: "POST",
+                url: '/admin/data/persons?action=doimport&filename='+$('#filename').val()+"&sheetname="+$('#sheetname').val()+'&department='+$('#department').val(),
+                data: ($('#definitionForm').formSerialize()+'&'+$('#importoptions').formSerialize()),
+                dataType: "html",
+                success: function(data) {
+                    $('#tab1 > .overlayproto').remove();
+                }
+            });
+            return false;
+        }
+    </script>
+</div>

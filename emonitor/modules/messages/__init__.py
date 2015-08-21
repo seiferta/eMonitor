@@ -7,6 +7,13 @@ from emonitor.modules.messages.message_base import MessageWidget
 from emonitor.modules.messages.content_admin import getAdminContent, getAdminData
 from emonitor.modules.messages.content_frontend import getFrontendContent, getFrontendData
 
+exttypes = []
+
+
+def addMessageType(item):
+    """add external messagetype to local type variable"""
+    exttypes.append(item)
+
 
 class MessagesModule(Module):
     info = dict(area=['admin', 'frontend', 'widget'], name='messages', path='messages', icon='fa-newspaper-o', version='0.1')
