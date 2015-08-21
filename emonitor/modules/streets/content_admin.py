@@ -177,9 +177,10 @@ def getAdminData(self):
 
     elif request.args.get('action') == 'loadhnumbersfromosm':
         if 'streetid' in request.args:
-            streets = Street.getStreets(id=int(request.args.get('streetid')))
+            streets = [Street.getStreets(id=int(request.args.get('streetid')))]
         elif 'cityid' in request.args:
-            streets = [City.getCities(id=request.args.get('cityid'))]
+            #streets = list(City.getCities(id=request.args.get('cityid')).streets)
+            streets = Street.getStreets(cityid=int(request.args.get('cityid')))
         else:
             streets = Street.getStreets()
         return str(scheduler.add_job(loadHousenumbersFromOsm, args=[streets]))
