@@ -1,7 +1,11 @@
 import time
+import logging
 from emonitor.extensions import monitorserver
 from emonitor.modules.monitors.monitor import Monitor
 from emonitor.modules.events.eventhandler import Eventhandler
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 
 class Script:
@@ -31,8 +35,10 @@ class Script:
                 if l.trigger == eventname:  # find client id for defined event
                     if 'mode' in kwargs.keys() and kwargs['mode'] != 'test':
                         monitorserver.sendMessage(str(m.id), 'execute|%s' % scriptname)  # execute script on client
+                    else:
+                        logger.info('script started TESTMODE: %s' % scriptname)
 
-        if 'time' not in kwargs[0]:
+        if 'time' not in kwargs.keys():
             kwargs['time'] = []
         kwargs['time'].append(u'scripts: script "{}" done in {} sec.'.format(scriptname, time.time() - stime))
         return kwargs
