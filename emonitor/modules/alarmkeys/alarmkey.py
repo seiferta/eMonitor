@@ -134,6 +134,17 @@ class Alarmkey(db.Model):
         return Alarmkey.query.filter_by(category=category).all()
 
     @staticmethod
+    def getAlarmkeysByCategoryId(categoryid):
+        """
+        Get all alarmkey definitions of given category id
+
+        :param category: category as string
+        :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object list
+        """
+        key = Alarmkey.query.filter_by(id=categoryid).one()
+        return Alarmkey.query.filter_by(category=key.category).all()
+
+    @staticmethod
     def getAlarmkeysDict():
         """
         Get dict of all alarmkeys with alarmkey.id as dict key

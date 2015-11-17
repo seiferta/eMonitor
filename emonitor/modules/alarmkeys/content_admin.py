@@ -103,7 +103,7 @@ def getAdminContent(self, **params):
         counted_keys = db.get(ak.category.label('category'), func.count(ak.key).label('key'), ak.id.label('id')).group_by(ak.category)
         _sum = 0
         for r in counted_keys.all():
-            alarmkeys_count.append((r.category, r.key))
+            alarmkeys_count.append([r.category, r.key, r.id])
             _sum += int(r.key)
 
         params.update({'alarmkeys_count': alarmkeys_count, 'depid': depid, 'defaultcars': Alarmkey.getDefault(depid), 'sum': _sum})
@@ -117,7 +117,7 @@ def getAdminData(self):
     :return: rendered template as string or json dict
     """
     if request.args.get('action') == 'loaddetails':  # details for given key
-        return render_template('admin.alarmkeys.detail.html', keys=Alarmkey.getAlarmkeysByCategory(request.args.get('category').replace('__', ' ')), department=request.args.get('department'))  # macro='detail_row' TODO
+        return render_template('admin.alarmkeys.detail.html', keys=Alarmkey.getAlarmkeysByCategoryId(request.args.get('category')), department=request.args.get('department'))
 
     elif request.args.get('action') == 'upload':
         if request.files:
