@@ -82,8 +82,12 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 if len(repl) > 0:
                     _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
                     if len(_streets) > 0:
-                        if FezAlarmFaxChecker().fields['city'][1] != 0:  # own city
-                            _street = _streets[0]
+                        if FezAlarmFaxChecker().fields['city'][1] != 0:  # city given
+                            for _s in _streets:  # find correct city
+                                if _s.city.id == FezAlarmFaxChecker().fields['city'][1]:
+                                    _street = _s
+                                    _streets = [_s]
+                                    break
                             FezAlarmFaxChecker().fields[fieldname] = (_street.name, _street.id)
                             FezAlarmFaxChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
                         else:
