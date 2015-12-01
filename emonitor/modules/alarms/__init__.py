@@ -176,7 +176,7 @@ class AlarmsModule(Module):
 
         # init
         # Do init script for alarms at start and add alarms (state = 1 or 2) (active or done)
-        for aalarm in Alarm.query.filter(Alarm.state in [1, 2]).all():
+        for aalarm in Alarm.query.filter(Alarm.state == 1 or Alarm.state == 2).all():
             aalarm.updateSchedules(reference=1)
 
     def frontendContent(self):
