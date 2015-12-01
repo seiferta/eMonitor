@@ -84,7 +84,13 @@ def getFrontendContent(**params):
         else:
             alarm.set(u'id.address', request.form.get('edit_addressid'))
         alarm.set(u'address', request.form.get('edit_address'))
-        alarm.set(u'id.object', request.form.get('edit_object'))
+        if request.form.get('edit_object') != '0':
+            alarm.set(u'id.object', request.form.get('edit_object'))
+        else:  # remove object definition if present
+            if u'id.object' in alarm.attributes:
+                del alarm.attributes[u'id.object']
+            if u'object' in alarm.attributes:
+                del alarm.attributes[u'object']
         alarm.set(u'priority', request.form.get('edit_priority'))
         alarm.set(u'remark', request.form.get('edit_remark'))
         alarm.set(u'person', request.form.get('edit_person'))

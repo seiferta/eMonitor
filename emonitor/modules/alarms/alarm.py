@@ -623,7 +623,7 @@ class Alarm(db.Model):
 
         # alarmobject
         _ao = None
-        if 'object' in alarm_fields and alarm_fields['object'][0] != '':
+        if 'object' in alarm_fields and alarm_fields['object'][0] != '' and 'city' in alarm_fields and alarm_fields['city'][1] > 0:
             alarm.set('object', alarm_fields['object'][0])
             alarm.set('id.object', alarm_fields['object'][1])
             # alarmplan from object
