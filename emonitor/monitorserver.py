@@ -41,9 +41,10 @@ class MonitorServer():
         self.MCAST_PORT = app.config.get('MONITORSERVER_MCAST_PORT', 1600)
         self.host = app.config.get('HOST')
 
-        ip = socket.gethostbyname(socket.gethostname())
-        if ip:
-            self.host = ip
+        if self.host == '':
+            ip = socket.gethostbyname(socket.gethostname())
+            if ip:
+                self.host = ip
         self.port = app.config.get('PORT')
 
         signal.addSignal('monitorserver', 'clientsearchstart')
