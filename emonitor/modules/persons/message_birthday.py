@@ -73,21 +73,15 @@ class BirthdayWidget(MonitorWidget):
         person = OrderedDict()
 
         # calculate correct slice of birthdays
-        #for j in range(idx - (n / 2), idx + (n / 2)):
-        #    p = persons[j % (len(persons))]
-        #    if p.birthdate.strftime('%d.%m.') not in person.keys():
-        #        person[p.birthdate.strftime('%d.%m.')] = []
-        #    person[p.birthdate.strftime('%d.%m.')].append(p)
-
         x = 0
-        while len(person.keys()) < n / 2:  # lower
+        while len(person.keys()) <= n / 2:  # lower
             p = persons[(idx - x) % (len(persons))]
             if p.birthdate.strftime('%d.%m.') not in person.keys():
                 person[p.birthdate.strftime('%d.%m.')] = []
             person[p.birthdate.strftime('%d.%m.')].append(p)
             x += 1
         x = 1
-        person = OrderedDict(sorted(person.items(), key=lambda t: t[0]))  # order dates
+        person = OrderedDict(reversed(person.items()))  # order dates
 
         while len(person.keys()) < n:  # upper
             p = persons[(idx + x) % (len(persons))]
