@@ -64,7 +64,7 @@ class WeatherWidget(MonitorWidget):
             # reload data from web
             compass = ['N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N']
             baseurl = "https://query.yahooapis.com/v1/public/yql?"
-            yql_query = 'select * from weather.forecast where woeid in (select woeid from geo.placefinder where text="%s" and gflags="R" limit 1) and u="c"' % location
+            yql_query = u'select * from weather.forecast where woeid in (select woeid from geo.placefinder where text="{}" and gflags="R" limit 1) and u="c"'.format(location).encode('utf-8')
             yql_url = baseurl + urllib.urlencode({'q': yql_query}) + "&format=json"
             try:
                 result = urllib2.urlopen(yql_url).read()
@@ -84,6 +84,9 @@ class WeatherWidget(MonitorWidget):
                 self.data['astronomy']['sunset'] = ':'.join(self.data['astronomy']['sunset'])
             self.lastcall = datetime.datetime.now()
 
-        self.data['lastBuildDate'] = datetime.datetime.strptime(self.data['lastBuildDate'][:-5], '%a, %d %b %Y %I:%M %p').strftime('%d.%m.%Y %H:%M')
+        try:
+            self.data['lastBuildDate'] = datetime.datetime.strptime(self.data['lastBuildDate'][:-5], '%a, %d %b %Y %I:%M %p').strftime('%d.%m.%Y %H:%M')
+        except ValueError:
+            self.data['lastBuildDate'] = datetime.datetime.now().strftime('%d.%m.%Y %H:%M')
         kwargs.update({'location': location, 'icons': icons, 'forecast': forecast, 'data': self.data})
         self.params = kwargs
