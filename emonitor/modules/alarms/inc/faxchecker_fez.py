@@ -65,14 +65,14 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 if _str.endswith(c.name):
                     _str = _str.replace(c.name, '')
             pattern = re.compile(r'(?P<street>(^(\D+))) (?P<housenumber>(?P<hn>([0-9]{1,3}((\s?)[a-z])?)).*)'  # street with housenumber
-                                 r'|((?P<streetname>(^(\D+))))'
+                                 r'|((?P<streetname>((.*[0-9]{4})|(^(\D+)))))'
                                  r'|((?P<bab>((.*) (\>) )(?P<direction>(.*))))'  # highway
                                  r'|((.*) (?P<train>(KM .*).*))')  # train
         else:
             pattern = re.compile(r'(?P<street>(^(\D+))) (?P<housenumber>(?P<hn>([0-9]{1,3}((\s?)[a-z])?)).*)'  # street with housenumber
                                  r'|((?P<bab>A[0-9]{2,3} [A-Za-z]+) (?P<direction>(\D*))(( (?P<as>[0-9]*))|(.*)))'  # highway
                                  r'|((.*)(?P<train>(Bahnstrecke .*)) (?P<km>[0-9]+(.*)))'  # train
-                                 r'|((?P<streetname>(^(\D+))))'
+                                 r'|((?P<streetname>((.*[0-9]{4})|(^(\D+)))))'
                                  )
 
         m = pattern.match(_str)
