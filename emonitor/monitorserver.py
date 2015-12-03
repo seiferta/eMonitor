@@ -39,7 +39,7 @@ class MonitorServer():
         self.ANY = app.config.get('MONITORSERVER_ANY', "0.0.0.0")
         self.MCAST_ADDR = app.config.get('MONITORSERVER_MCAST_ADDR', "224.168.2.9")
         self.MCAST_PORT = app.config.get('MONITORSERVER_MCAST_PORT', 1600)
-        self.host = app.config.get('HOST')
+        self.host = app.config.get('HOST', '')
 
         if self.host == '':
             ip = socket.gethostbyname(socket.gethostname())
