@@ -74,8 +74,12 @@ class WeatherWidget(MonitorWidget):
                 self.data = {}
             try:
                 self.data['wind']['directionstring'] = compass[int(int(self.data['wind']['direction']) / 22.5)]
-            except ValueError:
+            except (KeyError, ValueError):
+                self.data['wind'] = {}
                 self.data['wind']['directionstring'] = ""
+
+            if 'astronomy' not in self.data:
+                self.data['astronomy'] = {'sunrise': {}, 'sunset': {}}
             if 'am' in self.data['astronomy']['sunrise']:
                 self.data['astronomy']['sunrise'] = self.data['astronomy']['sunrise'][:-3]
             if 'pm' in self.data['astronomy']['sunset']:
