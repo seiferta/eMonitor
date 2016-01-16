@@ -69,26 +69,21 @@ class BirthdayWidget(MonitorWidget):
             orientation = Settings.get('messages.birthday.orientation', 20)
 
         persons = sorted(Person.getPersons(onlyactive=True), key=lambda p: p.birthday)
-        val, idx = min((val.birthday - int(datetime.datetime.now().strftime('%j')), idx) for (idx, val) in enumerate(persons) if val.birthday - int(datetime.datetime.now().strftime('%j')) >= 0)
+        p = [(val.birthday - int(datetime.datetime.now().strftime('%j')), idx, persons[idx].lastname, persons[idx].birthdate) for (idx, val) in enumerate(persons)]
+        idx = min(filter(lambda x: x[0] >= 0, p))
+
         person = OrderedDict()
+        try:
+            for i in range(idx[1] - (n / 2) + 1, idx[1] + (n / 2) + 2):
+                _p = persons[i % (len(p))]
+                if _p.birthdate.strftime('%d.%m.') not in person.keys():
+                    person[_p.birthdate.strftime('%d.%m.')] = []
+                person[_p.birthdate.strftime('%d.%m.')].append(_p)
+            for _p in persons:
+                if _p.birthdate.strftime('%d.%m.') in person.keys() and _p not in person[_p.birthdate.strftime('%d.%m.')]:
+                    person[_p.birthdate.strftime('%d.%m.')].append(_p)
+        except:
+            pass
 
-        # calculate correct slice of birthdays
-        x = 0
-        while len(person.keys()) <= n / 2:  # lower
-            p = persons[(idx - x) % (len(persons))]
-            if p.birthdate.strftime('%d.%m.') not in person.keys():
-                person[p.birthdate.strftime('%d.%m.')] = []
-            person[p.birthdate.strftime('%d.%m.')].append(p)
-            x += 1
-        x = 1
-        person = OrderedDict(reversed(person.items()))  # order dates
-
-        while len(person.keys()) < n:  # upper
-            p = persons[(idx + x) % (len(persons))]
-            if p.birthdate.strftime('%d.%m.') not in person.keys():
-                person[p.birthdate.strftime('%d.%m.')] = []
-            person[p.birthdate.strftime('%d.%m.')].append(p)
-            x += 1
-
-        kwargs.update({'content': content, 'template': template, 'persons': person, 'daynum': int((datetime.datetime.now()).strftime('%j'))})
+        kwargs.update({'content': content, 'template': template, 'persons': person, 'daynum': int((datetime.datetime.now()).strftime('%j')), 'orientation': orientation})
         self.params = kwargs
