@@ -116,7 +116,7 @@ def getAdminContent(self, **params):
                         if len(c) < 2:
                             c.append('')  # subcity
                         city = [ct for ct in City.getCities() if str(ct.id) == c[0]][0]
-                        city.addStreet(Street(request.form.get('edit_name'), request.form.get('edit_navigation'), int(c[0]), c[1], request.form.get('edit_lat'), request.form.get('edit_lng'), request.form.get('edit_zoom'), request.form.get('edit_active'), ''))
+                        city.addStreet(Street(request.form.get('edit_name'), request.form.get('edit_navigation'), int(c[0]), c[1], request.form.get('edit_lat'), request.form.get('edit_lng'), request.form.get('edit_zoom'), request.form.get('edit_active'), 0))
                         db.session.commit()
                     cache.clear()
 
