@@ -1,0 +1,11 @@
+<style>
+    div.errorcontainer{color: silver;padding-top:20%;}
+    div.errorcontainer p{text-align: center;}
+</style>
+<div class="errorcontainer">
+    <p>
+        {{ _('messages.errorhandler.1', templatename=templatename) }}
+        <br/>
+        {{ _('messages.errorhandler.2', modulename=modulename) }}
+    </p>
+</div>

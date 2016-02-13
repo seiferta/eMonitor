@@ -64,7 +64,7 @@ class WeatherWidget(MonitorWidget):
             # reload data from web
             compass = ['N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N']
             baseurl = "https://query.yahooapis.com/v1/public/yql?"
-            yql_query = u'select * from weather.forecast where woeid in (select woeid from geo.placefinder where text="{}" and gflags="R" limit 1) and u="c"'.format(location).encode('utf-8')
+            yql_query = u'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="{}") and u="c"'.format(location).encode('utf-8')
             yql_url = baseurl + urllib.urlencode({'q': yql_query}) + "&format=json"
             try:
                 result = urllib2.urlopen(yql_url).read()

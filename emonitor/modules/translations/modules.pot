@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2015 ORGANIZATION
+# Copyright (C) 2016 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-21 11:04+0200\n"
+"POT-Creation-Date: 2016-02-13 21:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2036,137 +2036,6 @@ msgstr ""
 msgid "frontend.alamobject.details"
 msgstr ""
 
-#: emonitor/modules/mails/__init__.py:37
-msgid "module.mails"
-msgstr ""
-
-#: emonitor/modules/mails/__init__.py:38
-msgid "mails.base"
-msgstr ""
-
-#: emonitor/modules/mails/__init__.py:39
-msgid "module.mails.config"
-msgstr ""
-
-#: emonitor/modules/mails/__init__.py:40
-msgid "imap"
-msgstr ""
-
-#: emonitor/modules/mails/__init__.py:41
-msgid "imaps"
-msgstr ""
-
-#: emonitor/modules/mails/__init__.py:42
-msgid "pop"
-msgstr ""
-
-#: emonitor/modules/mails/mails.py:121
-msgid "mails.error.subject"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:18
-msgid "mails.config.title"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:19
-msgid "mails.config.info"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:23
-msgid "mails.server.config"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:24
-msgid "mails.server.configinfo"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:26
-msgid "mails.servertype"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
-msgid "mails.serverinname"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:35
-msgid "mails.serverinport"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:36
-#: emonitor/modules/mails/templates/admin.mails.config.html:41
-msgid "mails.servername"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:37
-#: emonitor/modules/mails/templates/admin.mails.config.html:42
-msgid "mails.port"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
-msgid "mails.serveroutname"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:40
-msgid "mails.serveroutport"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:45
-msgid "mails.serveruser"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:46
-msgid "mails.username"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:49
-msgid "mails.serverpassword"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:50
-msgid "mails.password"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:53
-#: emonitor/modules/mails/templates/admin.mails.config.html:87
-msgid "mails.save"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:59
-msgid "mails.config"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:60
-msgid "mails.configinfo"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:63
-msgid "mails.activateobserver"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:67
-msgid "mails.observeinterval"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:68
-msgid "mails.observerintervalinfo"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:71
-msgid "mails.senderfilter"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:76
-msgid "mails.useattachment"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:81
-msgid "mails.senderrors"
-msgstr ""
-
-#: emonitor/modules/mails/templates/admin.mails.config.html:84
-msgid "mails.erroraddress"
-msgstr ""
-
 #: emonitor/modules/mapitems/__init__.py:36
 msgid "module.mapitems"
 msgstr ""
@@ -2366,19 +2235,19 @@ msgstr ""
 msgid "itemtype.itemscount"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:46
+#: emonitor/modules/maps/__init__.py:66
 msgid "module.maps"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:47
+#: emonitor/modules/maps/__init__.py:67
 msgid "maps_map"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:48
+#: emonitor/modules/maps/__init__.py:68
 msgid "maps.base"
 msgstr ""
 
-#: emonitor/modules/maps/__init__.py:49
+#: emonitor/modules/maps/__init__.py:69
 msgid "module.maps.position"
 msgstr ""
 
@@ -2388,6 +2257,11 @@ msgstr ""
 
 #: emonitor/modules/maps/content_admin.py:117
 msgid "settings.map.loadingstarted"
+msgstr ""
+
+#: emonitor/modules/maps/content_frontend.py:37
+#: emonitor/modules/maps/map.py:114
+msgid "maps.print.overview"
 msgstr ""
 
 #: emonitor/modules/maps/map_utils.py:44
@@ -2889,6 +2763,14 @@ msgstr ""
 
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:120
 msgid "messages.deletequestion"
+msgstr ""
+
+#: emonitor/modules/messages/templates/widget.message.error.html:7
+msgid "messages.errorhandler.1"
+msgstr ""
+
+#: emonitor/modules/messages/templates/widget.message.error.html:9
+msgid "messages.errorhandler.2"
 msgstr ""
 
 #: emonitor/modules/messages/templates/widget.message.weather.html:25
@@ -3527,31 +3409,19 @@ msgid "persons.cancel"
 msgstr ""
 
 #: emonitor/modules/persons/templates/widget.message.birthday.html:16
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:14
 msgid "messages.birthday.monitorheader"
 msgstr ""
 
 #: emonitor/modules/persons/templates/widget.message.birthday.html:25
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:25
 msgid "messages.birthday.today"
 msgstr ""
 
 #: emonitor/modules/persons/templates/widget.message.birthday.html:27
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:23
 msgid "messages.birthday.yesterday"
 msgstr ""
 
 #: emonitor/modules/persons/templates/widget.message.birthday.html:29
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:27
 msgid "messages.birthday.tomorrow"
-msgstr ""
-
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:21
-msgid "messages.birthday.day-2"
-msgstr ""
-
-#: emonitor/modules/persons/templates/widget.message.birthday1.html:29
-msgid "messages.birthday.day+2"
 msgstr ""
 
 #: emonitor/modules/printers/__init__.py:35

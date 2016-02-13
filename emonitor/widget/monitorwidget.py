@@ -67,7 +67,10 @@ class MonitorWidget:
         """
         if self.template != "":
             kwargs.update(self.params)
-            return render_template(self.template, **kwargs)
+            try:
+                return render_template(self.template, **kwargs)
+            except:
+                return render_template('widget.message.error.html', templatename=self.template, modulename=self.name)
         return "404: template not found"
 
     def getAdminContent(self, **params):
