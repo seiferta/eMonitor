@@ -54,7 +54,7 @@ class Person(db.Model):
         calculate day of birthdate for sorting
         caution: use the same year for day calculation (1900)
         """
-        return int((datetime(1900, *self.birthdate.timetuple()[1:-2])).strftime('%j'))
+        return int((datetime(1904, *self.birthdate.timetuple()[1:-2])).strftime('%j'))
 
     @staticmethod
     def getPersons(id=0, identifier=0, dept=0, onlyactive=False):
