@@ -74,10 +74,14 @@ def getData(module=u''):
     if module == u"frontpage" and 'action' in request.args:
         if request.args.get('action') == 'info':
             return render_template('frontend.emonitorinfo.html', app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+        elif request.args.get('action') == 'systeminfo':
+            return render_template('frontend.systeminfo.html')
         elif request.args.get('action') == 'restart':
             from emonitor.extensions import scheduler
             scheduler.add_job(restartService)
             return ""
+        elif request.args.get('action') == 'translatebaseinfo':
+            return jsonify({'connection_info': babel.gettext(u'frontend.connection_info')})
 
     try:
         current_mod = [frontend.modules[m] for m in frontend.modules if frontend.modules[m].info['path'] == module.split('/')[0]][0]
