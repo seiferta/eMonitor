@@ -63,7 +63,11 @@
          if (data.sender == 'monitorserver.clientanswer'){
              if($('#client_'+data.clientid).length==1){
                  $('#client_'+data.clientid).removeClass('client_inactive').addClass('client');
-                 $('#client_'+data.clientid).find('div.client_ip').html(data.ip[0]+'<br/>'+data.name);
+                 var content = data.ip[0]+'<br/>'+data.name;
+                 if(data.value[1]){
+                    content += ' <small>(ver. ' + data.value[1] + ')</small>';
+                 }
+                 $('#client_'+data.clientid).find('div.client_ip').html(content);
              }
          }
          return false;

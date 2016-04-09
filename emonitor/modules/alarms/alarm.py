@@ -716,7 +716,7 @@ class Alarm(db.Model):
             for a in alarm.attributes:
                 try:
                     if a in ['k.cars1', 'k.cars2', 'k.material']:
-                        kwargs['fields'] += '\n-%s:\n  %s -> %s' % (a, alarm.get(a), ", ".join([_cdict[int(_c)].name for _c in alarm.get(a).split(',') if _c != ""]))
+                        kwargs['fields'] += '\n-%s:\n  %s -> %s' % (a, alarm.get(a), ", ".join([_cdict[int(_c)].name for _c in alarm.get(a).split(',') if _c not in ['', '0']]))
                     elif a in 'id.key':
                         _k = Alarmkey.getAlarmkeys(id=alarm.get(a))
                         kwargs['fields'] += '\n-%s:\n  %s -> %s: %s' % (a, alarm.get(a), _k.category, _k.key)

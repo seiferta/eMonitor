@@ -235,7 +235,11 @@ class Module:
             return "%s/emonitor/modules%s" % (current_app.config.get('PROJECT_ROOT'), uri)  # make absolute links
 
         pdf = StringIO()
-        pisa.CreatePDF(StringIO(pdfdata), pdf, link_callback=link_callback)
+        try:
+            pisa.CreatePDF(StringIO(pdfdata), pdf, link_callback=link_callback)
+        except AttributeError:
+            logger.debug('AttributeError in pdf creation')
+
         for image in images:  # remove tmp images
             if os.path.exists(image):
                 os.remove(image)

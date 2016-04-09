@@ -44,7 +44,8 @@
                 location.reload();
             }else if(d.sender=='alarm.added' || (d.sender=='alarm.changestate' && d.newstate==0)) {
                 location.reload();
-                alert('{{ _('alarm.addedalert') }}');
+                parent.$('#overlaycontent').html('<h3>{{ _('alarm.addedalert') }}</h3>');
+                parent.$('.overlay').show();
             }
         }
     </script>

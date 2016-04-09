@@ -95,8 +95,11 @@ def configure_app(app, config=None):
     try:
         app.config.from_pyfile('emonitor.cfg', silent=False)
     except IOError:
-        print "config file 'emonitor.cfg' not found"
-        sys.exit()
+        try:
+            app.config.from_pyfile('../emonitor.cfg')
+        except:
+            print "config file 'emonitor.cfg' not found"
+            sys.exit()
 
     # create missing directories of config
     for p in [path for path in app.config.keys() if path.startswith('PATH')]:
@@ -128,7 +131,10 @@ def configure_extensions(app):
                 pass
         db.reflect()  # check init
         db.create_all()
-        alembic.stamp()  # set stamp to latest version
+        try:
+            alembic.stamp()  # set stamp to latest version
+        except:
+            pass
 
     # babel
     babel.init_app(app)
@@ -139,12 +145,12 @@ def configure_extensions(app):
     # signals
     signal.init_app(app)
 
-    #events
+    # events
     events.init_app(app)
     events.addEvent('default', handlers=[], parameters=[])
 
     # scheduler
-    if scheduler._stopped:
+    if not scheduler.running:
         scheduler.start()
     scheduler.initJobs(app)
 
@@ -177,6 +183,7 @@ def configure_extensions(app):
     # add global elements
     from emonitor.scheduler import eMonitorIntervalTrigger
     from emonitor.modules.settings.settings import Settings
+    from emonitor.observer import observeFolder, OBSERVERTYPE
     try:
         _jping = scheduler.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(minutes=int(Settings.get('monitorping', app.config.get('MONITORPING', 2)))), name='monitorping')
     except:
@@ -184,11 +191,16 @@ def configure_extensions(app):
 
     if str(Settings.get('monitorping', app.config.get('MONITORPING'))) == '0':
         _jping.pause()
-    from emonitor.observer import observeFolder
+
     try:
-        _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL', 2)))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+        if OBSERVERTYPE == "watchdog":
+            _jobserver = scheduler.add_job(observeFolder, kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+        else:
+            _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL', 2)))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
     except ValueError:
         _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(app.config.get('OBSERVERINTERVAL', 2))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+    if str(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL'))) == '0':
+        _jobserver.pause()
     if str(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL'))) == '0':
         _jobserver.pause()
 

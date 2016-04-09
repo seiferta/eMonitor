@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 
-class MonitorServer():
+class MonitorServer:
     
     clients = {'clients': {}, 'time': datetime.datetime.now()}
 
@@ -41,10 +41,9 @@ class MonitorServer():
         self.MCAST_PORT = app.config.get('MONITORSERVER_MCAST_PORT', 1600)
         self.host = app.config.get('HOST', '')
 
-        if self.host == '':
-            ip = socket.gethostbyname(socket.gethostname())
-            if ip:
-                self.host = ip
+        ip = socket.gethostbyname(socket.gethostname())
+        if ip and self.host != ip:
+            self.host = ip
         self.port = app.config.get('PORT')
 
         signal.addSignal('monitorserver', 'clientsearchstart')
@@ -96,14 +95,31 @@ class MonitorServer():
         return ""
         
     def getClients(self):
+        """
+        client search method collects answer of each client and delivers list.
+
+        client answer syntax: | separated string - clientid|state|parameters
+        """
         signal.send('monitorserver', 'clientsearchstart', clients=[])
         monitors = Monitor.getMonitors()
         message, results = self.sendMessageWithReturn('0', 'ping')
 
         clients = {}
         for res in results:
-            _id = res['data'].split('|')[0]
-            clients[_id] = [(res['from'][0], res['name'])]
+            _state = _id = ""
+            _data = res['data'].split('|')
+            print "data:", _data
+            if _data[0]:
+                _id = _data[0]
+            if _data[1]:
+                _state = _data[1]
+            if len(_data) > 2:
+                _params = _data[2:]
+            else:
+                _params = []
+            if _state == 'initneed':
+                self.sendMessage(_id, 'load')
+            clients[_id] = [(res['from'][0], res['name'], _params)]
             if _id not in [str(m.id) for m in monitors]:
                 clients[_id].append(None)
         for monitor in monitors:
@@ -181,7 +197,7 @@ class MonitorServer():
         return 1
 
     def run(self, id):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self.sock.settimeout(1.0)
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, struct.pack('b', 1))
 
