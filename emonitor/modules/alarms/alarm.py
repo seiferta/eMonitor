@@ -348,7 +348,7 @@ class Alarm(db.Model):
             LASTALARM = time.time()
             alarm.updateSchedules(reference=0)  # use current time + delta
             j = scheduler.add_job(events.raiseEvent, next_run_time=datetime.datetime.fromtimestamp(LASTALARM), args=['alarm_{}{}'.format(_op, _type)], kwargs={'alarmid': id}, name="alarms_activate_{}".format(id))
-            signal.send('alarm', 'added', alarmid=id)
+            signal.send('alarm', _op, alarmid=id, newstate=state)
             try:
                 flash(babel.gettext(u'alarms.statechangeactivated'), 'alarms.activate')
             except:

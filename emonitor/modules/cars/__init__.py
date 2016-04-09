@@ -1,6 +1,5 @@
 import re
 from emonitor.utils import Module
-from emonitor.widget.monitorwidget import MonitorWidget
 from emonitor.extensions import babel
 from emonitor.modules.cars.car import Car
 from emonitor.modules.cars.content_admin import getAdminContent

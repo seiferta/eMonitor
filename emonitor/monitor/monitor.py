@@ -92,7 +92,7 @@ def monitorContent(clientid=0):
                         footer = 1
                     content = content.replace(u'[[%s]]' % w, widget.getHTML(request))
 
-    return render_template('monitor.html', content=content, theme=layout.theme, activecount=len(count), footer=footer, position=pos, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+    return render_template('monitor.html', content=content, clientid=clientid, theme=layout.theme, activecount=len(count), footer=footer, position=pos, app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
 
 
 # static folders

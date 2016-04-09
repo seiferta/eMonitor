@@ -39,7 +39,7 @@
         parent.ws.onmessage=function(e){
             $('#ws').html('<i class="fa fa-link fa-lg"></i>');
             var d = JSON.parse(e.data);
-            console.log(d);
+            //console.log(d);
             if(d.sender=='alarm.updated' || d.sender=='alarm.deleted' || (d.sender=='alarm.changestate' && d.newstate!=0)){
                 location.reload();
             }else if(d.sender=='alarm.added' || (d.sender=='alarm.changestate' && d.newstate==0)) {
@@ -307,7 +307,7 @@
                 {%- endfor %}
 
                 $("button[value=refresh]").click(function(){window.location.href='/alarms?area={{ frontendarea }}'});
-                $("button[value=addalarm]").click(function(){window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'});
+                $("button[value=addalarm]").click(function(){$('#alarmssubcenter').html('<p style="text-align:center;padding-top:100px"><img src="/img/loading.gif"/></p>');window.location.href='/alarms?action=editalarm&alarmid=0&area={{ frontendarea }}'});
                 $("button[value=archive]").click(function(){questionArchive(0)});
                 $("button[value=collective]").click(function(){loadCollective()});
 

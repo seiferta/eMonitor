@@ -1,6 +1,8 @@
+import mimetypes
 from flask import send_from_directory
 from emonitor.utils import Module
 from emonitor.extensions import babel, db
+from emonitor.widget.monitorwidget import MonitorWidget
 from emonitor.modules.settings.content_admin import getAdminContent, getAdminData
 from emonitor.modules.settings import settings_utils
 from emonitor.modules.settings.department import Department
@@ -11,7 +13,7 @@ class SettingsModule(Module):
     """
     Definition of settings module with admin area
     """
-    info = dict(area=['admin'], name='settings', path='settings', icon='fa-gears', version='0.1')
+    info = dict(area=['admin', 'widget'], name='settings', path='settings', icon='fa-gears', version='0.1')
 
     def __repr__(self):
         return "settings"
@@ -20,6 +22,8 @@ class SettingsModule(Module):
         Module.__init__(self, app)
         # add template path
         app.jinja_loader.searchpath.append("%s/emonitor/modules/settings/templates" % app.config.get('PROJECT_ROOT'))
+
+        self.widgets = [CrestWidget('departmentcrest')]
 
         # subnavigation
         self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'module.settings.department'), ('/admin/settings/cars', 'module.settings.cars'), ('/admin/settings/start', 'module.settings.start')]
@@ -40,6 +44,8 @@ class SettingsModule(Module):
         babel.gettext(u'settings.pathtype.pathtmp')
         babel.gettext(u'settings.pathtype.pathdata')
         babel.gettext(u'settings.pathtype.pathincome')
+
+        babel.gettext(u'departmentcrest')
 
         # add default values
         if Settings.query.count() == 0:  # add default values
@@ -75,3 +81,22 @@ class SettingsModule(Module):
         :return: return result of method
         """
         return getAdminData(self, **params)
+
+
+class CrestWidget(MonitorWidget):
+    """Car widget for alarms"""
+    template = 'widget.department_crest.html'
+    size = (1, 2)
+
+    def addParameters(self, **kwargs):
+        mimetypes.init()
+        dep = Department.getDefaultDepartment()
+        if kwargs.get('alarm'):
+            try:
+                dep = kwargs.get('alarm').city.department
+                print "alarmdepaprtment", dep.name
+            except:
+                pass
+        if dep and 'logo' in dep.attributes:
+            kwargs.update(crest=dep.getLogoStream(), mime=mimetypes.guess_type(dep.attributes['logo'])[0])
+        self.params.update(kwargs)

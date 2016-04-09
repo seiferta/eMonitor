@@ -17,7 +17,7 @@
         <script type="text/javascript" language="javascript" src="/js/jquery-ui-1.10.1.min.js"> </script>
         <script type="text/javascript" language="javascript" src="/js/jquery.layout.min.js"> </script>
     </head>
-    <body>
+    <body id="{{ clientid }}">
         {{ content|safe }}
         {%- if footer == 1 %}
             <div class="footer">

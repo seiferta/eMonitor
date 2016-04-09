@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-02-13 21:21+0100\n"
-"PO-Revision-Date: 2016-02-13 21:25+0100\n"
+"POT-Creation-Date: 2016-04-09 13:12+0200\n"
+"PO-Revision-Date: 2016-04-09 13:12+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -3766,41 +3766,45 @@ msgstr "Nein"
 msgid "emonitor.modules.scripts.script.Script"
 msgstr "Script"
 
-#: emonitor/modules/settings/__init__.py:33
+#: emonitor/modules/settings/__init__.py:37
 msgid "module.settings"
 msgstr "Grundeinstellungen"
 
-#: emonitor/modules/settings/__init__.py:34
+#: emonitor/modules/settings/__init__.py:38
 msgid "settings.main"
 msgstr "Basisdaten"
 
-#: emonitor/modules/settings/__init__.py:35
+#: emonitor/modules/settings/__init__.py:39
 msgid "module.settings.department"
 msgstr "Einheiten"
 
-#: emonitor/modules/settings/__init__.py:36
+#: emonitor/modules/settings/__init__.py:40
 msgid "module.settings.cars"
 msgstr "Fahrzeuge/Material"
 
-#: emonitor/modules/settings/__init__.py:37
+#: emonitor/modules/settings/__init__.py:41
 msgid "module.settings.start"
 msgstr "Startseite"
 
-#: emonitor/modules/settings/__init__.py:39
+#: emonitor/modules/settings/__init__.py:43
 msgid "settings.pathtype.pathdone"
 msgstr "Pfad <em>Erledigt</em>"
 
-#: emonitor/modules/settings/__init__.py:40
+#: emonitor/modules/settings/__init__.py:44
 msgid "settings.pathtype.pathtmp"
 msgstr "Pfad <em>Temp</em>"
 
-#: emonitor/modules/settings/__init__.py:41
+#: emonitor/modules/settings/__init__.py:45
 msgid "settings.pathtype.pathdata"
 msgstr "Pfad <em>Daten</em>"
 
-#: emonitor/modules/settings/__init__.py:42
+#: emonitor/modules/settings/__init__.py:46
 msgid "settings.pathtype.pathincome"
 msgstr "Pfad <em>Eingang</em>"
+
+#: emonitor/modules/settings/__init__.py:48
+msgid "departmentcrest"
+msgstr "Wappen"
 
 #: emonitor/modules/settings/content_admin.py:150
 msgid "admin.settings.updatedberror"
