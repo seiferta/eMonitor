@@ -3,7 +3,8 @@ import xml.etree.ElementTree as ET
 import logging
 import datetime, time
 import requests
-import json
+from StringIO import StringIO
+from PIL import Image, ImageDraw, ImageFont
 from collections import OrderedDict
 from sqlalchemy import inspect
 from flask import current_app
@@ -250,6 +251,28 @@ class AlarmFaxChecker:
         :return: dict with alarm fields/values
         """
         return dict()
+
+    def getSampleLayout(self):
+        """
+        create sample layout file and return file
+        :return: sample as jpeg image
+        """
+        img_sample = Image.new('RGB', (2480, 3508), (255, 255, 255))  # DIN-A4 72 dpi
+        font = ImageFont.truetype("times.ttf", 60)
+
+        draw = ImageDraw.Draw(img_sample)
+        lines = [u'Sample not set']
+        t = 10
+        for line in lines:
+            size = font.getsize(line)
+            l = (2480 - size[0]) / 2
+            t += size[1] + 20
+            draw.text((l, t), line, (0, 0, 0), font=font)
+
+        draw.line((40, t + 100, 2400, t + 100), fill=256, width=3)
+        output = StringIO()
+        img_sample.save(output, format="JPEG", dpi=(300, 300))
+        return output.getvalue()
 
 
 def getAlarmRoute(alarm):

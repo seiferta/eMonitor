@@ -73,6 +73,10 @@ class AlarmsModule(Module):
         # static folders
         @app.route('/alarms/inc/<path:filename>')
         def alarms_static(filename):
+            if filename.startswith('sample_'):  # deliver sample checker file
+                clsname = filename.split('_')[1]
+                return Response(AlarmType.getAlarmTypes(clsname).interpreterclass().getSampleLayout(), mimetype="image/jpeg")
+
             return send_from_directory("{}/emonitor/modules/alarms/inc/".format(app.config.get('PROJECT_ROOT')), filename)
 
         @app.route('/alarms/export/<path:filename>')  # filename = [id]-[style].pdf

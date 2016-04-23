@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import re
 import difflib
+from StringIO import StringIO
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker
 from emonitor.modules.streets.street import Street
 from emonitor.modules.streets.city import City
@@ -8,6 +9,7 @@ from emonitor.modules.cars.car import Car
 from emonitor.modules.settings.department import Department
 from emonitor.modules.alarmkeys.alarmkey import Alarmkey
 from emonitor.modules.alarmobjects.alarmobject import AlarmObject
+from PIL import Image, ImageDraw, ImageFont
 
 __all__ = ['FezAlarmFaxChecker']
 
@@ -17,7 +19,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     fax checker implementation for Feuerwehreinsatzzentrale Muenchen Land (FEZ) with special layout
     """
     __name__ = "FEZ"
-    __version__ = '0.2'
+    __version__ = '0.3'
 
     fields = {}
     sections = OrderedDict()
@@ -405,7 +407,6 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
         curr_field = ""
 
-        #for l in rawtext.decode('utf-8').split(u"\n"):
         for l in rawtext.split(u"\n"):
             field = difflib.get_close_matches(re.split(u':|=|i ', l)[0], sectionnames.keys(), 1)  # test line ->:|=
             if len(field) == 0 and u" " in l:
@@ -423,7 +424,6 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                 curr_field = field[0]
             elif curr_field != '':
                 if sectionnames[curr_field] != u'':
-                    #FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (FezAlarmFaxChecker().fields[sectionnames[curr_field]][0] + u'\n' + value, FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
                     if value[0] == u' ':
                         FezAlarmFaxChecker().fields[sectionnames[curr_field]] = (u"\n".join((FezAlarmFaxChecker().fields[sectionnames[curr_field]][0], value)), FezAlarmFaxChecker().fields[sectionnames[curr_field]][1])
                     else:
@@ -454,3 +454,58 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             except:
                 values[k] = (FezAlarmFaxChecker().fields[k][0], FezAlarmFaxChecker().fields[k][1])
         return values
+
+    def getSampleLayout(self):
+        """
+        create sample layout file and return file
+        :return: sample as jpeg image
+        """
+        img_sample = Image.new('RGB', (2480, 3508), (255, 255, 255))  # DIN-A4 72 dpi
+        font = ImageFont.truetype("times.ttf", 60)
+
+        draw = ImageDraw.Draw(img_sample)
+        lines = [u'Alarmschreiben',
+                 u'Feuerwehreinsatzzentrale Landkreis M\xfcnchen Land',
+                 u'Telefon: +49 (89) 1234-56789 Telefax: +49 (89) 4444-123456']
+        t = 10
+        for line in lines:
+            size = font.getsize(line)
+            l = (2480 - size[0]) / 2
+            t += size[1] + 20
+            draw.text((l, t), line, (0, 0, 0), font=font)
+
+        draw.line((40, t + 100, 2400, t + 100), fill=256, width=3)
+        draw.text((40, t + 120), u'Einsatznr:' + u' ' * 20 + u'B 1.4.2 160101 000 ' + u' ' * 20 + u'Alarm: 01.01.2016 00:01', (0, 0, 0), font=font)
+        draw.line((40, t + 200, 2400, t + 200), fill=256, width=3)
+
+        draw.text((40, t + 300), u'Mitteiler:' + u' ' * 30 + u'Person ABC', (0, 0, 0), font=font)
+        draw.text((40, t + 400), u'Einsatzort:', (0, 0, 0), font=font)
+        draw.text((40, t + 460), u'Stra\xdfe:' + u' ' * 34 + u'Musterstra\xdfe 1 3a', (0, 0, 0), font=font)
+        draw.text((40, t + 520), u'Abschnitt:', (0, 0, 0), font=font)
+        draw.text((40, t + 660), u'Kreuzung:', (0, 0, 0), font=font)
+        draw.text((40, t + 780), u'Ortsteil/Ort:' + u' ' * 26 + u'Musterstadt in 80000  Musterstadt, Kr M\xfcnchen', (0, 0, 0), font=font)
+
+        draw.text((40, t + 900), u'Objekt:', (0, 0, 0), font=font)
+        draw.text((40, t + 1000), u'Einsatzplan:', (0, 0, 0), font=font)
+
+        draw.line((40, t + 1100, 2400, t + 1100), fill=256, width=3)
+        draw.text((40, t + 1140), u'Meldebild:' + u' ' * 28 + u'Wasserschaden', (0, 0, 0), font=font)
+        draw.line((40, t + 1240, 2400, t + 1240), fill=256, width=3)
+
+        draw.text((40, t + 1300), u'Hinweis:' + u' ' * 30 + u'Achtung nass!', (0, 0, 0), font=font)
+        draw.line((40, t + 1440, 2400, t + 1440), fill=256, width=3)
+        draw.line((40, t + 1500, 2400, t + 1500), fill=256, width=3)
+
+        draw.text((40, t + 1520), u'Geforderte Einsatzmittel bzw. Ausr\xfcstung:', (0, 0, 0), font=font)
+
+        draw.text((70, t + 1600), u'1.4.2 M-L FF Musterstadt', (0, 0, 0), font=font)
+        draw.text((70, t + 1680), u'1.4.2 M-L FF Musterstadt 40/1', (0, 0, 0), font=font)
+        draw.text((70, t + 1760), u'1.4.2 M-L FF Musterstadt 65/1', (0, 0, 0), font=font)
+
+        draw.text((40, t + 1900), u'(Alarmschreiben Ende)', (0, 0, 0), font=font)
+        draw.line((40, t + 2000, 2400, t + 2000), fill=256, width=3)
+
+        draw.text((40, t + 2060), u'Auch bei Erhalt des Alarmschreiben den EINSATZORT \xfcber Funk best\xe4tigen!!', (0, 0, 0), font=font)
+        output = StringIO()
+        img_sample.save(output, format="JPEG", dpi=(300, 300))
+        return output.getvalue()

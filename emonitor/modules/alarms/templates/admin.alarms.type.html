@@ -42,12 +42,13 @@
         {% for alarmtype in alarmtypes %}
         <div class="row">
             <a href="#" class="morelink" title="{{ _('alarms.type.detailtitle') }}" onclick="return details({{ alarmtype.id }}, this)"> </a>
-            <div style="margin-right:60px;margin-left:15px;">
+            <div style="margin-right:90px;margin-left:15px;">
                 <div class="rowcell" style="width:20%;">{{ alarmtype.name }}</div>
                 <div class="rowcell" style="width:80%;overflow:hidden">{{ alarmtype.keywords.replace('\r\n', ', ') }}</div>
             </div>
             <button type="submit" name="action" value="deletetype_{{ alarmtype.id }}" title="{{ _('alarms.type.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
             <button type="submit" name="action" value="editalarmtype_{{ alarmtype.id }}" title="{{ _('alarms.type.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+            <button type="button" name="action" title="{{ _('alarms.type.getsample') }}" onclick="window.open('/alarms/inc/sample_{{ alarmtype.id }}', 'sample', 'toolbar=0,status=0')"><i class="fa fa-file-image-o"></i></button>
         </div>
         
         <div class="details" style="display:none" id="details_{{ alarmtype.id }}">
