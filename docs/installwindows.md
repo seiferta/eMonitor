@@ -47,23 +47,23 @@ Wenn diese Voraussetzungen erfüllt sind, kann mit der installation von eMonitor
 
 3. Konfiguration:
 
-Im Basisverzeichnis liegt die Datei *emonitor.cfg.template*, die alle möglichen Konfigurationsparameter enthält. Diese 
-Datei kann als Vorlage für die Konfiguration benutzt werden und kopiert nach *emonitor.cfg* werden.
+ Im Basisverzeichnis liegt die Datei *emonitor.cfg.template*, die alle möglichen Konfigurationsparameter enthält. Diese 
+ Datei kann als Vorlage für die Konfiguration benutzt werden und kopiert nach *emonitor.cfg* werden.
 
-Folgende Parameter müssen kontrolliert werden:
+ Folgende Parameter müssen kontrolliert werden:
 
-PORT = 80
+ PORT = 80
 
-- SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
-- ADMIN_DEFAULT_PASSWORD = 'admin'
-- PATH_DATA = './data/'
-- PATH_INCOME = './data/income/'
-- PATH_DONE = './data/done/'
-- PATH_TMP = './data/tmp/'
-- PATH_TILES = './data/tiles/'
+ - SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
+ - ADMIN_DEFAULT_PASSWORD = 'admin'
+ - PATH_DATA = './data/'
+ - PATH_INCOME = './data/income/'
+ - PATH_DONE = './data/done/'
+ - PATH_TMP = './data/tmp/'
+ - PATH_TILES = './data/tiles/'
 
-**ACHTUNG:**
-eMonitor kann sowohl mit *SQLite* (Standard), als auch mit *MySQL* als Datenbank genutzt werden.  Für den normalen Einsatz reicht die SQLite-Version vollkommen aus. Für Profi-User kann auch ein MySQL-Server verwendet werden. Dafür sind weitere Python-Pakete erforderlich. Die Datenbank URI muss dazu in der Konfiguration angepasst werden.
+ **ACHTUNG:**
+ eMonitor kann sowohl mit *SQLite* (Standard), als auch mit *MySQL* als Datenbank genutzt werden.  Für den normalen Einsatz reicht die SQLite-Version vollkommen aus. Für Profi-User kann auch ein MySQL-Server verwendet werden. Dafür sind weitere Python-Pakete erforderlich. Die Datenbank URI muss dazu in der Konfiguration angepasst werden.
 
 4. **Starten von eMonitor**: Gestartet wird der Server über den Befehl
 
