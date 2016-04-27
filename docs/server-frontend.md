@@ -1,8 +1,9 @@
 ---
 layout: index
-permalink: /server/frontend.html
+permalink: /server/frontend/
 breadcrumb: Server-Frontend
 ---
+### Frontend
 
 ![eMonitor Frontend]({{ site.url }}/eMonitor/images/frontend.jpg) Die Standardoberfläche ist über einen aktuellen Browser im Netzwerk erreichbar und konfigurierbar: Es wird ein Layout 
 verwendet, in dem links und rechts neben einem zentralen Bereich unterschiedliche Module einblendbar sind. Diese sind 
