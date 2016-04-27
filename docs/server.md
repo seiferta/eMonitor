@@ -30,6 +30,6 @@ die Monitoroberfläche ist über den Browser zu erreichen unter der Url http://l
 [**weitere Details**][3]
 
 
-[1]: server/frontend
-[2]: server/admin
-[3]: server/monitor
+[1]: frontend
+[2]: admin
+[3]: monitor
