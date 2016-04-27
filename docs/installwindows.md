@@ -106,4 +106,4 @@ Installation als Service:
 
 Anschließend kann der Dienst über die Dienste-Verwaltung konfiguriert werden.
 
-[1]: database
+[1]: install/database
