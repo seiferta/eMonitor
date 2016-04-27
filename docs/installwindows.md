@@ -53,8 +53,7 @@ Wenn diese Voraussetzungen erfüllt sind, kann mit der installation von eMonitor
 
  Folgende Parameter müssen kontrolliert werden:
 
- PORT = 80
-
+ - PORT = 80
  - SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
  - ADMIN_DEFAULT_PASSWORD = 'admin'
  - PATH_DATA = './data/'
@@ -107,4 +106,4 @@ Installation als Service:
 
 Anschließend kann der Dienst über die Dienste-Verwaltung konfiguriert werden.
 
-[1]: /install/database
+[1]: database
