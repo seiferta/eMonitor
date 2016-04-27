@@ -1,6 +1,6 @@
 ---
 layout: index
-permalink: /install/database/index.html
+permalink: /install/database/
 breadcrumb: Datenbank
 ---
 
