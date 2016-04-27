@@ -55,11 +55,17 @@ Wenn diese Voraussetzungen erfüllt sind, kann mit der installation von eMonitor
  PORT = 80
 
  - SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
+ 
  - ADMIN_DEFAULT_PASSWORD = 'admin'
+
  - PATH_DATA = './data/'
+
  - PATH_INCOME = './data/income/'
+ 
  - PATH_DONE = './data/done/'
+ 
  - PATH_TMP = './data/tmp/'
+ 
  - PATH_TILES = './data/tiles/'
 
  **ACHTUNG:**
