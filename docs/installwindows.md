@@ -93,7 +93,13 @@ Dazu sind ein paar Dinge zu beachten:
 
 * Der Benutzer, unter dem der Dienst läuft, muss Zugriff auf die Verzeichnisse haben
 
-Installation:
+Folgende Python-Pakete sind erfoderlich:
+
+ - import win32serviceutil
+ - import win32service
+ - import win32event
+
+Installation als Service:
 
  > cd emonitor
  
