@@ -54,19 +54,19 @@ Wenn diese Voraussetzungen erfüllt sind, kann mit der installation von eMonitor
 
  PORT = 80
 
- - SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
+ > SQLALCHEMY_DATABASE_URI = 'sqlite:///emonitor.db' [**Beschreibung**][1]
  
- - ADMIN_DEFAULT_PASSWORD = 'admin'
-
- - PATH_DATA = './data/'
-
- - PATH_INCOME = './data/income/'
+ > ADMIN_DEFAULT_PASSWORD = 'admin'
  
- - PATH_DONE = './data/done/'
+ > PATH_DATA = './data/'
  
- - PATH_TMP = './data/tmp/'
+ > PATH_INCOME = './data/income/'
  
- - PATH_TILES = './data/tiles/'
+ > PATH_DONE = './data/done/'
+ 
+ > PATH_TMP = './data/tmp/'
+ 
+ > PATH_TILES = './data/tiles/'
 
  **ACHTUNG:**
  eMonitor kann sowohl mit *SQLite* (Standard), als auch mit *MySQL* als Datenbank genutzt werden.  Für den normalen Einsatz reicht die SQLite-Version vollkommen aus. Für Profi-User kann auch ein MySQL-Server verwendet werden. Dafür sind weitere Python-Pakete erforderlich. Die Datenbank URI muss dazu in der Konfiguration angepasst werden.
