@@ -6,7 +6,6 @@ breadcrumb: Server
 
 ### eMonitor-Server
 
-
 Die eMonitor Software bietet eine Reihe unterschiedlicher Oberflächen:
 
 #### Standardoberfläche
@@ -21,6 +20,7 @@ Diese Oberfläche stellt den Standard dar und kann mit verschiedenen Modulen kon
 die Administrationsoberfläche ist direkt über den Browser zu erreichen unter der Url http://localhost/admin (opt. mit Portangabe).
 Der Administrationsbereich ist erst nach einer Authentifikation (Benutzername/Passwort Adminstrator/admin) zu erreichen. Hier können sämtliche Konfigurationen vorgenommen werden, um das System einzurichten.
 
+
 [**weitere Details**][2]
 
 #### Monitoroberfläche
@@ -29,7 +29,14 @@ die Monitoroberfläche ist über den Browser zu erreichen unter der Url http://l
 
 [**weitere Details**][3]
 
+#### Schnittstellen
+
+* **Faxerkennung:** für das jeweilige Fax-Layout der Alarmdepeche muss ggf. eine Anpassung der Erkennung der einzelnen Felder erfolgen.
+
+ [**weitere Details**][4]
+
 
 [1]: frontend
 [2]: admin
 [3]: monitor
+[4]: ../faxchecker
