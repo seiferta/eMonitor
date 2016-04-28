@@ -11,7 +11,7 @@ eMonitor bietet unterschiedliche Events, die über Eventhandler verarbeitet werd
 **Aktuell sind folgende Events vorhanden:**
 
 * [Standardansicht](#standardansicht)
-* [Obeserver Datei hinzugefügt](#observer-datei-hinzugefügt)
+* [Observer Datei hinzugefügt](#observer-datei-hinzugefügt)
 * [Observer Datei gelöscht](#observer-datei-gelöscht)
 * [Einsatz hinzugefügt](#einsatz-hinzugefügt)
 * [Einsatz Status geändert](#einsatz-status-geändert)
@@ -52,8 +52,7 @@ Wenn ein neuer Einsatz in eMonitor erzeugt wurde, wird dieses Event ausgelöst.
 
 ## Einsatz Status geändert
 
-Jede Mal, wenn der Status eines Einsatzes geändert wird, wird das Event ausgelöst.
-
+Jedes Mal, wenn der Status eines Einsatzes geändert wird, wird das Event ausgelöst.
 
 # Eventhandler
 
