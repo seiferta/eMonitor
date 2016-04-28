@@ -22,7 +22,7 @@ Dabei werden bei der Implementierung Stichworte definiert, die im Text vorkommen
 bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepeschen mit unterschiedlichem Layout gleichzeitig verwendet werden.
 
 ```python
-
+# implementation of faxchecker
 class ILSFaxChecker(AlarmFaxChecker):
     __name__ = 'ILS'
     __version__ = '0.1'
