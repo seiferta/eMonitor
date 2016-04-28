@@ -22,7 +22,8 @@ Dabei werden bei der Implementierung Stichworte definiert, die im Text vorkommen
 bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepechen mit unterschiedlichem Layout gleichzeitig verwendet werden.
 
 ```
- class ILSFaxChecker(AlarmFaxChecker):
+
+class ILSFaxChecker(AlarmFaxChecker):
     __name__ = 'ILS'
     __version__ = '0.1'
 
