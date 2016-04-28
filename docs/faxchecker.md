@@ -6,7 +6,7 @@ breadcrumb: Faxchecker
 
 ### Faxerkennung
 
-Das Layout der Faxdepechen variiert von ILS zu ILS. Um felxibel auf die unterschiedlichen Layouts reagieren zu können, 
+Das Layout der Faxdepeschen variiert von ILS zu ILS. Um felxibel auf die unterschiedlichen Layouts reagieren zu können, 
 ist eine Programmierschnittstelle in eMonitor enthalten. Über diese Schnittstelle können die Feldinformationen angepasst an die 
 Verarbeitung weitergeleitet werden. Standardmäßig sind folgende Layouts bereits umgesetzt und werden mitgeliefert:
 
@@ -19,9 +19,10 @@ Im Verzeichnis *emonitor/modules/alarms/inc/* können Python-Implementierungen d
 hochgeladen werden. Diese Implementierungen können im Administrationsbereich eingebunden werden und beim Faxempfang für die Verarbeitung genutzt werden.
 
 Dabei werden bei der Implementierung Stichworte definiert, die im Text vorkommen müssen, dass das System erkennt, dass es sich um ein Fax einer 
-bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepechen mit unterschiedlichem Layout gleichzeitig verwendet werden.
+bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepeschen mit unterschiedlichem Layout gleichzeitig verwendet werden.
 
 ```python
+
 class ILSFaxChecker(AlarmFaxChecker):
     __name__ = 'ILS'
     __version__ = '0.1'
@@ -29,7 +30,6 @@ class ILSFaxChecker(AlarmFaxChecker):
     ...
     sections[u'MITTEILER'] = (u'person', u'evalPerson')
     ...
-
 
     def evalPerson(fieldname, options="", **params):
         _str = ILSAlarmFaxChecker().fields[fieldname]
@@ -49,10 +49,12 @@ Funktionen bearbeitet werden, so dass am Ende die korrekten Felder entstehen.
 Beispiel:
 
  ```
+ 
  ---------------------- MITTEILER -----------------------
  Name         : Person XY            Rufnummer: 012345678
  --------------------- EINSATZORT -----------------------
  .....
+ 
  ```
  
  In der Implementierung wird dann der Inhalt ab *Name* bis zur neuen Zeile mit den *--* an die Methode *evalPerson* übergeben. Ziel wird es hier sein, die 
