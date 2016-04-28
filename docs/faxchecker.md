@@ -21,8 +21,7 @@ hochgeladen werden. Diese Implementierungen können im Administrationsbereich ei
 Dabei werden bei der Implementierung Stichworte definiert, die im Text vorkommen müssen, dass das System erkennt, dass es sich um ein Fax einer 
 bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepechen mit unterschiedlichem Layout gleichzeitig verwendet werden.
 
-```
-
+```python
 class ILSFaxChecker(AlarmFaxChecker):
     __name__ = 'ILS'
     __version__ = '0.1'
@@ -50,10 +49,10 @@ Funktionen bearbeitet werden, so dass am Ende die korrekten Felder entstehen.
 Beispiel:
 
  ```
-  ---------------------- MITTEILER -----------------------
-  Name         : Person XY            Rufnummer: 012345678
-  --------------------- EINSATZORT -----------------------
-  .....
+ ---------------------- MITTEILER -----------------------
+ Name         : Person XY            Rufnummer: 012345678
+ --------------------- EINSATZORT -----------------------
+ .....
  ```
  
  In der Implementierung wird dann der Inhalt ab *Name* bis zur neuen Zeile mit den *--* an die Methode *evalPerson* übergeben. Ziel wird es hier sein, die 
