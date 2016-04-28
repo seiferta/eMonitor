@@ -2,3 +2,5 @@ kramdown: redcarpet
 path: http://seiferta.github.io/eMonitor
 safe: true
 permalink: /:title 
+
+syntax_highlighter: rouge
