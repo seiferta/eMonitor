@@ -31,12 +31,12 @@ die Monitoroberfläche ist über den Browser zu erreichen unter der Url http://l
 
 #### Schnittstellen
 
-* **Faxerkennung:** für das jeweilige Fax-Layout der Alarmdepeche muss ggf. eine Anpassung der Erkennung der einzelnen Felder erfolgen.
-
- [**weitere Details**][4]
+* **Faxerkennung:** für das jeweilige Fax-Layout der Alarmdepeche muss ggf. eine Anpassung der Erkennung der einzelnen Felder erfolgen. [**weitere Details**][4]
+* **Eventdefinition:** Für die korrekte Verarbeitung der eingehenden Faxdepeschen ist über das Eventhandling der Ablauf zu konfigurieren. [**weitere Details**][5]
 
 
 [1]: frontend
 [2]: admin
 [3]: monitor
 [4]: ../faxchecker
+[5]: ../eventhandler
