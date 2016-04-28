@@ -40,6 +40,7 @@ eingeblendet werden können. Derzeit sind folgende Arten möglich:
 * Geburtstagskalender
 
 Geplant:
+
 * Bildergalerie
 * Kartendarstellung mit Besonderheiten, Behinderungen
 
