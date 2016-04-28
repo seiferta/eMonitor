@@ -22,19 +22,19 @@ Dabei werden bei der Implementierung Stichworte definiert, die im Text vorkommen
 bestimmten Leitstelle handelt. Somit können unterschiedliche Faxdepechen mit unterschiedlichem Layout gleichzeitig verwendet werden.
 
 ```
-    class ILSFaxChecker(AlarmFaxChecker):
-        __name__ = 'ILS'
-        __version__ = '0.1'
-    
-        ...
-        sections[u'MITTEILER'] = (u'person', u'evalPerson')
-        ...
-    
-    
-        def evalPerson(fieldname, options="", **params):
-            _str = ILSAlarmFaxChecker().fields[fieldname]
-            # do something with the string and fill in the result field list
-            ILSAlarmFaxChecker().fields['person'] = ('XYZ', 1)
+ class ILSFaxChecker(AlarmFaxChecker):
+    __name__ = 'ILS'
+    __version__ = '0.1'
+
+    ...
+    sections[u'MITTEILER'] = (u'person', u'evalPerson')
+    ...
+
+
+    def evalPerson(fieldname, options="", **params):
+        _str = ILSAlarmFaxChecker().fields[fieldname]
+        # do something with the string and fill in the result field list
+        ILSAlarmFaxChecker().fields['person'] = ('XYZ', 1)
 ```
 
 ##### Funktion
@@ -49,13 +49,10 @@ Funktionen bearbeitet werden, so dass am Ende die korrekten Felder entstehen.
 Beispiel:
 
  ```
- ---------------------- MITTEILER -----------------------
- 
- Name         : Person XY            Rufnummer: 012345678
- 
- --------------------- EINSATZORT -----------------------
- 
- .....
+  ---------------------- MITTEILER -----------------------
+  Name         : Person XY            Rufnummer: 012345678
+  --------------------- EINSATZORT -----------------------
+  .....
  ```
  
  In der Implementierung wird dann der Inhalt ab *Name* bis zur neuen Zeile mit den *--* an die Methode *evalPerson* übergeben. Ziel wird es hier sein, die 
