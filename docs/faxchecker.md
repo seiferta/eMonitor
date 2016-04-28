@@ -49,12 +49,10 @@ Funktionen bearbeitet werden, so dass am Ende die korrekten Felder entstehen.
 Beispiel:
 
  ```
- 
  ---------------------- MITTEILER -----------------------
  Name         : Person XY            Rufnummer: 012345678
  --------------------- EINSATZORT -----------------------
  .....
- 
  ```
  
  In der Implementierung wird dann der Inhalt ab *Name* bis zur neuen Zeile mit den *--* an die Methode *evalPerson* übergeben. Ziel wird es hier sein, die 
