@@ -39,11 +39,11 @@ class ILSFaxChecker(AlarmFaxChecker):
 
 ##### Funktion
 
-Der erkannte Text aus der Depeche wird mit der Definition der Layouts verglichen, das erste Layout, bei dem die Stichworte passen wird für die weitere 
+Der erkannte Text aus der Depesche wird mit der Definition der Layouts verglichen, das erste Layout, bei dem die Stichworte passen wird für die weitere 
 Verarbeitung verwendet. Innerhalb der Implementierung der Layouts ist es dann möglich die Informationen auf die richtigen Felder des Einsatzes in 
 eMonitor weiter zu reichen.
 
-Die Depeche wird dabei in Sektionen eingeteilt, die über Stichworte oder Labels eingeleitet werden. Die Sektionen können dann über frei programmierbare 
+Die Depesche wird dabei in Sektionen eingeteilt, die über Stichworte oder Labels eingeleitet werden. Die Sektionen können dann über frei programmierbare 
 Funktionen bearbeitet werden, so dass am Ende die korrekten Felder entstehen.
 
 Beispiel:
