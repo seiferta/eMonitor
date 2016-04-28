@@ -37,28 +37,33 @@ eingeblendet werden können. Derzeit sind folgende Arten möglich:
 
 * Textmitteilungen
 * Wetterübersicht
+* Geburtstagskalender
+
+Geplant:
+* Bildergalerie
+* Kartendarstellung mit Besonderheiten, Behinderungen
 
 Wenn während der Anzeige einer Mitteilung ein Alarmeingang erfolgt, wird automatisch zur Anzeige der 
 Einsatzinformationen umgeschlatet. Sobald der letzte Einsatz abgeschlossen ist, erscheinen wieder die Mitteilungen.
 
 ##### Kartenmodul:
 
-Das Kartenmodul dient als zentrale Anzeigeoberfläche mit Kartendarstellung. Es können verschiedene Karten eingeblendet 
+Das Kartenmodul dient als zentrale Anzeigeoberfläche mit **Kartendarstellung**. Es können verschiedene Karten eingeblendet 
 werden, die über den Adminstrationsbereich konfigurierbar sind. Getestet sind aktuell die Karten von Bing, Google und 
 OpenStreetMap. Dabei ist es möglich auch Karten im Offline-Modus anzeigen zu lassen, die auf dem Server gespeichert 
 werden.
 Zusätzlich kann man weitere Elemente auf der Karte in einer eigenen Ebene darstellen. Aktuell ist hier realisiert, dass 
-man Hydranten einblenden kann.
+man **Hydranten** einblenden kann.
 Zusätzlich können andere Module die API der Karte nutzen und beispielsweise eine Route oder Markierungen anzeigen. 
-Geplant ist hier auch die Erweiterung um Feuerwehrzufahrten für die Drehleiter.
+Geplant ist hier auch die Erweiterung um **Feuerwehrzufahrten** für die Drehleiter.
 
 ##### Straßen-/Objektmodul:
 
-Für das Einsatzgebiet können für konfigurierbare Orte die Straßen gespeichert werden, so dass eine schnelle Suche 
+Für das Einsatzgebiet können für konfigurierbare Orte die **Straßen** gespeichert werden, so dass eine schnelle Suche 
 möglich wird. Die Daten stammen dabei von OpenStreetMap. Es werden im Hintergrund Straßen und (falls vorhanden) 
 Hausnummern gespeichert. Somit funktioniert diese Suche auch Offline ohne Internetvebindung. Es ist geplant, dass man 
 eMonitor auch auf deinem abgesetzten Arbeitsplatz nutzen kann, z.B. in einem ELW.
-Neben den Straßen kann man auch spezielle Einsatzobjekte definieren. In der aktuellen Version ist dabei der 
+Neben den Straßen kann man auch spezielle **Einsatzobjekte** definieren. In der aktuellen Version ist dabei der 
 Funktionsumfang noch sehr beschränkt. Geplant ist aber, dass man beispielsweise Objektpläne und weitere Informationen 
 ablegen kann, und z.B. die Fahrzeugaufstellung mit speichern kann, so dass die bei der Auswahl des Objekts dann auf der 
 Karte dargestellt werden kann.
