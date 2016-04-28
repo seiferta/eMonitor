@@ -1,6 +1,8 @@
-kramdown: redcarpet
 path: http://seiferta.github.io/eMonitor
 safe: true
 permalink: /:title 
 
-syntax_highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
