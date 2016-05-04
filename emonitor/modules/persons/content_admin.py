@@ -1,5 +1,6 @@
 import os
 import werkzeug
+import yaml
 from datetime import datetime
 from flask import render_template, request, current_app
 from emonitor.extensions import db
@@ -49,6 +50,11 @@ def getAdminContent(self, **params):
                 pass
             person.identifier = request.form.get('identifier')
             person.remark = request.form.get('remark')
+            _additional = {}
+            for field in Settings.get('persons.settings').get('additional'):
+                if field.split('=')[0] in request.form.keys():
+                    _additional[field.split('=')[0]] = request.form.get(field.split('=')[0])
+            person._options = yaml.safe_dump(_additional, encoding='utf-8')
             db.session.commit()
 
         elif request.form.get('action').startswith('deleteperson_'):
@@ -71,6 +77,14 @@ def getAdminContent(self, **params):
             if 'grades' not in _settings.keys():
                 _settings['grades'] = []
             _settings['positions'] = request.form.get('positions').replace('\r', '').split('\n')
+            Settings.set('persons.settings', _settings)
+            db.session.commit()
+
+        elif request.form.get('action') == 'updateadditional':
+            _settings = Settings.get('persons.settings')
+            if 'additional' not in _settings.keys():
+                _settings['additional'] = []
+            _settings['additional'] = request.form.get('additional').replace('\r', '').split('\n')
             Settings.set('persons.settings', _settings)
             db.session.commit()
 
@@ -129,7 +143,10 @@ def getAdminData(self):
         for key in vals['persons']:  # item list
             if key['state'] in states:  # import only with correct state
                 if key['state'] == '-1':  # add key
-                    key['birthdate'] = datetime.strptime(key['birthdate'], '%d.%m.%Y')
+                    try:
+                        key['birthdate'] = datetime.strptime(key['birthdate'], '%d.%m.%Y')
+                    except:
+                        print ">>>>", key['birthdate']
                     key['active'] = key['active'] == 'Aktiv'
                     p = Person(key['firstname'], key['lastname'], key['salutation'], key['grade'], key['position'], key['identifier'], key['active'], key['birthdate'], key['remark'], int(request.args.get('department')))
                     db.session.add(p)

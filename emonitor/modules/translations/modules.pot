@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-23 23:30+0200\n"
+"POT-Creation-Date: 2016-05-04 20:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3209,7 +3209,7 @@ msgid "persons.remark"
 msgstr ""
 
 #: emonitor/modules/persons/templates/admin.persons.html:44
-#: emonitor/modules/persons/templates/admin.persons_edit.html:71
+#: emonitor/modules/persons/templates/admin.persons_edit.html:81
 msgid "persons.active"
 msgstr ""
 
@@ -3263,7 +3263,8 @@ msgstr ""
 
 #: emonitor/modules/persons/templates/admin.persons.settings.html:48
 #: emonitor/modules/persons/templates/admin.persons.settings.html:64
-#: emonitor/modules/persons/templates/admin.persons_edit.html:75
+#: emonitor/modules/persons/templates/admin.persons.settings.html:79
+#: emonitor/modules/persons/templates/admin.persons_edit.html:85
 msgid "persons.save"
 msgstr ""
 
@@ -3273,6 +3274,18 @@ msgstr ""
 
 #: emonitor/modules/persons/templates/admin.persons.settings.html:56
 msgid "persons.position.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:70
+msgid "persons.additional.label"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:71
+msgid "persons.additional.info"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:74
+msgid "persons.additional.field"
 msgstr ""
 
 #: emonitor/modules/persons/templates/admin.persons.upload.html:22
@@ -3429,7 +3442,11 @@ msgstr ""
 msgid "persons.birthdate"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.persons_edit.html:76
+#: emonitor/modules/persons/templates/admin.persons_edit.html:70
+msgid "persons.additional.fields"
+msgstr ""
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:86
 msgid "persons.cancel"
 msgstr ""
 

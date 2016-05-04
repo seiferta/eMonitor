@@ -66,6 +66,16 @@
             </label>
         </p>
         <p>
+            <fieldset>
+                <legend>{{ _('persons.additional.fields') }}</legend>
+                {% for f in settings.additional %}
+                <label>{{ f.split('=')[1] }}:<br/>
+                    <input type="text" name="{{ f.split('=')[0] }}" value="{{ person.options[f.split('=')[0]] }}" style="width:100%;">
+                </label><br/>
+                {% endfor %}
+            </fieldset>
+        </p>
+        <p>
             <label>
                 <input type="checkbox" name="active"{%- if person.active %} checked="checked"{%- endif %}/>
                 {{ _('persons.active') }}

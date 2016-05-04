@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-23 23:30+0200\n"
-"PO-Revision-Date: 2016-04-23 23:32+0200\n"
+"POT-Creation-Date: 2016-05-04 20:12+0200\n"
+"PO-Revision-Date: 2016-05-04 20:15+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -3401,7 +3401,7 @@ msgid "persons.remark"
 msgstr "Bemerkung"
 
 #: emonitor/modules/persons/templates/admin.persons.html:44
-#: emonitor/modules/persons/templates/admin.persons_edit.html:71
+#: emonitor/modules/persons/templates/admin.persons_edit.html:81
 msgid "persons.active"
 msgstr "Aktiv"
 
@@ -3460,7 +3460,8 @@ msgstr "Dienstgrad"
 
 #: emonitor/modules/persons/templates/admin.persons.settings.html:48
 #: emonitor/modules/persons/templates/admin.persons.settings.html:64
-#: emonitor/modules/persons/templates/admin.persons_edit.html:75
+#: emonitor/modules/persons/templates/admin.persons.settings.html:79
+#: emonitor/modules/persons/templates/admin.persons_edit.html:85
 msgid "persons.save"
 msgstr "Speichern"
 
@@ -3473,6 +3474,22 @@ msgid "persons.position.info"
 msgstr ""
 "Jedes Mitglied hat in der aktiven Mannschaft eine Dienststellung. Diese wird "
 "für die erweiterte Personalerfassung bei Einsätzen herangezogen."
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:70
+msgid "persons.additional.label"
+msgstr "Zusätzliche Felder"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:71
+msgid "persons.additional.info"
+msgstr ""
+"Für Mitglieder können zusätzliche Felder definiert werden, die individuell "
+"gefüllt werden können.<br/>Die Definition erfolgt zeilenweise in der Form:<br/"
+">'<em>Parametername</em>=<em>Parameter Label</em>'"
+
+#: emonitor/modules/persons/templates/admin.persons.settings.html:74
+#, fuzzy
+msgid "persons.additional.field"
+msgstr "Mitglied hinzufügen"
 
 #: emonitor/modules/persons/templates/admin.persons.upload.html:22
 msgid "persons.upload.headtitle"
@@ -3632,7 +3649,11 @@ msgstr "Identifikator"
 msgid "persons.birthdate"
 msgstr "Geburtsdatum"
 
-#: emonitor/modules/persons/templates/admin.persons_edit.html:76
+#: emonitor/modules/persons/templates/admin.persons_edit.html:70
+msgid "persons.additional.fields"
+msgstr "Zusatzfelder"
+
+#: emonitor/modules/persons/templates/admin.persons_edit.html:86
 msgid "persons.cancel"
 msgstr "Abbrechen"
 
