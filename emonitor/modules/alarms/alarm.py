@@ -310,7 +310,7 @@ class Alarm(db.Model):
         if not alarm:
             return []
 
-        if alarm.state != state:  # only change
+        if alarm.state != state and alarm.state != 0:  # only change
             _op = 'changestate'
         else:
             _op = 'added'
@@ -355,7 +355,6 @@ class Alarm(db.Model):
                 pass
             finally:
                 monitorserver.sendMessage('0', 'reset')  # refresh monitor layout
-                #signal.send('alarm', 'changestate', newstate=1)
                 return list(set(c))
 
         elif state == 2:  # close alarm
@@ -377,9 +376,9 @@ class Alarm(db.Model):
         """
         Export alarm to given format
 
-        :param exportformat: *.html*, *.png*
+        :param exportformat: *.html*, *.png*, *telegram*, [*mail*]
         :param params:
-          - style: exportstyle: *alarmmap*, *routemap*
+          - style: exportstyle: *alarmmap*, *routemap*, *telegram.text*, *telegram.venue*
 
           - filename: name of exportfile
 
@@ -423,6 +422,29 @@ class Alarm(db.Model):
                     if 'filename' in params and os.path.exists("%s/inc/%s.png" % (os.path.abspath(os.path.dirname(__file__)), params['filename'])):
                         with open("%s/inc/%s.png" % (os.path.abspath(os.path.dirname(__file__)), params['filename']), 'rb') as f:
                             return f.read()
+
+                elif exportformat == 'telegram':  # build telegram information for alarm
+                    attrs = {'text': u"{}: {}".format(alarm.key.category, alarm.key.key),
+                             'details': u"*Alarm ({})*\n*{}: {}*\n{} {} ({})\n\n{}".format(alarm.timestamp, alarm.key.category, alarm.key.key, alarm.street.name, alarm.housenumber.number, alarm.city.name, alarm.remark),
+                             'address': u"{} {} ({})".format(alarm.street.name, alarm.housenumber.number, alarm.city.name), 'filename': alarm.get('filename'),
+                             'lat': alarm.lat, 'lng': alarm.lng, 'reply': []}
+
+                    if alarm.type == 1:  # fax type can send file
+                        attrs['reply'].append(params.get('button')("Fax", callback_data=u'file_{}'.format(attrs['filename'])))
+
+                    if params.get('style') == 'text':
+                        attrs['reply'].append(params.get('button')("Position", callback_data=u'location_{}_{}'.format(alarm.lat, alarm.lng)))
+
+                    if params.get('style') == 'venue':
+                        attrs['reply'].append(params.get('button')("Details", callback_data=u'details_alarm_{}'.format(alarm.id)))
+
+                    attrs['reply'] = params.get('keyboard')([attrs['reply']])
+                    return attrs
+
+                elif exportformat == 'mail':
+                    # TODO: Add mailer handler
+                    return None
+
         abort(404)
 
     @staticmethod

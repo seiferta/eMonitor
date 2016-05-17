@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-04 20:12+0200\n"
-"PO-Revision-Date: 2016-05-04 20:15+0200\n"
+"POT-Creation-Date: 2016-05-17 16:54+0200\n"
+"PO-Revision-Date: 2016-05-17 17:18+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -833,49 +833,49 @@ msgid "trigger.alarm_changestate_sub"
 msgstr "Einsatz-Status geändert (%(sub)s)"
 
 #: emonitor/modules/alarms/__init__.py:141
-#: emonitor/modules/alarms/alarmutils.py:320
+#: emonitor/modules/alarms/alarmutils.py:372
 msgid "alarms.print.slightleft"
 msgstr "leicht links"
 
 #: emonitor/modules/alarms/__init__.py:142
-#: emonitor/modules/alarms/alarmutils.py:320
+#: emonitor/modules/alarms/alarmutils.py:372
 msgid "alarms.print.slightright"
 msgstr "leicht rechts"
 
 #: emonitor/modules/alarms/__init__.py:143
-#: emonitor/modules/alarms/alarmutils.py:320
+#: emonitor/modules/alarms/alarmutils.py:372
 msgid "alarms.print.right"
 msgstr "rechts"
 
 #: emonitor/modules/alarms/__init__.py:144
-#: emonitor/modules/alarms/alarmutils.py:320
+#: emonitor/modules/alarms/alarmutils.py:372
 msgid "alarms.print.left"
 msgstr "links"
 
 #: emonitor/modules/alarms/__init__.py:145
-#: emonitor/modules/alarms/alarmutils.py:320
-#: emonitor/modules/alarms/alarmutils.py:335
+#: emonitor/modules/alarms/alarmutils.py:372
+#: emonitor/modules/alarms/alarmutils.py:387
 msgid "alarms.print.straight"
 msgstr "weiterfahren"
 
 #: emonitor/modules/alarms/__init__.py:146
-#: emonitor/modules/alarms/alarmutils.py:320
-#: emonitor/modules/alarms/alarmutils.py:335
+#: emonitor/modules/alarms/alarmutils.py:372
+#: emonitor/modules/alarms/alarmutils.py:387
 msgid "alarms.print.exit"
 msgstr "ausfahrt"
 
 #: emonitor/modules/alarms/__init__.py:147
-#: emonitor/modules/alarms/alarmutils.py:319
+#: emonitor/modules/alarms/alarmutils.py:371
 msgid "alarms.print.bus"
 msgstr "bus"
 
 #: emonitor/modules/alarms/__init__.py:148
-#: emonitor/modules/alarms/alarmutils.py:337
+#: emonitor/modules/alarms/alarmutils.py:389
 msgid "alarms.print.positive"
 msgstr "Fahrtrichtung SÜD"
 
 #: emonitor/modules/alarms/__init__.py:149
-#: emonitor/modules/alarms/alarmutils.py:338
+#: emonitor/modules/alarms/alarmutils.py:390
 msgid "alarms.print.negative"
 msgstr "Fahrtrichtung NORD"
 
@@ -1024,28 +1024,28 @@ msgstr "Uhrzeit"
 msgid "list"
 msgstr ""
 
-#: emonitor/modules/alarms/alarmutils.py:329
-#: emonitor/modules/alarms/alarmutils.py:331
+#: emonitor/modules/alarms/alarmutils.py:381
+#: emonitor/modules/alarms/alarmutils.py:383
 msgid "alarms.print.highwaylong"
 msgstr "Bundesautobahn"
 
-#: emonitor/modules/alarms/alarmutils.py:331
+#: emonitor/modules/alarms/alarmutils.py:383
 msgid "alarms.print.highwayshort"
 msgstr "A"
 
-#: emonitor/modules/alarms/alarmutils.py:335
+#: emonitor/modules/alarms/alarmutils.py:387
 msgid "alarms.print.exitstart"
 msgstr "Auf"
 
-#: emonitor/modules/alarms/alarmutils.py:335
+#: emonitor/modules/alarms/alarmutils.py:387
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
 
-#: emonitor/modules/alarms/content_admin.py:246
+#: emonitor/modules/alarms/content_admin.py:247
 msgid "admin.alarms.checkernotvalid"
 msgstr "Datei nicht passend"
 
-#: emonitor/modules/alarms/content_admin.py:313
+#: emonitor/modules/alarms/content_admin.py:335
 msgid "admin.alarms.list"
 msgstr "Liste"
 
@@ -1340,12 +1340,12 @@ msgid "alarms.type.delcheckerquestion"
 msgstr "Soll der gewählte Einsatztyp wirklich gelöscht werden?"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:24
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:18
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:22
 msgid "alarms.type.header.overview"
 msgstr "Einsatztypen"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:25
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:19
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:23
 msgid "alarms.type.info"
 msgstr ""
 "Anhand angegebener Stichworte kann die Faxerkennung für verschiedene Faxe "
@@ -1354,12 +1354,12 @@ msgstr ""
 "Faxe können abhängig vom Einsatztyp definiert werden."
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:30
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:32
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:36
 msgid "alarms.type.name"
 msgstr "Typname"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:31
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:37
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:41
 msgid "alarms.type.keywords"
 msgstr "Stichwörter"
 
@@ -1453,30 +1453,36 @@ msgid "alarms.upload.checkerfile"
 msgstr "Interpreter-Datei hochladen"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:137
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:66
 msgid "alarms.test.checkerstart"
 msgstr "Datei hochladen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:23
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:27
 msgid "alarms.type.interpreter"
 msgstr "Interpreter/Auswerter"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:42
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:46
 msgid "alarms.type.variables"
 msgstr "Variablen"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:43
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:47
 msgid "alarms.type.variableinfo"
 msgstr ""
 "Für die automatische Faxauswertung werden einige Schlüsselworte verwendet, die "
 "als Variable definiert, für jeden Einsatztyp unterschiedlich heißen können."
 
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:49
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:53
 msgid "alarms.type.save"
 msgstr "Speichern"
 
-#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:50
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:54
 msgid "alarms.type.cancel"
 msgstr "Abbrechen"
+
+#: emonitor/modules/alarms/templates/admin.alarms.type_actions.html:62
+#, fuzzy
+msgid "alarms.upload.definitionfile"
+msgstr "Einsatz-Felddefinition"
 
 #: emonitor/modules/alarms/templates/admin.alarms_alarm.html:13
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:45
@@ -3836,9 +3842,8 @@ msgid "module.settings.cars"
 msgstr "Fahrzeuge/Material"
 
 #: emonitor/modules/settings/__init__.py:41
-#, fuzzy
 msgid "module.settings.communication"
-msgstr "Fahrzeuge/Material"
+msgstr "Messenger/Mail"
 
 #: emonitor/modules/settings/__init__.py:42
 msgid "module.settings.start"
@@ -3864,14 +3869,19 @@ msgstr "Pfad <em>Eingang</em>"
 msgid "departmentcrest"
 msgstr "Wappen"
 
-#: emonitor/modules/settings/content_admin.py:168
+#: emonitor/modules/settings/__init__.py:50
+msgid "telegram.default.welcomemsg"
+msgstr ""
+"Hi {vorname} {nachname}\n"
+"Du wurdest zum Telegram-Alarmgeber der Feuerwehr Haar hinzugefügt"
+
+#: emonitor/modules/settings/content_admin.py:183
 msgid "admin.settings.updatedberror"
 msgstr "Aktualisierung fehlgeschlagen!"
 
-#: emonitor/modules/settings/content_admin.py:176
-#, fuzzy
+#: emonitor/modules/settings/content_admin.py:191
 msgid "admin.settings.telegramtest.done"
-msgstr "Aktualisierung fehlgeschlagen!"
+msgstr "Telegram Mitteilung gesendet."
 
 #: emonitor/modules/settings/templates/admin.settings.cars.html:19
 msgid "settings.cars.listtitle"
@@ -3895,12 +3905,96 @@ msgstr "Hintergrundfarbe"
 msgid "settings.cars.save"
 msgstr "Speichern"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:28
-#, fuzzy
-msgid "settings.communication.mail.title"
-msgstr "Karte bearbeiten"
+#: emonitor/modules/settings/templates/admin.settings.communication.html:5
+msgid "settings.communication.telegram.groupname"
+msgstr "Name"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:29
+#: emonitor/modules/settings/templates/admin.settings.communication.html:72
+#: emonitor/modules/settings/templates/admin.settings.communication.html:82
+msgid "settings.communication.telegram.title"
+msgstr "Telegram Einstellungen"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:75
+#: emonitor/modules/settings/templates/admin.settings.communication.html:158
+msgid "settings.communication.mail.title"
+msgstr "E-Mail Einstellungen"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:83
+msgid "settings.communication.telegram.info"
+msgstr ""
+"Der Telegram Messenger kann eingebunden werden. Dafür muss ein <em>BOT</em> in "
+"Telegram erstellt werden, der Mitteilungen der Applikation übermitteln kann. "
+"Jeder Bot besitzt eine Identifikations-Kennung, die gespeichert werden muss, um "
+"eine Kommunikation zu starten."
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:89
+msgid "settings.communication.telegram.botname"
+msgstr "Telegram Bot Identifikator"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:96
+msgid "settings.communication.telegram.boterror"
+msgstr ""
+"Telegram Bot nicht verfügbar: Entweder steht das Python-Modul nicht zur "
+"Verfügung oder der angegebene Bot-Schlüssel ist falsch"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:101
+msgid "settings.communication.telegram.welcometext"
+msgstr "Bot Willkommensnachricht"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:103
+msgid "settings.communication.telegram.welcomeinfo"
+msgstr ""
+"Der Text wird dem Benutzer geschickt, der sich am Bot anmeldet. Dabei können "
+"folgende Variablen genutzt werden:<br>\n"
+"- {vorname}<br>- {nachname}<br> - /hilfe"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:106
+msgid "settings.communication.telegram.helptext"
+msgstr "Bot Hilfenachricht"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:109
+#: emonitor/modules/settings/templates/admin.settings.communication.html:150
+#: emonitor/modules/settings/templates/admin.settings.communication.html:164
+#: emonitor/modules/settings/templates/admin.settings.html:51
+#: emonitor/modules/settings/templates/admin.settings.html:62
+msgid "settings.save"
+msgstr "Speichern"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:115
+msgid "settings.communication.telegram.testmessage"
+msgstr "Telegram Testmitteilung senden"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:117
+msgid "settings.communication.telegram.testuser"
+msgstr "Benutzer"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:119
+msgid "settings.communication.telegram.userselection"
+msgstr "- Empfänger auswählen -"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:128
+msgid "settings.communication.telegram.testtext"
+msgstr "Test-Mitteilung"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:132
+msgid "settings.communication.telegram.sendtest"
+msgstr "Testnachricht senden"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:141
+msgid "settings.communication.telegram.grouptitle"
+msgstr "Telegram Gruppen"
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:142
+msgid "settings.communication.telegram.groupinfo"
+msgstr ""
+"Es können beliebig viele Gruppen aus Telegram Benutzern gebildet werden, die "
+"bei bestimmten Events benachrichtigt werden. Die Namen der Gruppen dürfen nur "
+"aus Buchstaben ohne Leerzeichen bestehen. Gruppen können gelöscht werden, indem "
+"der Name leer gelassen wird. Durch markieren der Namen in den Kästen wird der "
+"Benutzer zur Gruppe hinzugefügt, grau hinterlegte Benutzer sind Mitglieder der "
+"Gruppe."
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:159
 #, fuzzy
 msgid "settings.communication.mail.info"
 msgstr ""
@@ -3908,56 +4002,10 @@ msgstr ""
 "Standardposition verwendet. Richten Sie die Mitte der Karte auf den gewünschten "
 "Punkt aus und bestätigen Sie mit 'Position speichern'."
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:31
+#: emonitor/modules/settings/templates/admin.settings.communication.html:161
 #, fuzzy
 msgid "settings.communiaction.mail.server"
 msgstr "Kartenserver"
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:34
-#: emonitor/modules/settings/templates/admin.settings.communication.html:55
-#: emonitor/modules/settings/templates/admin.settings.html:51
-#: emonitor/modules/settings/templates/admin.settings.html:62
-msgid "settings.save"
-msgstr "Speichern"
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:40
-#, fuzzy
-msgid "settings.communication.telegram.title"
-msgstr "Karte löschen"
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:41
-#, fuzzy
-msgid "settings.communication.telegram.info"
-msgstr ""
-"Der Kartenserver kann entweder ein lokaler Server sein oder online die Kacheln "
-"laden.<br/>Beispiele:<br/><em>lokal:</em> /tileserver/osm/{z}/{x}/{y}<br/"
-"><em>Bing:</em> //ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236<br/><em>Google:"
-"</em> //khm2.googleapis.com/kh?v=142&x={x}&y={y}&z={z}"
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:43
-msgid "settings.communication.telegram.botname"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:50
-msgid "settings.communication.telegram.boterror"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:58
-#: emonitor/modules/settings/templates/admin.settings.communication.html:70
-msgid "settings.communication.telegram.testmessage"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:60
-msgid "settings.communication.telegram.testuser"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:62
-msgid "settings.communication.telegram.userselection"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.communication.html:73
-msgid "settings.communication.telegram.sendtest"
-msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:16
 msgid "settings.department.listtitle"

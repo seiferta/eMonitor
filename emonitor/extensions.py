@@ -46,3 +46,9 @@ monitorserver = MonitorServer()
 # printer
 from emonitor.printertype import ePrinters
 printers = ePrinters()
+
+# communication
+from emonitor.communication import Communication
+communication = Communication()
+
+

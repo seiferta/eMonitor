@@ -4,7 +4,7 @@ import logging
 from alembic import util as alembicutil
 from sqlalchemy.exc import OperationalError
 from flask import Flask, request, render_template, current_app
-from .extensions import alembic, db, login_manager, babel, cache, events, scheduler, monitorserver, signal, printers
+from .extensions import alembic, db, login_manager, babel, cache, events, scheduler, monitorserver, signal, printers, communication
 from .user import User
 
 from emonitor import __version__
@@ -57,6 +57,8 @@ class DEFAULT_CONFIG(object):
 
     OBSERVERINTERVAL = 2                                # interval for folderobserver
     MONITORPING = 2                                     # monitor ping in minutes
+
+    TELEGRAMKEY = "botid"
 
 
 def create_app(config=None, app_name=None, blueprints=None):
@@ -179,6 +181,9 @@ def configure_extensions(app):
     @login_manager.user_loader
     def load_user(id):
         return User.getUsers(userid=id)
+
+    # communication
+    communication.init_app(app)
 
     # add global elements
     from emonitor.scheduler import eMonitorIntervalTrigger
