@@ -56,6 +56,10 @@ class Person(db.Model):
         """
         return int((datetime(1904, *self.birthdate.timetuple()[1:-2])).strftime('%j'))
 
+    @property
+    def options(self):
+        return yaml.load(self._options)
+
     @staticmethod
     def getPersons(id=0, identifier=0, dept=0, onlyactive=False):
         if id != 0:

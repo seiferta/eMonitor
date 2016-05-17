@@ -88,6 +88,39 @@ def getAdminContent(self, **params):
             params.update({'cartypes': Settings.getCarTypes()})
             return render_template('admin.settings.cars.html', **params)
 
+        elif module[1] == 'communication':
+            from emonitor.extensions import communication
+            if request.method == 'POST':
+                if request.form.get('action') == 'telegramsettings':
+                    vals = Settings.get('telegramsettings')
+                    vals['telegramkey'] = request.form.get('telegrambot')
+                    vals['welcomemsg'] = request.form.get('welcometext')
+                    vals['helpmsg'] = request.form.get('helptext')
+                    Settings.set('telegramsettings', vals)
+                    db.session.commit()
+                    tb = communication.telegram
+                    if not tb:
+                        communication.init_app(app=communication.app)
+                        tb = communication.telegram
+                    else:
+                        tb.stop()
+                    tb.updateToken(vals['telegramkey'])
+
+                elif request.form.get('action') == 'telegramgroups':
+                    vals = Settings.get('telegramsettings')
+                    g = {}
+                    for f in filter(lambda x: x.startswith('groupname_'), request.form):
+                        _id = f.split('_')[-1]  # fieldname in form
+                        if request.form.get('groupname_' + _id) in ['newgroup', '']:
+                            continue
+                        g[request.form.get('groupname_' + _id)] = request.form.get('members_selectable_' + _id).split(';')
+                    vals['groups'] = g
+                    Settings.set('telegramsettings', vals)
+                    db.session.commit()
+
+            params.update({'bot': communication.telegram, 'settings': Settings.getYaml('telegramsettings'), 'configtelegramkey': current_app.config.get('TELEGRAMKEY', '')})
+            return render_template('admin.settings.communication.html', **params)
+
         elif module[1] == 'start':
 
             if request.method == 'POST':
@@ -151,5 +184,10 @@ def getAdminData(self, **params):
 
     elif request.args.get('action') == 'downgradedb':
         return alembic.downgrade() or "done"
+
+    elif request.args.get('action') == 'sendtelegramtest':
+        from emonitor.extensions import communication
+        communication.telegram.sendMessage(addressee=int(request.args.get('user')), message=request.args.get('msg'))
+        return babel.gettext(u'admin.settings.telegramtest.done')
 
     return ""

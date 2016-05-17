@@ -6,10 +6,11 @@
             <div style="margin-right:10px;margin-left:40px;">
                 <div class="headcell" style="width:15%;">{{ _('persons.upload.firstname') }}</div>
                 <div class="headcell" style="width:20%;">{{ _('persons.upload.lastname') }}</div>
-                <div class="headcell" style="width:15%;">{{ _('persons.upload.salutation') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('persons.upload.birthday') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('persons.upload.salutation') }}</div>
                 <div class="headcell" style="width:20%;">{{ _('persons.upload.grade') }}</div>
                 <div class="headcell" style="width:15%;">{{ _('persons.upload.position') }}</div>
-                <div class="headcell" style="width:15%;">{{ _('persons.upload.identifier') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('persons.upload.identifier') }}</div>
             </div>
         </div>
 
@@ -19,10 +20,11 @@
                 <div style="margin-right:10px;margin-left:40px;min-height:20px;">
                     <div class="rowcell" style="width:15%;">{{ val['firstname']|safe }}</div>
                     <div class="rowcell" style="width:20%;">{{ val['lastname']|safe }}</div>
-                    <div class="rowcell" style="width:15%;">{{ val['salutation']|safe }}</div>
+                    <div class="rowcell" style="width:10%;">{{ val['birthdate']|safe }}</div>
+                    <div class="rowcell" style="width:10%;">{{ val['salutation']|safe }}</div>
                     <div class="rowcell" style="width:20%;">{{ val['grade']|safe }}</div>
                     <div class="rowcell" style="width:15%;">{{ val['position']|safe }}</div>
-                    <div class="rowcell" style="width:15%;">{{ val['identifier']|safe }}</div>
+                    <div class="rowcell" style="width:10%;">{{ val['identifier']|safe }}</div>
                     <div style="position:absolute;left:2px;top:4px;">
                         {%- if val['state']=='0' %}
                         <i class="fa fa-check" title="{{ _('persons.upload.existingtitle') }}"></i>

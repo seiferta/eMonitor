@@ -26,7 +26,7 @@ class SettingsModule(Module):
         self.widgets = [CrestWidget('departmentcrest')]
 
         # subnavigation
-        self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'module.settings.department'), ('/admin/settings/cars', 'module.settings.cars'), ('/admin/settings/start', 'module.settings.start')]
+        self.adminsubnavigation = [('/admin/settings', 'settings.main'), ('/admin/settings/department', 'module.settings.department'), ('/admin/settings/cars', 'module.settings.cars'), ('/admin/settings/communication', 'module.settings.communication'), ('/admin/settings/start', 'module.settings.start')]
 
         # static folders
         @app.route('/settings/inc/<path:filename>')
@@ -38,6 +38,7 @@ class SettingsModule(Module):
         babel.gettext(u'settings.main')
         babel.gettext(u'module.settings.department')
         babel.gettext(u'module.settings.cars')
+        babel.gettext(u'module.settings.communication')
         babel.gettext(u'module.settings.start')
 
         babel.gettext(u'settings.pathtype.pathdone')
@@ -46,6 +47,7 @@ class SettingsModule(Module):
         babel.gettext(u'settings.pathtype.pathincome')
 
         babel.gettext(u'departmentcrest')
+        babel.gettext(u'telegram.default.welcomemsg')
 
         # add default values
         if Settings.query.count() == 0:  # add default values

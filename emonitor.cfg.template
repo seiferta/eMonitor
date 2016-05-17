@@ -14,6 +14,8 @@ cachetimeout = 300
 TILE_MISSING = 'load'  # load|none
 ADMIN_DEFAULT_PASSWORD = 'admin'
 
+TELEGRAMKEY = ''
+
 PATH_DATA = './data/'
 PATH_INCOME = './data/income/'
 PATH_DONE = './data/done/'
