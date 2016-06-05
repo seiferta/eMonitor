@@ -25,7 +25,10 @@ class Event:
 
         for db_handler in self.getHandlers():
             for handler in [hdl for hdl in self.getHandlerList() if hdl[0] == db_handler.handler or hdl[0] == '*']:
-                args.update(handler[1](self.name, **args))
+                try:
+                    args.update(handler[1](self.name, **args))
+                except TypeError:
+                    pass
 
     def addHandler(self, classname):
         self.handlers.append(classname)

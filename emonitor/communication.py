@@ -23,6 +23,8 @@ class TelegramBot(Communicator):
     """
     __personidentifier__ = 'telegramid'
     app = None
+    logger = logging.getLogger('telegram.ext')
+    logger.setLevel(logging.CRITICAL)
     logger = logging.getLogger('telegram.bot')
     logger.setLevel(logging.ERROR)
     users = Person
