@@ -1,0 +1,167 @@
+{% extends "admin.html" %}
+
+{% macro telegramgroup(group, persons) %}
+    <div style="padding-top:10px;border:1px solid silver;overflow:hidden;width:45%;float:left;position:relative;margin-right:4px;margin-bottom:4px;padding:5px;">
+        <label for="groupname_{{ group }}">{{ _('settings.communication.telegram.groupname') }}:</label>
+        <br>
+        <input type="text" name="groupname_{{ group }}" id="groupname_{{ group }}" value="{%- if group !='newgroup' %}{{  group }}{%- endif %}" style="width:50%;">
+        <br>
+        <br>
+        <div style="overflow:auto">
+        <ol id="selectable_{{ group }}" class="selectable">
+            {%- if bot|string!='None' %}{%- for telegramuser in bot.getUsers() %}
+            <li class="ui-widget-content{% if telegramuser.options['telegramid']|string in persons %} ui-selected{% endif %} " value="{{ telegramuser.options['telegramid'] }}">{{ telegramuser.lastname }}, {{ telegramuser.firstname }} ({{ telegramuser.options['telegramid'] }})</li>
+            {%- endfor %}{%- endif %}
+        </ol>
+        </div>
+        <input type="hidden" name="members_selectable_{{ group }}" id="members_selectable_{{ group }}" value="{{ ";".join(persons) }}">
+    </div>
+{% endmacro %}
+
+{% block style %}
+    {{ super() }}
+    <style>
+        .tab-content{border:1px solid #ddd;border-top-width:0;padding:10px;min-height:80%;overflow:hidden;margin-bottom:5px;}
+        .selectable .ui-selecting { background: black;color:white; }
+        .selectable .ui-selected { background: silver; }
+        .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+        .selectable li { cursor:pointer; margin: 3px; padding: 1px; float: left; width: 30%; height: 40px;border:1px solid silver; }
+    </style>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+    function sendTelegramTest(){
+        $.ajax({ type : "POST", url : "/admin/data/settings?action=sendtelegramtest&user="+$('select[name="telegramuser"]').val()+'&msg='+$('#telegrammsg').val(),
+            success: function(msg) {
+                $('select[name="telegramuser"]').val('');
+                $('#telegrammsg').val('');
+                alert(msg);
+            }
+        });
+    }
+
+    $(function(){
+        $('#sendtelegramtest').click(function(){sendTelegramTest();});
+        $( ".selectable" ).selectable({
+            stop: function(event, ui) {
+                var s =  "#members_" + event.target.id;
+                var result = "";
+                $(s).empty();
+                $( ".ui-selected", this ).each(function() {
+                    result+= this.value+';';
+                });
+                $(s).val(result);
+            }
+        });
+
+    });
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+
+
+    <ul class="nav nav-tabs" id="myTabCommunication">
+            <li class="active">
+                <a href="#comtab0" onclick="$('#myTabCommunication li:eq(0) a').tab('show');return false;">{{ _('settings.communication.telegram.title') }}</a>
+            </li>
+            <li>
+                <a href="#comtab1" onclick="$('#myTabCommunication li:eq(1) a').tab('show');return false;">{{ _('settings.communication.mail.title') }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="comtab0">
+                <fieldset>
+                    <legend>{{ _('settings.communication.telegram.title') }}</legend>
+                    <small>{{ _('settings.communication.telegram.info') }}</small>
+
+                    <div>
+                        <div style="width:49%;border-right:1px solid silver;float:left;padding-right:10px;margin-bottom:20px;">
+                            <form method="post" name="telegramsettings" action="">
+                                    <p style="padding-top:5px;">
+                                        <label for="telegrambot">{{ _('settings.communication.telegram.botname') }}:</label><br>
+                                        <!--<input type="text" id="telegrambot" name="telegrambot" style="min-width:100%;" value="{{ settings.telegramkey }}"{%- if not bot %} disabled="disabled"{%- endif %}/>-->
+                                        <input type="text" id="telegrambot" name="telegrambot" style="min-width:100%;" value="{{ settings.telegramkey }}"/>
+                                        <br>
+                                        <span id="botname"><i>
+                                            {%- if bot.botname|string != 'None' and bot %}
+                                            {{ bot.botname }}
+                                            {%- else %}
+                                            <span style="color:red">{{ _('settings.communication.telegram.boterror') }}:</span>
+                                            {%- endif %}</i>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <label for="welcometext">{{ _('settings.communication.telegram.welcometext') }}:</label><br>
+                                        <textarea name="welcometext" id="welcometext" style="width:100%;height:80px;">{{ settings.welcomemsg }}</textarea><br>
+                                        <small>{{ _('settings.communication.telegram.welcomeinfo') }}</small>
+                                    </p>
+                                    <p>
+                                        <label for="helptext">{{ _('settings.communication.telegram.helptext') }}:</label><br>
+                                        <textarea name="helptext" id="helptext" style="width:100%;height:80px;">{{ settings.helpmsg }}</textarea><br>
+                                    </p>
+                                <!--<button type="submit" name="action" value="telegramsettings"{%- if not bot %} disabled="disabled"{%- endif %}><i class="fa fa-check"></i> {{ _('settings.save') }}</button>-->
+                                <button type="submit" name="action" value="telegramsettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+                            </form>
+                        </div>
+
+                        <div style="width:49%;float:left;padding-left:10px;padding-top:5px;">
+                            <p>
+                                <label>{{ _('settings.communication.telegram.testmessage') }}</label><br>
+
+                                <label for="telegramuser">{{ _('settings.communication.telegram.testuser') }}:</label><br>
+                                <select name="telegramuser" id="telegramuser" style="min-width:50%;"{%- if not bot %} disabled="disabled"{%- endif %}>
+                                    <option value="">{{ _('settings.communication.telegram.userselection') }}</option>
+                                    {%- if bot|string!='None' %}
+                                    {%- for telegramuser in bot.getUsers() %}
+                                    <option value="{{ telegramuser.options['telegramid'] }}">{{ telegramuser.lastname }}, {{ telegramuser.firstname }} ({{ telegramuser.options['telegramid'] }})</option>
+                                    {%- endfor %}
+                                    {%- endif %}
+                                </select>
+                                <br>
+                                <br>
+                                <label for="telegrammsg">{{ _('settings.communication.telegram.testtext') }}:</label><br>
+                                <textarea id="telegrammsg" style="width:100%;min-height:50px;"></textarea>
+                                <br>
+                                <br>
+                                <button id="sendtelegramtest"{%- if not bot %} disabled="disabled"{%- endif %}>{{ _('settings.communication.telegram.sendtest') }}</button>
+                            </p>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+                <form method="post" name="telegramgroups" action="" style="padding-bottom:30px;">
+                    <fieldset style="padding-bottom:10px;overflow:hidden;">
+                        <legend>{{ _('settings.communication.telegram.grouptitle') }}</legend>
+                        <small>{{ _('settings.communication.telegram.groupinfo') }}</small>
+                        <div style="width:100%;border:1px solid silver;max-height:300px;overflow:auto;margin-bottom:5px;padding:2px;">
+                        {%- for group in settings.groups %}
+                            {{ telegramgroup(group, settings.groups[group]) }}
+                        {%- endfor %}
+                        </div>
+                        {{ telegramgroup('newgroup', []) }}
+                    </fieldset>
+                    <button type="submit" name="action" value="telegramgroups"{%- if not bot %} disabled="disabled"{%- endif %}><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+                </form>
+
+            </div>
+
+            <div class="tab-pane" id="comtab1">
+                <form method="post" name="mailsettings" action="">
+                    <fieldset>
+                        <legend>{{ _('settings.communication.mail.title') }}</legend>
+                        <p>todo</p>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+{% endblock %}
