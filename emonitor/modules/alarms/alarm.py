@@ -424,9 +424,14 @@ class Alarm(db.Model):
                             return f.read()
 
                 elif exportformat == 'telegram':  # build telegram information for alarm
+                    if alarm.streetno:
+                        details = u"*Alarm ({})*\n*{}: {}*\n{} {} ({})\n{}\n\n{}".format(alarm.timestamp, alarm.key.category, alarm.key.key, alarm.street.name, alarm.streetno, alarm.city.name, alarm.street2.name, alarm.remark)
+                        address = u"{} {} ({})\n{}".format(alarm.street.name, alarm.streetno, alarm.city.name, alarm.street2.name)
+                    else:
+                        details = u"*Alarm ({})*\n*{}: {}*\n{} ({})\n\n{}".format(alarm.timestamp, alarm.key.category, alarm.key.key, alarm.street.name, alarm.city.name, alarm.remark)
+                        address = u"{} ({})".format(alarm.street.name, alarm.city.name)
                     attrs = {'text': u"{}: {}".format(alarm.key.category, alarm.key.key),
-                             'details': u"*Alarm ({})*\n*{}: {}*\n{} {} ({})\n\n{}".format(alarm.timestamp, alarm.key.category, alarm.key.key, alarm.street.name, alarm.housenumber.number, alarm.city.name, alarm.remark),
-                             'address': u"{} {} ({})".format(alarm.street.name, alarm.housenumber.number, alarm.city.name), 'filename': alarm.get('filename'),
+                             'details': details, 'address': address, 'filename': alarm.get('filename'),
                              'lat': alarm.lat, 'lng': alarm.lng, 'reply': []}
 
                     if alarm.type == 1:  # fax type can send file
