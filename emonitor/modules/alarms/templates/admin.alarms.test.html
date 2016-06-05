@@ -10,7 +10,7 @@
 
 {% block content %}
     <style>
-        #vtab {margin: 0; width: 90%; height: 100%;padding-right:20px;}
+        #vtab {margin: 0; width: 99%; height: 100%;padding-right:20px;}
         #vtab > ul > li {width: 221px; background-color: #fafafa !important; list-style-type: none; display: block; font-size:12px;margin: auto; padding-bottom: 15px; border: 1px solid #fafafa; position: relative; border-right: none; padding-top:15px; padding-left:5px;cursor:pointer;}
         #vtab > ul > li.selected {border: 1px solid #ddd; border-right: none;z-index: 10; background-color: #fff !important; position: relative;}
         #vtab > ul {float: left; width: 110px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative; top: 0;}
@@ -25,10 +25,10 @@
     <form name="form" id="requestForm" action="/admin/data/alarms?action=upload" method="post" enctype="multipart/form-data">
         <p>
             {{ _('alarms.test.file') }}:<br/>
-            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
+            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input" style="display:inline;height:24px;">
+            <button type="submit" value="Start" style="height:24px"><i class="fa fa-upload"></i> {{ _('alarms.test.start') }}</button>
             <input type="hidden" name="filename" id="filename"/><br/>
-            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.start') }}</button>
-            <span id="state" style="display:none;margin-left:20px;"> <img src="/admin/img/loading.gif"/> {{ _('alarms.test.step2') }}</span>
+            <div id="state" style="display:none;padding-top:5px;"> <img src="/admin/img/loading.gif"/> {{ _('alarms.test.step2') }}</div>
         </p>
     </form>
     <div id="result"></div>
@@ -69,6 +69,9 @@
                     }else{
                         $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'</div>');
                     }
+                    $("#vtab ul li:not(:last-child)").removeClass('selected');
+                    $("#vtab ul li:last-child").addClass('selected');
+                    $("#vtab div:not(:last-child)").hide();
                 }
             }
 
@@ -76,9 +79,8 @@
             $items.click(function() {
                 $items.removeClass('selected');
                 $(this).addClass('selected');
-                var index = $items.index($(this));
-                $('#vtab>div').hide().eq(index).show();
-            }).eq(0).click();
+                $('#vtab>div').hide().eq($items.index($(this))).show();
+            });
          };
     });
 {% endblock %}

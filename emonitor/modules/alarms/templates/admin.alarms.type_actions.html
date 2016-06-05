@@ -1,5 +1,18 @@
 {% extends "admin.html" %}
 
+{%-  block style %}
+    <style>
+        div.attributename{width:50%;float:left;padding-right:20px;}
+        div.attributename input{width:100%;}
+        div.attributevalue{width:48%;float:left;}
+        div.attributevalue input{width:100%;}
+    </style>
+{%- endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
+{% endblock %}
+
 {%  block subnavigation %}
     {{  subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
@@ -17,13 +30,15 @@
 {% block content %}
     <h2>{{ _('alarms.type.header.overview') }}</h2>
     <p><small>{{ _('alarms.type.info') }}</small></p>
-    
     <form method="post" style="padding-bottom:20px;">
         <p>
             <label style="width:99%">{{  _('alarms.type.interpreter') }}:<br/>
                 <select name="edit_interpreter" style="width:99%;">
+                    {%- if alarmtype.id == None %}
+                    <option value="">{{ _('alarms.type.selectcheckerclass') }}</option>
+                    {% endif %}
                     {%- for i in interpreter %}
-                    <option value="{{ i[0] }}"{% if i[0]==alarmtype.interpreter %} selected="selected"{% endif %}>{{ i[1].__name__ }}</option>
+                        <option value="{{ i[0] }}"{% if i[0]==alarmtype.interpreter %} selected="selected"{% endif %}>{{ i[1].__name__ }}</option>
                     {%- endfor %}
                 </select>
             </label>
@@ -38,14 +53,32 @@
                 <textarea name="edit_keywords" style="width:99%;height:100px;">{{ alarmtype.keywords }}</textarea>
             </label>
         </p>
+        <div id="attributes">
+        {%- for attribute in alarmtype.attributes %}
+            <div class="attributename">
+                <p>
+                    <label>{{ _('alarms.type.attributename') }}:<br/>
+                        <input name="attribute_name" value="{{ attribute }}"/>
+                    </label>
+                </p>
+            </div>
+            <div class="attributevalue">
+                <p>
+                    <label>{{ _('alarm.type.attributevalue') }}:<br/>
+                        <input name="attribute_value" value="{{ alarmtype.attributes[attribute] }}">
+                    </label>
+                </p>
+            </div>
+        {%- endfor %}
+        </div>
         <p>
             {{ _('alarms.type.variables') }}:<br/>
             <small>{{ _('alarms.type.variableinfo') }}</small>
-            <fieldset name="variables">
-            {{ interpreterVariables(alarmtype.interpreterStrings(), alarmtype) }}
-            </fieldset>
         </p>
-        <p>
+        <fieldset name="variables">
+            {{ interpreterVariables(alarmtype.interpreterStrings(), alarmtype) }}
+        </fieldset>
+        <p style="padding-top:10px;">
             <button type="submit" name="action" value="updatetype" class="save"><i class="fa fa-check"></i> {{ _('alarms.type.save') }}</button>
             <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('alarms.type.cancel') }}</button>
         </p>
@@ -60,6 +93,8 @@
     {%- if alarmtype.id == None %}
     $(document).ready(function(){
         $("select[name='edit_interpreter']").change(function() {
+            $("fieldset[name='variables']").html('');
+            $("#attributes").html('');
             $.ajax({ type : "POST", url : "/admin/data/alarms?action=getkeywords&checker="+$("select[name='edit_interpreter']").val()+'&format=json',
                 success: function(result) {
                     $("textarea[name='edit_keywords']").val(result.keywords);
@@ -68,6 +103,11 @@
                         content += '<label style="width:50%">'+value+':<br/><input type="text" value="" name="alarmtypetranslation" style="width:99%"/><input type="hidden" value="'+value+'" name="alarmtypevariables"/></label><br/>';
                     });
                     $("fieldset[name='variables']").html(content);
+                    var content = "";
+                    $.each(result.attributes, function(index, value){
+                        content += '<div class="attributename"><p><label>{{ _('alarms.type.attributename') }}:<br/><input name="attribute_name" value="'+value+'"/></label></p></div><div class="attributevalue"><p><label>{{ _('alarm.type.attributevalue') }}:<br/><input name="attribute_value" value=""></label></p></div>';
+                    });
+                    $("#attributes").html(content);
                     return false;
                 }
             });

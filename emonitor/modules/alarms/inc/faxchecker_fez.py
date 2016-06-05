@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import traceback
 import re
 import difflib
 from StringIO import StringIO
@@ -19,7 +20,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     fax checker implementation for Feuerwehreinsatzzentrale Muenchen Land (FEZ) with special layout
     """
     __name__ = "FEZ"
-    __version__ = '0.3'
+    __version__ = '0.4'
 
     fields = {}
     sections = OrderedDict()
@@ -53,12 +54,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
     # eval methods for fax text recognition
     @staticmethod
     def evalStreet(fieldname, **params):
-        alarmtype = None
-        options = []
-        if 'alarmtype' in params:
-            alarmtype = params['alarmtype']
-        if 'options' in params:
-            options = params['options']
+        alarmtype = params.get('alarmtype', None)
+        options = params.get('options', [])
 
         streets = Street.getStreets()
         _str = FezAlarmFaxChecker().fields[fieldname][0]
@@ -266,11 +263,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
         if _str == '':
             FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
             return
-        keys = {}
+        keys = {k.key: k.id for k in Alarmkey.getAlarmkeys()}
         try:
-            for k in Alarmkey.getAlarmkeys():
-                keys[k.key] = k.id
-
             repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1, cutoff=0.8)  # default cutoff 0.6
             if len(repl) == 0:
                 repl = difflib.get_close_matches(_str.strip(), keys.keys(), 1)  # try with default cutoff
@@ -295,9 +289,7 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
             FezAlarmFaxChecker().fields[fieldname] = (city.name, city.id)
             raise
 
-        alarmtype = None
-        if 'alarmtype' in params:
-            alarmtype = params['alarmtype']
+        alarmtype = params.get('alarmtype', None)
 
         if _str.strip() == '':
             FezAlarmFaxChecker().fields[fieldname] = ('', 0)
@@ -344,12 +336,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
     @staticmethod
     def evalAddressPart(fieldname, options="", **params):
-        alarmtype = None
-        options = []
-        if 'alarmtype' in params:
-            alarmtype = params['alarmtype']
-        if 'options' in params:
-            options = params['options']
+        alarmtype = params.get('alarmtype', None)
+        options = params.get('options', [])
         _str = FezAlarmFaxChecker().fields[fieldname][0].strip().replace(u'\r', u'').replace(u'\n', u'')
         FezAlarmFaxChecker().fields[fieldname] = (_str, 0)
         options.append('part')
@@ -399,8 +387,8 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
 
         if alarmtype:
             sections = alarmtype.getSections()
-            sectionnames = dict(zip([s.name for s in sections], [s.key for s in sections]))
-            sectionmethods = dict(zip([s.key for s in sections], [s.method for s in sections]))
+            sectionnames = {s.name: s.key for s in sections}
+            sectionmethods = {s.key: s.method for s in sections}
             FezAlarmFaxChecker().fields['alarmtype'] = (alarmtype, 0)
         else:  # matching alarmtype found
             return values
@@ -445,7 +433,6 @@ class FezAlarmFaxChecker(AlarmFaxChecker):
                     if u'error' not in values:
                         values['error'] = ''
                     values['error'] = u"".join((values['error'], u'error in method: {}\n'.format(method)))
-                    import traceback
                     FezAlarmFaxChecker().logger.error(u'error in section {} {}\n{}'.format(k, method, traceback.format_exc()))
 
         for k in FezAlarmFaxChecker().fields:

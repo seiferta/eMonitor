@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import logging
 import datetime, time
 import requests
+import traceback
 from StringIO import StringIO
 from PIL import Image, ImageDraw, ImageFont
 from collections import OrderedDict
@@ -210,15 +211,23 @@ class AlarmFaxChecker:
     Prototype for fax checkers
     """
     __name__ = "alarmfaxproto"
+    configtype = "explicit"
     translations = [u'_bma_main_', u'_bma_key_', u'_bma_']  # default parameters needed for alarm generation
     sections = OrderedDict()
     keywords = {}
+    attributes = []
 
     def __init__(self):
         logging.basicConfig()
         self.logger = logging.getLogger('emonitor.modules.alarms.faxchecker.{}'.format(self.__name__))
         self.loglevel = logging.ERROR
         self.logger.setLevel(self.loglevel)
+
+    def loadConfig(self, **params):
+        """
+        Load configuration
+        """
+        raise Exception
 
     def getId(self):
         """
@@ -242,7 +251,7 @@ class AlarmFaxChecker:
 
         :return: dict
         """
-        return {u'keywords': self.keywords, u'sections': self.sections, u'translations': self.translations}
+        return {u'keywords': self.keywords, u'sections': self.sections, u'translations': self.translations, u'attributes': self.attributes}
 
     def buildAlarmFromText(self, alarmtype, rawtext):
         """
@@ -273,6 +282,61 @@ class AlarmFaxChecker:
         output = StringIO()
         img_sample.save(output, format="JPEG", dpi=(300, 300))
         return output.getvalue()
+
+
+class AlarmFaxSection:
+    """
+    helper class for text parts of alarm text
+    """
+    def __init__(self, key, start, end, **params):
+        self.key = key
+        self.start = start
+        self.end = end
+        self.params = params
+        self.value = ""
+
+    def __repr__(self):
+        return "<AlarmFaxSection {}>".format(self.key)
+
+    def getRegEx(self, **params):
+        """
+        format regex for given regex-pseudo-code
+
+        :param params: 'divider'
+        :return: regex string
+        """
+        pattern = re.compile(r'\{(?P<part>[^\}]*)\}', re.UNICODE)
+        regex = ""
+
+        def _getRegExOf(val):
+            if val == u'*':
+                return u'.*'
+            elif val == u'TRENNER':
+                return '{}\\s*'.format(params.get('divider', ''))
+            elif val in [u'NEWLINE', u'ZEILE']:
+                return '\\r*\\n+'
+            elif val in [u'FIELD', u'FELD']:
+                return '(?:(.*))'
+            elif val in [u'SPACE', u'LEER']:
+                return u'\\s+'
+            else:
+                try:
+                    return u'{}'.format(val)
+                except:
+                    return u'\\s*'
+
+        m = re.finditer(pattern, self.start)
+        if m:
+            for p in m:
+                regex += _getRegExOf(p.groupdict().get('part'))
+
+        regex += '(?:(.*))'  # field
+        m = re.finditer(pattern, self.end)
+        if m:
+            for p in m:
+                regex = u'{}{}'.format(regex, _getRegExOf(p.groupdict().get('part')))
+        regex += '.*'
+        return regex
 
 
 def getAlarmRoute(alarm):
@@ -355,12 +419,17 @@ def processFile(incomepath, filename):
     params = dict(incomepath=incomepath, filename=filename, mode='test')
     handlers = events.getEvents('file_added').getHandlerList()
     dbhandlers = Eventhandler.getEventhandlers(event='file_added')
+    from emonitor.extensions import db
+    db.session.rollback()
     for handler in dbhandlers:  # db
         for hdl in handlers:
             if handler.handler == hdl[0]:
-                #p = hdl[1]('file_added', params)
-                params.update(hdl[1]('file_added', **params))
                 res = []
+                try:
+                    params.update(hdl[1]('file_added', **params))
+                except:
+                    params.update({'error': u'<b>error in handler {}:</b><br/> <em>{}</em><br>'.format(hdl[0], traceback.format_exc().splitlines())})
+
                 for p in handler.getParameterList():
                     try:
                         res.append(u'{}:{}'.format(p, params[p.split('.')[1]]))
@@ -369,11 +438,12 @@ def processFile(incomepath, filename):
                             if p.split(u'.')[1] in params.keys():
                                 res = [u'{}:{}'.format(p, params[p.split('.')[1]])]
                             else:
-                                res = [u'error: key not found - {}'.format(p.split('.')[1])]
-                                params['error'] = u'error: key not found - {}'.format(p.split('.')[1])
+                                res = [u'<b>error: key not found:</b> <em>{}</em><br>'.format(p.split('.')[1])]
+                                if not params.get('error'):
+                                    params['error'] = ""
+                                params['error'] += u'<b>error: key not found</b> <em>{}</em><br>'.format(p.split('.')[1])
                         except:
-                            import traceback
-                            print traceback.format_exc()
+                            signal.send('alarm', 'testupload_start', result='done')
                 if u'error' in params.keys():
                     signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1], error=params['error'])
                 else:

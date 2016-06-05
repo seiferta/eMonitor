@@ -7,7 +7,7 @@ if(!window.WebSocket){
     ws = new WebSocket("ws://"+location.host+"/ws");
     ws.onclose=function(){
         $('#ws').html('<i class="fa fa-unlink fa-lg"></i>');
-    }
+    };
 }
 
 function showInfo(){

@@ -4,7 +4,7 @@ import random
 import json
 from collections import OrderedDict
 from emonitor.lib.pdf.pdf import getFormFields, getPDFInformation
-from flask import render_template, request, current_app
+from flask import render_template, request, current_app, Response
 from itertools import chain
 
 from emonitor.extensions import db, scheduler, babel
@@ -69,12 +69,8 @@ def getAdminContent(self, **params):
                     atype.name = request.form.get('edit_name')
                     atype.keywords = request.form.get('edit_keywords')
                     atype.interpreter = request.form.get('edit_interpreter')
-                    translations = dict()
-                    _vars = request.form.getlist('alarmtypevariables')
-                    _values = request.form.getlist('alarmtypetranslation')
-                    for _var in _vars:
-                        translations[_var] = _values[_vars.index(_var)]
-                    atype.translations = translations
+                    atype.attributes = dict(zip(request.form.getlist('attribute_name'), request.form.getlist('attribute_value')))
+                    atype.translations = dict(zip(request.form.getlist('alarmtypevariables'), request.form.getlist('alarmtypetranslation')))
                     db.session.commit()
 
                     if request.form.get('type_id') == 'None':  # add predefined keywords and sections
@@ -95,10 +91,11 @@ def getAdminContent(self, **params):
                     return render_template('admin.alarms.sections_actions.html', **params)
 
                 elif request.form.get('action') == 'updatesection':  # save section
+                    db.session.rollback()
                     if request.form.get('section_id') == 'None':  # add
-                        section = AlarmSection('', '', '', '', '', '')
-                        db.session.add(section)
+                        section = AlarmSection(request.form.get('edit_tid'), '', '', '', '', '')
                         section.orderpos = 1 + len(AlarmSection.getSections())
+                        db.session.add(section)
 
                     else:  # update
                         section = AlarmSection.getSections(id=int(request.form.get('section_id')))
@@ -109,6 +106,19 @@ def getAdminContent(self, **params):
                     section.key = request.form.get('edit_key')
                     section.method = request.form.get('edit_method')
                     section.active = request.form.get('edit_active')
+                    alarmtype = AlarmType.getAlarmTypes(request.form.get('edit_tid'))
+                    if alarmtype.interpreterclass().configtype == 'generic':
+                        attrs = {'start': request.form.get('edit_start'), 'end': request.form.get('edit_end')}
+                        if 'edit_multiline' in request.form.keys():
+                            attrs['multiline'] = 'True'
+                        section.attributes = attrs
+                    db.session.commit()
+
+                elif request.form.get('action') == 'updateorder':
+                    for item in [i for i in request.form if i.startswith('position_')]:
+                        ids = request.form.getlist(item)
+                        for _id in ids:
+                            AlarmSection.getSections(id=_id).orderpos = ids.index(_id) + 1
                     db.session.commit()
 
                 elif request.form.get('action').startswith('editalarmsection_'):  # edit section
@@ -246,12 +256,37 @@ def getAdminData(self):
                 return babel.gettext(u'admin.alarms.checkernotvalid')
         return ""
 
+    elif request.args.get('action') == 'uploaddefinition':
+        """
+        add alarmtype with given config for uploadfile
+        """
+        alarmtype = AlarmType.buildFromConfigFile(request.files['uploadfile'])
+        if not alarmtype:
+            db.session.rollback()
+            return babel.gettext(u'admin.alarms.incorrecttypedefinition')
+        db.session.add(alarmtype)
+        db.session.commit()
+        return "ok"
+
+    elif request.args.get('action') == 'gettypedefinition':
+        """
+        export alarmtype definition as cfg-file
+        """
+        alarmtype = AlarmType.getAlarmTypes(request.args.get('alarmtype'))
+        if alarmtype:
+            return Response(alarmtype.getConfigFile(), mimetype="application/x.download; charset=utf-8")
+        else:
+            return None
+
     elif request.args.get('action') == 'getkeywords':
+        """
+        send list with all keywords of alarmtype
+        """
         for f in [f for f in os.listdir('%s/emonitor/modules/alarms/inc/' % current_app.config.get('PROJECT_ROOT')) if f.endswith('.py')]:
             if f == request.args.get('checker'):
                 cls = imp.load_source('emonitor.modules.alarms.inc', 'emonitor/modules/alarms/inc/%s' % f)
-                variables = getattr(cls, cls.__all__[0])().getDefaultConfig()[u'translations']
-                return {u'keywords': "\n".join(getattr(cls, cls.__all__[0])().getDefaultConfig()[u'keywords']), u'variables': variables}
+                cls = getattr(cls, cls.__all__[0])()
+                return {u'keywords': "\n".join(cls.getDefaultConfig()[u'keywords']), u'variables': cls.getDefaultConfig()[u'translations'], u'attributes': cls.getDefaultConfig()[u'attributes']}
         return ""
 
     elif request.args.get('action') == 'alarmsforstate':
