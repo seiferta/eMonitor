@@ -57,7 +57,10 @@ class Replace(db.Model):
                 text = u'{}{}\n'.format(text, l)
 
             for r in Replace.getReplacements():
-                text = re.sub(r.text, r.replace, text)
+                try:
+                    text = re.sub(r.text, r.replace, text)
+                except:
+                    pass
 
             kwargs['text'] = text
             t = time.time() - stime

@@ -1,5 +1,9 @@
 {%  extends "admin.html" %}
 
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
 {% block content %}
     <h2>{{ _('alarms.sections.header.overview') }}</h2>
     <p><small>{{ _('alarms.sections.info') }}</small></p>
@@ -15,13 +19,35 @@
                 <input type="text" name="edit_key" value="{{ section.key }}" style="width:99%;"/>
             </label>
         </p>
+        {%- if alarmtype.interpreterclass().configtype == 'generic' %}
+        <div style="overflow:hidden;">
+            <div style="float:left;width:70%;">
+                <p>
+                    <label>{{ _('alarms.sections.startvalue') }}:<br/>
+                        <textarea name="edit_start" style="width:99%;height:60px;">{{ section.attributes.get('start', '') }}</textarea>
+                    </label>
+                </p>
+                <p>
+                    <label>{{ _('alarms.sections.endvalue') }}:<br/>
+                        <textarea name="edit_end" style="width:99%;height:60px;">{{ section.attributes.get('end', '') }}</textarea>
+                    </label>
+                </p>
+                <p>
+                    <label><input type="checkbox" name="edit_multiline" value="1" id="edit_multiline" {% if section.attributes.get('multiline')=='True' %}checked="checked"{% endif %}/> {{ _('alarms.sections.multiline') }}</label>
+                </p>
+            </div>
+            <div style="padding-top:12px;width:30%;float:right;">
+                {{ _('alarms.section.regexinfo') }}
+            </div>
+        </div>
+        {%- endif %}
         <p>
             <label>{{ _('alarms.sections.method') }}:<br/>
                 <select name="edit_method" style="width:99%;" onchange="return setInfo(this)" id="methodselect">
                     <option value="">{{ _('alarms.sections.nomethod') }}</option>
-                    {% for f in functions %}
+                    {%- for f in functions %}
                         <option value="{{ f }}" {% if f==section.getSectionMethod() %}selected="selected"{% endif %}>{{ f }}</option>
-                    {% endfor %}
+                    {%- endfor %}
                 </select>
                 <br/>
             </label>
@@ -32,9 +58,7 @@
             <span>{{ alarmtype.name }}</span>
         </p>
         <p>
-            <label>{{ _('alarms.sections.active') }}:<br/>
-                <input type="checkbox" name="edit_active" value="1" id="edit_active" {% if section.active==1 %}checked="checked"{% endif %}/>
-            </label>
+            <label><input type="checkbox" name="edit_active" value="1" id="edit_active" {% if section.active==1 %}checked="checked"{% endif %}/> {{ _('alarms.sections.active') }}</label>
         </p>
         <p>
             <button type="submit" name="action" value="updatesection" class="save"><i class="fa fa-check"></i> {{ _('alarms.sections.save') }}</button>
@@ -55,7 +79,7 @@
 {% block script_end %}
     {{  super() }}
     function setInfo(obj){
-        $('#info_dest').html($('#'+$(obj).val()).html());
+        $('#info_dest').html('').html($('#'+$(obj).val()).html());
         return false;
     }
     setInfo($('#methodselect'));

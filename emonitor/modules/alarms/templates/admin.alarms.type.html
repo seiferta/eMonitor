@@ -1,5 +1,11 @@
 {% extends "admin.html" %}
 
+{% block style %}
+    <style>
+        div.subrow:hover{cursor:pointer !important;}
+    </style>
+{% endblock %}
+
 {% block script %}
     <script>
         function questionDel(){
@@ -33,62 +39,80 @@
             <button class="add" type="submit" name="action" value="createtype" title="{{ _('alarms.type.addtype') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
         
-        {% if alarmtypes|count==0 %}
+        {%- if alarmtypes|count==0 %}
         <div class="rownoentry">
             <p style="text-align:center">{{ _('alarms.type.nodata') }}</p>
         </div>
-        {% endif %}
+        {%- endif %}
 
-        {% for alarmtype in alarmtypes %}
+        {%- for alarmtype in alarmtypes %}
         <div class="row">
-            <a href="#" class="morelink" title="{{ _('alarms.type.detailtitle') }}" onclick="return details({{ alarmtype.id }}, this)"> </a>
-            <div style="margin-right:90px;margin-left:15px;">
-                <div class="rowcell" style="width:20%;">{{ alarmtype.name }}</div>
+            <a href="#" class="morelink" title="{{ _('alarms.type.detailtitle') }}" onclick="return details({{ alarmtype.id }}, this)" style="width:100%;"> </a>
+            <div style="margin-right:100px;margin-left:15px;">
+                <div class="rowcell" style="width:20%;">{%- if alarmtype.interpreterclass().configtype=='generic' %}<i class="fa fa-file-code-o fa-lg" aria-hidden="true" title="{{ _('alarms.type.generic') }}"></i>{%- else %}<i class="fa fa-file-archive-o fa-lg" aria-hidden="true" title="{{ _('alarms.type.explicit') }}"></i>{%- endif %} {{ alarmtype.name }}</div>
                 <div class="rowcell" style="width:80%;overflow:hidden">{{ alarmtype.keywords.replace('\r\n', ', ') }}</div>
             </div>
             <button type="submit" name="action" value="deletetype_{{ alarmtype.id }}" title="{{ _('alarms.type.deletetitle') }}" onclick="return questionDel()"><i class="fa fa-trash-o fa-lg"></i></button>
             <button type="submit" name="action" value="editalarmtype_{{ alarmtype.id }}" title="{{ _('alarms.type.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
-            <button type="button" name="action" title="{{ _('alarms.type.getsample') }}" onclick="window.open('/alarms/inc/sample_{{ alarmtype.id }}', 'sample', 'toolbar=0,status=0')"><i class="fa fa-file-image-o"></i></button>
+            {%- if alarmtype.interpreterclass().configtype=='generic' %}
+            <button type="button" name="action" onclick="getDefinition({{ alarmtype.id }}, '{{ alarmtype.name }}')" title="{{ _('alarms.type.getdefinition') }}" style="margin-right:10px"><i class="fa fa-exchange fa-lg"></i></button>
+            {%- else %}
+            <button type="button" name="action" title="{{ _('alarms.type.getsample') }}" onclick="window.open('/alarms/inc/sample_{{ alarmtype.id }}', 'sample', 'toolbar=0,status=0')" style="margin-right:10px;"><i class="fa fa-file-image-o"></i></button>
+            {%- endif %}
         </div>
         
         <div class="details" style="display:none" id="details_{{ alarmtype.id }}">
             <div class="subheadrow">
                 <div style="margin-right:70px;margin-left:15px;">
                     <div class="subheadcell" style="width:5%;">&nbsp;</div>
-                    <div class="subheadcell" style="width:35%;">{{ _('alarms.sections.name') }}</div>
+                    <div class="subheadcell" style="width:20%;">{{ _('alarms.sections.name') }}</div>
                     <div class="subheadcell" style="width:20%;">{{ _('alarms.sections.key') }}</div>
-                    <div class="subheadcell" style="width:30%;">{{ _('alarms.sections.method') }}</div>
+                    <div class="subheadcell" style="width:45%;">{{ _('alarms.sections.method') }}</div>
                     <div class="subheadcell" style="width:10%;text-align:right;">{{ _('alarms.sections.active') }}</div>
                 </div>
                 <button class="add" type="submit" name="action" value="createsection_{{ alarmtype.id }}" title="{{ _('alarms.type.addsection') }}"><i class="fa fa-plus fa"></i></button>
             </div>
             
-            {% if alarmtype.getSections()|count==0 %}
+            {%- if alarmtype.getSections()|count==0 %}
             <div class="rownoentry">
                 <p style="text-align:center">{{ _('alarms.sections.nodata') }}</p>
             </div>
-            {% endif %}
-            {% for section in alarmtype.getSections() %}
-            <div class="subrow">
-                <div style="margin-right:70px;margin-left:15px;" class="sortable" id="sortable_{{ alarmtype.name }}">
-                    <div class="subheadcell" style="width:5%;font-size:9px;color:#ababab;padding-top:6px">{{ loop.index }}.</div>
-                    <div class="subrowcell" style="width:35%;">{{ section.name }}</div>
-                    <div class="subrowcell" style="width:20%;">{{ section.key }} {% if section.key =='' %}<small>(<em>{{ _('alarms.sections.ignore') }}</em>)</small>{% endif %}</div>
-                    <div class="subrowcell" style="width:30%;">{{ section.method }}</div>
-                    <div class="subrowcell" style="width:10%;text-align:right;">{% if section.active==1 %}<i class="fa fa-check"></i> {% endif %} </div>
+            {%- endif %}
+            <div id="sortable_{{ alarmtype.name }}">
+            {%- for section in alarmtype.getSections() %}
+                <div class="subrow">
+                    <div style="margin-right:70px;margin-left:15px;" class="sortable">
+                        <div class="subheadcell" style="width:5%;font-size:9px;color:#ababab;padding-top:6px">{{ loop.index }}.</div>
+                        <div class="subrowcell" style="width:20%;">{{ section.name }}</div>
+                        <div class="subrowcell" style="width:20%;">{{ section.key }} {% if section.key =='' %}<small>(<em>{{ _('alarms.sections.ignore') }}</em>)</small>{% endif %}</div>
+                        <div class="subrowcell" style="width:45%;">{%- if alarmtype.interpreterclass().configtype=='regex' %}{{ section.method }}{%- else %}{{ section.method }}{%- endif %}</div>
+                        <div class="subrowcell" style="width:10%;text-align:right;">{% if section.active==1 %}<i class="fa fa-check"></i> {% endif %} </div>
+                    </div>
+                    <input type="hidden" name="sectionids" value="{{ section.id }}"/>
+                    <input type="hidden" value="{{ section.id }} " name="position_{{ alarmtype.name }}"/>
+                    <button type="submit" name="action" value="deletealarmsection_{{ section.id }}" title="{{ _('alarms.sections.deletetitle') }}" onclick="return questionDelSection()"><i class="fa fa-trash-o fa-lg"></i></button>
+                    <button type="submit" name="action" value="editalarmsection_{{ section.id }}" title="{{ _('alarms.sections.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
                 </div>
-                <input type="hidden" name="sectionids" value="{{ section.id }}"/>
-                <button type="submit" name="action" value="deletealarmsection_{{ section.id }}" title="{{ _('alarms.sections.deletetitle') }}" onclick="return questionDelSection()"><i class="fa fa-trash-o fa-lg"></i></button>
-                <button type="submit" name="action" value="editalarmsection_{{ section.id }}" title="{{ _('alarms.sections.edittitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+
+            {%- endfor %}
             </div>
-            {% endfor %}
         </div>
-        {% endfor %}
+        {%- endfor %}
         
         <div class="headrow">
+            <button type="submit" name="action" value="updateorder" id="orderchange" class="save" style="display:none"><i class="fa fa-check"></i> {{ _('events.updateorder') }}</button>
             <small style="float:right;margin-right:50px">{{ _('alarms.type.itemscount', count=alarmtypes|count) }}</small><br/>
         </div>
         <input type="hidden" name="form_id" value="admin.alarms.type.overview"/>
+    </form>
+
+    <form name="form" id="requestFormDefinition" action="/admin/data/alarms?action=uploaddefinition" method="post" enctype="multipart/form-data">
+        <p>
+            {{ _('alarms.upload.definitionfile') }}:<br/>
+            <input id="uploadfile" type="file" accept=".cfg" size="45" name="uploadfile" class="input" style="display:inline;height:24px;">
+            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.checkerstart') }}</button>
+            <input type="hidden" name="filename" id="filename"/>
+        </p>
     </form>
 
     <h2>{{ _('alarms.type.header.types') }}</h2>
@@ -132,9 +156,9 @@
     <form name="form" id="requestForm" action="/admin/data/alarms?action=uploadchecker" method="post" enctype="multipart/form-data">
         <p>
             {{ _('alarms.upload.checkerfile') }}:<br/>
-            <input id="uploadfile" type="file" size="45" name="uploadfile" class="input">
-            <input type="hidden" name="filename" id="filename"/><br/>
+            <input id="uploadfile" type="file" size="45" accept=".py" name="uploadfile" class="input" style="display:inline;height:24px">
             <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarms.test.checkerstart') }}</button>
+            <input type="hidden" name="filename" id="filename"/>
         </p>
     </form>
 
@@ -153,6 +177,23 @@
     }
 
     $(document).ready(function(){
+
+        $(function() {$('div[id^="sortable_"]').sortable({update: function(event, ui){$('#orderchange').show()}});});
+
+        $('#requestFormDefinition').ajaxForm({
+            success: function(result){
+                if(result == "ok"){
+                     window.location.href='/admin/alarms/types';
+                }else if (result!=""){
+                    alert(result);
+                    $('#requestFormDefinition').resetForm();
+                }else{
+                    $('#requestFormDefinition').resetForm();
+                    return false;
+                }
+            }
+        });
+
         $('#requestForm').ajaxForm({
             success: function(result){
                 if(result == "ok"){
@@ -167,7 +208,9 @@
             }
         });
 
-
-
     });
+
+    function getDefinition(alarmtypeid, name){
+        window.open("/admin/data/alarms/"+name+".cfg?action=gettypedefinition&alarmtype="+alarmtypeid, "cinfig.cfg");
+    }
 {% endblock %}

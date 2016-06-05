@@ -48,7 +48,7 @@ class DEFAULT_CONFIG(object):
     DEFAULTZOOM = 12                                      # used for map-data
     LANGUAGES = {'de': 'Deutsch'}
     ALEMBIC = {'script_location': 'alembic'}              # alembic base path
-    DB_VERSION = '2b56ad35fcd7'                           # version of database
+    DB_VERSION = '20c921506336'                           # version of database
 
     # monitorserver
     MONITORSERVER_ANY = "0.0.0.0"
