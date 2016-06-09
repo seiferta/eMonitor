@@ -237,7 +237,7 @@ def loadPositionOfCity(name):
     :param name: name of city as string
     :return: dict with cities sorted by name
     """
-    SEARCHSTRING = 'node["name"~"{}"]["place"~"town|village"];(._;>;);out;'.format(name)  # search all cities with given name
+    SEARCHSTRING = 'node["name"~"{}"]["place"~"town|village"];(._;>;);out;'.format(name.encode('utf-8'))  # search all cities with given name
     r = requests.post('http://overpass-api.de/api/interpreter', data={'data': SEARCHSTRING})
     cities = []
     xmldoc = minidom.parseString(r.content)
