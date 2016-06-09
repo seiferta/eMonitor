@@ -9,7 +9,6 @@ breadcrumb: Funktionen
 #### Folgende Funktionen sind in Planung/Entwicklung:
 
 * Alarmeingang über E-Mail
-* Personenverwaltung
 * Erweiterungen im Mitteilungsmodul (z.B. Kartendarstellung mit Symbolen für Straßensperren)
 
 #### Folgende Funktionen sind bereits integriert:
@@ -50,3 +49,16 @@ somit auch extern geflegt werden.
 Bei Alarmeingang kann eine spezielle Ansicht mit Zusatzinformationen zum Einsatz auf einem Alarmdrucker ausgedruckt 
 werden. Aktuell stehen dabei die Originalansicht der eingehenden Informatinen (Fax) und eine detaillierte Ansicht zur 
 Verfügung.
+
+##### Benachrichtigung über Telegram
+
+Wenn ein entsprechender Bot im Telegram Messenger Dienst eingerichtet ist, kann eMonitor beim Alarmeingang Details über 
+diesen Dienst verbreiten, so dass die Einsatzkräfte Informationen über den Einsatz abrufen können. Dabei ist der 
+Personenkreis definierbar, der Zugriff auf bestimmte Daten erhält.
+
+##### Personenverwaltung
+
+Sämtliche Personen der Feuerwehr können im System verwaltet werden. Bei der korrekten Eingabe sind weitere Zusatzfunktionen 
+möglich, wie beispielsweise das Anzeigen eines Geburtstagskalenders oder die Benachrichtigung einzelner Personen über den 
+Messenger Dienst Telegram.
+Bei der Erstellung von Einsatzberichten können auch die Personendaten herangezogen werden.

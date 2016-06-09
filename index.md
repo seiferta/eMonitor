@@ -9,7 +9,10 @@ Deutschland gewöhnlich per FAX alarmiert oder erhalten zur Einsatzbestätigung 
 eMonitor kann dieses Alarmfax auswerten und die enthaltenen Informationen verarbeiten. Daraus werden *Einsätze* 
 generiert, die anschließend auf einem Monitor übersichtlich dargestellt werden können.
 
-Derzeit sind folgende Funktionen verfügbar:
+**NEU:** [**Universeller Fax-Parser**][6]
+
+
+**Derzeit sind folgende Funktionen verfügbar:**
 
 * Adressvalidierung über OpenStreetMap
 * Kartendarstellung auf dem Monitor
@@ -42,3 +45,4 @@ Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows 
 [3]: install/linux
 [4]: install/windows
 [5]: details
+[6]: faxchecker

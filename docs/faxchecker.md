@@ -6,12 +6,29 @@ breadcrumb: Faxchecker
 
 ### Faxerkennung
 
-Das Layout der Faxdepeschen variiert von ILS zu ILS. Um felxibel auf die unterschiedlichen Layouts reagieren zu können, 
+Das Layout der Faxdepeschen variiert von ILS zu ILS. Um flexibel auf die unterschiedlichen Layouts reagieren zu können, 
 ist eine Programmierschnittstelle in eMonitor enthalten. Über diese Schnittstelle können die Feldinformationen angepasst an die 
-Verarbeitung weitergeleitet werden. Standardmäßig sind folgende Layouts bereits umgesetzt und werden mitgeliefert:
+Verarbeitung weitergeleitet werden. 
+Standardmäßig sind folgende Layouts bereits umgesetzt und werden mitgeliefert:
 
 - Beispiellayout ILS
 - Feuerwehreinsatzzentrale München Land
+
+#### NEU: Universeller Faxchecker auf RegEx-Basis
+
+Es hat sich gezeigt, dass eine flexiblere Lösung notwendig ist, die alleine über Felder angepasst werden kann. Daraus ist ein neuer Faxchecker entstanden, der über Reguläre 
+Ausdrücke die einzelnen Felder definiert und daraus den Einsatz erstellt. Zusätzlich besteht die Möglichkeit, dass die Definition der Layouts durch Export/Import-Schnittstellen 
+einfach ausgetauscht werden kann. Diese Schnittstelle ist aktuell getestet mit folgenden Layouts:
+
+- [**Feuerwehreinsatzzentrale München Land**][1]
+
+- [**Integrierte Leitstelle Regensburg**][2]
+
+- [**Integrierte Leitstelle Dresden**][3]
+
+(Definitionen als Download)
+
+Weitere Leitstellen können ergänzt werden und an dieser Stelle heruntergelden werden, wenn sie zur Verfügung gestellt werden)
 
 #### Schnittstelle
 
@@ -77,4 +94,8 @@ Beispiel:
  In der Implementierung wird dann der Inhalt ab *Name* bis zur neuen Zeile mit den *--* an die Methode *evalPerson* übergeben. Ziel wird es hier sein, die Inhalte aus dem Feld *Name* und der *Rufnummer* an die eMonitor-Variable *person* weiter zu geben. Die Variable erwartet dabei ein Tupel aus dem Wert und einem Index, im Beispiel 1. Damit wird gezeigt, dass der Wert für das Feld bearbeitet wurde. Ansonsten wird die *0* übergeben.
  
  Auf diese Art und Weise können sämtliche Felder bearbeitet werden und an eMonitor weitergereicht werden, der daraus einen Einsatz aufbaut.
+ 
+ [1]: {{site.github.url}}/config/FEZ.cfg
+ [2]: {{site.github.url}}/config/ILS_R.cfg
+ [3]: {{site.github.url}}/config/ILS_DD.cfg
  
