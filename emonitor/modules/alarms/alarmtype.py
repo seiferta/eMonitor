@@ -73,7 +73,7 @@ class AlarmType(db.Model):
                     _method = _cfg.get(section, 'method')
                 else:
                     _method = ""
-                alarmtype.sections[_cfg.sections().index(section)] = AlarmSection(alarmtype.id, _cfg.get(section, 'name'), section, 1, _method, _cfg.sections().index(section), attributes=yaml.safe_dump(_params, encoding="utf-8"))
+                alarmtype.sections[_cfg.sections().index(section)] = AlarmSection(alarmtype.id, _cfg.get(section, 'name').decode('utf-8'), section, 1, _method, _cfg.sections().index(section), attributes=yaml.safe_dump(_params, encoding="utf-8"))
         return alarmtype
 
     def getConfigFile(self):

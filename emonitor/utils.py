@@ -301,6 +301,7 @@ class Pagination(object):
                 yield num
                 last = num
 
+
 def restartService():
     """
     try to restart emonitor app, only if installed as windows service
@@ -314,6 +315,7 @@ def restartService():
         return '1'
     except:
         return '0'
+
 
 def getmarkdown(text):
     try:

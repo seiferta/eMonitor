@@ -78,12 +78,7 @@ def getAdminContent(self, **params):
         elif module[1] == 'cars':
             if request.method == 'POST':
                 if request.form.get('action') == 'updatetypes':
-                    cartypes = Settings.get_byType('cartypes')
-                    if not cartypes:  # add cartype
-                        cartypes = Settings.get('cartypes', [])
-                        db.session.add(cartypes)
-
-                    cartypes.value = [i for i in chunks(request.form.getlist('cartype'), 2) if i[0] != '']
+                    Settings.set('cartypes', [i for i in chunks(request.form.getlist('cartype'), 2) if i[0] != ''])
                     db.session.commit()
             params.update({'cartypes': Settings.getCarTypes()})
             return render_template('admin.settings.cars.html', **params)

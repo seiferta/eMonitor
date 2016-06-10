@@ -48,7 +48,10 @@ class Settings(db.Model):
 
     @staticmethod
     def getCarTypes():
-        return Settings.query.filter_by(name='cartypes').one().value
+        ctypes = Settings.query.filter_by(name='cartypes')
+        if ctypes.count():
+            return ctypes.one().value
+        return ""
 
     @staticmethod
     def get_byType(type):
