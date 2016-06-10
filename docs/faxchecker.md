@@ -22,9 +22,11 @@ einfach ausgetauscht werden kann. Diese Schnittstelle ist aktuell getestet mit f
 
 - [**Feuerwehreinsatzzentrale München Land**][1]
 
-- [**Integrierte Leitstelle Regensburg**][2]
+- [**Integrierte Leitstelle Oberland**][2]
 
-- [**Integrierte Leitstelle Dresden**][3]
+- [**Integrierte Leitstelle Regensburg**][3]
+
+- [**Integrierte Leitstelle Dresden**][4]
 
 (Definitionen als Download)
 
@@ -96,6 +98,7 @@ Beispiel:
  Auf diese Art und Weise können sämtliche Felder bearbeitet werden und an eMonitor weitergereicht werden, der daraus einen Einsatz aufbaut.
  
  [1]: {{site.github.url}}/config/FEZ.cfg
- [2]: {{site.github.url}}/config/ILS_R.cfg
- [3]: {{site.github.url}}/config/ILS_DD.cfg
+ [2]: {{site.github.url}}/config/ILS_OB.cfg
+ [3]: {{site.github.url}}/config/ILS_R.cfg
+ [4]: {{site.github.url}}/config/ILS_DD.cfg
  
