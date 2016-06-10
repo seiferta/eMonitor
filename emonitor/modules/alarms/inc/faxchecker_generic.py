@@ -107,8 +107,8 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
         c = [[], []]
         for p in [l for l in re.split(r"[\s]{2,}|[\n]+", field.value[0])]:
             addcar = None
-            if len([d for d in Department.getDepartments() if d.name == p.strip()]) == 1:  # department default found
-                c = [[u'default'], [0]]
+            if len([d for d in Department.getDepartments() if d.name in p.strip()]) == 1:  # department default found
+                c = [[u'default'] + c[0], [0] + c[1]]
                 GenericAlarmFaxChecker().logger.debug(u'material: "{}" default department found'.format(p.strip()))
                 continue
 
@@ -413,3 +413,4 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
             self.logger.error(u'error in eval field(s): {}'.format(u','.join(_evalerror)))
         v = GenericAlarmFaxChecker().fields
         v.update({section.key: section.value for section in GenericAlarmFaxChecker().sections})
+        return v

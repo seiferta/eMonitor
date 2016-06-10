@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-09 09:23+0200\n"
+"POT-Creation-Date: 2016-05-17 16:50+0200\n"
 "PO-Revision-Date: 2016-04-09 09:15+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -102,7 +102,10 @@ msgstr "Abmelden"
 msgid "frontend.login"
 msgstr "Anmelden"
 
-#: emonitor/frontend/web/templates/frontendframe.html:81
+#: emonitor/frontend/web/templates/frontendframe.html:84
 msgid "frontend.show.monitors"
 msgstr "Monitore zeigen"
+
+#~ msgid "frontend.restart_info"
+#~ msgstr ""
 

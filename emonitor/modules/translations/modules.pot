@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-05 22:04+0200\n"
+"POT-Creation-Date: 2016-06-10 17:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 
 #: emonitor/modules/__init__.py:28
 msgid "module.startpages"
+msgstr ""
+
+#: emonitor/modules/__init__.py:29
+msgid "emonitor.communication.Communication"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/__init__.py:38
@@ -2526,39 +2530,39 @@ msgstr ""
 msgid "maps.nodefaultposition"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:39
+#: emonitor/modules/messages/__init__.py:43
 msgid "module.messages"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:40
+#: emonitor/modules/messages/__init__.py:44
 msgid "messages.main"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:41
+#: emonitor/modules/messages/__init__.py:45
 msgid "messages.types"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:42
+#: emonitor/modules/messages/__init__.py:46
 msgid "weather"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:43
+#: emonitor/modules/messages/__init__.py:47
 msgid "messages"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:44
+#: emonitor/modules/messages/__init__.py:48
 msgid "messagestate.1"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:45
+#: emonitor/modules/messages/__init__.py:49
 msgid "messagestate.0"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:46
+#: emonitor/modules/messages/__init__.py:50
 msgid "message.state.1"
 msgstr ""
 
-#: emonitor/modules/messages/__init__.py:47
+#: emonitor/modules/messages/__init__.py:51
 msgid "message.state.0"
 msgstr ""
 
@@ -2566,11 +2570,19 @@ msgstr ""
 msgid "message.base"
 msgstr ""
 
-#: emonitor/modules/messages/message_image.py:8
+#: emonitor/modules/messages/message_image.py:10
 msgid "message.image"
 msgstr ""
 
-#: emonitor/modules/messages/message_text.py:8
+#: emonitor/modules/messages/message_image.py:88
+msgid "messages.fileupload.done"
+msgstr ""
+
+#: emonitor/modules/messages/message_image.py:97
+msgid "messages.filedelete.done"
+msgstr ""
+
+#: emonitor/modules/messages/message_text.py:9
 msgid "message.text"
 msgstr ""
 
@@ -2713,6 +2725,7 @@ msgid "messages.image.header"
 msgstr ""
 
 #: emonitor/modules/messages/templates/admin.messages.image.html:6
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:7
 msgid "messages.image.content"
 msgstr ""
 
@@ -2816,6 +2829,14 @@ msgstr ""
 
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:199
 msgid "messages.cancel"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:10
+msgid "messages.image.upload"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:33
+msgid "messages.filesdeletequestion"
 msgstr ""
 
 #: emonitor/modules/messages/templates/frontend.messages_edit_text.html:6
@@ -3702,11 +3723,11 @@ msgstr ""
 msgid "telegram.default.welcomemsg"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:183
+#: emonitor/modules/settings/content_admin.py:178
 msgid "admin.settings.updatedberror"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:191
+#: emonitor/modules/settings/content_admin.py:186
 msgid "admin.settings.telegramtest.done"
 msgstr ""
 
@@ -3728,6 +3749,80 @@ msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.cars.html:53
 msgid "settings.cars.save"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:5
+msgid "settings.communication.telegram.groupname"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:72
+#: emonitor/modules/settings/templates/admin.settings.communication.html:82
+msgid "settings.communication.telegram.title"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:75
+#: emonitor/modules/settings/templates/admin.settings.communication.html:160
+msgid "settings.communication.mail.title"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:83
+msgid "settings.communication.telegram.info"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:89
+msgid "settings.communication.telegram.botname"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:97
+msgid "settings.communication.telegram.boterror"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:102
+msgid "settings.communication.telegram.welcometext"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:104
+msgid "settings.communication.telegram.welcomeinfo"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:107
+msgid "settings.communication.telegram.helptext"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:110
+#: emonitor/modules/settings/templates/admin.settings.communication.html:111
+#: emonitor/modules/settings/templates/admin.settings.communication.html:152
+#: emonitor/modules/settings/templates/admin.settings.html:51
+#: emonitor/modules/settings/templates/admin.settings.html:62
+msgid "settings.save"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:117
+msgid "settings.communication.telegram.testmessage"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:119
+msgid "settings.communication.telegram.testuser"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:121
+msgid "settings.communication.telegram.userselection"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:130
+msgid "settings.communication.telegram.testtext"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:134
+msgid "settings.communication.telegram.sendtest"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:143
+msgid "settings.communication.telegram.grouptitle"
+msgstr ""
+
+#: emonitor/modules/settings/templates/admin.settings.communication.html:144
+msgid "settings.communication.telegram.groupinfo"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.department.html:16
@@ -3880,11 +3975,6 @@ msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.html:49
 msgid "settings.oberserverunit"
-msgstr ""
-
-#: emonitor/modules/settings/templates/admin.settings.html:51
-#: emonitor/modules/settings/templates/admin.settings.html:62
-msgid "settings.save"
 msgstr ""
 
 #: emonitor/modules/settings/templates/admin.settings.html:57

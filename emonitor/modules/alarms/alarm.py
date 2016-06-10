@@ -725,7 +725,11 @@ class Alarm(db.Model):
                 if alarm_fields.get('city', [u'', 0])[1] != 0:  # found city -> use default aao
                     c = City.getCities(id=alarm_fields.get('city')[1]).dept
                     akc = Alarmkey.getDefault(c)
-                    alarm.material = dict(cars1=u','.join([str(c.id) for c in akc.cars1]), cars2=u",".join([str(c.id) for c in akc.cars2]), material=u",".join([str(c.id) for c in akc.materials]))
+                    if len(akc.cars1) + len(akc.cars2) + len(akc.materials) == 0:  # no default aao defined
+                        # use cars of fax
+                        alarm.material = {'cars1': re.sub(r'^0,', '', alarm_fields.get('material')[1]), 'cars2': '', 'material': ''}
+                    else:  # use cars of default aao
+                        alarm.material = dict(cars1=u','.join([str(c.id) for c in akc.cars1]), cars2=u",".join([str(c.id) for c in akc.cars2]), material=u",".join([str(c.id) for c in akc.materials]))
 
                 l = (u'{},{},{}'.format(alarm.get('k.cars1'), alarm.get('k.cars2'), alarm.get('k.material'))).split(',')
                 if len(set(str(alarm_fields.get('material', ([], '-1'))[1]).split(',')).intersection(set(l))) == 0:

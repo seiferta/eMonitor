@@ -26,6 +26,7 @@ class StartModule(Module):
     def __init__(self, app):
         Module.__init__(self, app)
         babel.gettext(u'module.startpages')
+        babel.gettext(u'emonitor.communication.Communication')
 
     def frontendContent(self):
         return 0

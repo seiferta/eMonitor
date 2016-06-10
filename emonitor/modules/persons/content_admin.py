@@ -146,7 +146,7 @@ def getAdminData(self):
                     try:
                         key['birthdate'] = datetime.strptime(key['birthdate'], '%d.%m.%Y')
                     except:
-                        print ">>>>", key['birthdate']
+                        pass
                     key['active'] = key['active'] == 'Aktiv'
                     p = Person(key['firstname'], key['lastname'], key['salutation'], key['grade'], key['position'], key['identifier'], key['active'], key['birthdate'], key['remark'], int(request.args.get('department')))
                     db.session.add(p)

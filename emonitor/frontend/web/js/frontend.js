@@ -27,7 +27,7 @@ if(!window.WebSocket){
     ws.onmessage=function(e){
         var d = JSON.parse(e.data);
         console.log(d);
-        alert(d);
+        /*alert(d);*/
     }
 }
 
