@@ -70,9 +70,10 @@
 
 {% block script_end %}
     {{ super() }}
-    function questionDel(){
-        return confirm($('#del_question').text());
-    }
     $(function() {$( "#sortable" ).sortable({update: function(event, ui){$('#orderchange').show()}});});
+
+    {%- if error %}
+    alert('{{ error }}');
+    {%- endif %}
 {% endblock %}
 

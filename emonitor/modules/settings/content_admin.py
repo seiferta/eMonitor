@@ -64,8 +64,15 @@ def getAdminContent(self, **params):
                     return render_template('admin.settings.department_actions.html', **params)
 
                 elif request.form.get('action').startswith('deletedept_'):  # delete department
-                    db.session.delete(Department.getDepartments(id=request.form.get('action').split('_')[-1]))
-                    db.session.commit()
+                    _c = []
+                    for city in City.getCities():
+                        if city.department.id == int(request.form.get('action').split('_')[-1]):
+                            _c.append(city.name)
+                    if len(_c) == 0:
+                        db.session.delete(Department.getDepartments(id=request.form.get('action').split('_')[-1]))
+                        db.session.commit()
+                    else:
+                        params.update({'error': babel.gettext('admin.settings.department_deleteerror1', cities=', '.join(_c))})
                     
                 elif request.form.get('action') == 'ordersetting':  # change department order
                     for _id in request.form.getlist('departmentids'):
