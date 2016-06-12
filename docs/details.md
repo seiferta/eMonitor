@@ -56,9 +56,13 @@ Wenn ein entsprechender Bot im Telegram Messenger Dienst eingerichtet ist, kann 
 diesen Dienst verbreiten, so dass die Einsatzkräfte Informationen über den Einsatz abrufen können. Dabei ist der 
 Personenkreis definierbar, der Zugriff auf bestimmte Daten erhält.
 
+Python-Modul [**python-telegram-bot**][1] wird benötigt
+
 ##### Personenverwaltung
 
 Sämtliche Personen der Feuerwehr können im System verwaltet werden. Bei der korrekten Eingabe sind weitere Zusatzfunktionen 
 möglich, wie beispielsweise das Anzeigen eines Geburtstagskalenders oder die Benachrichtigung einzelner Personen über den 
 Messenger Dienst Telegram.
 Bei der Erstellung von Einsatzberichten können auch die Personendaten herangezogen werden.
+
+[1]: https://github.com/python-telegram-bot/python-telegram-bot
