@@ -57,7 +57,7 @@ class MessageTrigger(BaseTrigger):
     Use own trigger class for messages.
     This trigger fires only at changes of messages states
     """
-    __slots__ = 'timezone', 'interval', 'messagelist'
+    __slots__ = 'timezone', 'interval', 'messagelist', 'interval_length'
 
     def __init__(self, messagelist, hours=0, minutes=0, timezone=None):
         self.messagelist = messagelist

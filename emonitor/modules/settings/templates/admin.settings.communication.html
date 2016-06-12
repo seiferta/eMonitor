@@ -87,7 +87,6 @@
                             <form method="post" name="telegramsettings" action="">
                                     <p style="padding-top:5px;">
                                         <label for="telegrambot">{{ _('settings.communication.telegram.botname') }}:</label><br>
-                                        <!--<input type="text" id="telegrambot" name="telegrambot" style="min-width:100%;" value="{{ settings.telegramkey }}"{%- if not bot %} disabled="disabled"{%- endif %}/>-->
                                         <input type="text" id="telegrambot" name="telegrambot" style="min-width:100%;" value="{{ settings.telegramkey }}"/>
                                         <br>
                                         <span id="botname"><i>
@@ -107,7 +106,6 @@
                                         <label for="helptext">{{ _('settings.communication.telegram.helptext') }}:</label><br>
                                         <textarea name="helptext" id="helptext" style="width:100%;height:80px;">{{ settings.helpmsg }}</textarea><br>
                                     </p>
-                                <!--<button type="submit" name="action" value="telegramsettings"{%- if not bot %} disabled="disabled"{%- endif %}><i class="fa fa-check"></i> {{ _('settings.save') }}</button>-->
                                 <button type="submit" name="action" value="telegramsettings"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
                             </form>
                         </div>
@@ -131,7 +129,7 @@
                                 <textarea id="telegrammsg" style="width:100%;min-height:50px;"></textarea>
                                 <br>
                                 <br>
-                                <button id="sendtelegramtest"{%- if not bot %} disabled="disabled"{%- endif %}>{{ _('settings.communication.telegram.sendtest') }}</button>
+                                <button id="sendtelegramtest"{%- if bot.botname|string == 'None' or not bot %} disabled="disabled"{%- endif %}>{{ _('settings.communication.telegram.sendtest') }}</button>
                             </p>
                         </div>
 

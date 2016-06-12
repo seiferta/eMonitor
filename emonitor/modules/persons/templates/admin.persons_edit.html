@@ -69,9 +69,18 @@
             <fieldset>
                 <legend>{{ _('persons.additional.fields') }}</legend>
                 {% for f in settings.additional %}
-                <label>{{ f.split('=')[1] }}:<br/>
-                    <input type="text" name="{{ f.split('=')[0] }}" value="{{ person.options[f.split('=')[0]] }}" style="width:100%;">
-                </label><br/>
+                <p>
+                    {% if f.split('=')[2] == 'checkbox' %}
+                    <label>
+                        <input type="checkbox" name="{{ f.split('=')[0] }}" value="X"{%- if person.options[f.split('=')[0]] == 'X'  %} checked="checked"{%- endif %}>
+                        {{ f.split('=')[1] }}
+                    </label>
+                {% else %}
+                    <label>{{ f.split('=')[1] }}:<br/>
+                        <input type="text" name="{{ f.split('=')[0] }}" value="{{ person.options[f.split('=')[0]] }}" style="width:100%;">
+                    </label>
+                {% endif %}
+                </p>
                 {% endfor %}
             </fieldset>
         </p>

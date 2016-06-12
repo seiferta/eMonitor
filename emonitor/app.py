@@ -58,6 +58,8 @@ class DEFAULT_CONFIG(object):
     OBSERVERINTERVAL = 2                                # interval for folderobserver
     MONITORPING = 2                                     # monitor ping in minutes
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     TELEGRAMKEY = "botid"
 
 

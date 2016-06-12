@@ -71,9 +71,7 @@
         <small>{{ _('persons.additional.info') }}</small>
         <form method="post" name="additional" action="" style="padding-bottom:30px;">
             <p>
-                <label>{{ _('persons.additional.field') }}:<br/>
-                    <textarea name="additional" style="width:99%;height:150px;">{{ settings.additional | join('\n') }}</textarea>
-                </label>
+                <textarea name="additional" style="width:99%;height:150px;">{{ settings.additional | join('\n') }}</textarea>
             </p>
             <p>
                 <button type="submit" name="action" value="updateadditional" class="save"><i class="fa fa-check"></i> {{ _('persons.save') }}</button>

@@ -95,7 +95,7 @@ def getAdminContent(self, **params):
             if request.method == 'POST':
                 if request.form.get('action') == 'telegramsettings':
                     vals = Settings.get('telegramsettings')
-                    vals['telegramkey'] = request.form.get('telegrambot')
+                    vals['telegramkey'] = request.form.get('telegrambot').strip()
                     vals['welcomemsg'] = request.form.get('welcometext')
                     vals['helpmsg'] = request.form.get('helptext')
                     Settings.set('telegramsettings', vals)
@@ -106,7 +106,10 @@ def getAdminContent(self, **params):
                         tb = communication.telegram
                     else:
                         tb.stop()
-                    tb.updateToken(vals['telegramkey'])
+                    try:
+                        tb.updateToken(vals['telegramkey'])
+                    except AttributeError:
+                        pass
 
                 elif request.form.get('action') == 'telegramgroups':
                     vals = Settings.get('telegramsettings')

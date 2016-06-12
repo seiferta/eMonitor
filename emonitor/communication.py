@@ -31,28 +31,29 @@ class TelegramBot(Communicator):
 
     def __init__(self, **kwargs):
             # Create the EventHandler and pass it your bot's token.
-            from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters
-            from telegram.error import InvalidToken, Unauthorized, NetworkError
 
-            self.updater = Updater(kwargs.get('token', ''))
-            self.active = False
-            self.botname = None
+            from telegram.ext import Updater
+            from telegram.error import InvalidToken, Unauthorized, NetworkError
+            try:
+                self.updater = Updater(kwargs.get('token', None))
+                self.active = True
+                if self.updater.bot.getMe():
+                    self.botname = self.updater.bot.getMe().name
+                self.updater.start_polling()
+            except:
+                self.updater = None
+                self.active = False
+                self.botname = None
+                logger.error('telegram module not functional')
 
             TelegramBot.app = kwargs.get('app', None)
 
             try:
-                if self.updater.bot.getMe():
-                    self.botname = self.updater.bot.getMe().name
                 # on different commands - answer in Telegram
-                self.updater.dispatcher.addHandler(CommandHandler("start", TelegramBot.msg_start, pass_args=True))
-                self.updater.dispatcher.addHandler(CommandHandler("Start", TelegramBot.msg_start, pass_args=True))
-                self.updater.dispatcher.addHandler(CommandHandler("hilfe", TelegramBot.msg_help, pass_args=True))
-                self.updater.dispatcher.addHandler(CommandHandler("Hilfe", TelegramBot.msg_help, pass_args=True))
-                self.updater.dispatcher.addHandler(CallbackQueryHandler(TelegramBot.msg_responder))
-                self.updater.start_polling()
+                TelegramBot.addHandlers(self.updater)
             except InvalidToken:
                 self.logger.error('invalid telegram token {}'.format(kwargs.get('token', '')))
-                self.updater = Updater(kwargs.get('token', ''))
+                self.updater = Updater(kwargs.get('token', None))
             except Unauthorized:
                 self.logger.error('unauthorized telegram token {}'.format(kwargs.get('token', '')))
             except NetworkError:
@@ -64,20 +65,35 @@ class TelegramBot(Communicator):
         :return: botname
         """
         from telegram.ext import Updater
-        from telegram.error import Unauthorized, NetworkError
-        updater = Updater(token or Settings.get('telegramkey'))
-        self.updater = updater
-        self.botname = None
+        from telegram.error import InvalidToken, Unauthorized, NetworkError
         try:
-            if updater.bot.getMe():
-                self.botname = updater.bot.getMe().name
-
+            self.updater = Updater(token or Settings.get('telegramkey'))
+            if self.updater.bot.getMe():
+                self.botname = self.updater.bot.getMe().name
+        except InvalidToken:
+            self.updater = None
+            self.botname = None
+            logger.error('telegram module not functional')
         except Unauthorized:
             self.botname = None
         except NetworkError:
             self.logger.error("network error")
+        except:
+            self.updater = None
+            self.botname = None
+            logger.error('telegram module not functional')
 
         return self.botname
+
+    @staticmethod
+    def addHandlers(upd):
+        if upd:
+            from telegram.ext import CommandHandler, CallbackQueryHandler
+            upd.dispatcher.add_handler(CommandHandler("start", TelegramBot.msg_start, pass_args=True))
+            upd.dispatcher.add_error_handler(CommandHandler("Start", TelegramBot.msg_start, pass_args=True))
+            upd.dispatcher.add_handler(CommandHandler("hilfe", TelegramBot.msg_help, pass_args=True))
+            upd.dispatcher.add_handler(CommandHandler("Hilfe", TelegramBot.msg_help, pass_args=True))
+            upd.dispatcher.add_handler(CallbackQueryHandler(TelegramBot.msg_responder))
 
     def start(self):
         """
@@ -95,7 +111,8 @@ class TelegramBot(Communicator):
         stop update handler for telegram messages
         """
         self.active = False
-        self.updater.stop()
+        if self.updater:
+            self.updater.stop()
 
     def state(self):
         return self.active

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-10 17:57+0200\n"
+"POT-Creation-Date: 2016-06-11 18:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2570,15 +2570,15 @@ msgstr ""
 msgid "message.base"
 msgstr ""
 
-#: emonitor/modules/messages/message_image.py:10
+#: emonitor/modules/messages/message_image.py:11
 msgid "message.image"
 msgstr ""
 
-#: emonitor/modules/messages/message_image.py:88
+#: emonitor/modules/messages/message_image.py:95
 msgid "messages.fileupload.done"
 msgstr ""
 
-#: emonitor/modules/messages/message_image.py:97
+#: emonitor/modules/messages/message_image.py:104
 msgid "messages.filedelete.done"
 msgstr ""
 
@@ -2835,7 +2835,7 @@ msgstr ""
 msgid "messages.image.upload"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:33
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:34
 msgid "messages.filesdeletequestion"
 msgstr ""
 
@@ -3723,11 +3723,15 @@ msgstr ""
 msgid "telegram.default.welcomemsg"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:178
+#: emonitor/modules/settings/content_admin.py:75
+msgid "admin.settings.department_deleteerror1"
+msgstr ""
+
+#: emonitor/modules/settings/content_admin.py:185
 msgid "admin.settings.updatedberror"
 msgstr ""
 
-#: emonitor/modules/settings/content_admin.py:186
+#: emonitor/modules/settings/content_admin.py:193
 msgid "admin.settings.telegramtest.done"
 msgstr ""
 
