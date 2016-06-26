@@ -1,4 +1,5 @@
 from flask import send_from_directory
+from sqlalchemy.exc import ProgrammingError
 from emonitor.utils import Module
 from emonitor.extensions import babel
 from emonitor.modules.messages.messages import Messages
@@ -33,7 +34,11 @@ class MessagesModule(Module):
         # static folders
         @app.route('/messages/inc/<path:filename>')
         def messages_static(filename):
-            return send_from_directory("%s/emonitor/modules/messages/inc/" % app.config.get('PROJECT_ROOT'), filename)
+            if filename.startswith('message/'):
+                filename = filename.split('/')
+                return send_from_directory("{}messages/{}/".format(app.config.get('PATH_DATA'), filename[-2]), filename[-1])
+            else:
+                return send_from_directory("%s/emonitor/modules/messages/inc/" % app.config.get('PROJECT_ROOT'), filename)
 
         # translations
         babel.gettext(u'module.messages')
@@ -48,7 +53,10 @@ class MessagesModule(Module):
 
         # init
         # Do init script for messages at start and add active messages
-        Messages.initMessageTrigger()
+        try:
+            Messages.initMessageTrigger()
+        except ProgrammingError:
+            pass
 
     def frontendContent(self):
         return 1
