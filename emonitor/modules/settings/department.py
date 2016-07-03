@@ -64,7 +64,7 @@ class Department(db.Model):
         if self.attributes['logo'] != '' and os.path.exists('{}{}'.format(app.config.get('PATH_DATA'), self.attributes['logo'])):
             return open('{}{}'.format(app.config.get('PATH_DATA'), self.attributes['logo']), 'rb').read().encode("base64")
         else:
-            return ''
+            return open('{}/emonitor/frontend/web/img/empty.png'.format(app.config.get('PROJECT_ROOT')), 'rb').read().encode("base64")
 
     @staticmethod
     def getDefaultDepartment():
