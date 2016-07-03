@@ -1,7 +1,9 @@
 {% extends "admin.html" %}
 
 {% block style %}
-
+    <style>
+        div.tab-content legend{font-size:14px;border-width:0!important;}
+    </style>
 {% endblock %}
 
 {% block script %}
@@ -16,8 +18,18 @@
     <h2>{{ _('messages.types.overview') }}</h2>
     <p><small>{{ _('messages.types.info') }}</small></p>
 
+    <ul class="nav nav-tabs" id="myTabImpl">
+        {%- for impl in implementations %}
+            <li{%- if loop.index0==0 %} class="active"{%- endif %}><a href="#impltab{{ loop.index0 }}" onclick="$('#myTabImpl li:eq({{ loop.index0 }}) a').tab('show');return false;">{{ _('message.'+impl[1]|string) }}</a></li>
+        {%- endfor %}
+    </ul>
+
+    <div class="tab-content" style="padding-top:20px;">
     {%- for impl in implementations %}
-        <p>{{ impl[1].getAdminContent()|safe }}</p>
-    {%- endfor %}
+        <div class="tab-pane{%- if loop.index0 == 0 %} active{%- endif %}" id="impltab{{ loop.index0 }}">
+            {{ impl[1].getAdminContent()|safe }}
+        </div>
+    {% endfor %}
+    </div>
 
 {% endblock %}
