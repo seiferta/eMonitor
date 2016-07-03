@@ -90,7 +90,7 @@ class TelegramBot(Communicator):
         if upd:
             from telegram.ext import CommandHandler, CallbackQueryHandler
             upd.dispatcher.add_handler(CommandHandler("start", TelegramBot.msg_start, pass_args=True))
-            upd.dispatcher.add_error_handler(CommandHandler("Start", TelegramBot.msg_start, pass_args=True))
+            upd.dispatcher.add_handler(CommandHandler("Start", TelegramBot.msg_start, pass_args=True))
             upd.dispatcher.add_handler(CommandHandler("hilfe", TelegramBot.msg_help, pass_args=True))
             upd.dispatcher.add_handler(CommandHandler("Hilfe", TelegramBot.msg_help, pass_args=True))
             upd.dispatcher.add_handler(CallbackQueryHandler(TelegramBot.msg_responder))
