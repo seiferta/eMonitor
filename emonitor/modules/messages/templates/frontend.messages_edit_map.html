@@ -1,0 +1,52 @@
+<P>
+    <label style="width:100%;position:relative;">
+        <a href="#" onclick="return openMap()">{{ _('messages.map.maplink') }} <i class="fa fa-map-o fa-lg"></i></a>
+    </label>
+    <input type="hidden" name="messages.mapconfig" id="messagesmapconfig" value="{{ message.get('mapconfig') }}">
+</P>
+<p>
+    <label style="width:100%;position:relative;">
+        {{ _('messages.map.text') }}:<br/>
+        <textarea name="messages.text" style="width:100%;height:100px;font-family:monospace">{{ message.get('text') }}</textarea><br/>
+        <small>{{ _('messages.map.text.info') }}</small>
+        <span style="position:absolute;top:0;right:0;"><a href="#" onclick="return showPreview()" title="{{ _('messages.map.textpreview.title') }}"><i class="fa fa-eye fa-lg"></i></a></span>
+    </label>
+</p>
+
+{{ _('messages.map.position') }}:<br/>
+    <div style="border:1px solid silver;width:80px;padding:5px;margin-top:5px;border-radius:3px;float:left;">
+    <label title="{{ _('messages.position.topleft') }}">
+        <input type="radio" name="messages.textposition" value="tl"{%- if message.get('textposition') == 'tl' %} checked="checked"{%- endif %}> <i class="fa fa-share fa-flip-horizontal"></i>
+    </label>
+    <label title="{{ _('messages.position.topright') }}">
+        <i class="fa fa-reply fa-flip-horizontal"></i> <input type="radio" name="messages.textposition" value="tr"{%- if message.get('textposition') == 'tr' %} checked="checked"{%- endif %}>
+    </label>
+    <br>
+    <label title="{{ _('messages.position.bottomleft') }}">
+        <input type="radio" name="messages.textposition" value="bl"{%- if message.get('textposition') == 'bl' %} checked="checked"{%- endif %}> <i class="fa fa-reply fa-flip-vertical"></i>
+    </label>
+    <label title="{{ _('messages.position.bottomright') }}">
+        <i class="fa fa-share fa-flip-vertical"></i> <input type="radio" name="messages.textposition" value="br"{%- if message.get('textposition', 'br') == 'br' %} checked="checked"{%- endif %}>
+    </label>
+</div>
+<div style="clear:left;padding-bottom:20px;"></div>
+
+<script>
+    function openMap() {
+        $.post("/data/messages?action=mapconfig", {config: $('#messagesmapconfig').val(), messageid: '{{ message.id }}', type: $('#messagetype').val()})
+            .done(function(result){
+                parent.$('#overlaycontent').html(result);
+                parent.$('.overlay').toggle();
+                return false;
+            });
+    }
+
+    function showPreview() {
+        $.post("/data/messages?action=render", {text: $('textarea[name="messages.text"]').val(), messageid: '{{message.id}}', type: $('#messagetype').val()})
+            .done(function(result){
+                parent.$('.overlay').toggle();
+                parent.$('#overlaycontent').html(result);
+        });
+        return false;
+    }
+</script>

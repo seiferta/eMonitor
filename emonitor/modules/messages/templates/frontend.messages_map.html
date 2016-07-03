@@ -1,0 +1,152 @@
+<link rel="stylesheet" href="/streets/inc/leaflet.css" />
+<link rel="stylesheet" href="/streets/inc/leaflet.contextmenu.css" />
+<style>
+    #selectable li:hover{cursor:pointer;}
+    #selectable .ui-selecting { background: silver; }
+    #selectable .ui-selected { background: silver; color: white; }
+    #selectable { list-style-type: none; margin: 0; padding: 0;}
+    #selectable li { margin: 2px;padding:4px; float:left; width:30px;height:30px;text-align:center;}
+    .leaflet-tile{filter:grayscale(100%);-webkit-filter:grayscale(100%)}
+    .leaflet-control-zoom-home {text-indent: -999em;background: #fff url(data:image/gif;base64,R0lGODlhGAAYAOZdACIiIiMjIy8vLyoqKsPDwzMzM0xMTDQ0NGlpaUtLS+Tk5J2dnXd3d7m5ueDg4GdnZykpKSYmJkpKSre3t09PT5eXl4KCgrCwsHNzc1lZWWhoaCcnJ5ubm3R0dFJSUp+fn1RUVJqamoODg8TExD09PYqKijo6OpGRkV1dXVFRUUNDQ3FxcZmZmYCAgEVFRXV1dSgoKIaGhlxcXEdHR5SUlMvLy5iYmNXV1VNTU7GxsbOzs9ra2jExMdbW1isrKywsLFtbW6qqqnh4eGpqat3d3XBwcI2NjWRkZLi4uL+/vyUlJZycnNvb297e3r6+vvf392VlZcbGxq2trWFhYWZmZszMzE5OTsDAwG1tbZWVlZaWlqGhod/f3////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAF0ALAAAAAAYABgAQAf/gF2Cg10KLFASAgISVBWEhFkAklaPlT0Rkpk2XRCZnj4oEwQknp4Dgw0BAFqPLZ0ZFJ4BDYICpSWEURNBpZ4Cgx+qvQAmgjs4AAEflV1XBckgShkJEQeeBUmPLwAezF0jKTqDGJkdXQaZLt5dTj/DCRq9MDldHgAbw5kPhdb5AAkXBpXAd0ABMyED8g1gsE6QAwwJhw3oQMQbB1UyRlSpQeDJAiClAoQg5OCZkUrPAGzpImJIpgJNBHWKIMUbF0FMGsTIdOpBphUNb5jo9cBWJgveLOQTgM6TihOCjkgq4s9AiGEUHFyoMMUfAA5dGHjFooEHDQSkMjEUREBYPiSDHEQkI1CJQL9SM5aAkHSAbsMuCxAYUGQAwQJvgQAAOw==) no-repeat scroll center center;background-size: 12px 12px;}
+    .leaflet-control-zoom-home:focus { outline: 0;}
+</style>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+<script type="text/javascript" language="javascript" src="/messages/inc/leaflet.awesome-markers.min.js"> </script>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.contextmenu.min.js"> </script>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.button.js"> </script>
+<p>{{ _('messages.map.iconset') }}</p>
+<div id="messagemap" style="display:block;width:550px;height:500px;border:1px solid silver;position:relative;"></div>
+
+<ul id="selectable" style="width:550px;height:40px;border:1px solid silver;margin-top:5px;">
+    <li id="exclamation"><i class="fa fa-exclamation-circle fa-2x" style="color:red"></i></li>
+    <li id="ban"><i class="fa fa-ban fa-2x" style="color:red"></i></li>
+    <li id="minus"><i class="fa fa-minus-circle fa-2x" style="color:red"></i></li>
+    <li id="circle"><i class="fa fa-circle-o fa-2x" style="color:red"></i></li>
+    <li id="question"><i class="fa fa-question-circle fa-2x" style="color:red"></i></li>
+    <li id="info"><i class="fa fa-info-circle fa-2x" style="color:blue"></i></li>
+    <li id="triangle"><i class="fa fa-exclamation-triangle fa-2x" style="color:red"></i></li>
+    <li id="bolt"><i class="fa fa-bolt fa-2x" style="color:orange"></i></li>
+    <li id="pin"><i class="fa fa-map-pin fa-2x" style="color:red"></i></li>
+    <li id="wrench"><i class="fa fa-wrench fa-2x" style="color:red"></i></li>
+    <li id="marker"><i class="fa fa-map-marker fa-2x" style="color:red"></i></li>
+</ul>
+<button type="button" style="position:absolute;right:35px;bottom:30px;" onclick="setConfig()">{{ _('messages.map.save') }}</button>
+
+<script>
+    var x = $('#messages').contents().find('#messagesmapconfig');
+    var markers = {'exclamation': {icon: 'exclamation-circle fa-3x', class_name:'red', iconColor: 'red', prefix: 'fa', spin: false},
+            'ban': {icon: 'ban fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'minus': {icon: 'minus-circle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'circle': {icon: 'circle-o fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'question': {icon: 'question-circle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'info': {icon: 'info-circle fa-3x', iconColor: 'blue', prefix: 'fa', spin: false},
+            'triangle': {icon: 'exclamation-triangle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'bolt': {icon: 'bolt fa-3x', iconColor: 'orange', prefix: 'fa', spin: false},
+            'pin': {icon: 'map-pin fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'wrench': {icon: 'wrench fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'marker': {icon: 'marker fa-3x', iconColor: 'red', prefix: 'fa', spin: false}
+    };
+
+    var messagemap = new L.Map('messagemap', {zoomControl: false, zoom: 12, doubleClickZoom: true});
+    new L.Control.ZoomHome().addTo(messagemap);
+    var l = null;
+    var startlat = {{ lat }};
+    var startlng = {{ lng }};
+    var startzoom = 13;
+
+    {%- if map.maptype in [0, 1] %}
+        l = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+    {% else %}
+        l = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    {%- endif -%}
+
+    $(document).ready( function() {
+        $("#selectable").selectable();
+
+        messagemap.setView(new L.latLng(startlat, startlng), startzoom).addLayer(l).on('click', addMarkerClick);
+        setTimeout(function(){ messagemap.invalidateSize();$('#messagemap').show();}, 400);
+
+        if(x.val()!=""){
+            var data = JSON.parse(x.val());
+            if(data.lat && data.lng && data.zoom){
+                messagemap.setView(new L.latLng(data.lat, data.lng), data.zoom);
+            }
+            for (m in data.markers){
+                m = data.markers[m];
+                addMarker(new L.latLng(m.lat, m.lng), m.icon, m.color);
+            }
+        }
+    });
+
+    function addMarkerClick(e){
+        messagemap.contextmenu.hide();
+        var markersid = $('#selectable li.ui-selected').attr('id');
+        if (markersid) {
+            addMarker(e.latlng, markersid, markers[markersid].iconColor);  // position, markers id, color
+        }
+    }
+
+    function addMarker(latlng, markersid, color){
+        var icondef = markers[markersid];
+        if (color){
+            icondef['iconColor'] = color;
+        }
+        var icon = new L.AwesomeMarkers.icon(icondef);
+        var marker = new L.marker(latlng, {icon: icon,
+            alt: markersid,
+            contextmenu: true,
+            draggable: true,
+            contextmenuItems: [{text: '{{ _("messages.map.deletemarker") }}', callback: deleteMarker},
+                                "-",
+                                {text: '{{ _("messages.map.changecolor.red") }}', callback: changeColorRed},
+                                {text: '{{ _("messages.map.changecolor.blue") }}', callback: changeColorBlue},
+                                {text: '{{ _("messages.map.changecolor.green") }}', callback: changeColorGreen},
+                                {text: '{{ _("messages.map.changecolor.orange") }}', callback: changeColorOrange}]
+        });
+        marker.addTo(messagemap);
+    }
+
+    function deleteMarker(e) {
+        messagemap.removeLayer(e.relatedTarget);
+    }
+
+    function changeColorRed(e){
+        changeColor(e.relatedTarget, 'red');
+    }
+
+    function changeColorBlue(e){
+        changeColor(e.relatedTarget, 'blue')
+    }
+
+    function changeColorGreen(e){
+        changeColor(e.relatedTarget, 'green')
+    }
+
+    function changeColorOrange(e){
+        changeColor(e.relatedTarget, 'orange')
+    }
+
+    function changeColor(obj, color){
+        obj._icon.markerColor = color;
+        obj._icon.childNodes[0].style.color = color;
+        obj.options.icon.options.iconColor = color;
+    }
+
+    function setConfig(){
+        var data = {'markers': [], 'lat': messagemap.getCenter().lat, 'lng': messagemap.getCenter().lng, 'zoom': messagemap.getZoom()};
+        var color = 'red';
+        messagemap.eachLayer(function(layer){
+            if(layer._icon) {
+                for (i in layer._icon.classList){
+                    var val = layer._icon.classList[i];
+                    if(new RegExp('^awesome-marker-icon').test(val)){
+                        color = val.split('-').slice(-1)[0];
+                    }
+                }
+                data['markers'].push({'icon': layer.options.alt, 'color': layer.options.icon.options.iconColor, 'lat': layer._latlng.lat, 'lng': layer._latlng.lng});
+            }
+        });
+        x.val(JSON.stringify(data));
+        $(".overlay").toggle();
+    }
+</script>

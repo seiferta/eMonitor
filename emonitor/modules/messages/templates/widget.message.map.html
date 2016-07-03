@@ -1,1 +1,54 @@
-MAP
+<link rel="stylesheet" href="/streets/inc/leaflet.css" />
+
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+<script type="text/javascript" language="javascript" src="/messages/inc/leaflet.awesome-markers.min.js"> </script>
+
+<style>
+    .leaflet-tile{filter:grayscale(100%);-webkit-filter:grayscale(100%)}
+    div#messagemap{position:absolute;top:0;left:0;bottom:0;right:0;}
+    div#messagetext{position:absolute;{% if 'r' in message.get('textposition') %}right:10px{% else %}left:10px{% endif %};{% if 't' in message.get('textposition') %}top:10px{% else %}bottom:0{% endif %};width:auto;height:auto;margin-bottom:30px;padding:0 20px;background-color:#000;opacity: 0.7;-moz-opacity:.7;-ms-filter:"alpha(opacity=70)";filter:alpha(opacity=70)}
+</style>
+<div id="messagemap"></div>
+<div id="messagetext">{{ message.get('text')|rst }}</div>
+<script>
+    var config = JSON.parse('{{ message.get('mapconfig')|safe }}');
+    var startlat = config.lat;
+    var startlng = config.lng;
+    var startzoom = config.zoom;
+    var markers = {'exclamation': {icon: 'exclamation-circle fa-3x', class_name:'red', iconColor: 'red', prefix: 'fa', spin: false},
+            'ban': {icon: 'ban fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'minus': {icon: 'minus-circle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'circle': {icon: 'circle-o fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'question': {icon: 'question-circle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'info': {icon: 'info-circle fa-3x', iconColor: 'blue', prefix: 'fa', spin: false},
+            'triangle': {icon: 'exclamation-triangle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'bolt': {icon: 'bolt fa-3x', iconColor: 'oranage', prefix: 'fa', spin: false},
+            'wrench': {icon: 'wrench fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
+            'marker': {icon: 'marker fa-3x', iconColor: 'red', prefix: 'fa', spin: false}
+    };
+
+    {%- if map.maptype in [0, 1] %}
+    l = new L.TileLayer('{{ map.tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+    {% else %}
+    l = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    {%- endif -%}
+
+    var messagemap = new L.Map('messagemap', {zoomControl: false, zoom: config.zoom});
+    messagemap.setView(new L.latLng(startlat, startlng), startzoom);
+    messagemap.addLayer(l);
+    for (m in config.markers){
+        m = config.markers[m];
+        addMarker(new L.latLng(m.lat, m.lng), m.icon, m.color);
+    }
+
+    function addMarker(latlng, markersid, color){
+        var icondef = markers[markersid];
+        if (color){
+            icondef['iconColor'] = color;
+        }
+        var icon = new L.AwesomeMarkers.icon(icondef);
+        var marker = new L.marker(latlng, {icon: icon});
+        messagemap.addLayer(marker);
+    }
+
+</script>
