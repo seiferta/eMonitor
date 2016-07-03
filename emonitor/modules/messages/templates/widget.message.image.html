@@ -1,0 +1,23 @@
+<div id="message_image" style="padding-top:5%;margin:100px 50px;">
+    <link rel="stylesheet" href="/messages/inc/image/jquery.kenburnsy.css">
+    <script src="/messages/inc/image/jquery.velocity.min.js"></script>
+    <script src="/messages/inc/image/jquery.kenburnsy.min.js"></script>
+    <div id="image_element">
+        {%- for img in images if img in message.get('images').split(';') -%}
+        <img src="/messages/inc/message/{{ message.get('key') }}/{{ img }}" alt="">
+        {%- endfor -%}
+    </div>
+    {%- if message.get('crestposition', settings.get('messages.image.crestposition', 'no')) != 'no' %}
+    <div id="crest" style="position:absolute;{%- if 't' in message.get('crestposition') %}top:0;{%- elif 'b' in message.get('crestposition')%}bottom:20px;{%- endif %}{%- if 'l' in message.get('crestposition') %}left:0;{%- elif 'c' in message.get('crestposition') %}left:50%;margin-left:-75px;{% else %}right:0;{%- endif %}">
+        <img src="data:{{ mime }};base64,{{ crest }}" style="width:150px;"/>
+    </div>
+    {%- endif %}
+</div>
+<script>
+  $(function() {
+    $("#image_element").kenburnsy({
+      fullscreen: true,
+      duration: {{ settings.get('messages.image.duration', '20') }}000
+    });
+  });
+</script>

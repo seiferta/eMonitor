@@ -1,0 +1,88 @@
+<style>
+    div#files p i:hover{cursor: pointer;}
+</style>
+
+<p>
+    <label style="width:100%;position:relative;">
+        {{ _('messages.image.content') }}:<br/>
+        <input name="messages.image" type="file" id="fileBox" style="width:100%;"><br/>
+        <input type="hidden" name="messages.images" value="{{ message.get('images') }}">
+        <button type="button" id="uploadFile"><i class="fa fa-upload"></i> {{ _('messages.image.upload') }}</button>
+        <input type="hidden" id="messageid" value="{{ message.id }}">
+        <input type="hidden" id="messagekey" name="messages.key" value="{{ key or message.get('key') }}">
+    </label>
+</p>
+<div id="files" style="border:1px solid silver;height:200px;overflow-y: auto;padding:5px;margin-bottom:5px;position:relative;">
+    <div style="left:50%;right:20px;position:fixed;color:#ababab">{{ _('messages.image.fileinfo') }}</div>
+    {%- for img in images %}
+    <p id="{{ img.replace('.', '') }}"><input type="checkbox" name="images"{%- if img in message.get('images').split(';') %} checked="checked"{%- endif %} value="{{ img }}"> <a href="/messages/inc/message/{{ message.id }}/{{ img }}" target=_blank">{{ img }}</a> <i class="fa fa-trash-o fa-lg" onclick="deleteFile('{{ img }}')"></i></p>
+    {%- endfor %}
+</div>
+<div style="padding-bottom:20px;">
+    <span onclick="$('#crest').toggle()" style="cursor:pointer">{{ _('messages.image.position') }} <i class="fa fa-angle-down"></i></span><br/>
+    <div id="crest" style="display:none">
+        <div style="border:1px solid silver;width:100px;padding:5px;margin-top:5px;border-radius:3px;float:left;">
+            <label title="{{ _('messages.position.topleft') }}" style="width:30px;">
+                <input type="radio" name="messages.crestposition" value="tl"{%- if message.get('crestposition') == 'tl' %} checked="checked"{%- endif %}> <i class="fa fa-share fa-flip-horizontal"></i>
+            </label>
+            <label title="{{ _('messages.position.topcenter') }}" style="width:20px;">
+                <input type="radio" name="messages.crestposition" value="tc"{%- if message.get('crestposition') == 'tc' %} checked="checked"{%- endif %}>
+            </label>
+            <label title="{{ _('messages.position.topright') }}" style="width:30px">
+                <i class="fa fa-reply fa-flip-horizontal"></i> <input type="radio" name="messages.crestposition" value="tr"{%- if message.get('crestposition') == 'tr' %} checked="checked"{%- endif %}>
+            </label>
+            <br>
+            <label title="{{ _('messages.position.bottomleft') }}" style="width:30px">
+                <input type="radio" name="messages.crestposition" value="bl"{%- if message.get('crestposition') == 'bl' %} checked="checked"{%- endif %}> <i class="fa fa-reply fa-flip-vertical"></i>
+            </label>
+            <label title="{{ _('messages.position.bottomcenter') }}" style="width:20px">
+                <input type="radio" name="messages.crestposition" value="bc"{%- if message.get('crestposition', settings.get('messages.image.crestpotiion', 'bc')) == 'bc' %} checked="checked"{%- endif %}>
+            </label>
+            <label title="{{ _('messages.position.bottomright') }}" style="width:30px">
+                <i class="fa fa-share fa-flip-vertical"></i> <input type="radio" name="messages.crestposition" value="br"{%- if message.get('crestposition') == 'br' %} checked="checked"{%- endif %}>
+            </label>
+        </div>
+        <label title="{{ _('messages.position.none') }}" style="margin:11px 0 20px 5px">
+            <input type="radio" name="messages.crestposition" value="no"{%- if message.get('crestposition') == 'no' %} checked="checked"{%- endif %}> {{ _('messages.image.nonecrest') }}
+        </label>
+        <div style="clear:left"></div>
+    </div>
+</div>
+<script>
+    function shipOff(event){
+        var result = event.target.result;
+        var fileName = document.getElementById('fileBox').files[0].name;
+        $.post("/data/messages?action=imageupload&format=json", {data: result, name:fileName, messageid: '{{ message.id }}', type: $('#messagetype').val(), key: $('#messagekey').val()})
+            .done(function(result){
+                $('div#files').append(result.text);
+                $('#fileBox').val('');
+            });
+    }
+
+    function deleteFile(filename) {
+        if (confirm('{{ _('messages.filesdeletequestion') }}')) {
+        $.post("/data/messages?action=imagedelete&format=json", {filename: filename, messageid: '{{message.id }}', type: $('#messagetype').val(), key: $('#messagekey').val()})
+            .done(function (result) {
+                $('#' + result.filename.replace('.', '')).hide();
+            });
+        }
+        return false;
+    }
+
+    $(function() {
+        $('#uploadFile').click(function(){
+            var file = document.getElementById('fileBox').files[0];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = shipOff;
+        });
+
+        $('#saveButton').click(function(){
+            var files = [];
+            $('input[name="images"]').each(function(){
+                if (this.checked){files.push($(this).val());}
+            });
+            $('input[name="messages.images"]').val(files.join(';'));
+        });
+    });
+</script>
