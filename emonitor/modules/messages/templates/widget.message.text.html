@@ -1,3 +1,8 @@
 <div id="message_text" style="padding-top:5%;margin:100px 50px;">
     <p>{{ content|rst }}</p>
+    {%- if message.get('crestposition', settings.get('messages.text.crestposition', 'no')) != 'no' %}
+    <div id="crest" style="position:absolute;{%- if 't' in message.get('crestposition') %}top:0;{%- elif 'b' in message.get('crestposition')%}bottom:20px;{%- endif %}{%- if 'l' in message.get('crestposition') %}left:0;{%- elif 'c' in message.get('crestposition') %}left:50%;margin-left:-75px;{% else %}right:0;{%- endif %}">
+        <img src="data:{{ mime }};base64,{{ crest }}" style="width:150px;"/>
+    </div>
+    {%- endif %}
 </div>

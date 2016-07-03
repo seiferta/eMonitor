@@ -50,7 +50,7 @@ class Messages(db.Model):
         try:
             return yaml.load(self._attributes)
         except AttributeError:
-            return ""
+            return {}
 
     @attributes.setter
     def attributes(self, val):
@@ -121,7 +121,7 @@ class Messages(db.Model):
         """
         try:
             return [int(m) for m in self._monitors.split(',')]
-        except ValueError:
+        except (ValueError, AttributeError):
             return []
 
     @monitors.setter
@@ -141,10 +141,10 @@ class Messages(db.Model):
         :param optional timestamp: use given timestamp or now as reference
         :return: boolean
         """
-        if self.attributes['cron']:
+        if self.get('cron', None):
             if not timestamp:
                 timestamp = datetime.datetime.now(tz=pytz.timezone('CET'))
-            return not calcNextStateChange(timestamp, self.attributes['cron'])[1]
+            return not calcNextStateChange(timestamp, self.get('cron'))[1]
         return True
 
     @staticmethod

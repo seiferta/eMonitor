@@ -7,6 +7,36 @@
             <textarea name="text.content" style="width:100%;height:200px;font-family:monospace">{{ settings.get('messages.text.content') }}</textarea><br/>
             <small>{{ _('messages.text.content.info') }}</small>
         </label>
+        
+        {{ _('messages.text.crestposition') }}:<br/>
+        <div style="border:1px solid silver;width:100px;padding:5px;margin-top:5px;border-radius:3px;float:left;">
+            <label title="{{ _('messages.position.topleft') }}" style="width:30px;">
+                <input type="radio" name="text.crestposition" value="tl"{%- if settings.get('messages.text.crestposition') == 'tl' %} checked="checked"{%- endif %}> <i class="fa fa-share fa-flip-horizontal"></i>
+            </label>
+            <label title="{{ _('messages.position.topcenter') }}" style="width:20px;">
+                <input type="radio" name="text.crestposition" value="tc"{%- if settings.get('messages.text.crestposition') == 'tc' %} checked="checked"{%- endif %}>
+            </label>
+            <label title="{{ _('messages.position.topright') }}" style="width:30px">
+                <i class="fa fa-reply fa-flip-horizontal"></i> <input type="radio" name="text.crestposition" value="tr"{%- if settings.get('messages.text.crestposition') == 'tr' %} checked="checked"{%- endif %}>
+            </label>
+            <br>
+            <label title="{{ _('messages.position.bottomleft') }}" style="width:30px">
+                <input type="radio" name="text.crestposition" value="bl"{%- if settings.get('messages.text.crestposition') == 'bl' %} checked="checked"{%- endif %}> <i class="fa fa-reply fa-flip-vertical"></i>
+            </label>
+            <label title="{{ _('messages.position.bottomcenter') }}" style="width:20px">
+                <input type="radio" name="text.crestposition" value="bc"{%- if settings.get('messages.text.crestposition') == 'bc' %} checked="checked"{%- endif %}>
+            </label>
+            <label title="{{ _('messages.position.bottomright') }}" style="width:30px">
+                <i class="fa fa-share fa-flip-vertical"></i> <input type="radio" name="text.crestposition" value="br"{%- if settings.get('messages.text.crestposition') == 'br' %} checked="checked"{%- endif %}>
+            </label>
+        </div>
+        <div style="float:left;margin:11px 0 0 5px">
+        <label title="{{ _('messages.position.none') }}" style="margin-bottom:20px;">
+            <input type="radio" name="text.crestposition" value="no"{%- if settings.get('messages.text.crestposition', 'no') == 'no' %} checked="checked"{%- endif %}> {{ _('messages.image.nonecrest') }}
+        </label>
+        </div>
+        <div style="clear:left;padding-bottom:20px"></div>
+        
         <p>
             <button type="submit" name="saveparameters" value="text">{{ _('messages.save') }}</button>
         </p>

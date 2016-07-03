@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-11 18:31+0200\n"
-"PO-Revision-Date: 2016-06-12 16:38+0200\n"
+"POT-Creation-Date: 2016-07-03 17:03+0200\n"
+"PO-Revision-Date: 2016-07-03 17:04+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
+"Language: de\n"
 "Language-Team: de <arne@seifert-online.net>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
-"Language: de\n"
+"Generated-By: Babel 2.3.4\n"
 "X-Generator: Poedit 1.8.6\n"
 
 #: emonitor/modules/__init__.py:28
@@ -1108,13 +1108,13 @@ msgstr "Priorisierte Fahrzeuge/Material"
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:127
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:141
 #: emonitor/modules/alarms/templates/admin.alarms.report_action.html:49
-#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:239
-#: emonitor/modules/alarms/templates/frontend.alarms_fields.html:33
-#: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 #: emonitor/modules/alarms/templates/fields/field.config_afalerting.html:38
 #: emonitor/modules/alarms/templates/fields/field.config_afmaterial.html:43
 #: emonitor/modules/alarms/templates/fields/field.config_afothers.html:43
 #: emonitor/modules/alarms/templates/fields/field.config_afpersons.html:41
+#: emonitor/modules/alarms/templates/frontend.alarms_edit.html:239
+#: emonitor/modules/alarms/templates/frontend.alarms_fields.html:33
+#: emonitor/modules/alarms/templates/frontend.alarms_message.html:36
 msgid "alarms.save"
 msgstr "Speichern"
 
@@ -2700,39 +2700,39 @@ msgstr ""
 "Es wurde noch keine Standardposition für die Kartendarstellung gespeichert, das "
 "kann im Administrationsbereich unter 'Straßenkarte' eingestellt werden."
 
-#: emonitor/modules/messages/__init__.py:43
+#: emonitor/modules/messages/__init__.py:44
 msgid "module.messages"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:44
+#: emonitor/modules/messages/__init__.py:45
 msgid "messages.main"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:45
+#: emonitor/modules/messages/__init__.py:46
 msgid "messages.types"
 msgstr "Meldungstyp"
 
-#: emonitor/modules/messages/__init__.py:46
+#: emonitor/modules/messages/__init__.py:47
 msgid "weather"
 msgstr "Wetter"
 
-#: emonitor/modules/messages/__init__.py:47
+#: emonitor/modules/messages/__init__.py:48
 msgid "messages"
 msgstr "Mitteilung"
 
-#: emonitor/modules/messages/__init__.py:48
+#: emonitor/modules/messages/__init__.py:49
 msgid "messagestate.1"
 msgstr "Aktive Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:49
+#: emonitor/modules/messages/__init__.py:50
 msgid "messagestate.0"
 msgstr "Deaktivierte Mitteilungen"
 
-#: emonitor/modules/messages/__init__.py:50
+#: emonitor/modules/messages/__init__.py:51
 msgid "message.state.1"
 msgstr "Aktiviert"
 
-#: emonitor/modules/messages/__init__.py:51
+#: emonitor/modules/messages/__init__.py:52
 msgid "message.state.0"
 msgstr "Deaktiviert"
 
@@ -2740,57 +2740,71 @@ msgstr "Deaktiviert"
 msgid "message.base"
 msgstr "Mitteilungen"
 
-#: emonitor/modules/messages/message_image.py:11
-#, fuzzy
-msgid "message.image"
-msgstr "Mitteilungen"
+#: emonitor/modules/messages/message_image.py:15
+msgid "image"
+msgstr "Bild"
 
-#: emonitor/modules/messages/message_image.py:95
-#, fuzzy
-msgid "messages.fileupload.done"
-msgstr "Mitteilungstext/Inhalt"
+#: emonitor/modules/messages/message_image.py:16
+msgid "message.image"
+msgstr "Diashow"
 
 #: emonitor/modules/messages/message_image.py:104
+msgid "messages.fileupload.done"
+msgstr "Datei hochgeladen"
+
+#: emonitor/modules/messages/message_image.py:113
 #, fuzzy
 msgid "messages.filedelete.done"
 msgstr "löschen"
 
-#: emonitor/modules/messages/message_text.py:9
+#: emonitor/modules/messages/message_map.py:11
+msgid "map"
+msgstr "Karte"
+
+#: emonitor/modules/messages/message_map.py:12
+msgid "message.map"
+msgstr "Karteninformationen"
+
+#: emonitor/modules/messages/message_text.py:11
+msgid "text"
+msgstr "Text"
+
+#: emonitor/modules/messages/message_text.py:12
 msgid "message.text"
 msgstr "Textnachrichten"
 
 #: emonitor/modules/messages/message_weather.py:10
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:148
 msgid "Mon"
 msgstr "Montag"
 
 #: emonitor/modules/messages/message_weather.py:11
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:149
 msgid "Tue"
 msgstr "Dienstag"
 
 #: emonitor/modules/messages/message_weather.py:12
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
 msgid "Wed"
 msgstr "Mittwoch"
 
 #: emonitor/modules/messages/message_weather.py:13
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
 msgid "Thu"
 msgstr "Donnerstag"
 
 #: emonitor/modules/messages/message_weather.py:14
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
 msgid "Fri"
 msgstr "Freitag"
 
 #: emonitor/modules/messages/message_weather.py:15
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:155
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
 msgid "Sat"
 msgstr "Samstag"
 
 #: emonitor/modules/messages/message_weather.py:16
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:156
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
 msgid "Sun"
 msgstr "Sonntag"
 
@@ -2827,10 +2841,10 @@ msgid "messages.base.slideeffect"
 msgstr "Effekt"
 
 #: emonitor/modules/messages/templates/admin.message.base.html:42
-#: emonitor/modules/messages/templates/admin.message.text.html:11
+#: emonitor/modules/messages/templates/admin.message.text.html:41
 #: emonitor/modules/messages/templates/admin.message.weather.html:23
-#: emonitor/modules/messages/templates/admin.messages.image.html:11
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:198
+#: emonitor/modules/messages/templates/admin.messages.image.html:41
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:196
 #: emonitor/modules/persons/templates/admin.message.birthday.html:18
 msgid "messages.save"
 msgstr "Speichern"
@@ -2850,6 +2864,72 @@ msgid "messages.text.content.info"
 msgstr ""
 "Der Mitteilungstext kann einfacher Text sein oder nach 'restructuredText' "
 "formatiert werden."
+
+#: emonitor/modules/messages/templates/admin.message.text.html:11
+#: emonitor/modules/messages/templates/admin.messages.image.html:11
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:22
+msgid "messages.image.position"
+msgstr "Wappenposition in der Diashow"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:13
+#: emonitor/modules/messages/templates/admin.messages.image.html:13
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:25
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:17
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:13
+msgid "messages.position.topleft"
+msgstr "Oben Links"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:16
+#: emonitor/modules/messages/templates/admin.messages.image.html:16
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:28
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:16
+msgid "messages.position.topcenter"
+msgstr "Oben Mitte"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:19
+#: emonitor/modules/messages/templates/admin.messages.image.html:19
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:31
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:20
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:19
+msgid "messages.position.topright"
+msgstr "Oben Rechts"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:23
+#: emonitor/modules/messages/templates/admin.messages.image.html:23
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:35
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:24
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:23
+msgid "messages.position.bottomleft"
+msgstr "Unten Links"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:26
+#: emonitor/modules/messages/templates/admin.messages.image.html:26
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:38
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:26
+msgid "messages.position.bottomcenter"
+msgstr "Unten Mitte"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:29
+#: emonitor/modules/messages/templates/admin.messages.image.html:29
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:41
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:27
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:29
+msgid "messages.position.bottomright"
+msgstr "Unten Rechts"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:34
+#: emonitor/modules/messages/templates/admin.messages.image.html:34
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:45
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:33
+msgid "messages.position.none"
+msgstr "Ohne"
+
+#: emonitor/modules/messages/templates/admin.message.text.html:35
+#: emonitor/modules/messages/templates/admin.messages.image.html:35
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:46
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:34
+msgid "messages.image.nonecrest"
+msgstr "kein Wappen anzeigen"
 
 #: emonitor/modules/messages/templates/admin.message.weather.html:3
 msgid "messages.weather.header"
@@ -2905,23 +2985,18 @@ msgid "messages.image.header"
 msgstr "Text-Widget-Einstellungen"
 
 #: emonitor/modules/messages/templates/admin.messages.image.html:6
-#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:7
-#, fuzzy
-msgid "messages.image.content"
-msgstr "Mitteilungstext/Inhalt"
+msgid "messages.image.durationtitle"
+msgstr "Anzeigedauer"
 
 #: emonitor/modules/messages/templates/admin.messages.image.html:8
-#, fuzzy
-msgid "messages.image.content.info"
-msgstr ""
-"Der Mitteilungstext kann einfacher Text sein oder nach 'restructuredText' "
-"formatiert werden."
+msgid "messages.image.duration.info"
+msgstr "Dauer der Anzeige der einzelnen Bilder in Sekunden, Standard 20 Sek."
 
-#: emonitor/modules/messages/templates/admin.messages.types.html:16
+#: emonitor/modules/messages/templates/admin.messages.types.html:18
 msgid "messages.types.overview"
 msgstr "Einstellungsübersicht"
 
-#: emonitor/modules/messages/templates/admin.messages.types.html:17
+#: emonitor/modules/messages/templates/admin.messages.types.html:19
 msgid "messages.types.info"
 msgstr ""
 "In der Konfiguration kann für die verschiedenen Mitteilungstypen die "
@@ -2958,80 +3033,143 @@ msgstr "Keine Mitteilungen"
 msgid "messages.addtitle"
 msgstr "Mitteilung hinzufügen"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:107
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:108
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:105
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:106
 msgid "messages.name"
 msgstr "Name"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:112
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:110
 msgid "messages.type"
 msgstr "Mitteilungstyp"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:129
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:127
 msgid "messages.startdate"
 msgstr "Start-Datum"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:134
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:132
 msgid "messages.enddate"
 msgstr "End-Datum"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:139
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:137
 msgid "messages.specialtime"
 msgstr "Zusätzliche Zeitparameter"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:142
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:140
 msgid "messages.specialdays"
 msgstr "Wochentage"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:144
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:142
 msgid "messages.cron.allday"
 msgstr "alle Wochentage"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:147
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:145
 msgid "messages.cron.notallday"
 msgstr "bestimmte Wochentage"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:159
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:157
 msgid "messages.specialhours"
 msgstr "Stundenparameter"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:162
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:160
 msgid "messages.cron.allhours"
 msgstr "Stundenparameter"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:165
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:163
 msgid "messages.cron.notallhours"
 msgstr "bestimmte Stunden"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:175
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:173
 msgid "messages.state"
 msgstr "Status"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:184
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:182
 msgid "messages.monitors"
 msgstr "Monitorauswahl"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:192
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:190
 msgid "messages.remark"
 msgstr "Bemerkung"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:199
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:197
 msgid "messages.cancel"
 msgstr "Abbrechen"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:10
-#, fuzzy
-msgid "messages.image.upload"
-msgstr "Text-Widget-Einstellungen"
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:7
+msgid "messages.image.content"
+msgstr "Bilddatei hochladen (jpg/png)"
 
-#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:34
-#, fuzzy
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:10
+msgid "messages.image.upload"
+msgstr "Bild hochladen"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:16
+msgid "messages.image.fileinfo"
+msgstr ""
+"Folgende Bilder stehen zur Verfügung. Wenn die Checkbox aktiviert ist, wird das "
+"Bild auch für die Diashow verwendet. Es können beliebig viele Bilder (jpg, png) "
+"verwendet werden."
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_image.html:63
 msgid "messages.filesdeletequestion"
-msgstr "Soll die gewählte Mitteilung wirklich gelöscht werden?"
+msgstr "Soll das gewählte Bild wirklich gelöscht werden?"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:3
+msgid "messages.map.maplink"
+msgstr "Karte öffnen"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:9
+msgid "messages.map.text"
+msgstr "Hinweistext"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:11
+msgid "messages.map.text.info"
+msgstr ""
+"Neben den Symbolen für die Karte kann ein Hinweistext vergeben werden, der "
+"zusammen mit der Karte dargestellt wird."
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:12
+msgid "messages.map.textpreview.title"
+msgstr "Vorschau des formatierten Textes"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_map.html:16
+msgid "messages.map.position"
+msgstr "Textposition auf Karte"
 
 #: emonitor/modules/messages/templates/frontend.messages_edit_text.html:6
 msgid "messages.text.preview.title"
 msgstr "Vorschau anzeigen"
+
+#: emonitor/modules/messages/templates/frontend.messages_edit_text.html:10
+msgid "messages.text.crestposition"
+msgstr "Wappenposition auf der Textseite"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:17
+msgid "messages.map.iconset"
+msgstr "Symbole auf der Karte platzieren"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:33
+msgid "messages.map.save"
+msgstr "Speichern"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:99
+msgid "messages.map.deletemarker"
+msgstr "Marker löschen"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:101
+msgid "messages.map.changecolor.red"
+msgstr "Rot färben"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:102
+msgid "messages.map.changecolor.blue"
+msgstr "Blau färben"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:103
+msgid "messages.map.changecolor.green"
+msgstr "Grün färben"
+
+#: emonitor/modules/messages/templates/frontend.messages_map.html:104
+msgid "messages.map.changecolor.orange"
+msgstr "Orange färben"
 
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:57
 msgid "messages.edit"
@@ -3493,7 +3631,7 @@ msgid "persons.remark"
 msgstr "Bemerkung"
 
 #: emonitor/modules/persons/templates/admin.persons.html:44
-#: emonitor/modules/persons/templates/admin.persons_edit.html:81
+#: emonitor/modules/persons/templates/admin.persons_edit.html:90
 msgid "persons.active"
 msgstr "Aktiv"
 
@@ -3552,8 +3690,8 @@ msgstr "Dienstgrad"
 
 #: emonitor/modules/persons/templates/admin.persons.settings.html:48
 #: emonitor/modules/persons/templates/admin.persons.settings.html:64
-#: emonitor/modules/persons/templates/admin.persons.settings.html:79
-#: emonitor/modules/persons/templates/admin.persons_edit.html:85
+#: emonitor/modules/persons/templates/admin.persons.settings.html:77
+#: emonitor/modules/persons/templates/admin.persons_edit.html:94
 msgid "persons.save"
 msgstr "Speichern"
 
@@ -3577,10 +3715,6 @@ msgstr ""
 "Für Mitglieder können zusätzliche Felder definiert werden, die individuell "
 "gefüllt werden können.<br/>Die Definition erfolgt zeilenweise in der Form:<br/"
 ">'<em>Parametername</em>=<em>Parameter Label</em>[=<em>checkbox</em>]'"
-
-#: emonitor/modules/persons/templates/admin.persons.settings.html:74
-msgid "persons.additional.field"
-msgstr "Zusätzliche Felder"
 
 #: emonitor/modules/persons/templates/admin.persons.upload.html:22
 msgid "persons.upload.headtitle"
@@ -3743,7 +3877,7 @@ msgstr "Geburtsdatum"
 msgid "persons.additional.fields"
 msgstr "Zusatzfelder"
 
-#: emonitor/modules/persons/templates/admin.persons_edit.html:86
+#: emonitor/modules/persons/templates/admin.persons_edit.html:95
 msgid "persons.cancel"
 msgstr "Abbrechen"
 
@@ -3965,11 +4099,11 @@ msgstr ""
 "Einheit kann nicht gelöscht werden, weil sie in folgenden Orten als Standard "
 "genutzt wird: %(cities)s"
 
-#: emonitor/modules/settings/content_admin.py:185
+#: emonitor/modules/settings/content_admin.py:188
 msgid "admin.settings.updatedberror"
 msgstr "Aktualisierung fehlgeschlagen!"
 
-#: emonitor/modules/settings/content_admin.py:193
+#: emonitor/modules/settings/content_admin.py:196
 msgid "admin.settings.telegramtest.done"
 msgstr "Telegram Mitteilung gesendet."
 
@@ -4005,7 +4139,7 @@ msgid "settings.communication.telegram.title"
 msgstr "Telegram-Einstellungen"
 
 #: emonitor/modules/settings/templates/admin.settings.communication.html:75
-#: emonitor/modules/settings/templates/admin.settings.communication.html:160
+#: emonitor/modules/settings/templates/admin.settings.communication.html:158
 msgid "settings.communication.mail.title"
 msgstr "Mail-Einstellungen"
 
@@ -4019,59 +4153,58 @@ msgstr ""
 msgid "settings.communication.telegram.botname"
 msgstr "Telegram-Bot Name"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:97
+#: emonitor/modules/settings/templates/admin.settings.communication.html:96
 msgid "settings.communication.telegram.boterror"
 msgstr ""
 "Telegram Bot nicht verfügbar: Entweder steht das Python-Modul nicht zur "
 "Verfügung oder der angegebene Bot-Schlüssel ist falsch"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:102
+#: emonitor/modules/settings/templates/admin.settings.communication.html:101
 msgid "settings.communication.telegram.welcometext"
 msgstr "Willkommenstext bei der Anmeldung am Bot"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:104
+#: emonitor/modules/settings/templates/admin.settings.communication.html:103
 msgid "settings.communication.telegram.welcomeinfo"
 msgstr ""
 "Der Text wird an den User geschickt, der sich am Telegram-Bot anmeldet. Dabei "
 "sind folgende Variablen möglich:<br/>-{vorname}<br/>-{nachname}"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:107
+#: emonitor/modules/settings/templates/admin.settings.communication.html:106
 msgid "settings.communication.telegram.helptext"
 msgstr "Bot Hilfenachricht"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:110
-#: emonitor/modules/settings/templates/admin.settings.communication.html:111
-#: emonitor/modules/settings/templates/admin.settings.communication.html:152
+#: emonitor/modules/settings/templates/admin.settings.communication.html:109
+#: emonitor/modules/settings/templates/admin.settings.communication.html:150
 #: emonitor/modules/settings/templates/admin.settings.html:51
 #: emonitor/modules/settings/templates/admin.settings.html:62
 msgid "settings.save"
 msgstr "Speichern"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:117
+#: emonitor/modules/settings/templates/admin.settings.communication.html:115
 msgid "settings.communication.telegram.testmessage"
 msgstr "Telegram Testmitteilung senden"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:119
+#: emonitor/modules/settings/templates/admin.settings.communication.html:117
 msgid "settings.communication.telegram.testuser"
 msgstr "Benutzer"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:121
+#: emonitor/modules/settings/templates/admin.settings.communication.html:119
 msgid "settings.communication.telegram.userselection"
 msgstr "- Empfänger auswählen -"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:130
+#: emonitor/modules/settings/templates/admin.settings.communication.html:128
 msgid "settings.communication.telegram.testtext"
 msgstr "Test-Mitteilung"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:134
+#: emonitor/modules/settings/templates/admin.settings.communication.html:132
 msgid "settings.communication.telegram.sendtest"
 msgstr "Testnachricht senden"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:143
+#: emonitor/modules/settings/templates/admin.settings.communication.html:141
 msgid "settings.communication.telegram.grouptitle"
 msgstr "Telegram-Gruppen"
 
-#: emonitor/modules/settings/templates/admin.settings.communication.html:144
+#: emonitor/modules/settings/templates/admin.settings.communication.html:142
 msgid "settings.communication.telegram.groupinfo"
 msgstr "Vorhandene Gruppen"
 
@@ -5014,3 +5147,15 @@ msgstr "Speichern"
 #: emonitor/modules/user/templates/admin.user_actions.html:33
 msgid "users.cancel"
 msgstr "Abbrechen"
+
+#~ msgid "messages.position.top"
+#~ msgstr "oben"
+
+#~ msgid "messages.position.bottom"
+#~ msgstr "unten"
+
+#~ msgid "messages.position.left"
+#~ msgstr "links"
+
+#~ msgid "messages.position.right"
+#~ msgstr "rechts"

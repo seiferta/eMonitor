@@ -89,8 +89,6 @@
             <button type="button" name="action" value="addmessage" onclick="window.location.href='/messages?action=editmessage&messageid=0&area={{ frontendarea }}'" title="{{ _('messages.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
 
             <div class="smallmodulesarea">
-
-
                 {%- for mod in [frontendmoduledef[frontendarea].module] + frontendmoduledef[frontendarea].moduleadd %}
                 {%- if mod != 'messages' %} {# exclude current module #}
                 <button onclick="window.location.href='/{{ mod }}?area={{ frontendarea }}'" title="{{ _('module.'+mod) }}"><i class="fa {{ frontendmodules[mod].info.icon }} fa-lg"></i></button>
@@ -112,12 +110,12 @@
                         <label style="width:100%">{{ _('messages.type') }}:<br/>
                             {%- if message.id==None %}
                             <select name="messages.type" id="messagetype" style="width:100%">
-                                {% for impl in implementations %}
-                                <option value="{{ impl[0] }}"{% if impl[0] == message.type %} selected="selected"{% endif %}>{{ _(impl[1]|string) }}</option>
-                                {% endfor %}
+                                {%- for impl in implementations -%}
+                                <option value="{{ impl[0] }}"{% if impl[0] == 'message_'+ message.type|string %} selected="selected"{% endif %}>{{ _('message.'+impl[1]|string) }}</option>
+                                {%- endfor -%}
                             </select>
                             {%-else %}
-                            {{ _(message.type) }}
+                            <b>{{ _('message.'+ message.type|string) }}</b>
                             <input type="hidden" name="messages.type" value="{{ message.type }}">
                             {%- endif %}
                         </label>
@@ -199,6 +197,7 @@
                         <button type="button" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('messages.cancel') }}</button>
                     </p>
                     <input type="hidden" name="messages.id" value="{{ message.id }}"/>
+                    <input type="hidden" id="messageid" value="{{ message.id }}">
                     <input type="hidden" name="action" value="updatemessage"/>
                 </div>
             </form>

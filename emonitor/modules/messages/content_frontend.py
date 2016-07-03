@@ -1,7 +1,6 @@
 import datetime
 from flask import render_template, request
 from emonitor.extensions import db
-from emonitor.utils import getreStructuredText
 from emonitor.frontend import frontend
 from emonitor.modules.messages.messages import Messages
 from emonitor.modules.monitors.monitor import Monitor
@@ -53,7 +52,9 @@ def getFrontendContent(**params):
         Messages.updateMessageTrigger()
 
     elif request.args.get('action') == 'deletemessage':
-        db.session.delete(Messages.getMessages(id=int(request.args.get('messageid'))))
+        message = Messages.getMessages(id=int(request.args.get('messageid')))
+        message.type.action(mid=message.id, action='delete')  # run delete action if implemented in module
+        db.session.delete(message)
         db.session.commit()
 
     elif request.args.get('action') == 'editmessage':
@@ -80,6 +81,20 @@ def getFrontendData(self):
         if len(impl) > 0:
             return impl[0][1].getEditorContent(**dict(message=Messages('', '', '', '', 0, impl[0][0])))
 
-    elif request.args.get('action') == 'render':
-        return {'text': getreStructuredText(request.form.get('template'))}
+    elif request.args.get('action', None):
+        """
+        send all action request of messages to message class
+        """
+        impl = filter(lambda x: x[0].split('.')[0] == request.form.get('type'), MessageType.getMessageTypes())
+        if len(impl) == 1:
+            message = impl[0][1]
+        else:
+            message = Messages.getMessages(request.form.get('messageid')).type
+        if message:
+            data = {k: request.args.get(k) for k in request.args}
+            data.update({k: request.form.get(k) for k in request.form})
+            return message.action(**data)
+        else:
+            return None
+
     return ""

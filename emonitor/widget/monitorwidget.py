@@ -99,3 +99,13 @@ class MonitorWidget:
         :return: string value
         """
         return "<getEditorContent of prototype widget>"
+
+    @staticmethod
+    def action(**kwargs):
+        """
+        Run type specific actions
+
+        :param kwargs:
+        :return:
+        """
+        return None
