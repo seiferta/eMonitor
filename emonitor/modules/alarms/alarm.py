@@ -486,7 +486,7 @@ class Alarm(db.Model):
         try:
             t = datetime.datetime.strptime(alarm_fields.get('time')[0], '%d.%m.%Y - %H:%M:%S')
         except ValueError:
-            t = datetime.datetime.now().strftime('%d.%m.%Y - %H:%M:%S')
+            t = datetime.datetime.now()
         alarm.timestamp = t
 
         kwargs['fields'] = ''  # set evaluated fields from fax
@@ -723,7 +723,10 @@ class Alarm(db.Model):
 
             else:  # default aao of current department (without aao)
                 if alarm_fields.get('city', [u'', 0])[1] != 0:  # found city -> use default aao
-                    c = City.getCities(id=alarm_fields.get('city')[1]).dept
+                    if City.getCities(id=alarm_fields.get('city')[1]):
+                        c = City.getCities(id=alarm_fields.get('city')[1]).dept
+                    else:
+                        c = City.getDefaultCity().dept
                     akc = Alarmkey.getDefault(c)
                     if len(akc.cars1) + len(akc.cars2) + len(akc.materials) == 0:  # no default aao defined
                         # use cars of fax
@@ -734,11 +737,11 @@ class Alarm(db.Model):
                 l = (u'{},{},{}'.format(alarm.get('k.cars1'), alarm.get('k.cars2'), alarm.get('k.material'))).split(',')
                 if len(set(str(alarm_fields.get('material', ([], '-1'))[1]).split(',')).intersection(set(l))) == 0:
                     _dep = Department.getDefaultDepartment()
-                    for c in alarm_fields.get('material', ([], '-1'))[1].split(','):
+                    for c in str(alarm_fields.get('material', ([], '-1'))[1]).split(','):
                         if c == u'0':  # default of home department needed
                             alarm.material = dict(cars1=u','.join([str(c.id) for c in alarm.key.getCars1(_dep.id)]), cars2=u",".join([str(c.id) for c in alarm.key.getCars2(_dep.id)]), material=u",".join([str(c.id) for c in alarm.key.getMaterial(_dep.id)]))
                             break
-                    if u'0' not in alarm_fields.get('material', ([], '-1'))[1]:  # only single car needed
+                    if u'0' not in str(alarm_fields.get('material', ([], '-1'))[1]):  # only single car needed
                         alarm.set('k.cars1', u'{},{}'.format(alarm_fields.get('material', ([], '-1'))[1], alarm.get('k.cars1')))
 
             if _ao and _ao.hasOwnAAO():  # use aao of current object

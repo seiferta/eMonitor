@@ -65,7 +65,7 @@ def getAdminContent(self, **params):
             grades = request.form.getlist('grade')
             while grades[-1] == grades[-2] == u"":  # remove last empty entries
                 grades = grades[:-2]
-            _settings = Settings.get('persons.settings')
+            _settings = Settings.get('persons.settings', {})
             if 'positions' not in _settings.keys():
                 _settings['positions'] = []
             _settings['grades'] = zip(*[grades[i::2] for i in range(2)])
@@ -73,7 +73,7 @@ def getAdminContent(self, **params):
             db.session.commit()
 
         elif request.form.get('action') == 'updatepositions':
-            _settings = Settings.get('persons.settings')
+            _settings = Settings.get('persons.settings', {})
             if 'grades' not in _settings.keys():
                 _settings['grades'] = []
             _settings['positions'] = request.form.get('positions').replace('\r', '').split('\n')
@@ -81,7 +81,7 @@ def getAdminContent(self, **params):
             db.session.commit()
 
         elif request.form.get('action') == 'updateadditional':
-            _settings = Settings.get('persons.settings')
+            _settings = Settings.get('persons.settings', {})
             if 'additional' not in _settings.keys():
                 _settings['additional'] = []
             _settings['additional'] = request.form.get('additional').replace('\r', '').split('\n')
