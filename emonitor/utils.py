@@ -1,6 +1,7 @@
 import os
 import codecs
 import logging
+import re
 from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
@@ -334,3 +335,7 @@ def getreStructuredText(text):
         return Markup(publish_string(source=text, writer=HisWriter(), settings_overrides=overrides))
     except:
         return text
+
+
+def getJavaSafe(text):
+    return re.sub(r"[^0-9a-zA-Z_]+", "", text)

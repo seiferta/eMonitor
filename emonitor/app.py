@@ -172,9 +172,10 @@ def configure_extensions(app):
     login_manager.init_app(app)
 
     # jinja2 filters
-    from utils import getmarkdown, getreStructuredText
+    from utils import getmarkdown, getreStructuredText, getJavaSafe
     app.jinja_env.filters['markdown'] = getmarkdown
     app.jinja_env.filters['rst'] = getreStructuredText
+    app.jinja_env.filters['javasafe'] = getJavaSafe
 
     # user
     if User.query.count() == 0:
