@@ -31,13 +31,13 @@
         <div id="sortable">
             {%- for event in events %}
             <div class="row" style="height:26px;">
-                <a href="#" class="morelink" title="{{ _('event.detailtitle') }}" onclick="return details('{{ event.name|replace('.','') }}', this)"> </a>
+                <a href="#" class="morelink" title="{{ _('event.detailtitle') }}" onclick="return details('{{ event.name|javasafe }}', this)"> </a>
                 <div style="margin-right:70px;margin-left:15px;">
                     <div class="rowcell" style="width:80%;">{{ eventName(event) }}</div>
                     <div class="rowcell" style="width:20%;text-align:right;">{{ event.getHandlers()|count}} / {{ event.getHandlerList()|count }}</div>
                 </div>
             </div>
-            <div class="details" style="display:none" id="details_{{ event.name|replace('.','') }}">
+            <div class="details" style="display:none" id="details_{{ event.name|javasafe }}">
                 <div class="subheadrow">
                     <div style="margin-right:70px;margin-left:15px;">
                         <div class="subheadcell" style="width:10%;">&nbsp;</div>
