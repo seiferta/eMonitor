@@ -144,7 +144,9 @@ def getFrontendContent(**params):
         alarm = Alarm.getAlarms(id=request.args.get('alarmid'))
         refresh = 1 or alarm.state == 1  # check if alarm is active
         try:
-            if os.path.exists("{}{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename'))):
+            # delete file if not used in any other alarm
+            c = Alarm.query.filter(Alarm.attributes.any(value=alarm.get('filename'), name="filename")).count()
+            if c == 1 and os.path.exists("{}{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename'))):
                 os.remove("{}{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename')))
         except:
             pass
