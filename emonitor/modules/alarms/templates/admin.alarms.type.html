@@ -47,7 +47,7 @@
 
         {%- for alarmtype in alarmtypes %}
         <div class="row">
-            <a href="#" class="morelink" title="{{ _('alarms.type.detailtitle') }}" onclick="return details({{ alarmtype.id }}, this)" style="width:100%;"> </a>
+            <a href="#" class="morelink" title="{{ _('alarms.type.detailtitle') }}" onclick="return details({{ alarmtype.id }}, this)" style="width:85%;"> </a>
             <div style="margin-right:100px;margin-left:15px;">
                 <div class="rowcell" style="width:20%;">{%- if alarmtype.interpreterclass().configtype=='generic' %}<i class="fa fa-file-code-o fa-lg" aria-hidden="true" title="{{ _('alarms.type.generic') }}"></i>{%- else %}<i class="fa fa-file-archive-o fa-lg" aria-hidden="true" title="{{ _('alarms.type.explicit') }}"></i>{%- endif %} {{ alarmtype.name }}</div>
                 <div class="rowcell" style="width:80%;overflow:hidden">{{ alarmtype.keywords.replace('\r\n', ', ') }}</div>
