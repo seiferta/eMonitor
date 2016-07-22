@@ -1,6 +1,7 @@
 import os
 import random
 import codecs
+import string
 from xhtml2pdf import pisa
 from StringIO import StringIO
 from flask import request, render_template, current_app
@@ -101,7 +102,7 @@ def getAdminData(self):
 
         # test ocr with random data
         ret['ocrtext'] = ""
-        testtext = pisa.COPYRIGHT[:100].replace("\n", "")
+        testtext = "".join(random.choice(string.ascii_uppercase) for _ in range(50))  # generate random text
         pdf = StringIO()
         pisa.CreatePDF(StringIO(render_template('admin.textmod.testfax.html', text=testtext)), pdf)
         tmpfilename = '%s.pdf' % random.random()
