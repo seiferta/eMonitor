@@ -54,8 +54,8 @@ class Ocr(Settings):
                     im = Image.open('{}{}-{}.{}'.format(path2, inname, i, convertparams['format']))
                     w, h = im.size
                     # remove header line = 1/4 of quality
-                    im.crop((0, 100, w, h - 100)).save('{}{}-{}.{}'.format(path2, inname, i, convertparams['format']), convertparams['format'].upper())
-
+                    if Settings.get('convert.crop' == 'True'):
+                        im.crop((0, 100, w, h - 100)).save('{}{}-{}.{}'.format(path2, inname, i, convertparams['format']), convertparams['format'].upper())
                 i += 1
                 t = time.time() - stime
                 if ext[1:] in ['jpg', 'jpeg', 'tif', 'tiff', 'png']:  # tif and jpg with only one page
@@ -88,11 +88,6 @@ class Ocr(Settings):
                 text = codecs.open('{}{}'.format(path, inname), 'r', encoding='utf-8').read()
             except:
                 text = codecs.open('{}{}'.format(path, inname), 'r', encoding="latin-1").read()
-            #try:
-            #    text = text.decode('latin-1').encode('utf-8')
-            #except:
-            #
-            #    pass
             return text, time.time() - stime
 
         inname = os.path.splitext(inname)[0]
@@ -118,16 +113,17 @@ class Ocr(Settings):
                 text = u'{}{}'.format(text, codecs.open('{}{}-{}.txt'.format(path, inname, i), 'r', 'utf-8').read())
             except:
                 pass
-            try:
-                os.remove('{}{}-{}.png'.format(path, inname, i))
-            except:
-                pass
-            try:
-                os.remove('{}{}-{}.txt'.format(path, inname, i))
-            except:
-                pass
-            finally:
-                t = time.time() - stime
+            if not app.config.get('DEBUG'):  # remove file if app not in debug mode
+                try:
+                    os.remove('{}{}-{}.png'.format(path, inname, i))
+                except:
+                    pass
+                try:
+                    os.remove('{}{}-{}.txt'.format(path, inname, i))
+                except:
+                    pass
+                finally:
+                    t = time.time() - stime
             i += 1
         return text, t  # return ocr text
         
@@ -138,15 +134,18 @@ class Ocr(Settings):
 
         :return: *callstring*, *format*
         """
-        ret = {'callstring': '', 'format': ''}
+        ret = {'callstring': '', 'format': '', 'crop': 'True'}
         for v in Settings.query.filter(Settings.name.like('convert.%')):
             if v.name == 'convert.format':
                 ret['format'] = v.value
             elif v.name == 'convert.callstring':
                 ret['callstring'] = v.value
+            elif v.name == 'convert.crop':
+                ret['crop'] = v.value
         if Settings.query.filter(Settings.name.like('convert.%')).count() == 0:  # use default values
             db.session.add(Settings.set('convert.format', DEFAULTIMAGECONVERTFORMAT))
             db.session.add(Settings.set('convert.callstring', DEFAULTIMAGECONVERTCALL))
+            db.session.add(Settings.set('convert.crop', 'True'))
             db.session.commit()
             return Ocr.getConvertParams()
         return ret

@@ -54,6 +54,7 @@ def getAdminContent(self, **params):
                 if request.form.get('action') == 'savereconvertparams':  # save changes
                     Settings.set('convert.format', request.form.get('convert_format'))
                     Settings.set('convert.callstring', request.form.get('convert_callstring'))
+                    Settings.set('convert.crop', str('convert_crop' in request.form) or 'False')
 
             params.update({'params': Ocr.getConvertParams(), 'imageformats': ['jpg', 'png']})
             return render_template('admin.textmod.convert.html', **params)
