@@ -20,7 +20,7 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
     """Generic FaxChecker with generic regex implementation"""
 
     __name__ = "GENERIC (regex)"
-    __version__ = '0.1'
+    __version__ = '0.1a'
     configtype = "generic"
 
     maxdist = 1500  # distance in meters
@@ -235,6 +235,8 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
                                 GenericAlarmFaxChecker().fields.update({'streetno': (_housenumber, 0), 'lat': (_streets[0].lat, 0), 'lng': (_streets[0].lng, 0)})
                             else:
                                 GenericAlarmFaxChecker().fields.update({'lat': (_streets[0].lat, 0), 'lng': (_streets[0].lng, 0)})
+                    else:
+                        GenericAlarmFaxChecker().fields.update({'lat': (_streets[0].lat, 0), 'lng': (_streets[0].lng, 0)})
                 else:
                     repl = difflib.get_close_matches(field.value[0], [s.name for s in streets], 1)
                     if len(repl) > 0:
@@ -313,13 +315,14 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
     @staticmethod
     def evalPosition(field, **params):
         position = {'lat': 0, 'lng': 0, 'type': 'GK'}
-        for f in re.split(r'GK4 (?:([X|Y].[\d|\.]+))|(?:([X|Y].\s+\d+))', field.value[0]):
+        field.value = (field.value[0].replace('B', '6').replace('\xc3\x9c'.decode('utf-8'), '0'), field.value[1])
+        for f in re.split(r'GK4 (?:([X|Y].[\d|.]+))|(?:([X|Y].\s+\d+))', field.value[0]):
             if not f:
                 continue
             if f.startswith('X'):
-                position['lat'] = f.replace('X:', '').strip()
+                position['lat'] = f.replace('X:', '').replace('X=', '').strip()
             elif f.startswith('Y'):
-                position['lng'] = f.replace('Y:', '').strip()
+                position['lng'] = f.replace('Y:', '').replace('Y=', '').strip()
             elif f.startswith('GK'):
                 position['type'] = 'GK'
         location = Location(position['lat'], position['lng'], geotype='gk')
@@ -327,8 +330,8 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
         if GenericAlarmFaxChecker.fields.get('lat') and GenericAlarmFaxChecker.fields.get('lng'):
             _lat = GenericAlarmFaxChecker.fields.get('lat')
             _lng = GenericAlarmFaxChecker.fields.get('lng')
+            GenericAlarmFaxChecker().logger.info('distance street -> fax {} m'.format(location.getDistance(_lat[0], _lng[0])))
             if location.getDistance(_lat[0], _lng[0]) > GenericAlarmFaxChecker.maxdist:
-                GenericAlarmFaxChecker().logger.info('distance street -> fax {} m'.format(location.getDistance(_lat[0], _lng[0])))
                 position['lat'], position['lng'] = location.getLatLng()
         else:
             _lat, _lng = location.getLatLng()
@@ -410,7 +413,7 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
             GenericAlarmFaxChecker().fields[section.key] = section.value
         self.logger.info(u'eval text done for {} field(s) with {} error(s)'.format(len(GenericAlarmFaxChecker().sections), len(_evalerror)))
         if len(_evalerror) > 0:
-            self.logger.error(u'error in eval field(s): {}'.format(u','.join(_evalerror)))
+            self.logger.error(u'field(s) empty or eval error: {}'.format(u','.join(_evalerror)))
         v = GenericAlarmFaxChecker().fields
         v.update({section.key: section.value for section in GenericAlarmFaxChecker().sections})
         return v
