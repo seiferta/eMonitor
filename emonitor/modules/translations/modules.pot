@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-24 01:17+0200\n"
+"POT-Creation-Date: 2016-07-24 10:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1050,15 +1050,15 @@ msgstr ""
 msgid "alarms.print.straightexit"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:261
+#: emonitor/modules/alarms/content_admin.py:256
 msgid "admin.alarms.checkernotvalid"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:271
+#: emonitor/modules/alarms/content_admin.py:266
 msgid "admin.alarms.incorrecttypedefinition"
 msgstr ""
 
-#: emonitor/modules/alarms/content_admin.py:353
+#: emonitor/modules/alarms/content_admin.py:348
 msgid "admin.alarms.list"
 msgstr ""
 
@@ -4579,32 +4579,36 @@ msgstr ""
 msgid "streets.osmimport"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:32
+#: emonitor/modules/textmod/__init__.py:37
 msgid "module.textmod"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:33
+#: emonitor/modules/textmod/__init__.py:38
 msgid "module.textmod.replace"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:34
+#: emonitor/modules/textmod/__init__.py:39
 msgid "module.textmod.ocr"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:35
+#: emonitor/modules/textmod/__init__.py:40
 msgid "module.textmod.ocrcustom"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:36
+#: emonitor/modules/textmod/__init__.py:41
 msgid "module.textmod.convert"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:37
+#: emonitor/modules/textmod/__init__.py:42
 msgid "emonitor.modules.textmod.ocr.Ocr"
 msgstr ""
 
-#: emonitor/modules/textmod/__init__.py:38
+#: emonitor/modules/textmod/__init__.py:43
 msgid "emonitor.modules.textmod.replace.Replace"
+msgstr ""
+
+#: emonitor/modules/textmod/__init__.py:44
+msgid "emonitor.modules.textmod.TextmodModule"
 msgstr ""
 
 #: emonitor/modules/textmod/templates/admin.textmod.convert.html:8

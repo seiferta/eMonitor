@@ -7,13 +7,13 @@
 {% block script %}
     <script>
         function testparams(){
-            $('#testresult').html('{{ _('textmod.ocr.teststart') }}');
+            $('#testbutton').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>' + ' {{ _('textmod.ocr.teststart') }}');
             $.ajax({ type : "POST", url : "/admin/data/textmod?action=testocr&callstring="+$("textarea[name='ocr_callstring']").html()+"&format=json",
                  success: function(result) {
                      if(result.ocrtext=='True'){
-                         $('#testresult').html('{{ _('textmod.ocr.testok') }}');
+                         $('#testbutton').html('<i class="fa fa-check fa-fw" style="color:green"></i>' + ' {{ _('textmod.ocr.testok') }}');
                      }else{
-                         $('#testresult').html('{{ _('textmod.ocr.testerror') }}');
+                         $('#testbutton').html('<i class="fa fa-exclamation-triangle fa-fw" style="color:red"></i>' + ' {{ _('textmod.ocr.testerror') }}').delay(100000).html('<i class="fa fa-file-text-o fa-fw"></i> {{ _('textmod.ocr.starttest') }}');
                      }
                 }
             });
@@ -35,7 +35,7 @@
 
                 <label>{{ _('textmod.ocr.callstring') }}:<br/>
                     <textarea name="ocr_callstring" style="width:100%;height:100px;margin-bottom:2px">{{ params['callstring'] }}</textarea>
-                    <p style="text-align:right"><span id="testresult"></span><button type="button" onclick="return testparams()" style="margin-left:150px">{{ _('textmod.ocr.starttest') }}</button></p>
+                    <p style="text-align:right"><button type="button" id="testbutton" onclick="return testparams()" style="margin-left:150px"><i class="fa fa-file-text-o fa-fw"></i> {{ _('textmod.ocr.starttest') }}</button></p>
                     {{ _('textmod.ocr.callstringinfo') }}
                 </label>
             </fieldset>
