@@ -20,7 +20,7 @@
             {{ _('textmod.convert.inputformatinfo') }}
         </p>
         <p>
-            <label><input type="checkbox" name="convert_crop"{% if params['crop'] == 'True' %} checked="checked"{% endif %}> {{ _('textmod.convert.cropimage') }}</label>
+            <label><input type="checkbox" name="convert_crop" value="True"{% if params['crop'] == 'True' %} checked="checked"{% endif %}> {{ _('textmod.convert.cropimage') }}</label>
         </p>
         <p>
             <label>{{ _('textmod.convert.callstring') }}:<br/>

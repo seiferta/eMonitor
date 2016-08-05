@@ -16,7 +16,7 @@ def buildDocumentation():
     helptext = 'usage: build_doc.py <output format> <type of documentation>' \
                '\n - html: for html output' \
                '\n - pdf: for pdf output' \
-               '\n\n -all: complete documentation' \
+               '\n\n - all: complete documentation' \
                '\n - dev: only developer documentation' \
                '\n - user: only user documentation'
     if len(sys.argv) != 3:

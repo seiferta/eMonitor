@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-24 10:06+0200\n"
+"POT-Creation-Date: 2016-07-25 21:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -694,303 +694,303 @@ msgstr ""
 msgid "admin.alarmobjects.changemarkerblue"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:103
+#: emonitor/modules/alarms/__init__.py:105
 msgid "module.alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:104
+#: emonitor/modules/alarms/__init__.py:106
 msgid "alarms.base"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:105
+#: emonitor/modules/alarms/__init__.py:107
 msgid "module.alarms.types"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:106
+#: emonitor/modules/alarms/__init__.py:108
 msgid "module.alarms.report"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:107
+#: emonitor/modules/alarms/__init__.py:109
 msgid "module.alarms.config"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:108
+#: emonitor/modules/alarms/__init__.py:110
 msgid "module.alarms.test"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:109
+#: emonitor/modules/alarms/__init__.py:111
 msgid "alarms_income"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:110
+#: emonitor/modules/alarms/__init__.py:112
 msgid "alarms_timer"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:111
+#: emonitor/modules/alarms/__init__.py:113
 msgid "alarms_remark"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:112
+#: emonitor/modules/alarms/__init__.py:114
 msgid "alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:113
+#: emonitor/modules/alarms/__init__.py:115
 msgid "alarms.prio0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:114
+#: emonitor/modules/alarms/__init__.py:116
 msgid "alarms.prio1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:115
+#: emonitor/modules/alarms/__init__.py:117
 msgid "alarms.prio2"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:116
+#: emonitor/modules/alarms/__init__.py:118
 msgid "emonitor.modules.alarms.alarm.Alarms"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:117
+#: emonitor/modules/alarms/__init__.py:119
 msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:118
+#: emonitor/modules/alarms/__init__.py:120
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:68
 #: emonitor/modules/alarms/templates/admin.alarms.test.html:70
 msgid "alarms.test.protocol"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:119
+#: emonitor/modules/alarms/__init__.py:121
 msgid "alarms.test.result"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:120
+#: emonitor/modules/alarms/__init__.py:122
 msgid "alarmstate.active"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:121
+#: emonitor/modules/alarms/__init__.py:123
 msgid "alarmstate.created"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:122
+#: emonitor/modules/alarms/__init__.py:124
 msgid "alarmstate.done"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:123
+#: emonitor/modules/alarms/__init__.py:125
 #: emonitor/modules/alarms/templates/admin.alarms.html:55
 msgid "alarmstate.archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:124
+#: emonitor/modules/alarms/__init__.py:126
 msgid "active"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:125
+#: emonitor/modules/alarms/__init__.py:127
 msgid "created"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:126
+#: emonitor/modules/alarms/__init__.py:128
 msgid "done"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:127
+#: emonitor/modules/alarms/__init__.py:129
 msgid "archive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:128 emonitor/modules/alarms/alarm.py:353
+#: emonitor/modules/alarms/__init__.py:130 emonitor/modules/alarms/alarm.py:353
 msgid "alarms.statechangeactivated"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:129
+#: emonitor/modules/alarms/__init__.py:131
 msgid "alarms.prioshort0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:130
+#: emonitor/modules/alarms/__init__.py:132
 msgid "alarms.prioshort1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:131
+#: emonitor/modules/alarms/__init__.py:133
 msgid "alarms.prioshort2"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:132
+#: emonitor/modules/alarms/__init__.py:134
 msgid "alarms.carsinuse"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:133
+#: emonitor/modules/alarms/__init__.py:135
 msgid "history.autochangeState"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:134
+#: emonitor/modules/alarms/__init__.py:136
 msgid "history.message"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:135
+#: emonitor/modules/alarms/__init__.py:137
 msgid "trigger.alarm_added"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:136
+#: emonitor/modules/alarms/__init__.py:138
 msgid "trigger.alarm_changestate"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:138
+#: emonitor/modules/alarms/__init__.py:140
 msgid "trigger.alarm_added_sub"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:139
-msgid "trigger.alarm_changestate_sub"
-msgstr ""
-
 #: emonitor/modules/alarms/__init__.py:141
-#: emonitor/modules/alarms/alarmutils.py:384
-msgid "alarms.print.slightleft"
-msgstr ""
-
-#: emonitor/modules/alarms/__init__.py:142
-#: emonitor/modules/alarms/alarmutils.py:384
-msgid "alarms.print.slightright"
+msgid "trigger.alarm_changestate_sub"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:143
 #: emonitor/modules/alarms/alarmutils.py:384
-msgid "alarms.print.right"
+msgid "alarms.print.slightleft"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:144
 #: emonitor/modules/alarms/alarmutils.py:384
-msgid "alarms.print.left"
+msgid "alarms.print.slightright"
 msgstr ""
 
 #: emonitor/modules/alarms/__init__.py:145
+#: emonitor/modules/alarms/alarmutils.py:384
+msgid "alarms.print.right"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:146
+#: emonitor/modules/alarms/alarmutils.py:384
+msgid "alarms.print.left"
+msgstr ""
+
+#: emonitor/modules/alarms/__init__.py:147
 #: emonitor/modules/alarms/alarmutils.py:384
 #: emonitor/modules/alarms/alarmutils.py:399
 msgid "alarms.print.straight"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:146
+#: emonitor/modules/alarms/__init__.py:148
 #: emonitor/modules/alarms/alarmutils.py:384
 #: emonitor/modules/alarms/alarmutils.py:399
 msgid "alarms.print.exit"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:147
+#: emonitor/modules/alarms/__init__.py:149
 #: emonitor/modules/alarms/alarmutils.py:383
 msgid "alarms.print.bus"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:148
+#: emonitor/modules/alarms/__init__.py:150
 #: emonitor/modules/alarms/alarmutils.py:401
 msgid "alarms.print.positive"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:149
+#: emonitor/modules/alarms/__init__.py:151
 #: emonitor/modules/alarms/alarmutils.py:402
 msgid "alarms.print.negative"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:151
+#: emonitor/modules/alarms/__init__.py:153
 msgid "alarms.filter.0"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:152
+#: emonitor/modules/alarms/__init__.py:154
 msgid "alarms.filter.1"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:153
+#: emonitor/modules/alarms/__init__.py:155
 msgid "alarms.filter.7"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:154
+#: emonitor/modules/alarms/__init__.py:156
 msgid "alarms.filter.31"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:156
+#: emonitor/modules/alarms/__init__.py:158
 msgid "internal"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:157
+#: emonitor/modules/alarms/__init__.py:159
 #: emonitor/modules/alarms/templates/admin.alarms.report_fields.html:2
 msgid "external"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:159
+#: emonitor/modules/alarms/__init__.py:161
 msgid "AFAlerting"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:160
+#: emonitor/modules/alarms/__init__.py:162
 msgid "AFCars"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:161
+#: emonitor/modules/alarms/__init__.py:163
 msgid "AFMaterial"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:162
+#: emonitor/modules/alarms/__init__.py:164
 #: emonitor/modules/alarms/alarmfield.py:411
 msgid "AFReport"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:163
+#: emonitor/modules/alarms/__init__.py:165
 msgid "AFTime"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:164
+#: emonitor/modules/alarms/__init__.py:166
 msgid "AFDamage"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:165
+#: emonitor/modules/alarms/__init__.py:167
 msgid "AFOthers"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:166
+#: emonitor/modules/alarms/__init__.py:168
 msgid "AFPersons"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:168
+#: emonitor/modules/alarms/__init__.py:170
 msgid "alarms.fields.simple"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:169
+#: emonitor/modules/alarms/__init__.py:171
 msgid "alarms.fields.extended"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:170
+#: emonitor/modules/alarms/__init__.py:172
 msgid "alarms.fields.persons.field.sum"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:171
+#: emonitor/modules/alarms/__init__.py:173
 msgid "alarms.fields.persons.field.house"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:172
+#: emonitor/modules/alarms/__init__.py:174
 msgid "alarms.fields.persons.field.pa_alarm"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:173
+#: emonitor/modules/alarms/__init__.py:175
 msgid "alarms.fields.persons.field.el"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:174
+#: emonitor/modules/alarms/__init__.py:176
 msgid "alarms.fields.persons.field.alarm"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:175
+#: emonitor/modules/alarms/__init__.py:177
 msgid "alarms.fields.persons.field.pa"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:176
+#: emonitor/modules/alarms/__init__.py:178
 msgid "alarms.fields.persons.field.pa_house"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:177
+#: emonitor/modules/alarms/__init__.py:179
 msgid "alarms.fields.persons.field.elgrade"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:178
+#: emonitor/modules/alarms/__init__.py:180
 msgid "alarms.fields.persons.field.style.simple"
 msgstr ""
 
-#: emonitor/modules/alarms/__init__.py:179
+#: emonitor/modules/alarms/__init__.py:181
 msgid "alarms.fields.persons.field.style.extended"
 msgstr ""
 
@@ -1517,7 +1517,7 @@ msgstr ""
 
 #: emonitor/modules/alarms/templates/admin.alarms_alarm.html:27
 #: emonitor/modules/alarms/templates/frontend.alarms_alarm.html:30
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:88
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:95
 msgid "alarms.noactive"
 msgstr ""
 
@@ -1749,55 +1749,59 @@ msgstr ""
 msgid "alarm.addedalert"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:58
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:52
+msgid "alarms.errorincreation"
+msgstr ""
+
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:65
 msgid "alarms.addtitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:59
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:66
 msgid "alarms.autorefresh"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:60
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:67
 msgid "alarms.collectivereport"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:61
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:68
 msgid "alarms.archivetitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:69
 msgid "alarms.filter.title"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:62
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:69
 msgid "alarms.filter.activetitle"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:148
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:155
 msgid "alarms.finishquestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:156
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:163
 msgid "alarms.activatequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:166
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:173
 msgid "alarms.archivequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:173
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:180
 msgid "alarms.archivequestionnoselection"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:179
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:186
 msgid "alarms.deletequestion"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:323
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:330
 msgid "alarms.collectivereport.noreports"
 msgstr ""
 
-#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:342
+#: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:349
 msgid "alarms.collectivereport.error"
 msgstr ""
 

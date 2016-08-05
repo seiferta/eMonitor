@@ -46,6 +46,13 @@
                 location.reload();
                 parent.$('#overlaycontent').html('<h3>{{ _('alarm.addedalert') }}</h3>');
                 parent.$('.overlay').show();
+            }else if (d.sender=='alarm.error'){
+                var header = "";
+                if (d.message == 'alarms.errorincreation'){
+                    header = "{{ _('alarms.errorincreation') }}";
+                }
+                parent.$('#overlaycontent').html( header + '<pre>' + d.text + '</pre>');
+                parent.$('.overlay').show();
             }
         }
     </script>

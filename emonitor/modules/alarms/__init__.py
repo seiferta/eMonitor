@@ -50,8 +50,10 @@ class AlarmsModule(Module):
                 cls = imp.load_source('emonitor.modules.alarms.inc', '{}/emonitor/modules/alarms/inc/{}'.format(app.config.get('PROJECT_ROOT'), f))
                 checker = getattr(cls, cls.__all__[0])()
                 if isinstance(checker, AlarmFaxChecker) and checker.getId() != 'Dummy':
-                    events.addEvent('alarm_added.{}'.format(checker.getId()), handlers=[], parameters=['out.alarmid'])
-                    events.addEvent('alarm_changestate.{}'.format(checker.getId()), handlers=[], parameters=['out.alarmid', 'out.state'])
+                    for at in AlarmType.getAlarmTypes():
+                        if at.interpreter == f:
+                            events.addEvent('alarm_added.{}'.format(at.name), handlers=[], parameters=['out.alarmid'])
+                            events.addEvent('alarm_changestate.{}'.format(at.name), handlers=[], parameters=['out.alarmid', 'out.state'])
 
         events.addEvent('alarm_added', handlers=[], parameters=['out.alarmid'])  # for all checkers
         events.addEvent('alarm_changestate', handlers=[], parameters=['out.alarmid', 'out.state'])  # for all checkers
@@ -63,10 +65,12 @@ class AlarmsModule(Module):
         signal.addSignal('alarm', 'changestate')
         signal.addSignal('alarm', 'added')
         signal.addSignal('alarm', 'updated')
+        signal.addSignal('alarm', 'error')
         signal.connect('alarm', 'changestate', frontendAlarmHandler.handleAlarmChanges)
         signal.connect('alarm', 'added', frontendAlarmHandler.handleAlarmChanges)
         signal.connect('alarm', 'updated', frontendAlarmHandler.handleAlarmChanges)
         signal.connect('alarm', 'deleted', frontendAlarmHandler.handleAlarmChanges)
+        signal.connect('alarm', 'error', frontendAlarmHandler.handleAlarmErrors)
 
         signal.connect('alarm', 'testupload_start', adminAlarmHandler.handleAlarmTestUpload)
 
@@ -225,6 +229,16 @@ class frontendAlarmHandler(SocketHandler):
     def handleAlarmChanges(sender, **extra):
         """
         Implementation of changes in alarm states
+
+        :param sender: event sender
+        :param extra: extra parameters for event
+        """
+        SocketHandler.send_message(sender, **extra)
+
+    @staticmethod
+    def handleAlarmErrors(sender, **extra):
+        """
+        Implementation of error in alarms
 
         :param sender: event sender
         :param extra: extra parameters for event

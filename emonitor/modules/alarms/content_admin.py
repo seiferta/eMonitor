@@ -7,13 +7,15 @@ from emonitor.lib.pdf.pdf import getFormFields, getPDFInformation
 from flask import render_template, request, current_app, Response
 from itertools import chain
 
-from emonitor.extensions import db, scheduler, babel
+from emonitor.extensions import db, scheduler, babel, events
 from emonitor.modules.alarms.alarmutils import AlarmFaxChecker, processFile
 from emonitor.modules.alarms.alarm import Alarm
 from emonitor.modules.alarms.alarmfield import AlarmField, AFBasic
 from emonitor.modules.alarms.alarmtype import AlarmType
 from emonitor.modules.alarms.alarmsection import AlarmSection
 from emonitor.modules.alarms.alarmreport import AlarmReport
+from emonitor.modules.events.eventhandler import Eventhandler
+from emonitor.modules.monitors.monitorlayout import MonitorLayout
 from emonitor.modules.settings.settings import Settings
 from emonitor.modules.settings.department import Department
 from emonitor.modules.cars.car import Car
@@ -56,15 +58,40 @@ def getAdminContent(self, **params):
                     return render_template('admin.alarms.type_actions.html', **params)
 
                 elif request.form.get('action').startswith('deletetype_'):  # delete type
-                    db.session.delete(AlarmType.getAlarmTypes(id=int(request.form.get('action').split('_')[-1])))
+                    atype = AlarmType.getAlarmTypes(id=int(request.form.get('action').split('_')[-1]))
+                    for e in [e for e in events.events if e.name in ['alarm_added.{}'.format(atype.name), 'alarm_changestate.{}'.format(atype.name)]]:
+                        # delete event handlers and monitor layout
+                        for eh in Eventhandler.getEventhandlers(event=e.name):
+                            for ml in MonitorLayout.query.filter(MonitorLayout.trigger.like('%{}%'.format(eh.event))).all():
+                                if ';' in ml.trigger:
+                                    _tr = ml.trigger.split(';')
+                                    del _tr[_tr.index(e.name)]
+                                    ml.trigger = ";".join(_tr)
+                                else:
+                                    db.session.remove(ml)
+                            db.session.delete(eh)
+                        # delete event
+                        del events.events[events.events.index(e)]
+                    db.session.delete(atype)
                     db.session.commit()
 
                 elif request.form.get('action') == 'updatetype':  # update type
                     if request.form.get('type_id') == 'None':  # add type
                         atype = AlarmType('', '')
                         db.session.add(atype)
-                    else:  # update
+                        events.addEvent('alarm_added.{}'.format(request.form.get('edit_name')), handlers=[], parameters=[])
+                        events.addEvent('alarm_changestate.{}'.format(request.form.get('edit_name')), handlers=[], parameters=[])
+                    else:  # update type
                         atype = AlarmType.getAlarmTypes(id=int(request.form.get('type_id')))
+                        for e in [e for e in events.events if e.name in ['alarm_added.{}'.format(atype.name), 'alarm_changestate.{}'.format(atype.name)]]:
+                            # update event handler and monitor layout
+                            newname = '{}.{}'.format(e.name.split('.')[0], request.form.get('edit_name'))
+                            for eh in Eventhandler.getEventhandlers(event=e.name):
+                                for ml in MonitorLayout.query.filter(MonitorLayout.trigger.like('%{}%'.format(eh.event))).all():
+                                    ml.trigger = ml.trigger.replace(e.name, newname)
+                                eh.event = newname
+                            # update event
+                            e.name = newname
 
                     atype.name = request.form.get('edit_name')
                     atype.keywords = request.form.get('edit_keywords')

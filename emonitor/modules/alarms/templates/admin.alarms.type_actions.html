@@ -45,7 +45,7 @@
         </p>
         <p>
             <label style="width:99%;">{{ _('alarms.type.name') }}:<br/>
-                <input type="text" name="edit_name" value="{{ alarmtype.name }}" style="width:99%;" required/>
+                <input type="text" name="edit_name" value="{{ alarmtype.name }}" style="width:99%;" required pattern="[a-zA-Z_()]+"/>
             </label>
         </p>
         <p>

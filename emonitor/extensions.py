@@ -50,5 +50,3 @@ printers = ePrinters()
 # communication
 from emonitor.communication import Communication
 communication = Communication()
-
-
