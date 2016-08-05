@@ -51,7 +51,7 @@ def getAdminContent(self, **params):
             person.identifier = request.form.get('identifier')
             person.remark = request.form.get('remark')
             _additional = {}
-            for field in Settings.get('persons.settings').get('additional'):
+            for field in Settings.get('persons.settings', {}).get('additional', []):
                 if field.split('=')[0] in request.form.keys() and request.form.get(field.split('=')[0]).strip() != '':
                     _additional[field.split('=')[0]] = request.form.get(field.split('=')[0])
             person._options = yaml.safe_dump(_additional, encoding='utf-8')
