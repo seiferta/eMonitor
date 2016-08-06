@@ -37,12 +37,15 @@ def getAdminContent(self, **params):
     else:
         if request.method == 'POST':
             if request.form.get('action') == 'savemap':  # save map
+                for m in Map.getMaps():  # set all other maps
+                    m.default = not request.form.get('map_default')
+
                 if request.form.get('map_id') != 'None':  # update
                     _map = Map.getMaps(request.form.get('map_id'))
                     _map.name = request.form.get('map_name')
                     _map.path = request.form.get('map_path')
                     _map.maptype = int(request.form.get('map_type'))
-                    _map.tileserver = request.form.get('map_tileserver')
+                    _map.tileserver = request.form.get('map_tileserver{}'.format(request.form.get('map_type')))
                     _map.default = request.form.get('map_default')
                 else:  # add map
                     _map = Map(request.form.get('map_name'), request.form.get('map_path'), int(request.form.get('map_type')), request.form.get('map_tileserver'), int(request.form.get('map_default')))

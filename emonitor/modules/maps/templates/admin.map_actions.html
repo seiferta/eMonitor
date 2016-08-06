@@ -22,6 +22,17 @@
     <script>
         var startlat = "{{ settings.get('defaultLat', '48.115970') }}";
         var startlng = "{{ settings.get('defaultLng', '11.727390') }}";
+
+        function selectMap(obj){
+            var val = {0:'', 1:'', '2':''};
+            if ($(obj).val() == "0"){
+                val[0] = '/tileserver/osm/{z}/{x}/{y}';
+            }else if($(obj).val() == '2'){
+                val[2] = '//ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236';
+            }
+            $('input[name="map_tileserver0"]').val(val[0]);
+            $('input[name="map_tileserver2"]').val(val[2]);
+        }
     </script>
 {% endblock %}
 
@@ -35,30 +46,31 @@
             </label>
         </p>
         <p>
-            <label>{{ _('settings.map.path') }}:<br/>
-                {{ tilebase }}<br/>
-                <input name="map_path" id="map_path" value="{{ map.path }}" style="width:99%;" class="path pathok"/>
-            </label>
-        </p>
-        <p>
             {{ _('settings.map.maptype') }}:<br/>
-            <label><input type="radio" name="map_type" value="0"{% if map.maptype==0 %} checked="checked"{% endif %}/> {{ _('settings.map.type0') }}</label><br/>
-            <label><input type="radio" name="map_type" value="1"{% if map.maptype==1 %} checked="checked"{% endif %}/> {{ _('settings.map.type1') }}</label><br/>
-            <label><input type="radio" name="map_type" value="2"{% if map.maptype==2 %} checked="checked"{% endif %}/> {{ _('settings.map.type2') }}</label><br/>
-        </p>
-        <p>
-            <label style="width:99%">{{ _('settings.map.tileserver') }}:<br/>
-                <input type="text" name="map_tileserver" style="width:100%" value="{{ map.tileserver }}"/>
+            <label><input type="radio" name="map_type" value="0"{% if map.maptype==0 %} checked="checked"{% endif %} onchange="selectMap(this)"/> {{ _('settings.map.type0') }}</label><br/>
+            <label style="padding:0 0 10px 50px;width:50%;">{{ _('settings.map.path') }}:<br/>
+                {{ tilebase }}<input name="map_path" id="map_path" value="{{ map.path }}" style="width:100%;" class="path pathok"/>
+            </label>
+            <label style="padding:0 0 10px 50px;width:50%">{{ _('settings.map.tileserver') }}:<br/>
+                <input type="text" name="map_tileserver0" style="width:100%" value="{% if map.maptype==0 %}{{ map.tileserver }}{% endif %}" placeholder="/tileserver/osm/{z}/{x}/{y}"/>
             </label>
             <br/>
-            <small>{{ _('settings.tileserver.info')|safe }}</small>
+
+            <label><input type="radio" name="map_type" value="1"{% if map.maptype==1 %} checked="checked"{% endif %} onchange="selectMap(this)"/> {{ _('settings.map.type1') }}</label><br/>
+            <label style="padding:0 0 10px 50px;width:50%">{{ _('settings.map.tileserver') }}:<br/>
+                <input type="text" name="map_tileserver1" style="width:100%" value="{% if map.maptype==1 %}{{ map.tileserver }}{% endif %}"/>
+            </label>
+
+            <label><input type="radio" name="map_type" value="2"{% if map.maptype==2 %} checked="checked"{% endif %} onchange="selectMap(this)"/> {{ _('settings.map.type2') }}</label><br/>
+            <label style="padding:0 0 10px 50px;width:50%">{{ _('settings.map.tileserver') }}:<br/>
+                <input type="text" name="map_tileserver2" style="width:100%" value="{% if map.maptype==2 %}{{ map.tileserver }}{% endif %}" placeholder="//ak.t2.tiles.virtualearth.net/tiles/a{q}?g=1236"/>
+            </label>
         </p>
         <p>
             {{ _('settings.map.default') }}:<br/>
             <label><input type="radio" name="map_default" value="1"{% if map.default==1 %} checked="checked"{% endif %}/> {{ _('settings.map.default1') }}</label><br/>
             <label><input type="radio" name="map_default" value="0"{% if map.default==0 %} checked="checked"{% endif %}/> {{ _('settings.map.default0') }}</label><br/>
         </p>
-        <p>&nbsp;</p>
         <p>
             <button type="submit" name="action" value="savemap" class="save"><i class="fa fa-check"></i> {{ _('settings.map.save') }}</button>
             <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times"></i> {{ _('settings.map.cancel') }}</button>

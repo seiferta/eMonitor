@@ -26,8 +26,14 @@
     var yellowmarker = new MyMarker({iconUrl:'/img/marker_yellow.png'});
     var colorcode = [yellowmarker, orangemarker, redmarker];
 
-    cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 12, maxZoom: 18});
-    mml = new L.TileLayer('{{ alarm.getMap().tileserver }}', {minZoom: 10, maxZoom: 14});
+    {%- if alarm.getMap().maptype in [0, 1] %}
+    cloudmade = new L.TileLayer('{{ alarm.getMap().tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+    mml = new L.TileLayer('{{ alarm.getMap().tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+    {%- else %}
+    cloudmade = new L.TileLayerQuad('{{ alarm.getMap().tileserver|safe }}');
+    mml = new L.TileLayerQuad('{{ alarm.getMap().tileserver|safe}}', {minZoom: 12, maxZoom: 18, trackResize:true});
+    {%- endif %}
+
     {%- if alarm.get('id.object') not in ['', '0'] %}
         map.setView(new L.LatLng({{ alarm.object.lat }}, {{ alarm.object.lng }}), startzoom).addLayer(cloudmade);
     {%- else %}
