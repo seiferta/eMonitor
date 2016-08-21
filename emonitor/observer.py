@@ -8,6 +8,24 @@ try:
     from watchdog.observers import Observer
     from watchdog.events import PatternMatchingEventHandler
     OBSERVERTYPE = "watchdog"
+
+    class IncomeObserver(PatternMatchingEventHandler):
+        """
+        Obeserver implementation for watchdog module
+        """
+
+        def on_deleted(self, event):
+            incomepath, filename = os.path.split(event.src_path)
+            incomepath += '/'
+            events.raiseEvent('file_removed', incomepath=incomepath, filename=filename)
+            logger.info(u"file_removed: {}{}".format(incomepath, filename))
+
+        def on_created(self, event):
+            incomepath, filename = os.path.split(event.src_path)
+            incomepath += '/'
+            events.raiseEvent('file_added', incomepath=incomepath, filename=filename)
+            logger.info(u"file_added: {}{}".format(incomepath, filename))
+
 except:
     OBSERVERTYPE = "other"
 
@@ -22,24 +40,6 @@ ERROR_RAISED = 0
 
 FILES = []
 INPUTFORMAT = Settings.get('ocr.inputformat', ['pdf']) + Settings.get('ocr.inputtextformat', [])
-
-
-class IncomeObserver(PatternMatchingEventHandler):
-    """
-    Obeserver implementation for watchdog module
-    """
-
-    def on_deleted(self, event):
-        incomepath, filename = os.path.split(event.src_path)
-        incomepath += '/'
-        events.raiseEvent('file_removed', incomepath=incomepath, filename=filename)
-        logger.info(u"file_removed: {}{}".format(incomepath, filename))
-
-    def on_created(self, event):
-        incomepath, filename = os.path.split(event.src_path)
-        incomepath += '/'
-        events.raiseEvent('file_added', incomepath=incomepath, filename=filename)
-        logger.info(u"file_added: {}{}".format(incomepath, filename))
 
 
 # noinspection PyPep8Naming
