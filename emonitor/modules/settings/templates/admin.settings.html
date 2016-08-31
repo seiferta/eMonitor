@@ -57,9 +57,10 @@
             <legend>{{ _('settings.monitorpingtitle') }}</legend>
             <small>{{ _('settings.monitorpinginfo') }}</small>
             <p>
-                <input type="number" min="0" step="1" name="monitorping" value="{{ monitorping }}"/> {{ _('settings.monitorpinginterval') }}
+                <input type="number" min="0" step="1" name="monitorping" value="{{ monitorping }}"{% if watchdog %} disabled="disabled"{% endif %}/> {{ _('settings.monitorpinginterval') }}
             </p>
-            <button type="submit" name="action" value="monitorping"><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+            <button type="submit" name="action" value="monitorping" {% if watchdog %} disabled="disabled"{% endif %}><i class="fa fa-check"></i> {{ _('settings.save') }}</button>
+            {% if watchdog %}<p style="padding-top:10px;color:red">{{ _('settings.watchdoginfo') }}</p>{%  endif %}
         </fieldset>
     </form>
 

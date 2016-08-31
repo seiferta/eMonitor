@@ -104,8 +104,8 @@ def getAdminContent(self, **params):
                     if not tb:
                         communication.init_app(app=communication.app)
                         tb = communication.telegram
-                    else:
-                        tb.stop()
+                    #else:
+                     #   tb.stop()
                     try:
                         tb.updateToken(vals['telegramkey'])
                     except AttributeError:
@@ -150,11 +150,13 @@ def getAdminContent(self, **params):
         if request.method == 'POST':  # save settings
             if request.form.get('action') == 'observerstate':
                 Settings.set('observer.interval', request.form.get('observerinterval'))
-                _jobserver = scheduler.get_jobs('observerinterval')[0]
-                if Settings.get('observer.interval', '0') == '0':
-                    _jobserver.pause()
-                else:
-                    scheduler.reschedule_job(_jobserver.id, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL', 2)))))
+                if 'observerinterval' in [j.name for j in scheduler.get_jobs()]:  # use file
+                    _jobserver = scheduler.get_jobs('observerinterval')[0]
+                    if Settings.get('observer.interval', '0') == '0':
+                        _jobserver.pause()
+                    else:
+                        scheduler.reschedule_job(_jobserver.id, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL', 2)))))
+
             elif request.form.get('action') == 'monitorping':
                 Settings.set('monitorping', request.form.get('monitorping'))
                 _jping = scheduler.get_jobs('monitorping')[0]
@@ -164,7 +166,7 @@ def getAdminContent(self, **params):
                     scheduler.reschedule_job(_jping.id, trigger=eMonitorIntervalTrigger(minutes=int(Settings.get('monitorping', current_app.config.get('MONITORPING', 2)))))
 
         paths = dict(pathdata=current_app.config.get('PATH_DATA'), pathtmp=current_app.config.get('PATH_TMP'), pathincome=current_app.config.get('PATH_INCOME'), pathdone=current_app.config.get('PATH_DONE'))
-        params.update({'paths': paths, 'observerinterval': Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL')), 'monitorping': Settings.get('monitorping', current_app.config.get('MONITORPING')), 'alarmsevalfields': Settings.get('alarms.evalfields'), 'alembic': alembic})
+        params.update({'paths': paths, 'observerinterval': Settings.get('observer.interval', current_app.config.get('OBSERVERINTERVAL')), 'watchdog': 'observerinterval' not in [j.name for j in scheduler.get_jobs()], 'monitorping': Settings.get('monitorping', current_app.config.get('MONITORPING')), 'alarmsevalfields': Settings.get('alarms.evalfields'), 'alembic': alembic})
         return render_template('admin.settings.html', **params)
     return redirect("/admin/settings", code=302)
 
