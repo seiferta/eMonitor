@@ -66,6 +66,7 @@ admin.addModule = addModule
 babel.gettext(u'trigger.default')
 babel.gettext(u'trigger.file_added')
 babel.gettext(u'trigger.file_removed')
+babel.gettext(u'trigger.incoming_serial_data')
 
 
 @admin.route('/admin')

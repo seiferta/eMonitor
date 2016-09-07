@@ -1,20 +1,22 @@
-# Copyright (C) 2014 ORGANIZATION
+# German translations for PROJECT.
+# Copyright (C) 2016 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-28 10:00+0100\n"
-"PO-Revision-Date: 2014-10-01 10:46+0100\n"
-"Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
+"POT-Creation-Date: 2016-09-06 19:51+0200\n"
+"PO-Revision-Date: 2016-09-06 19:53+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #: emonitor/admin/admin.py:66
 msgid "trigger.default"
@@ -27,6 +29,10 @@ msgstr "Observer - Datei hinzugefügt"
 #: emonitor/admin/admin.py:68
 msgid "trigger.file_removed"
 msgstr "Observer - Datei entfernt"
+
+#: emonitor/admin/admin.py:69
+msgid "trigger.incoming_serial_data"
+msgstr "Observer - Eingehende serielle Alarmnachricht"
 
 #: emonitor/admin/web/templates/admin.dbrevision.html:5
 msgid "admin.db.updatetitle"
@@ -74,7 +80,3 @@ msgstr "Schließen"
 #: emonitor/admin/web/templates/admin.html:126
 msgid "layout.closed"
 msgstr "Öffnen"
-
-#~ msgid "admin.monitorlink"
-#~ msgstr "Monitoroberfläche"
-

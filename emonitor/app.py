@@ -192,6 +192,7 @@ def configure_extensions(app):
     from emonitor.scheduler import eMonitorIntervalTrigger
     from emonitor.modules.settings.settings import Settings
     from emonitor.observer import observeFolder, OBSERVERTYPE
+    from emonitor.serialobserver import observeSerialPort
     try:
         _jping = scheduler.add_job(monitorserver.getClients, trigger=eMonitorIntervalTrigger(minutes=int(Settings.get('monitorping', app.config.get('MONITORPING', 2)))), name='monitorping')
     except:
@@ -201,10 +202,13 @@ def configure_extensions(app):
         _jping.pause()
 
     try:
-        if OBSERVERTYPE == "watchdog":
-            _jobserver = scheduler.add_job(observeFolder, kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+        if app.config.get('OBSERVER_TYPE', 'file') == 'file':
+            if OBSERVERTYPE == "watchdog":
+                _jobserver = scheduler.add_job(observeFolder, kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+            else:
+                _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL', 2)))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
         else:
-            _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL', 2)))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
+                _jobserver = scheduler.add_job(observeSerialPort, kwargs={'port': app.config.get('SERIAL_PORT', '/dev/ttyUSB0'), 'baudrate': app.config.get('SERIAL_BAUDRATE', '9600'),});
     except ValueError:
         _jobserver = scheduler.add_job(observeFolder, trigger=eMonitorIntervalTrigger(seconds=int(app.config.get('OBSERVERINTERVAL', 2))), kwargs={'path': app.config.get('PATH_INCOME', app.config.get('PATH_DATA'))}, name='observerinterval')
     if str(Settings.get('observer.interval', app.config.get('OBSERVERINTERVAL'))) == '0':
