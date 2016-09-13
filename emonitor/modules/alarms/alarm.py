@@ -788,3 +788,78 @@ class Alarm(db.Model):
             signal.send('alarm', 'error', message='alarms.errorincreation', text=kwargs.get('text', ''))
 
         return kwargs
+
+
+    @staticmethod
+    def handleSerialEvent(eventname, **kwargs):
+        logger.info('handle serial Event')
+
+        alarm_fields = kwargs.get('message')
+        if not alarm_fields:
+            kwargs['error'] = "No incoming message!"
+            return kwargs;
+        stime = time.time()
+
+        alarm = Alarm(datetime.datetime.now(), '', 1, 0)
+        etime = time.time()
+
+        _missing = 0
+        for p in ['time', 'city', 'address', 'key']:
+            if p not in alarm_fields:  # test required fields
+                _missing += 1
+                kwargs['error'] = kwargs.get('error', 'Missing parameter:') + "<br/>- '{}'".format(p)
+
+        if _missing == 0:
+            kwargs['fields'] = alarm_fields
+            alarm.set('id.key', alarm_fields['key'])
+            alarm._key = alarm_fields['key']
+            alarm.material = dict(cars1='', cars2='', material='')  # set required attributes
+            alarm.set('marker', '0')
+            alarm.set('priority', '1')  # set normal priority
+            #alarm.position = _position
+            alarm.state = 1
+
+            if alarm_fields.get('time'):
+                t = alarm_fields.get('time')
+            else:
+                t = datetime.datetime.now()
+            alarm.timestamp = t
+
+
+
+        if kwargs.get('mode') != 'test':
+            db.session.add(alarm)
+            db.session.commit()
+            signal.send('alarm', 'added', alarmid=alarm.id)
+            Alarm.changeState(alarm.id, 1)  # activate alarm
+            logger.info('alarm created with id {} ({})'.format(alarm.id, (etime - stime)))
+        else:
+            kwargs['fields'] = kwargs.get('fields', 'xxx') + '\n\n-------------- ALARM-Object --------------\n'
+            _cdict = Car.getCarsDict()
+            for a in alarm.attributes:
+                try:
+                    if a in ['k.cars1', 'k.cars2', 'k.material']:
+                        kwargs['fields'] += '\n-%s:\n  %s -> %s' % (a, alarm.get(a), ", ".join(
+                            [_cdict[int(_c)].name for _c in alarm.get(a).split(',') if _c not in ['', '0']]))
+                    elif a in 'id.key':
+                        if alarm.get(a) > 0:
+                            _k = Alarmkey.getAlarmkeys(id=alarm.get(a))
+                            kwargs['fields'] += '\n-%s:\n  %s -> %s: %s' % (a, alarm.get(a), _k.category, _k.key)
+                        else:
+                            kwargs['fields'] += '\n-%s:\n  %s' % (a, alarm.get(a))
+                            kwargs['fields'] += '\n-key:\n  %s' % alarm._key
+                    elif a == 'id.address':
+                        kwargs['fields'] += '\n-%s:\n  %s -> %s' % (
+                        a, alarm.get(a), Street.getStreets(id=alarm.get(a)).name)
+                    elif a == 'id.object':
+                        kwargs['id.object'] = '\n-%s:\n  %s' % (a, alarm.get(a))
+                        kwargs['object'] = '\n-object:\n  %s' % alarm.get('object')
+                    else:
+                        kwargs['fields'] += '\n-%s:\n  %s' % (a, alarm.get(a))
+                except (AttributeError, KeyError):
+                    kwargs['fields'] += '\n-%s:\n  %s (error)' % (a, alarm.get(a))
+            kwargs['id'] = '-0'  # add dummy id
+            db.session.rollback()
+            logger.info('alarm created in TESTMODE (%s)' % (etime - stime))
+
+        return kwargs

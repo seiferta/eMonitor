@@ -24,9 +24,17 @@ def handleIncomingData(data):
             addressParts = stringParts[1].split(",")
             if len(addressParts) == 5:
                 alarm_fields['city'] = addressParts[0]
-                alarm_fields['address'] = addressParts[1]
+                fullAddressParts = addressParts[1].split(' ')
+                streetname = fullAddressParts[0]
+                if len(streetname) == 1:
+                    alarm_fields['address'] = addressParts[1]
+                else:
+                    housenumber = fullAddressParts[1]
+                    alarm_fields['address'] = streetname
+                    alarm_fields['streetno'] = housenumber
+
                 alarm_fields['address2'] = addressParts[2]
-                alarm_fields['remark'] = addressParts[3]
+                alarm_fields['remark'] = addressParts[4]
 
             else:
                 logger.error("Invalid message received")
