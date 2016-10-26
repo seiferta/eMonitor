@@ -259,7 +259,7 @@ def configure_logging(app):
     else:
         accesslogger.setLevel(logging.ERROR)
 
-    logger = logging.getLogger('alembic.migration')
+    logger = logging.getLogger('alembic.runtime.migration')
     logger.setLevel(logging.ERROR)
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)

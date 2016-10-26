@@ -1,6 +1,6 @@
 from flask import Blueprint, request, current_app, render_template, flash, redirect, url_for
-from flask.ext import login as flasklogin
-from flask.ext.babel import gettext
+import flask_login
+from flask_babel import gettext
 from emonitor.decorators import login_required
 from emonitor.user import User
 from emonitor.extensions import db
@@ -24,9 +24,9 @@ def loginform():
 
         if user and user.check_password(request.form.get('password')):
             if request.form.get('remember', '') == '1':
-                flasklogin.login_user(user, remember=True)
+                flask_login.login_user(user, remember=True)
             else:
-                flasklogin.login_user(user, remember=False)
+                flask_login.login_user(user, remember=False)
             return redirect(request.form.get("next") or "/")
         else:
             flash('admin.loginerror', 'error')
@@ -40,7 +40,7 @@ def logout():
     """
     Register url */logout* to logout current user. Redirect to frontend base url */*
     """
-    flasklogin.logout_user()
+    flask_login.logout_user()
     return redirect(url_for('frontend.frontendContent'))
 
 
@@ -54,7 +54,7 @@ def usersettings():
     :return: rendered template */emonitor/login/templates/login_settings.html*
     """
     if request.method == "POST":
-        user = User.getUsers(flasklogin.current_user.get_id() or -1)
+        user = User.getUsers(flask_login.current_user.get_id() or -1)
         if not user.check_password(request.form.get('curpwd')):
             flash('login.currpwdwrong')
         elif request.form.get('newpwd') != request.form.get('newpwdcheck'):
@@ -64,4 +64,4 @@ def usersettings():
             db.session.commit()
             return redirect("/")
 
-    return render_template('login_settings.html', user=User.getUsers(flasklogin.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))
+    return render_template('login_settings.html', user=User.getUsers(flask_login.current_user.get_id() or -1), app_name=current_app.config.get('PROJECT'), app_version=current_app.config.get('APP_VERSION'))

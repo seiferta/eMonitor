@@ -10,7 +10,7 @@ Use the info parameter of the module implementation:
 This example will add the module 'modulename' in admin area with url `server/admin/modulepath`
 """
 from collections import OrderedDict
-import flask.ext.login as login
+import flask_login as login
 from emonitor.socketserver import SocketHandler
 from flask import Blueprint, request, render_template, send_from_directory, current_app, jsonify
 from emonitor.decorators import admin_required

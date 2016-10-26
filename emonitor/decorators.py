@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask.ext.login import current_user
+from flask_login import current_user
 from .extensions import login_manager
 
 
