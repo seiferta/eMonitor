@@ -128,7 +128,7 @@ def configure_extensions(app):
     db.create_all()
 
     with app.app_context():
-        if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
+        if alembic.migration_context.get_current_heads()[0] != current_app.config.get('DB_VERSION'):  # update version
             try:
                 alembic.upgrade(current_app.config.get('DB_VERSION'))
             except (alembicutil.CommandError, OperationalError):
