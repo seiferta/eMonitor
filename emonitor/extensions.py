@@ -1,7 +1,7 @@
 import types
 
 # flask extensions
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 DeclarativeBase = declarative_base()
 
@@ -25,10 +25,10 @@ babel = MyBabel()
 from emonitor.signals import MySignal
 signal = MySignal()
 
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 login_manager = LoginManager()
 
-from flask.ext.cache import Cache
+from flask_cache import Cache
 cache = Cache()
 
 # scheduler

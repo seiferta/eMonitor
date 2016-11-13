@@ -96,6 +96,6 @@ def init_app(app):
 
     db.create_all(app=app)
 
-    logger.info('%s modules loaded' % _count)
+    #logger.info('%s modules loaded' % _count)
 
 modules.init_app = init_app

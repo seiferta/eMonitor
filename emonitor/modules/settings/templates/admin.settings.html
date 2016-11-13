@@ -68,7 +68,7 @@
         <fieldset>
             <legend>{{ _('settings.db.title') }}</legend>
             <small>{{ _('settings.db.info') }}</small>
-            <p>{{ _('settings.db.currentrevision') }}: <span id="dbstate">{{ alembic.context.get_current_revision() }}</span></p>
+            <p>{{ _('settings.db.currentrevision') }}: <span id="dbstate">{{ alembic.migration_context.get_current_heads()[0] }}</span></p>
             <p>
                 <button type="button" onclick="return doUpgrade()">{{ _('settings.db.upgradebutton') }}</button>
                 <button type="button" onclick="return doDowngrade()">{{ _('settings.db.downgradebutton') }}</button>

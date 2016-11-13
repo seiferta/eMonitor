@@ -182,7 +182,6 @@ class Messages(db.Model):
         job = scheduler.add_job(Messages.doMessageTrigger, name="messages", id="messages", trigger=MessageTrigger(Messages.getActiveMessages(), minutes=60))
         if len(job.trigger.messagelist) == 0:  # pause job if no active messages
             job.pause()
-        logger.info('scheduler job init done, next run at %s' % job.next_run_time)
 
     @staticmethod
     def updateMessageTrigger():

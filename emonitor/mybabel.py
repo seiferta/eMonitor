@@ -1,6 +1,6 @@
 import os
 from flask import _request_ctx_stack
-from flask.ext.babel import Babel, get_locale, format_datetime
+from flask_babel import Babel, get_locale, format_datetime
 from babel import support
 
 

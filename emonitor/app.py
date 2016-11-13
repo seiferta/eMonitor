@@ -128,7 +128,7 @@ def configure_extensions(app):
     db.create_all()
 
     with app.app_context():
-        if alembic.context.get_current_revision() != current_app.config.get('DB_VERSION'):  # update version
+        if alembic.migration_context.get_current_heads()[0] != current_app.config.get('DB_VERSION'):  # update version
             try:
                 alembic.upgrade(current_app.config.get('DB_VERSION'))
             except (alembicutil.CommandError, OperationalError):
@@ -263,7 +263,7 @@ def configure_logging(app):
     else:
         accesslogger.setLevel(logging.ERROR)
 
-    logger = logging.getLogger('alembic.migration')
+    logger = logging.getLogger('alembic.runtime.migration')
     logger.setLevel(logging.ERROR)
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)

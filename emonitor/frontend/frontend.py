@@ -11,10 +11,11 @@ This example will add the module 'modulename' in frontend area with url `server/
 """
 from collections import OrderedDict
 from flask import Blueprint, current_app, render_template, send_from_directory, request, jsonify
-from flask.ext import login
+import flask_login as login
 from emonitor.user import User
-from emonitor.extensions import babel
+from emonitor.extensions import babel, signal
 from emonitor.utils import restartService
+from emonitor.socketserver import SocketHandler
 
 frontend = Blueprint('frontend', __name__, template_folder="web/templates")
 frontend.modules = OrderedDict()
