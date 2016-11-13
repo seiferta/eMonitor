@@ -61,7 +61,8 @@ class AlarmsModule(Module):
         events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarm.Alarms', Alarm.handleEvent, ['in.text', 'out.id', 'out.fields'])
         events.addHandlerClass('file_added', 'emonitor.modules.alarms.alarmtype.AlarmTypes', AlarmType.handleEvent, ['in.text', 'out.type'])
 
-        events.addHandlerClass('incoming_serial_data', 'emonitor.modules.alarms.alarm.Alarms', Alarm.handleSerialEvent, ['in.message', 'out.id', 'out.fields'])
+        events.addHandlerClass('incoming_serial_data', 'emonitor.modules.alarms.alarm.Alarms', Alarm.handleSerialEvent, ['in.text', 'out.id', 'out.fields'])
+        events.addHandlerClass('incoming_serial_data', 'emonitor.modules.alarms.alarmtype.AlarmTypes', AlarmType.handleEvent, ['in.text', 'out.type'])
 
         # signals and handlers
         signal.addSignal('alarm', 'changestate')
