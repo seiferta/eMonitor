@@ -66,7 +66,7 @@ class TextWidget(MonitorWidget):
 
         mimetypes.init()
         dep = Department.getDefaultDepartment()
-        kwargs.update(content=content, template=template, crest=dep.getLogoStream(), mime=mimetypes.guess_type(dep.attributes['logo'])[0])
+        kwargs.update(content=content, template=template, crest=dep.getLogoStream(), mime=mimetypes.guess_type(dep.attributes.get('logo', ''))[0])
         self.params = kwargs
 
     @staticmethod

@@ -61,8 +61,8 @@ class Department(db.Model):
         :return: base 64 stream or empty string
         """
         from emonitor import app
-        if self.attributes['logo'] != '' and os.path.exists('{}{}'.format(app.config.get('PATH_DATA'), self.attributes['logo'])):
-            return open('{}{}'.format(app.config.get('PATH_DATA'), self.attributes['logo']), 'rb').read().encode("base64")
+        if self.attributes.get('logo', '') != '' and os.path.exists('{}{}'.format(app.config.get('PATH_DATA'), self.attributes.get('logo', ''))):
+            return open('{}{}'.format(app.config.get('PATH_DATA'), self.attributes.get('logo', '')), 'rb').read().encode("base64")
         else:
             return open('{}/emonitor/frontend/web/img/empty.png'.format(app.config.get('PROJECT_ROOT')), 'rb').read().encode("base64")
 
