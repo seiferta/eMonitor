@@ -495,13 +495,15 @@ class Alarm(db.Model):
                 kwargs['fields'] = u'{}\n-{}:\n  {}'.format(kwargs.get('fields'), k, alarm_fields[k])
 
             if _missing == 0:  # all required parameters found
-                if not os.path.exists('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/'))):
-                    os.makedirs('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/')))
+                if kwargs.get('mode') != 'test':
+                    if not os.path.exists('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/'))):
+                        os.makedirs('{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/')))
 
-                try:
-                    shutil.copy2('{incomepath}{filename}'.format(**kwargs), '{}{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/%Y%m%d-%H%M%S'), os.path.splitext(kwargs.get('filename'))[1]))
-                except:
-                    pass
+                    try:
+                        shutil.copy2('{incomepath}{filename}'.format(**kwargs), '{}{}{}'.format(app.config.get('PATH_DONE'), t.strftime('%Y/%m/%Y%m%d-%H%M%S'), os.path.splitext(kwargs.get('filename'))[1]))
+                    except:
+                        pass
+
                 try:  # remove file
                     os.remove('{incomepath}{filename}'.format(**kwargs))
                 except:
