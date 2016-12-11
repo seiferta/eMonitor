@@ -4,6 +4,7 @@ import logging
 import traceback
 from collections import OrderedDict
 
+import time
 import datetime
 
 from emonitor.modules.alarmkeys.alarmkey import Alarmkey
@@ -14,6 +15,7 @@ from emonitor.modules.streets import Street
 __all__ = ['ILSFNSerialAlarmChecker']
 logger = logging.getLogger(__name__)
 
+
 class ILSFNSerialAlarmChecker(AlarmFaxChecker):
     __name__ = "ILSFN"
     __version__ = '0.1'
@@ -23,10 +25,9 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
     sections[u'Meldebild'] = (u'key', u'evalKey')
     sections[u'Ortsteil/Ort'] = (u'city', u'evalCity')
     sections[u'Stra\xdfe'] = (u'address', u'evalStreet')
-    sections[u'Abschnitt'] = (u'addresspart', u'')
+
     sections[u'Einsatznr'] = (u'time', u'evalTime')
-    sections[u'Hinweis'] = (u'remark', u'')
-    keywords = [b'\x02']
+    # sections[u'Hinweis'] = (u'remark', u'')
 
     def getEvalMethods(self):
         """get all eval methods of fax checker
@@ -64,13 +65,17 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
 
     @staticmethod
     def evalTime(fieldname, **params):
-        _rawTime = ILSFNSerialAlarmChecker().fields[fieldname][0]
-        try:
-            t = datetime.datetime.strptime(_rawTime, '%d.%m.%Y %H:%M:%S')
-        except ValueError:
-            t = datetime.datetime.now()
+        #if fieldname in ILSFNSerialAlarmChecker().fields:
+        #    _rawTime = ILSFNSerialAlarmChecker().fields[fieldname][0]
+        #else:
+        t = datetime.datetime.now()
+        #try:
+        #    t = datetime.datetime.strptime(_rawTime, '%d.%m.%Y %H:%M:%S')
+        #except ValueError:
+        #    t = datetime.datetime.now()
 
-        ILSFNSerialAlarmChecker().fields[fieldname] = (u'{}.{}.{} - {}:{}:00'.format(t.day, t.month, t.year, t.hour, t.minute), 1)
+        ILSFNSerialAlarmChecker().fields[fieldname] = (
+        u'{}.{}.{} - {}:{}:00'.format(t.day, t.month, t.year, t.hour, t.minute), 1)
 
     @staticmethod
     def evalCity(fieldname, **params):
@@ -140,7 +145,7 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
                 r'|((?P<bab>A[0-9]{2,3} [A-Za-z]+) (?P<direction>(\D*))(( (?P<as>[0-9]*))|(.*)))'  # highway
                 r'|((.*)(?P<train>(Bahnstrecke .*)) (?P<km>[0-9]+(.*)))'  # train
                 r'|((?P<streetname>((.*[0-9]{4})|(^(\D+)))))'
-                )
+            )
 
         m = pattern.match(_str)
         if m:
@@ -158,14 +163,18 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
                                     _streets = [_s]
                                     break
                             ILSFNSerialAlarmChecker().fields[fieldname] = (_street.name, _street.id)
-                            ILSFNSerialAlarmChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
+                            ILSFNSerialAlarmChecker().logger.debug(
+                                u'street: "{}" ({}) found'.format(_street.name, _street.id))
                         else:
-                            ILSFNSerialAlarmChecker().fields[fieldname] = (m.groupdict()['street'] or m.groupdict()['streetname'], 0)
-                            if not re.match(alarmtype.translation(u'_street_'), _str[1]) and 'part' not in options:  # ignore 'street' value and part-address
+                            ILSFNSerialAlarmChecker().fields[fieldname] = (
+                            m.groupdict()['street'] or m.groupdict()['streetname'], 0)
+                            if not re.match(alarmtype.translation(u'_street_'), _str[
+                                1]) and 'part' not in options:  # ignore 'street' value and part-address
                                 ILSFNSerialAlarmChecker().fields['streetno'] = (m.groupdict()['housenumber'], 0)
 
                     if m.groupdict()['hn'] and ILSFNSerialAlarmChecker().fields['city'][1] != 0:
-                        if m.groupdict()['housenumber'] != m.groupdict()['housenumber'].replace('B', '6').replace(u'\xdc', u'0'):
+                        if m.groupdict()['housenumber'] != m.groupdict()['housenumber'].replace('B', '6').replace(
+                                u'\xdc', u'0'):
                             _housenumber = m.groupdict()['housenumber'].replace('B', '6').replace(u'\xdc', u'0')
                             _hn = _housenumber
                         else:
@@ -197,7 +206,8 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
                     if len(_streets) > 0:
                         _street = _streets[0]
                         ILSFNSerialAlarmChecker().fields[fieldname] = (_street.name, _street.id)
-                        ILSFNSerialAlarmChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
+                        ILSFNSerialAlarmChecker().logger.debug(
+                            u'street: "{}" ({}) found'.format(_street.name, _street.id))
                 return
 
             elif m.groupdict()['train']:  # train, fields: 'train', 'km'
@@ -207,7 +217,8 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
                     if len(_streets) > 0:
                         _street = _streets[0]
                         ILSFNSerialAlarmChecker().fields[fieldname] = (_street.name, _street.id)
-                        ILSFNSerialAlarmChecker().logger.debug(u'street: "{}" ({}) found'.format(_street.name, _street.id))
+                        ILSFNSerialAlarmChecker().logger.debug(
+                            u'street: "{}" ({}) found'.format(_street.name, _street.id))
 
                 return
 
@@ -221,10 +232,11 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
                         street_id = u''
 
                         ILSFNSerialAlarmChecker().fields[fieldname] = (u'{}'.format(repl[0]), street_id)
-                    if 'streetno' not in ILSFNSerialAlarmChecker().fields or ILSFNSerialAlarmChecker().fields['streetno'] == u"":
+                    if 'streetno' not in ILSFNSerialAlarmChecker().fields or ILSFNSerialAlarmChecker().fields[
+                        'streetno'] == u"":
                         ILSFNSerialAlarmChecker().fields['streetno'] = (
-                        u'{}'.format(u" ".join(_str[repl[0].count(u' ') + 1:])).replace(
-                            alarmtype.translation(u'_street_'), u'').strip(), street_id)
+                            u'{}'.format(u" ".join(_str[repl[0].count(u' ') + 1:])).replace(
+                                alarmtype.translation(u'_street_'), u'').strip(), street_id)
                 return
         else:
             ILSFNSerialAlarmChecker().fields[fieldname] = (_str, 0)
@@ -262,10 +274,11 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
         else:
             logger.info("Received invalid alarm message from serial")
 
-        uhrzeit = re.search(b'\x03([\s\S]*)\\r\\n', rawtext, re.MULTILINE | re.DOTALL)
-        if uhrzeit:
-            logger.info(u"Received valid datetime from serial {}".format(uhrzeit.group(1).strip()))
-            ILSFNSerialAlarmChecker().fields['time'] = uhrzeit.group(1).strip()
+        # uhrzeit = re.search(b'\x03([\s\S]*)\\r\\n', rawtext, re.MULTILINE | re.DOTALL)
+        # if uhrzeit:
+        #    #logger.info(u"Received valid datetime from serial {}".format(uhrzeit.group(1).strip()))
+        #    ILSFNSerialAlarmChecker().fields['time'] = uhrzeit.group(1).strip()
+        #ILSFNSerialAlarmChecker().fields['time'] = datetime.datetime.now()
 
         for section in sections:  # sections in order
             k = section.key
@@ -278,17 +291,19 @@ class ILSFNSerialAlarmChecker(AlarmFaxChecker):
 
                 # execute methods
                 try:
-                    getattr(self, method)(k, alarmtype=alarmtype, options=method_params.split(';'))  # fieldname, parameters
+                    getattr(self, method)(k, alarmtype=alarmtype,
+                                          options=method_params.split(';'))  # fieldname, parameters
                 except:
                     if u'error' not in values:
                         values['error'] = ''
                     values['error'] = u"".join((values['error'], u'error in method: {}\n'.format(method)))
-                    ILSFNSerialAlarmChecker().logger.error(u'error in section {} {}\n{}'.format(k, method, traceback.format_exc()))
-
+                    ILSFNSerialAlarmChecker().logger.error(
+                        u'error in section {} {}\n{}'.format(k, method, traceback.format_exc()))
 
         for k in ILSFNSerialAlarmChecker().fields:
             try:
-                values[k] = (ILSFNSerialAlarmChecker().fields[k][0].decode('utf-8'), ILSFNSerialAlarmChecker().fields[k][1])
+                values[k] = (
+                ILSFNSerialAlarmChecker().fields[k][0].decode('utf-8'), ILSFNSerialAlarmChecker().fields[k][1])
             except:
                 values[k] = (ILSFNSerialAlarmChecker().fields[k][0], ILSFNSerialAlarmChecker().fields[k][1])
         return values
