@@ -40,7 +40,7 @@ def getAdminContent(self, **params):
                         city = City.getCities(id=request.form.get('city_id'))
                         city.name = request.form.get('cityname')
                         city.subcity = request.form.get('subcity')
-                        city._dept = request.form.get('department')
+                        city.dept = request.form.get('department')
                         city.mapname = request.form.get('citymap')
                         city.color = request.form.get('colorname')
                         city.default = request.form.get('citydefault')
