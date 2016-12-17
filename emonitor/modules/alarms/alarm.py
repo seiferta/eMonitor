@@ -572,7 +572,10 @@ class Alarm(db.Model):
                     url = 'http://nominatim.openstreetmap.org/search'
                     params = u'format=json&city={}&street={}'.format(alarm_fields.get('city', [u'', 0])[0].split()[0], alarm_fields.get('address', [u'', 0])[0])
                     if alarm_fields.get('streetno'):
-                        params += u' {}'.format(alarm_fields.get('streetno')[0].split()[0])  # only first value
+                        try:
+                            params += u' {}'.format(alarm_fields.get('streetno')[0].split()[0])  # only first value
+                        except:
+                            pass
                         alarm.set('streetno', alarm_fields.get('streetno')[0])
                     try:
                         r = requests.get(u'{}?{}'.format(url, params))
