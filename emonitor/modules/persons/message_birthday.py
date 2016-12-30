@@ -70,7 +70,7 @@ class BirthdayWidget(MonitorWidget):
 
         persons = sorted(Person.getPersons(onlyactive=True), key=lambda p: p.birthday)
         p = [(val.birthday - int(datetime.datetime.now().strftime('%j')), idx, persons[idx].lastname, persons[idx].birthdate) for (idx, val) in enumerate(persons)]
-        idx = min(filter(lambda x: x[0] >= 0, p))
+        idx = min(filter(lambda x: x[0] % 365 >= 0, p))
 
         person = OrderedDict()
         try:
