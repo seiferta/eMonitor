@@ -64,7 +64,7 @@ class PrintLayout:
 
         :param filename: print.[layout].html
         """
-        self.module = filename.split('/')[0]
+        self.module = filename.split('.')[0]
         self.filename = '.'.join(filename.split('.')[1:])
         self.parameters = []
         env = Environment(loader=PackageLoader('emonitor.modules.{}'.format(self.module), 'templates'))
