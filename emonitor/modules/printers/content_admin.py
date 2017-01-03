@@ -40,15 +40,10 @@ def getAdminContent(self, **params):
                         printernames.append(l[3:-1].strip())
             return printernames
 
-        #def _callstring():  # get callstring and replace variables
-        #    callstring = classes.get('settings').get('printer.callstring')
-        #    callstring = callstring.replace('[basepath]', current_app.config.get('PROJECT_ROOT'))
-        #    return callstring
-
         def _templates():  # get all printer templates
             templates = {}
             for root, dirs, files in os.walk("{}/emonitor/modules/".format(current_app.config.get('PROJECT_ROOT'))):
-                mod = root.replace("{}/emonitor/modules/".format(current_app.config.get('PROJECT_ROOT')), '').replace(os.path.sep+'templates', '')
+                mod = root.replace("{}/emonitor/modules/".format(current_app.config.get('PROJECT_ROOT')), '').replace('{}templates'.format(os.path.sep), '')
                 for f in files:
                     if f.endswith('.html') and f.startswith('print.'):
                         if mod not in templates:
