@@ -1,9 +1,9 @@
 import os
 import yaml
-import random
 import subprocess
 import time
 import logging
+import tempfile
 from sqlalchemy import and_
 from emonitor.extensions import db
 from emonitor.utils import Module
@@ -75,7 +75,7 @@ class Printers(db.Model):
         _params = {}
         for p in pl.getParameters(self.settings[1].split(';')):  # load parameters from printer definition
             _params[p.getFullName()] = p.getFormatedValue()
-        tmpfilename = random.random()
+        tmpfilename = next(tempfile._get_candidate_names())
         callstring = self.getCallString(pdffilename='{}{}.pdf'.format(app.config.get('PATH_TMP'), tmpfilename), **params)
         if "id" in params:
             with app.test_request_context('/', method='get'):
@@ -84,6 +84,10 @@ class Printers(db.Model):
                     _params['style'] = self.layout[6:-5]
                     tmpfile.write(Module.getPdf(params['object'].getExportData('.html', **_params)))
             try:
+                with open('{}{}.pdf'.format(app.config.get('PATH_TMP'), tmpfilename), 'wb') as tmpfile:
+                    _params['id'] = params['id']
+                    _params['style'] = self.layout[6:-5]
+                    tmpfile.write(Module.getPdf(params['object'].getExportData('.html', **_params)))
                 subprocess.check_output(callstring, stderr=subprocess.STDOUT, shell=True)
                 os.remove('{}{}.pdf'.format(app.config.get('PATH_TMP'), tmpfilename))
             except WindowsError:

@@ -5,6 +5,8 @@ import shutil
 import requests
 import re
 import yaml
+import base64
+import codecs
 from collections import OrderedDict
 import logging
 
@@ -400,6 +402,27 @@ class Alarm(db.Model):
                     try:
                         if params['style'].startswith(u'report'):
                             return render_template('{}.html'.format(params['style']), **params)
+                        elif params['style'] == 'alarm_original':
+                            fname = "{}/{}".format(current_app.config.get('PATH_DONE'), alarm.get('filename'))
+                            if fname.endswith('.pdf'):  # file still in pdf format
+                                if os.path.exists(fname):
+                                    with open(fname, 'rb') as f:
+                                        return f.read()
+                                else:
+                                    return render_template('print.error.html')
+                            elif fname.split('.')[-1] in Settings.get('ocr.inputformat'):  # image formats
+                                if os.path.exists(fname):
+                                    with open(fname, 'rb') as f:
+                                        imgstr = base64.b64encode(f.read())
+                                    return render_template('print.alarm_original.html', alarm=alarm, txtstr="", imgstr=imgstr, imgmime="image/{}".format(fname.split('.')[-1]))
+                            elif fname.split('.')[-1] in Settings.get('ocr.inputtextformat'):
+                                if os.path.exists(fname):
+                                    with codecs.open(fname, 'r', encoding='utf-8') as f:
+                                        txtstr = f.read()
+                                    return render_template('print.alarm_original.html', alarm=alarm, txtstr=txtstr, imgstr="", imgmime="")
+                            else:
+                                params.update({'path': current_app.config.get('PATH_DONE')})
+                                return render_template('print.{}.html'.format(params['style']), **params)
                         else:
                             return render_template('print.{}.html'.format(params['style']), **params)
                     except TemplateNotFound:

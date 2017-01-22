@@ -3,7 +3,11 @@
     </head>
     <body>
     {% block body %}
-        <h2 style="text-align:right">ORIGINAL FAX</h2>
+        {% if imgstr != "" %}
+        <img src="data:{{ imgmime }};base64,{{ imgstr }}">
+        {% elif txtstr != "" %}
+        <p>{{ txtstr|markdown }}</p>
+        {% endif %}
     {% endblock %}
     </body>
 </html>
