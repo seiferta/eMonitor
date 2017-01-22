@@ -23,6 +23,10 @@
             return confirm('{{ _('streets.delquestion') }}');
         }
 
+        function questionDelAll(){
+            return confirm('{{ _('streets.delallquestion') }}');
+        }
+
         function checkAdd(){
             return (document.getElementById('add_name').value!="");
         }
@@ -52,11 +56,12 @@
     {% endif %}
 
     <form method="post">
-        <div class="headrow" style="border-bottom:1px solid black;">
+        <div class="headrow" style="border-bottom:1px solid black;padding-right:40px;position:relative;">
             {{ _('streets.filterlabel') }}: <a href="#" onclick="return filter('')">{{ _('streets.filterall') }}</a>
             {%- for char in chars %}
             | <a href="#" onclick="return filter('{{ char }}')">{{ char }}</a>
             {%- endfor %}
+            <button class="add" type="submit" name="action" value="deleteallsteets_{{ city.id }}" title="{{ _('streets.deletealltitle') }}" style="position:absolute;right:4px;top:10px;" onclick="return questionDelAll()"><i class="fa fa-trash-o fa-lg"></i></button>
         </div>
         <div class="headrow">
             <div style="margin-right:80px;margin-left:15px;">

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2016 ORGANIZATION
+# Copyright (C) 2017 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-08-31 19:38+0200\n"
+"POT-Creation-Date: 2017-01-21 19:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4286,12 +4286,12 @@ msgstr ""
 msgid "admin.streets.cities.edit..."
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:155
+#: emonitor/modules/streets/content_admin.py:162
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr ""
 
-#: emonitor/modules/streets/content_admin.py:175
+#: emonitor/modules/streets/content_admin.py:182
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr ""
@@ -4371,7 +4371,7 @@ msgid "streets.city.listtitle"
 msgstr ""
 
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:45
-#: emonitor/modules/streets/templates/admin.streets.html:51
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.nocitydef"
 msgstr ""
 
@@ -4439,76 +4439,84 @@ msgstr ""
 msgid "streets.delquestion"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:47
+#: emonitor/modules/streets/templates/admin.streets.html:27
+msgid "streets.delallquestion"
+msgstr ""
+
+#: emonitor/modules/streets/templates/admin.streets.html:52
 msgid "streets.header.overview"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:48
+#: emonitor/modules/streets/templates/admin.streets.html:53
 msgid "streets.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:56
+#: emonitor/modules/streets/templates/admin.streets.html:61
 msgid "streets.filterlabel"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:56
+#: emonitor/modules/streets/templates/admin.streets.html:61
 msgid "streets.filterall"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:63
+#: emonitor/modules/streets/templates/admin.streets.html:65
+msgid "streets.deletealltitle"
+msgstr ""
+
+#: emonitor/modules/streets/templates/admin.streets.html:69
 msgid "streets.name"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:64
+#: emonitor/modules/streets/templates/admin.streets.html:70
 msgid "streets.cityid"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:65
+#: emonitor/modules/streets/templates/admin.streets.html:71
 msgid "streets.subcity"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:66
+#: emonitor/modules/streets/templates/admin.streets.html:72
 #: emonitor/modules/streets/templates/admin.streets_edit.html:65
 msgid "streets.housenumbers"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:68
+#: emonitor/modules/streets/templates/admin.streets.html:74
 msgid "streets.addtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:73
+#: emonitor/modules/streets/templates/admin.streets.html:79
 msgid "streets.nodata"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:79
+#: emonitor/modules/streets/templates/admin.streets.html:85
 msgid "streets.inactive"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:86
+#: emonitor/modules/streets/templates/admin.streets.html:92
 msgid "streets.mapset"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:88
+#: emonitor/modules/streets/templates/admin.streets.html:94
 msgid "streets.deletetitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:89
+#: emonitor/modules/streets/templates/admin.streets.html:95
 msgid "streets.edittitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:96
+#: emonitor/modules/streets/templates/admin.streets.html:102
 msgid "streets.itemscount"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:101
+#: emonitor/modules/streets/templates/admin.streets.html:107
 msgid "streets.loadtitle"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:102
+#: emonitor/modules/streets/templates/admin.streets.html:108
 msgid "streets.load.info"
 msgstr ""
 
-#: emonitor/modules/streets/templates/admin.streets.html:103
+#: emonitor/modules/streets/templates/admin.streets.html:109
 msgid "streets.loadbutton"
 msgstr ""
 

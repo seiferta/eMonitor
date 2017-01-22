@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-08-31 19:38+0200\n"
-"PO-Revision-Date: 2016-08-31 19:39+0200\n"
+"POT-Creation-Date: 2017-01-21 19:08+0100\n"
+"PO-Revision-Date: 2017-01-21 19:31+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language: de\n"
 "Language-Team: de <arne@seifert-online.net>\n"
@@ -4553,12 +4553,12 @@ msgstr "Straße (text)"
 msgid "admin.streets.cities.edit..."
 msgstr "..."
 
-#: emonitor/modules/streets/content_admin.py:155
+#: emonitor/modules/streets/content_admin.py:162
 #, python-format
 msgid "%(i)s admin.streets.cities.osmcitiesadded"
 msgstr "%(i)s Städte/Orte wurden hinzugefügt."
 
-#: emonitor/modules/streets/content_admin.py:175
+#: emonitor/modules/streets/content_admin.py:182
 #, python-format
 msgid "%(i)s admin.streets.osmstreetsadded"
 msgstr "%(i)s Straßen wurden hinugefügt"
@@ -4640,7 +4640,7 @@ msgid "streets.city.listtitle"
 msgstr "Ortsliste"
 
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:45
-#: emonitor/modules/streets/templates/admin.streets.html:51
+#: emonitor/modules/streets/templates/admin.streets.html:56
 msgid "streets.nocitydef"
 msgstr ""
 "Definition des Ortes unvollständig: Es muss mindestens ein Ort/eine Stadt "
@@ -4717,84 +4717,92 @@ msgstr "Städte/Orte importieren"
 msgid "streets.delquestion"
 msgstr "Soll der gewählte Straße wirklich gelöscht werden?"
 
-#: emonitor/modules/streets/templates/admin.streets.html:47
+#: emonitor/modules/streets/templates/admin.streets.html:27
+msgid "streets.delallquestion"
+msgstr "Sollen alle Straßen des gewählten Ortes gelöscht werden?"
+
+#: emonitor/modules/streets/templates/admin.streets.html:52
 msgid "streets.header.overview"
 msgstr "Straßenübersicht"
 
-#: emonitor/modules/streets/templates/admin.streets.html:48
+#: emonitor/modules/streets/templates/admin.streets.html:53
 msgid "streets.info"
 msgstr ""
 "In der Straßenübersicht werden die Straßen abhängig vom Ort angezeigt. Für jede "
 "Straße kann ein Kartenausschnitt definiert werden, der standardmäßig verwendet "
 "werden soll. Jeder Straße muss ein Ort zugeordnet werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:56
+#: emonitor/modules/streets/templates/admin.streets.html:61
 msgid "streets.filterlabel"
 msgstr "Filtern nach"
 
-#: emonitor/modules/streets/templates/admin.streets.html:56
+#: emonitor/modules/streets/templates/admin.streets.html:61
 msgid "streets.filterall"
 msgstr "Alle"
 
-#: emonitor/modules/streets/templates/admin.streets.html:63
+#: emonitor/modules/streets/templates/admin.streets.html:65
+msgid "streets.deletealltitle"
+msgstr "Alle Straßen löschen"
+
+#: emonitor/modules/streets/templates/admin.streets.html:69
 msgid "streets.name"
 msgstr "Straßenname"
 
-#: emonitor/modules/streets/templates/admin.streets.html:64
+#: emonitor/modules/streets/templates/admin.streets.html:70
 msgid "streets.cityid"
 msgstr "Zugeordnet zu Ort"
 
-#: emonitor/modules/streets/templates/admin.streets.html:65
+#: emonitor/modules/streets/templates/admin.streets.html:71
 msgid "streets.subcity"
 msgstr "Ortsteil"
 
-#: emonitor/modules/streets/templates/admin.streets.html:66
+#: emonitor/modules/streets/templates/admin.streets.html:72
 #: emonitor/modules/streets/templates/admin.streets_edit.html:65
 msgid "streets.housenumbers"
 msgstr "# Haus-Nr."
 
-#: emonitor/modules/streets/templates/admin.streets.html:68
+#: emonitor/modules/streets/templates/admin.streets.html:74
 msgid "streets.addtitle"
 msgstr "Straße hinzufügen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:73
+#: emonitor/modules/streets/templates/admin.streets.html:79
 msgid "streets.nodata"
 msgstr "- keine Straßen definiert -"
 
-#: emonitor/modules/streets/templates/admin.streets.html:79
+#: emonitor/modules/streets/templates/admin.streets.html:85
 msgid "streets.inactive"
 msgstr ""
 "Straße ist nicht als 'aktiv' markiert und taucht somit auch nicht in der Suche "
 "auf"
 
-#: emonitor/modules/streets/templates/admin.streets.html:86
+#: emonitor/modules/streets/templates/admin.streets.html:92
 msgid "streets.mapset"
 msgstr "Kartenposition gesetzt"
 
-#: emonitor/modules/streets/templates/admin.streets.html:88
+#: emonitor/modules/streets/templates/admin.streets.html:94
 msgid "streets.deletetitle"
 msgstr "Straße löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:89
+#: emonitor/modules/streets/templates/admin.streets.html:95
 msgid "streets.edittitle"
 msgstr "Straße bearbeiten"
 
-#: emonitor/modules/streets/templates/admin.streets.html:96
+#: emonitor/modules/streets/templates/admin.streets.html:102
 msgid "streets.itemscount"
 msgstr "(%(count)s Straßen vorhanden)"
 
-#: emonitor/modules/streets/templates/admin.streets.html:101
+#: emonitor/modules/streets/templates/admin.streets.html:107
 msgid "streets.loadtitle"
 msgstr "Straßen von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.html:102
+#: emonitor/modules/streets/templates/admin.streets.html:108
 msgid "streets.load.info"
 msgstr ""
 "Über OpenStreetMap können automatisch alle Straßen geladen werden, die dem "
 "akutellen Ort zugeordnet sind. Anschließend können einzelne Straßen ins System "
 "eingespielt werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:103
+#: emonitor/modules/streets/templates/admin.streets.html:109
 msgid "streets.loadbutton"
 msgstr "Straßen laden"
 

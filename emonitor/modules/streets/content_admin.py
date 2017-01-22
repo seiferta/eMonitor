@@ -94,6 +94,13 @@ def getAdminContent(self, **params):
                     db.session.commit()
                     cache.clear()
 
+                elif request.form.get('action', '').startswith('deleteallsteets_'):
+                    print "delete all streets of", request.form.get('action').split('_')[-1]
+                    for s in Street.getStreets(cityid=request.form.get('action').split('_')[-1]):
+                        db.session.delete(s)
+                    db.session.commit()
+                    cache.clear()
+
                 elif request.form.get('action') == 'savestreet':  # save street
                     if request.form.get('street_id') != 'None':  # update existing street
                         street = Street.getStreets(id=request.form.get('street_id'))
