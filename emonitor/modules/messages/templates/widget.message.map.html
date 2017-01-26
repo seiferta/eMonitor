@@ -7,6 +7,7 @@
     .leaflet-tile{filter:grayscale(100%);-webkit-filter:grayscale(100%)}
     div#messagemap{position:absolute;top:0;left:0;bottom:0;right:0;}
     div#messagetext{position:absolute;{% if 'r' in message.get('textposition') %}right:10px{% else %}left:10px{% endif %};{% if 't' in message.get('textposition') %}top:10px{% else %}bottom:0{% endif %};width:auto;height:auto;margin-bottom:30px;padding:0 20px;background-color:#000;opacity: 0.7;-moz-opacity:.7;-ms-filter:"alpha(opacity=70)";filter:alpha(opacity=70)}
+    div.leaflet-bottom.leaflet-right{display:none;}
 </style>
 <div id="messagemap"></div>
 <div id="messagetext">{{ message.get('text')|rst }}</div>

@@ -34,9 +34,11 @@
 <script>
     function openMap() {
         $.post("/data/messages?action=mapconfig", {config: $('#messagesmapconfig').val(), messageid: '{{ message.id }}', type: $('#messagetype').val()})
-            .done(function(result){
+            .success(function(result){
                 parent.$('#overlaycontent').html(result);
                 parent.$('.overlay').toggle();
+                var b = parent.$('.overlay').find('button#load');
+                b.click();
                 return false;
             });
     }

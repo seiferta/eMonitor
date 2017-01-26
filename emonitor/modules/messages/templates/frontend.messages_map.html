@@ -9,6 +9,7 @@
     .leaflet-tile{filter:grayscale(100%);-webkit-filter:grayscale(100%)}
     .leaflet-control-zoom-home {text-indent: -999em;background: #fff url(data:image/gif;base64,R0lGODlhGAAYAOZdACIiIiMjIy8vLyoqKsPDwzMzM0xMTDQ0NGlpaUtLS+Tk5J2dnXd3d7m5ueDg4GdnZykpKSYmJkpKSre3t09PT5eXl4KCgrCwsHNzc1lZWWhoaCcnJ5ubm3R0dFJSUp+fn1RUVJqamoODg8TExD09PYqKijo6OpGRkV1dXVFRUUNDQ3FxcZmZmYCAgEVFRXV1dSgoKIaGhlxcXEdHR5SUlMvLy5iYmNXV1VNTU7GxsbOzs9ra2jExMdbW1isrKywsLFtbW6qqqnh4eGpqat3d3XBwcI2NjWRkZLi4uL+/vyUlJZycnNvb297e3r6+vvf392VlZcbGxq2trWFhYWZmZszMzE5OTsDAwG1tbZWVlZaWlqGhod/f3////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAF0ALAAAAAAYABgAQAf/gF2Cg10KLFASAgISVBWEhFkAklaPlT0Rkpk2XRCZnj4oEwQknp4Dgw0BAFqPLZ0ZFJ4BDYICpSWEURNBpZ4Cgx+qvQAmgjs4AAEflV1XBckgShkJEQeeBUmPLwAezF0jKTqDGJkdXQaZLt5dTj/DCRq9MDldHgAbw5kPhdb5AAkXBpXAd0ABMyED8g1gsE6QAwwJhw3oQMQbB1UyRlSpQeDJAiClAoQg5OCZkUrPAGzpImJIpgJNBHWKIMUbF0FMGsTIdOpBphUNb5jo9cBWJgveLOQTgM6TihOCjkgq4s9AiGEUHFyoMMUfAA5dGHjFooEHDQSkMjEUREBYPiSDHEQkI1CJQL9SM5aAkHSAbsMuCxAYUGQAwQJvgQAAOw==) no-repeat scroll center center;background-size: 12px 12px;}
     .leaflet-control-zoom-home:focus { outline: 0;}
+    div.leaflet-bottom.leaflet-right{display:none;}
 </style>
 <script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
 <script type="text/javascript" language="javascript" src="/messages/inc/leaflet.awesome-markers.min.js"> </script>
@@ -29,11 +30,17 @@
     <li id="pin"><i class="fa fa-map-pin fa-2x" style="color:red"></i></li>
     <li id="wrench"><i class="fa fa-wrench fa-2x" style="color:red"></i></li>
     <li id="marker"><i class="fa fa-map-marker fa-2x" style="color:red"></i></li>
-</ul>
+</ul><button type="button" onclick="loadMap()" id="load" style="display:none">load</button>
 <button type="button" style="position:absolute;right:35px;bottom:30px;" onclick="setConfig()">{{ _('messages.map.save') }}</button>
 
 <script>
-    var x = $('#messages').contents().find('#messagesmapconfig');
+    for(var z =0;z<parent.frames.length; z++){
+        v = parent.frames[z].$('#messagesmapconfig');
+        if(typeof v.val() != "undefined"){
+            var x = v;
+            break;
+        }
+    }
     var markers = {'exclamation': {icon: 'exclamation-circle fa-3x', class_name:'red', iconColor: 'red', prefix: 'fa', spin: false},
             'ban': {icon: 'ban fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
             'minus': {icon: 'minus-circle fa-3x', iconColor: 'red', prefix: 'fa', spin: false},
@@ -60,12 +67,15 @@
         l = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
     {%- endif -%}
 
-    $(document).ready( function() {
+
+    function loadMap() {
+        messagemap.addLayer(l);
         $("#selectable").selectable();
-
-        messagemap.setView(new L.latLng(startlat, startlng), startzoom).addLayer(l).on('click', addMarkerClick);
+        messagemap.setView(new L.latLng(startlat, startlng), startzoom).on('click', addMarkerClick);
         setTimeout(function(){ messagemap.invalidateSize();$('#messagemap').show();}, 400);
+    }
 
+    $(document).ready( function() {
         if(x.val()!=""){
             var data = JSON.parse(x.val());
             if(data.lat && data.lng && data.zoom){
