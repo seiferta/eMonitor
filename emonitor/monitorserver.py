@@ -8,12 +8,13 @@ import traceback
 import random
 import logging
 import urllib
+import re
 from emonitor.extensions import db, events, signal
 from emonitor.modules.events.eventhandler import Eventhandler
 from emonitor.modules.monitors.monitor import Monitor, MonitorLayout
 from emonitor.modules.alarms.alarm import Alarm
 
-
+re_ip = re.compile('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
@@ -41,9 +42,10 @@ class MonitorServer:
         self.MCAST_PORT = app.config.get('MONITORSERVER_MCAST_PORT', 1600)
         self.host = app.config.get('HOST', '')
 
-        ip = socket.gethostbyname(socket.gethostname())
-        if ip and self.host != ip:
-            self.host = ip
+        if not re_ip.match(self.host):
+            ip = socket.gethostbyname(socket.gethostname())
+            if ip and self.host != ip:
+                self.host = ip
         self.port = app.config.get('PORT')
 
         signal.addSignal('monitorserver', 'clientsearchstart')

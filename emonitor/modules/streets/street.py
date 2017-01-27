@@ -22,7 +22,7 @@ class Street(db.Model):
     osmid = db.Column(db.Integer, default=0)
 
     city = relationship("City", backref="cities", lazy='joined')
-    housenumbers = relationship(Housenumber.__name__, backref="streets", lazy='subquery', order_by=Housenumber.number)
+    housenumbers = relationship(Housenumber.__name__, backref="streets", lazy='subquery', order_by=Housenumber.number, cascade="all, delete-orphan")
 
     def __init__(self, name, navigation, cityid, subcity, lat, lng, zoom, active, osmid):
         self.name = name

@@ -97,6 +97,5 @@ class MapWidget(MonitorWidget):
                 config['lng'] = Settings.get('defaultLng')
             config['map'] = Map.getDefaultMap()
             kwargs.update(**config)
-            #print ">>>>>", kwargs
             return render_template("frontend.messages_map.html", **kwargs)
         return ""

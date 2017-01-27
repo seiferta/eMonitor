@@ -2,6 +2,7 @@ import os
 import codecs
 import logging
 import re
+import tempfile
 from flask import current_app, Markup
 from math import ceil
 from xhtml2pdf import pisa
@@ -237,7 +238,11 @@ class Module:
 
         pdf = StringIO()
         try:
-            pisa.CreatePDF(StringIO(pdfdata), pdf, link_callback=link_callback)
+            if "<html>" in pdfdata:  # convert html to pdf
+                pisa.CreatePDF(StringIO(pdfdata), pdf, link_callback=link_callback)
+            else:  # data still in pdf format
+                return pdfdata
+
         except AttributeError:
             logger.debug('AttributeError in pdf creation')
 

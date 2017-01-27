@@ -38,7 +38,7 @@ class DEFAULT_CONFIG(object):
     DEBUG = False
     TESTING = False
     
-    #PORT = 8080                                          # default webserver port
+    PORT = 5000                                           # default webserver port
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 60
     SECRET_KEY = 'secret key'                             # default key, overwrite in cfg
@@ -58,7 +58,7 @@ class DEFAULT_CONFIG(object):
     OBSERVERINTERVAL = 2                                # interval for folderobserver
     MONITORPING = 2                                     # monitor ping in minutes
 
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     TELEGRAMKEY = "botid"
 
@@ -95,14 +95,16 @@ def configure_app(app, config=None):
     if not config:
         app.config.from_object(DEFAULT_CONFIG)
     else:
-        app.config.from_object(config)
-    try:
-        app.config.from_pyfile('emonitor.cfg', silent=False)
-    except IOError:
-        try:
-            app.config.from_pyfile('../emonitor.cfg')
-        except:
-            print "config file 'emonitor.cfg' not found"
+        app.config.from_object(DEFAULT_CONFIG)  # use default values from object
+        try:  # add additional attributes from file
+            if os.path.exists(config):
+                app.config.from_pyfile('{}'.format(config), silent=False)
+            elif os.path.exists('emonitor.cfg'):
+                app.config.from_pyfile('emontior.cfg', silent=False)
+            else:
+                print "no config file found, using DEFAULT_CONFIG"
+        except IOError:
+            print "no config file or default found"
             sys.exit()
 
     # create missing directories of config
@@ -248,7 +250,6 @@ def configure_logging(app):
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
     accesslogger = logging.getLogger('werkzeug')
-
     if app.debug:
         accesslogger.propagate = False
         file_handler = RotatingFileHandler('{}{}-access.log'.format(app.config.get('PATH_DATA'), app.name), maxBytes=1024 * 1024 * 100, backupCount=20)
@@ -263,6 +264,8 @@ def configure_logging(app):
                 lo.setLevel(app.config.get('LOGLEVEL', logging.DEBUG))
     else:
         accesslogger.setLevel(logging.ERROR)
+        for l in [l for l in logging.Logger.manager.loggerDict if l.startswith(app.name.lower())]:
+            logging.getLogger(l).setLevel(app.config.get('LOGLEVEL', logging.ERROR))
 
     logger = logging.getLogger('alembic.runtime.migration')
     logger.setLevel(logging.ERROR)
