@@ -71,6 +71,9 @@ class Printers(db.Model):
         :param params: checks for *alarmid*
         """
         from emonitor import app
+        ctx = app.test_request_context('/')  # add dummy request
+        ctx.push()
+
         pl = PrintLayout('{}.{}'.format(self.module, self.layout))
         _params = {}
         for p in pl.getParameters(self.settings[1].split(';')):  # load parameters from printer definition
