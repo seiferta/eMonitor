@@ -213,7 +213,11 @@ class GenericAlarmFaxChecker(AlarmFaxChecker):
                 repl = difflib.get_close_matches(m.groupdict()['street'] or m.groupdict()['streetname'], [s.name for s in streets], 1)
                 if len(repl) > 0:
                     _streets = [s for s in filter(lambda s: s.name == repl[0], streets)]
-                    if len(_streets) > 0:
+                    if len(_streets) > 0:  # multiple streets found
+                        for _s in _streets:
+                            if _s.city.id == GenericAlarmFaxChecker().fields.get('city', ('', '0'))[1]:
+                                _streets = [_s]  # set correct street
+                                break
                         field.value = (_streets[0].name, _streets[0].id)
                         if not re.match(alarmtype.translation(u'_street_'), field.value[0][1]) and 'part' not in options:  # ignore 'street' value and part-address
                             GenericAlarmFaxChecker().fields['streetno'] = (m.groupdict()['housenumber'], 0)
