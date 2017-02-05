@@ -1,7 +1,8 @@
 import logging
 import serial
-import io
+import time
 from emonitor.extensions import events
+from flask import current_app
 from .extensions import scheduler
 
 logger = logging.getLogger(__name__)
@@ -10,6 +11,12 @@ events.addEvent('incoming_serial_data', handlers=[], parameters=['out.text'])
 
 
 def handleIncomingData(data):
+    timestr = "alarm{}.log".format(time.strftime("%Y%m%d-%H%M%S"))
+    fname = "{}{}".format(current_app.config.get('PATH_DATA'), timestr)
+    text_file = open(fname, "w")
+    text_file.write(data)
+    text_file.close()
+    logger.debug('Incoming serial alarm message: {}'.format(data))
     events.raiseEvent('incoming_serial_data', text=data)
 
 def readFromPort(ser):
@@ -54,6 +61,7 @@ def observeSerialPort(**kwargs):
 
         if ser.is_open:
             connected = True
+            logger.info(u"Port {} successfully opened".format(port))
             _jobserver = scheduler.add_job(readFromPort,
                                            kwargs={'ser': ser,});
         else:
