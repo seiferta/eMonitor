@@ -432,18 +432,20 @@ def processFile(incomepath, filename):
 
                 for p in handler.getParameterList():
                     try:
-                        res.append(u'{}:{}'.format(p, params[p.split('.')[1]]))
+                        res.append(u'{}:\n{}'.format(p, params[p.split('.')[1]].strip()))
                     except:
                         try:
                             if p.split(u'.')[1] in params.keys():
-                                res = [u'{}:{}'.format(p, params[p.split('.')[1]])]
+                                res = [u'{}:\n{}\n'.format(p, params[p.split('.')[1]].strip())]
                             else:
-                                res = [u'<b>error: key not found:</b> <em>{}</em><br>'.format(p.split('.')[1])]
-                                if not params.get('error'):
-                                    params['error'] = ""
-                                params['error'] += u'<b>error: key not found</b> <em>{}</em><br>'.format(p.split('.')[1])
+                                with babel.app.test_request_context('/') as ctx:
+                                    ctx.push()
+                                    res = [u'<b style="color:red">{}</b><br>'.format(babel.gettext('alarm.testcontext.parametererror').format(p))]
+                                    params['error'] = babel.gettext('alarm.handler.missing.parameter').format(p, babel.gettext(handler.handler))
+                                    ctx.pop()
                         except:
                             signal.send('alarm', 'testupload_start', result='done')
+                res = "\n".join(res)
                 if u'error' in params.keys():
                     signal.send('alarm', 'testupload_start', result=res, handler=handler.handler.split('.')[-1], protocol=params['time'][-1], error=params['error'])
                 else:

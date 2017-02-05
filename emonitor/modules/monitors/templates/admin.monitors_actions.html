@@ -19,9 +19,9 @@
         <p>
             <label>{{ _('monitors.orientation') }}:<br/>
                 <select name="edit_orientation" style="width:99%">
-                    {% for orientation in orientations %}
-                    <option value="{{ loop.index0 }}">{{ _(orientation) }}</option>
-                    {% endfor %}
+                    {%- for orientation in orientations %}
+                    <option value="{{ loop.index0 }}"{%- if monitor.orientation == loop.index0 %} selected="selected"{%- endif %}>{{ _(orientation) }}</option>
+                    {%- endfor %}
                 </select>
             </label>
         </p>

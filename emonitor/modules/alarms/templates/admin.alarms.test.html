@@ -28,8 +28,8 @@
             <input id="uploadfile" type="file" size="45" name="uploadfile" class="input" style="display:inline;height:24px;">
             <button type="submit" value="Start" style="height:24px"><i class="fa fa-upload"></i> {{ _('alarms.test.start') }}</button>
             <input type="hidden" name="filename" id="filename"/><br/>
-            <div id="state" style="display:none;padding-top:5px;"> <img src="/admin/img/loading.gif"/> {{ _('alarms.test.step2') }}</div>
         </p>
+        <div id="state" style="display:none;padding-top:5px;"> <img src="/admin/img/loading.gif"/> {{ _('alarms.test.step2') }}</div>
     </form>
     <div id="result"></div>
 {% endblock %}
@@ -57,17 +57,20 @@
             testsocket.send("add.alarms.testupload_start");
          };
          testsocket.onmessage = function (evt) {
-            var data = JSON.parse(evt.data);
-            if(data.handler){ $('#result > div#vtab > ul').append('<li>'+data.handler+'</li>');}
+            var data = JSON.parse(evt.data + '');
+            if(data.handler){
+                $('#result > div#vtab > ul').append('<li>'+data.handler+'</li>');
+                $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em><div><p style="padding-top:40px;">{{ _('alarms.test.nooutput') }}</p></div></div>');
+            }
             if(data.result){
                 if(data.result == 'done'){
                     $('#state').hide();
                 }else{
                     (data.error) ? err='<p class="error">'+data.error+'</p>': err='';
                     if(data.result!=""){
-                        $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'<pre>'+data.result+'</pre></div>');
+                        $('#result > div#vtab div:last-child > div').html(err+'<pre>'+data.result+'</pre>');
                     }else{
-                        $('#result > div#vtab').append('<div><p><strong>{{ _('alarms.test.protocol') }}</strong></p><em>'+data.protocol+'</em>'+err+'</div>');
+                        $('#result > div#vtab div:last-child > div').html(err);
                     }
                     $("#vtab ul li:not(:last-child)").removeClass('selected');
                     $("#vtab ul li:last-child").addClass('selected');

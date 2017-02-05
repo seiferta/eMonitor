@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-21 19:08+0100\n"
-"PO-Revision-Date: 2017-01-21 19:31+0100\n"
+"POT-Creation-Date: 2017-02-05 01:08+0100\n"
+"PO-Revision-Date: 2017-02-05 01:09+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language: de\n"
 "Language-Team: de <arne@seifert-online.net>\n"
@@ -785,8 +785,7 @@ msgid "emonitor.modules.alarms.alarmtype.AlarmTypes"
 msgstr "Alarm-Typ"
 
 #: emonitor/modules/alarms/__init__.py:122
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:68
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:70
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:63
 msgid "alarms.test.protocol"
 msgstr "Verarbeitungs-Protokoll"
 
@@ -827,7 +826,7 @@ msgstr "abgeschlossen"
 msgid "archive"
 msgstr "archiviert"
 
-#: emonitor/modules/alarms/__init__.py:132 emonitor/modules/alarms/alarm.py:353
+#: emonitor/modules/alarms/__init__.py:132 emonitor/modules/alarms/alarm.py:355
 msgid "alarms.statechangeactivated"
 msgstr "Einsatz aktiviert"
 
@@ -1025,7 +1024,7 @@ msgstr "Einfach"
 msgid "alarms.fields.persons.field.style.extended"
 msgstr "Erweitert"
 
-#: emonitor/modules/alarms/alarm.py:296
+#: emonitor/modules/alarms/alarm.py:298
 msgid "alarms.routingerror"
 msgstr "Fehler bei der Anfahrtsberechnung"
 
@@ -1080,6 +1079,16 @@ msgstr "Auf"
 #: emonitor/modules/alarms/alarmutils.py:399
 msgid "alarms.print.straightexit"
 msgstr "nehmen"
+
+#: emonitor/modules/alarms/alarmutils.py:443
+msgid "alarm.testcontext.parametererror"
+msgstr "Parameter <em>'{}'</em>nicht gefunden"
+
+#: emonitor/modules/alarms/alarmutils.py:444
+msgid "alarm.handler.missing.parameter"
+msgstr ""
+"<b>Fehler:</b> Notwendiger Parameter <em>'{}'</em> für Event-Handler <em>'{}'</"
+"em> wurde nicht gefunden/konfiguriert.<br>"
 
 #: emonitor/modules/alarms/content_admin.py:283
 msgid "admin.alarms.checkernotvalid"
@@ -1392,7 +1401,7 @@ msgstr "Beispiel-Datei hochladen"
 msgid "alarms.test.start"
 msgstr "Datei hochladen und verarbeiten"
 
-#: emonitor/modules/alarms/templates/admin.alarms.test.html:31
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:32
 msgid "alarms.test.step2"
 msgstr " Aktionen werden ausgeführt"
 
@@ -1401,6 +1410,10 @@ msgid "alarms.text.wrongfile.msg"
 msgstr ""
 "Falscher Dateityp: Der hochgeladene Dateityp wird nicht als Ausgangsformat "
 "unterstützt."
+
+#: emonitor/modules/alarms/templates/admin.alarms.test.html:63
+msgid "alarms.test.nooutput"
+msgstr "- keine Rückgabewerte in diesem Schritt -"
 
 #: emonitor/modules/alarms/templates/admin.alarms.type.html:12
 msgid "alarms.type.delquestion"
@@ -3186,23 +3199,23 @@ msgstr "Symbole auf der Karte platzieren"
 msgid "messages.map.save"
 msgstr "Speichern"
 
-#: emonitor/modules/messages/templates/frontend.messages_map.html:100
+#: emonitor/modules/messages/templates/frontend.messages_map.html:109
 msgid "messages.map.deletemarker"
 msgstr "Marker löschen"
 
-#: emonitor/modules/messages/templates/frontend.messages_map.html:102
+#: emonitor/modules/messages/templates/frontend.messages_map.html:111
 msgid "messages.map.changecolor.red"
 msgstr "Rot färben"
 
-#: emonitor/modules/messages/templates/frontend.messages_map.html:103
+#: emonitor/modules/messages/templates/frontend.messages_map.html:112
 msgid "messages.map.changecolor.blue"
 msgstr "Blau färben"
 
-#: emonitor/modules/messages/templates/frontend.messages_map.html:104
+#: emonitor/modules/messages/templates/frontend.messages_map.html:113
 msgid "messages.map.changecolor.green"
 msgstr "Grün färben"
 
-#: emonitor/modules/messages/templates/frontend.messages_map.html:105
+#: emonitor/modules/messages/templates/frontend.messages_map.html:114
 msgid "messages.map.changecolor.orange"
 msgstr "Orange färben"
 
@@ -3552,6 +3565,7 @@ msgid "monitor.testpage"
 msgstr "Testseite"
 
 #: emonitor/modules/monitors/templates/frontend.monitors.html:80
+#: emonitor/modules/monitors/templates/frontend.monitors.html:81
 msgid "monitor.layout.changed"
 msgstr "Der neue Inhalt wurde an den Bildschirm geschickt"
 
@@ -4640,7 +4654,7 @@ msgid "streets.city.listtitle"
 msgstr "Ortsliste"
 
 #: emonitor/modules/streets/templates/admin.streets.city_list.html:45
-#: emonitor/modules/streets/templates/admin.streets.html:56
+#: emonitor/modules/streets/templates/admin.streets.html:55
 msgid "streets.nocitydef"
 msgstr ""
 "Definition des Ortes unvollständig: Es muss mindestens ein Ort/eine Stadt "
@@ -4721,88 +4735,88 @@ msgstr "Soll der gewählte Straße wirklich gelöscht werden?"
 msgid "streets.delallquestion"
 msgstr "Sollen alle Straßen des gewählten Ortes gelöscht werden?"
 
-#: emonitor/modules/streets/templates/admin.streets.html:52
+#: emonitor/modules/streets/templates/admin.streets.html:51
 msgid "streets.header.overview"
 msgstr "Straßenübersicht"
 
-#: emonitor/modules/streets/templates/admin.streets.html:53
+#: emonitor/modules/streets/templates/admin.streets.html:52
 msgid "streets.info"
 msgstr ""
 "In der Straßenübersicht werden die Straßen abhängig vom Ort angezeigt. Für jede "
 "Straße kann ein Kartenausschnitt definiert werden, der standardmäßig verwendet "
 "werden soll. Jeder Straße muss ein Ort zugeordnet werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:61
+#: emonitor/modules/streets/templates/admin.streets.html:60
 msgid "streets.filterlabel"
 msgstr "Filtern nach"
 
-#: emonitor/modules/streets/templates/admin.streets.html:61
+#: emonitor/modules/streets/templates/admin.streets.html:60
 msgid "streets.filterall"
 msgstr "Alle"
 
-#: emonitor/modules/streets/templates/admin.streets.html:65
+#: emonitor/modules/streets/templates/admin.streets.html:64
 msgid "streets.deletealltitle"
 msgstr "Alle Straßen löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:69
+#: emonitor/modules/streets/templates/admin.streets.html:68
 msgid "streets.name"
 msgstr "Straßenname"
 
-#: emonitor/modules/streets/templates/admin.streets.html:70
+#: emonitor/modules/streets/templates/admin.streets.html:69
 msgid "streets.cityid"
 msgstr "Zugeordnet zu Ort"
 
-#: emonitor/modules/streets/templates/admin.streets.html:71
+#: emonitor/modules/streets/templates/admin.streets.html:70
 msgid "streets.subcity"
 msgstr "Ortsteil"
 
-#: emonitor/modules/streets/templates/admin.streets.html:72
+#: emonitor/modules/streets/templates/admin.streets.html:71
 #: emonitor/modules/streets/templates/admin.streets_edit.html:65
 msgid "streets.housenumbers"
 msgstr "# Haus-Nr."
 
-#: emonitor/modules/streets/templates/admin.streets.html:74
+#: emonitor/modules/streets/templates/admin.streets.html:73
 msgid "streets.addtitle"
 msgstr "Straße hinzufügen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:79
+#: emonitor/modules/streets/templates/admin.streets.html:78
 msgid "streets.nodata"
 msgstr "- keine Straßen definiert -"
 
-#: emonitor/modules/streets/templates/admin.streets.html:85
+#: emonitor/modules/streets/templates/admin.streets.html:84
 msgid "streets.inactive"
 msgstr ""
 "Straße ist nicht als 'aktiv' markiert und taucht somit auch nicht in der Suche "
 "auf"
 
-#: emonitor/modules/streets/templates/admin.streets.html:92
+#: emonitor/modules/streets/templates/admin.streets.html:91
 msgid "streets.mapset"
 msgstr "Kartenposition gesetzt"
 
-#: emonitor/modules/streets/templates/admin.streets.html:94
+#: emonitor/modules/streets/templates/admin.streets.html:93
 msgid "streets.deletetitle"
 msgstr "Straße löschen"
 
-#: emonitor/modules/streets/templates/admin.streets.html:95
+#: emonitor/modules/streets/templates/admin.streets.html:94
 msgid "streets.edittitle"
 msgstr "Straße bearbeiten"
 
-#: emonitor/modules/streets/templates/admin.streets.html:102
+#: emonitor/modules/streets/templates/admin.streets.html:101
 msgid "streets.itemscount"
 msgstr "(%(count)s Straßen vorhanden)"
 
-#: emonitor/modules/streets/templates/admin.streets.html:107
+#: emonitor/modules/streets/templates/admin.streets.html:106
 msgid "streets.loadtitle"
 msgstr "Straßen von OpenStreetMap laden"
 
-#: emonitor/modules/streets/templates/admin.streets.html:108
+#: emonitor/modules/streets/templates/admin.streets.html:107
 msgid "streets.load.info"
 msgstr ""
 "Über OpenStreetMap können automatisch alle Straßen geladen werden, die dem "
 "akutellen Ort zugeordnet sind. Anschließend können einzelne Straßen ins System "
 "eingespielt werden."
 
-#: emonitor/modules/streets/templates/admin.streets.html:109
+#: emonitor/modules/streets/templates/admin.streets.html:108
 msgid "streets.loadbutton"
 msgstr "Straßen laden"
 
