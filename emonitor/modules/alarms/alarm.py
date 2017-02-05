@@ -513,9 +513,14 @@ class Alarm(db.Model):
                 t = datetime.datetime.now()
             alarm.timestamp = t
 
-            kwargs['fields'] = ''  # set evaluated fields from fax
-            for k in alarm_fields:
-                kwargs['fields'] = u'{}\n-{}:\n  {}'.format(kwargs.get('fields'), k, alarm_fields[k])
+            kwargs['id'] = u'<ul><li>-test-</li></ul>'  # add dummy id
+            kwargs['fields'] = u'<ul>'  # set evaluated fields from fax
+            for k in sorted(alarm_fields):  # add field values as unicode string
+                if len(alarm_fields[k]) > 1:
+                    kwargs['fields'] = u'{}<li><b>{}:</b>\n   <small style="color:silver">value:</small> "{}" &rarr; <small style="color:silver">id:</small> {}</li>'.format(kwargs.get('fields'), k, alarm_fields[k][0], alarm_fields[k][1])
+                else:
+                    kwargs['fields'] = u'{}<li><b>{}:</b>\n  <small style="color:silver">value:</small> "{}"</li>'.format(kwargs.get('fields'), k, alarm_fields[k])
+            kwargs['fields'] = kwargs.get('fields', ' ') + '</ul></pre>\n\n<h5> ALARM-Object</h5>\n<pre><ul>'
 
             if _missing == 0:  # all required parameters found
                 if kwargs.get('mode') != 'test':
@@ -593,13 +598,15 @@ class Alarm(db.Model):
                         alarm.street = Street.getStreets(id=alarm_fields.get('address')[1])
                 else:  # city not found -> build from fax
                     url = 'http://nominatim.openstreetmap.org/search'
-                    params = u'format=json&city={}&street={}'.format(alarm_fields.get('city', [u'', 0])[0].split()[0], alarm_fields.get('address', [u'', 0])[0])
-                    if alarm_fields.get('streetno'):
-                        try:
-                            params += u' {}'.format(alarm_fields.get('streetno')[0].split()[0])  # only first value
-                        except:
-                            pass
-                        alarm.set('streetno', alarm_fields.get('streetno')[0])
+
+                    if len(alarm_fields.get('city', [u'', 0])[0].split()) > 0:
+                        params = u'format=json&city={}&street={}'.format(alarm_fields.get('city', [u'', 0])[0].split()[0], alarm_fields.get('address', [u'', 0])[0])
+                        if alarm_fields.get('streetno'):
+                            try:
+                                params += u' {}'.format(alarm_fields.get('streetno')[0].split()[0])  # only first value
+                            except:
+                                pass
+                            alarm.set('streetno', alarm_fields.get('streetno')[0])
                     try:
                         r = requests.get(u'{}?{}'.format(url, params))
                         logger.debug(u'load address data from nomination with parameters: city={} street={}'.format(alarm_fields.get('city')[0].split()[0], alarm_fields.get('address', ['', 0])[0]))
@@ -607,8 +614,8 @@ class Alarm(db.Model):
                         alarm.position = _position
                     except:
                         pass
-
-                    alarm.set('city', alarm_fields.get('city')[0].split()[0])
+                    if len(alarm_fields.get('city', ['', 0])[0].split()) > 0:
+                        alarm.set('city', alarm_fields.get('city', ['', 0])[0].split()[0])
                     alarm.set('id.city', alarm_fields.get('city')[1])
                     alarm.set('address', alarm_fields.get('address', ['', 0])[0])
                     if alarm_fields.get('address', [u'', 0])[1] != 0:
@@ -787,29 +794,29 @@ class Alarm(db.Model):
                 Alarm.changeState(alarm.id, 1)  # activate alarm
                 logger.info('alarm created with id {} ({})'.format(alarm.id, (etime - stime)))
             else:
-                kwargs['fields'] = kwargs.get('fields', 'xxx') + '\n\n-------------- ALARM-Object --------------\n'
+
                 _cdict = Car.getCarsDict()
-                for a in alarm.attributes:
+                for a in sorted(alarm.attributes):
                     try:
                         if a in ['k.cars1', 'k.cars2', 'k.material']:
-                            kwargs['fields'] += '\n-%s:\n  %s -> %s' % (a, alarm.get(a), ", ".join([_cdict[int(_c)].name for _c in alarm.get(a).split(',') if _c not in ['', '0']]))
+                            kwargs['fields'] += '<li><b>%s:</b>\n   <small style="color:silver">id:</small> "%s" &rarr; "%s"</li>' % (a, alarm.get(a), ", ".join([_cdict[int(_c)].name for _c in alarm.get(a).split(',') if _c not in ['', '0']]))
                         elif a in 'id.key':
                             if alarm.get(a) > 0:
                                 _k = Alarmkey.getAlarmkeys(id=alarm.get(a))
-                                kwargs['fields'] += '\n-%s:\n  %s -> %s: %s' % (a, alarm.get(a), _k.category, _k.key)
+                                kwargs['fields'] += '<li><b>%s:</b>\n   <small style="color:silver">id:</small> "%s" &rarr; "%s: %s"</li>' % (a, alarm.get(a), _k.category, _k.key)
                             else:
-                                kwargs['fields'] += '\n-%s:\n  %s' % (a, alarm.get(a))
-                                kwargs['fields'] += '\n-key:\n  %s' % alarm._key
+                                kwargs['fields'] += '<li><b>%s:</b>\n   <small style="color:silver">value:</small> "%s"</li>' % (a, alarm.get(a))
+                                kwargs['fields'] += '<li><b>key:</b>\n   <small style="color:silver">value:</small> "%s"</li>' % alarm._key
                         elif a == 'id.address':
-                            kwargs['fields'] += '\n-%s:\n  %s -> %s' % (a, alarm.get(a), Street.getStreets(id=alarm.get(a)).name)
+                            kwargs['fields'] += '<li><b>%s:</b>\n   <small style="color:silver">id:</small> "%s" &rarr; "%s"</li>' % (a, alarm.get(a), Street.getStreets(id=alarm.get(a)).name)
                         elif a == 'id.object':
-                            kwargs['id.object'] = '\n-%s:\n  %s' % (a, alarm.get(a))
-                            kwargs['object'] = '\n-object:\n  %s' % alarm.get('object')
+                            kwargs['id.object'] = '<li><b>%s:</b>\n   <small style="color:silver">value:</small> "%s"</li>' % (a, alarm.get(a))
+                            kwargs['object'] = '<li><b>object:</b>\n   <small style="color:silver">value:</small> "%s"</li>' % alarm.get('object')
                         else:
-                            kwargs['fields'] += '\n-%s:\n  %s' % (a, alarm.get(a))
+                            kwargs['fields'] += '<li><b>%s:</b>\n   <small style="color:silver">value:</small> "%s"</li>' % (a, alarm.get(a))
                     except (AttributeError, KeyError):
-                        kwargs['fields'] += '\n-%s:\n  %s (error)' % (a, alarm.get(a))
-                kwargs['id'] = '-0'  # add dummy id
+                        kwargs['fields'] += '<li style="color:red"><b>%s:</b>\n   <small style="color:silver">value:</small> "%s" (error)</li>' % (a, alarm.get(a))
+                kwargs['fields'] += "</ul>"
                 db.session.rollback()
                 logger.info('alarm created in TESTMODE (%s)' % (etime - stime))
         except:
