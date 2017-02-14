@@ -79,7 +79,7 @@ def observeFolder(**kwargs):
         observer = Observer()
         observer.schedule(IncomeObserver(), path=path)
         observer.start()
-        logger.info(u"observe folder {} with watchdog observer".format(path))
+        #logger.info(u"observe folder {} with watchdog observer".format(path))
 
         try:
             while True:
