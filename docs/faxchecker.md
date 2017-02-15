@@ -20,19 +20,21 @@ Es hat sich gezeigt, dass eine flexiblere Lösung notwendig ist, die alleine üb
 Ausdrücke die einzelnen Felder definiert und daraus den Einsatz erstellt. Zusätzlich besteht die Möglichkeit, dass die Definition der Layouts durch Export/Import-Schnittstellen
 einfach ausgetauscht werden kann. Diese Schnittstelle ist aktuell getestet mit folgenden Layouts:
 
-- [**Feuerwehreinsatzzentrale München Land**][1]
+- [**Feuerwehreinsatzzentrale München Land**][1] (Lkr. M)
 
-- [**Integrierte Leitstelle Erding**][2]
+- [**Integrierte Leitstelle Erding**][2] (Lkr. ED)
 
-- [**Integrierte Leitstelle Oberland**][3]
+- [**Integrierte Leitstelle Oberland**][3] (Lkr. TÖL, GAP, WM)
 
-- [**Integrierte Leitstelle Regensburg**][4]
+- Integrierte Leitstelle Fürstenfeldbruck (in Arbeit)
 
-- [**Integrierte Leitstelle Dresden**][5]
+- [**Integrierte Leitstelle Regensburg**][4] (Lkr. R)
+
+- [**Integrierte Leitstelle Dresden**][5] (Lkr. DD)
 
 (Definitionen als Download)
 
-Weitere Leitstellen können ergänzt werden und an dieser Stelle heruntergelden werden, wenn sie zur Verfügung gestellt werden)
+Weitere Leitstellen können ergänzt werden und an dieser Stelle heruntergeladen werden.
 
 #### Schnittstelle
 
