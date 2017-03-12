@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: start
 ---
 
 ### eMonitor
@@ -42,7 +42,7 @@ Die komplette Anwendung ist mit Python 2.x geschrieben und unterstützt Windows 
 
 ### VirtualBox Image
 
-Für VirtualBox steht ein Image im VDI-Format zum Download bereit. Das Image setzt auf Ubuntu auf und liefert eine komplett eingerichtete Umgebung für eMonitor. Details finden Sie [**hier**][7] 
+Für VirtualBox steht ein Image im VDI-Format zum Download bereit. Das Image setzt auf Ubuntu auf und liefert eine komplett eingerichtete Umgebung für eMonitor. Details finden Sie [**hier**][7]
 
 [1]: server
 [2]: client

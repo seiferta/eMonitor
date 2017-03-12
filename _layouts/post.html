@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Emonitor : Client-Server application with map view">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ site.path }}/stylesheets/stylesheet.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="{{ site.path }}/javascripts/process-rel-links.js" type="text/javascript"></script>
+    <title>Emonitor</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/seiferta/eMonitor">View on GitHub</a>
+
+          <h1 id="project_title">Emonitor</h1>
+          <h2 id="project_tagline">Client-Server application with map view</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/seiferta/eMonitor/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/seiferta/eMonitor/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <ul class="breadcrumb">
+          <li><a href="{{ site.baseurl }}/">Home</a></li>
+          {% capture page_url_without_index_html %}{{ page.url | remove: "/index.html" }}{% endcapture %}
+          {% assign splitted_url_parts = page_url_without_index_html | split: '/' %}
+          {% capture forLoopMaxInt %}{{ splitted_url_parts.size | minus:1 }}{% endcapture %}
+          {% for i in (1..forLoopMaxInt) %}
+              {% capture current_breadcrumb_url %}{{next_prepender}}/{{ splitted_url_parts[i] }}/index.html{% endcapture %}
+              {% capture current_breadcrumb_md_url %}{{next_prepender}}/{{ splitted_url_parts[i] }}/{% endcapture %}
+              {% capture next_prepender %}{{next_prepender}}/{{ splitted_url_parts[i] }}{% endcapture %}
+              {% for breadcrumb_page in site.pages %}
+                  {% if current_breadcrumb_url == breadcrumb_page.url or current_breadcrumb_md_url == breadcrumb_page.url  %}
+                      <li {% if i == forLoopMaxInt %}class="active"{% endif %}>
+                          {% capture breadcrumb_page_page_url_without_index_html %}{{ breadcrumb_page.url | remove: "index.html" }}{% endcapture %}
+                          <a href="{{ site.baseurl }}/{{breadcrumb_page_page_url_without_index_html}}">{{breadcrumb_page.breadcrumb}}</a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          {% endfor %}
+        </ul>
+
+        {{content}}
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Emonitor maintained by <a href="https://github.com/seiferta">seiferta</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+
+
+  </body>
+</html>

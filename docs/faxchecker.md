@@ -26,11 +26,11 @@ einfach ausgetauscht werden kann. Diese Schnittstelle ist aktuell getestet mit f
 
 - [**Integrierte Leitstelle Oberland**][3] (Lkr. TÖL, GAP, WM)
 
-- Integrierte Leitstelle Fürstenfeldbruck (in Arbeit)
+- [**Integrierte Leitstelle Fürstenfeldbruck**][4] (Lkr. FFB, STA)
 
-- [**Integrierte Leitstelle Regensburg**][4] (Lkr. R)
+- [**Integrierte Leitstelle Regensburg**][5] (Lkr. R)
 
-- [**Integrierte Leitstelle Dresden**][5] (Lkr. DD)
+- [**Integrierte Leitstelle Dresden**][6] (Lkr. DD)
 
 (Definitionen als Download)
 
@@ -104,5 +104,6 @@ Beispiel:
  [1]: {{site.github.url}}/config/FEZ.cfg
  [2]: {{site.github.url}}/config/ILS_ED.cfg
  [3]: {{site.github.url}}/config/ILS_OB.cfg
- [4]: {{site.github.url}}/config/ILS_R.cfg
- [5]: {{site.github.url}}/config/ILS_DD.cfg
+ [4]: {{site.github.url}}/config/ILS_FFB.cfg
+ [5]: {{site.github.url}}/config/ILS_R.cfg
+ [6]: {{site.github.url}}/config/ILS_DD.cfg
