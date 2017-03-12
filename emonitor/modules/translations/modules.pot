@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-05 01:08+0100\n"
+"POT-Creation-Date: 2017-02-24 16:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1601,7 +1601,7 @@ msgstr ""
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:39
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:19
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:179
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:37
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:38
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:34
 msgid "layout.resize"
 msgstr ""
@@ -1609,7 +1609,7 @@ msgstr ""
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:40
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:20
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:180
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:38
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:39
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:35
 msgid "layout.open"
 msgstr ""
@@ -1617,7 +1617,7 @@ msgstr ""
 #: emonitor/modules/alarms/templates/frontend.alarms_edit.html:41
 #: emonitor/modules/alarms/templates/frontend.alarms_smallarea.html:21
 #: emonitor/modules/locations/templates/frontend.locations_smallarea.html:181
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:39
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:40
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:36
 msgid "layout.closed"
 msgstr ""
@@ -2650,42 +2650,42 @@ msgstr ""
 msgid "message.text"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:10
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:148
+#: emonitor/modules/messages/message_weather.py:13
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:149
 msgid "Mon"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:11
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:149
+#: emonitor/modules/messages/message_weather.py:14
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
 msgid "Tue"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:12
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:150
+#: emonitor/modules/messages/message_weather.py:15
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
 msgid "Wed"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:13
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:151
+#: emonitor/modules/messages/message_weather.py:16
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
 msgid "Thu"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:14
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:152
+#: emonitor/modules/messages/message_weather.py:17
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
 msgid "Fri"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:15
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:153
+#: emonitor/modules/messages/message_weather.py:18
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
 msgid "Sat"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:16
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:154
+#: emonitor/modules/messages/message_weather.py:19
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:155
 msgid "Sun"
 msgstr ""
 
-#: emonitor/modules/messages/message_weather.py:17
+#: emonitor/modules/messages/message_weather.py:20
 msgid "message.weather"
 msgstr ""
 
@@ -2715,10 +2715,10 @@ msgstr ""
 
 #: emonitor/modules/messages/templates/admin.message.base.html:42
 #: emonitor/modules/messages/templates/admin.message.text.html:41
-#: emonitor/modules/messages/templates/admin.message.weather.html:23
+#: emonitor/modules/messages/templates/admin.message.weather.html:52
 #: emonitor/modules/messages/templates/admin.messages.image.html:41
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:196
-#: emonitor/modules/persons/templates/admin.message.birthday.html:18
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:197
+#: emonitor/modules/persons/templates/admin.message.birthday.html:17
 msgid "messages.save"
 msgstr ""
 
@@ -2806,42 +2806,82 @@ msgid "messages.weather.header"
 msgstr ""
 
 #: emonitor/modules/messages/templates/admin.message.weather.html:7
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:4
-msgid "messages.weather.location"
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:3
+msgid "messages.weather.type"
 msgstr ""
 
-#: emonitor/modules/messages/templates/admin.message.weather.html:9
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:6
-msgid "messages.weather.location.info"
+#: emonitor/modules/messages/templates/admin.message.weather.html:8
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:5
+msgid "messages.weather.owm"
 msgstr ""
 
-#: emonitor/modules/messages/templates/admin.message.weather.html:13
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:10
-msgid "messages.weather.icons"
+#: emonitor/modules/messages/templates/admin.message.weather.html:10
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:7
+msgid "messages.weather.yahoo"
 msgstr ""
 
 #: emonitor/modules/messages/templates/admin.message.weather.html:14
+#: emonitor/modules/messages/templates/admin.message.weather.html:29
 #: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:11
-msgid "messages.weather.iconsimage"
+msgid "messages.weather.location"
 msgstr ""
 
-#: emonitor/modules/messages/templates/admin.message.weather.html:15
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:13
-msgid "messages.weather.iconsfont"
-msgstr ""
-
-#: emonitor/modules/messages/templates/admin.message.weather.html:18
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:16
-msgid "messages.weather.forecast"
+#: emonitor/modules/messages/templates/admin.message.weather.html:16
+#: emonitor/modules/messages/templates/admin.message.weather.html:31
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:14
+msgid "messages.weather.citynameplaceholder"
 msgstr ""
 
 #: emonitor/modules/messages/templates/admin.message.weather.html:19
 #: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:17
+msgid "messages.weather.location.info"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:24
+msgid "messages.weather.owmkey"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:34
+msgid "messages.weather.location.infoowm"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:38
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:19
+msgid "messages.weather.citysearch"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:39
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:20
+msgid "messages.weather.searchplaceholder"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:42
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:23
+msgid "messages.weather.icons"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:43
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:24
+msgid "messages.weather.iconsimage"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:44
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:26
+msgid "messages.weather.iconsfont"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:47
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:29
+msgid "messages.weather.forecast"
+msgstr ""
+
+#: emonitor/modules/messages/templates/admin.message.weather.html:48
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:30
 msgid "messages.weather.forecastshow"
 msgstr ""
 
-#: emonitor/modules/messages/templates/admin.message.weather.html:20
-#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:19
+#: emonitor/modules/messages/templates/admin.message.weather.html:49
+#: emonitor/modules/messages/templates/frontend.messages_edit_weather.html:32
 msgid "messages.weather.forecasthide"
 msgstr ""
 
@@ -2898,69 +2938,69 @@ msgstr ""
 msgid "messages.noactive"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:89
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:90
 #: emonitor/modules/messages/templates/frontend.messages_smallarea.html:67
 msgid "messages.addtitle"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:105
 #: emonitor/modules/messages/templates/frontend.messages_edit.html:106
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:107
 msgid "messages.name"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:110
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:111
 msgid "messages.type"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:127
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:128
 msgid "messages.startdate"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:132
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:133
 msgid "messages.enddate"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:137
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:138
 msgid "messages.specialtime"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:140
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:141
 msgid "messages.specialdays"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:142
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:143
 msgid "messages.cron.allday"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:145
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:146
 msgid "messages.cron.notallday"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:157
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:158
 msgid "messages.specialhours"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:160
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:161
 msgid "messages.cron.allhours"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:163
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:164
 msgid "messages.cron.notallhours"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:173
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:174
 msgid "messages.state"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:182
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:183
 msgid "messages.monitors"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:190
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:191
 msgid "messages.remark"
 msgstr ""
 
-#: emonitor/modules/messages/templates/frontend.messages_edit.html:197
+#: emonitor/modules/messages/templates/frontend.messages_edit.html:198
 msgid "messages.cancel"
 msgstr ""
 
@@ -3048,6 +3088,14 @@ msgstr ""
 msgid "messages.deletequestion"
 msgstr ""
 
+#: emonitor/modules/messages/templates/frontend.messages_weather_map.html:10
+msgid "messages.weather.matches"
+msgstr ""
+
+#: emonitor/modules/messages/templates/frontend.messages_weather_map.html:61
+msgid "messages.weather.nomatches.info"
+msgstr ""
+
 #: emonitor/modules/messages/templates/widget.message.error.html:7
 msgid "messages.errorhandler.1"
 msgstr ""
@@ -3056,16 +3104,24 @@ msgstr ""
 msgid "messages.errorhandler.2"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:25
-msgid "messages.weather.humidity"
+#: emonitor/modules/messages/templates/widget.message.weather.html:47
+#: emonitor/modules/messages/templates/widget.message.weather.html:106
+msgid "messages.weather.time"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:27
+#: emonitor/modules/messages/templates/widget.message.weather.html:57
+#: emonitor/modules/messages/templates/widget.message.weather.html:92
 msgid "messages.weather.pressure"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:50
-msgid "messages.weather.time"
+#: emonitor/modules/messages/templates/widget.message.weather.html:59
+#: emonitor/modules/messages/templates/widget.message.weather.html:94
+msgid "messages.weather.humidity"
+msgstr ""
+
+#: emonitor/modules/messages/templates/widget.message.weather.html:61
+#: emonitor/modules/messages/templates/widget.message.weather.html:96
+msgid "messages.weather.cloudlevel"
 msgstr ""
 
 #: emonitor/modules/monitors/__init__.py:40
@@ -3394,35 +3450,35 @@ msgstr ""
 msgid "admin.persons.edit..."
 msgstr ""
 
-#: emonitor/modules/persons/message_birthday.py:12
+#: emonitor/modules/persons/message_birthday.py:11
 msgid "message.birthday"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:3
+#: emonitor/modules/persons/templates/admin.message.birthday.html:2
 msgid "messages.birthday.header"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:7
+#: emonitor/modules/persons/templates/admin.message.birthday.html:6
 #: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:4
 msgid "messages.birthday.number"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:9
+#: emonitor/modules/persons/templates/admin.message.birthday.html:8
 #: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:6
 msgid "messages.birthday.number.info"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:13
+#: emonitor/modules/persons/templates/admin.message.birthday.html:12
 #: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:10
 msgid "messages.birthday.orientation"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:14
+#: emonitor/modules/persons/templates/admin.message.birthday.html:13
 #: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:11
 msgid "messages.birthday.orientation_v"
 msgstr ""
 
-#: emonitor/modules/persons/templates/admin.message.birthday.html:15
+#: emonitor/modules/persons/templates/admin.message.birthday.html:14
 #: emonitor/modules/persons/templates/frontend.messages_edit_birthday.html:13
 msgid "messages.birthday.orientation_h"
 msgstr ""
@@ -3713,15 +3769,15 @@ msgstr ""
 msgid "messages.birthday.monitorheader"
 msgstr ""
 
-#: emonitor/modules/persons/templates/widget.message.birthday.html:25
+#: emonitor/modules/persons/templates/widget.message.birthday.html:26
 msgid "messages.birthday.today"
 msgstr ""
 
-#: emonitor/modules/persons/templates/widget.message.birthday.html:27
+#: emonitor/modules/persons/templates/widget.message.birthday.html:28
 msgid "messages.birthday.yesterday"
 msgstr ""
 
-#: emonitor/modules/persons/templates/widget.message.birthday.html:29
+#: emonitor/modules/persons/templates/widget.message.birthday.html:30
 msgid "messages.birthday.tomorrow"
 msgstr ""
 

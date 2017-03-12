@@ -1,21 +1,65 @@
-<p>
+<div>
     <p>
-        <label style="width:100%;">
-            {{ _('messages.weather.location') }}:<br/>
-            <input type="text" name="messages.weather.location" value="{{ message.get('weather.location', settings.get('messages.weather.location')) }}" style="width:100%;"/>
-            <br/><small>{{ _('messages.weather.location.info') }}</small>
-        </label>
+        {{ _('messages.weather.type') }}:
+        <br>
+        <label><input type="radio" name="messages.weather.type" id="weathertype" value="owm" onchange="select_weather_details('owm')"{% if message.get('weather.type', settings.get('messages.weather.type', '')) =="owm" %} checked="checked"{% endif %}> {{ _('messages.weather.owm')|truncate(14, True, end="") }}</label>
+        <br>
+        <label><input type="radio" name="messages.weather.type" id="weathertype" value="yahoo" onchange="select_weather_details('yahoo')"{% if message.get('weather.type', settings.get('messages.weather.type', '')) in ['', 'yahoo'] %} checked="checked"{% endif %}> {{ _('messages.weather.yahoo')|truncate(6, True, end="") }}</label>
     </p>
     <p>
-        {{ _('messages.weather.icons') }}:<br/>
+        <label for="messages_weather_location" style="width:100%;">
+            {{ _('messages.weather.location') }}:
+        </label>
+        <br>
+        <input type="text" name="messages.weather.location" id="messages_weather_location" value="{{ message.get('weather.location', settings.get('messages.weather.location')) }}" style="width:70%;" placeholder="{{ _('messages.weather.citynameplaceholder') }}"/>
+        <input type="text" name="messages.weather.locationid" id="messages_weather_location_id" value="{{ message.get('weather.locationid', settings.get('messages.weather.locationid')) }}" style="width:27%" placeholder="id"/>
+        <br>
+        <small>{{ _('messages.weather.location.info') }}</small>
+        <br>
+        <label for="city_search" style="margin-left:20px;">{{ _('messages.weather.citysearch') }}:</label><br>
+        <input type="text" id="city_search" style="width:80%;margin-left:20px;" placeholder="{{ _('messages.weather.searchplaceholder') }}"> <button type="button" onclick="getCitylist()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </p>
+    <p>
+        {{ _('messages.weather.icons') }}:<br>
         <label><input type="radio" name="messages.weather.icons" value="image"{% if message.get('weather.icons', '') in ['image', ''] %} checked="checked"{% endif %}> {{ _('messages.weather.iconsimage') }}</label>
-        <br/>
+        <br>
         <label><input type="radio" name="messages.weather.icons" value="font"{% if message.get('weather.icons')=='font' %} checked="checked"{% endif %}> {{ _('messages.weather.iconsfont') }}</label>
     </p>
     <p>
-        {{ _('messages.weather.forecast') }}:<br/>
+        {{ _('messages.weather.forecast') }}:<br>
         <label><input type="radio" name="messages.weather.forecast" value="1"{% if message.get('weather.forecast', '') in ['1', ''] %} checked="checked"{% endif %}> {{ _('messages.weather.forecastshow') }}</label>
-        <br/>
+        <br>
         <label><input type="radio" name="messages.weather.forecast" value="0"{% if message.get('weather.forecast')=='0' %} checked="checked"{% endif %}> {{ _('messages.weather.forecasthide') }}</label>
     </p>
-</p>
+</div>
+<script>
+
+    function select_weather_details(t){
+        if (t=="yahoo"){
+            {%- if message.get('weather.location', '') == '' %}
+            $('#messages_weather_location').val('{{ settings.get('messages.weather.location') }}');
+            $('#messages_weather_location_id').val('{{ settings.get('messages.weather.locationid') }}');
+            {%- endif %}
+        }else{
+            {%- if message.get('weather.location', '') == '' %}
+            $('#messages_weather_location').val('{{ settings.get('messages.weather.location.owm') }}');
+            $('#messages_weather_location_id').val('{{ settings.get('messages.weather.location.owmid') }}');
+            {%- endif %}
+        }
+    }
+    select_weather_details('{{ settings.get('messages.weather.type', 'yahoo') }}');
+
+    function getCitylist() {
+        if($('#city_search').val()!="") {
+            parent.$('#overlaycontent').html('<p style="text-align:center;padding:200px 0"><img src="/img/loading.gif"></p>');
+            parent.$('.overlay').toggle();
+            $.post("/data/messages?action=findcity", {cityname: $('#city_search').val(), weathertype: $('#weathertype:checked').val(), type: 'message_weather', area: 'frontend'})
+                .done(function (result) {
+                    parent.$('#overlaycontent').html(result);
+                    $('#city_search').val('');
+                    return false;
+                });
+        }
+    }
+
+</script>

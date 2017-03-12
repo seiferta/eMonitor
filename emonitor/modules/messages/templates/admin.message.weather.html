@@ -1,13 +1,42 @@
 
 <fieldset>
     <legend>{{ _('messages.weather.header') }}</legend>
+
     <form id="message_weather" method="post">
         <p>
-            <label style="width:100%">
-                {{ _('messages.weather.location') }}:<br/>
-                <input type="text" name="weather.location" value="{{ settings.get('messages.weather.location') }}" style="width:50%"/>
-                <br/> <small>{{ _('messages.weather.location.info') }}</small>
-            </label>
+            {{ _('messages.weather.type') }}:<br>
+            <label><input type="radio" name="weather.type" id="weathertype" value="owm" onchange="select_weather_details('owm')"{% if settings.get('messages.weather.type', '') in ['owm'] %} checked="checked"{% endif %}> {{ _('messages.weather.owm') }}</label>
+            <br>
+            <label><input type="radio" name="weather.type" id="weathertype" value="yahoo" onchange="select_weather_details('yahoo')"{% if settings.get('messages.weather.type', '') in ['', 'yahoo'] %} checked="checked"{% endif %}> {{ _('messages.weather.yahoo') }}</label>
+        </p>
+        <div id="yahoosettings">
+            <p>
+                <label style="width:100%" for="yahoo_city">{{ _('messages.weather.location') }}:</label>
+                <br>
+                <input type="text" name="weather.location" id="yahoo_city" value="{{ settings.get('messages.weather.location', '') }}" style="width:70%" placeholder="{{ _('messages.weather.citynameplaceholder') }}"/>
+                <input type="text" name="weather.locationid" id="yahoo_cityid" value="{{ settings.get('messages.weather.locationid', '') }}" style="width:29%" placeholder="id"/>
+                <br/>
+                <small>{{ _('messages.weather.location.info') }}</small>
+            </p>
+        </div>
+        <div id="owmsettings" style="display:none;">
+            <p>
+                <label for="owm_key" style="width:100%">{{ _('messages.weather.owmkey') }}:</label>
+                <br>
+                <input type="text" id="owm_key" name="weather.owmkey" value="{{ settings.get('messages.weather.owmkey') }}" style="width:100%"/>
+            </p>
+            <p>
+                <label for="owm_city" style="width:100%">{{ _('messages.weather.location') }}:</label>
+                <br>
+                <input type="text" id="owm_city" name="weather.location.owm" value="{{ settings.get('messages.weather.location.owm', '') }}" style="width:70%" placeholder="{{ _('messages.weather.citynameplaceholder') }}"/>
+                <input type="text" id="owm_cityid" name="weather.location.owmid" value="{{ settings.get('messages.weather.location.owmid', '') }}" style="width:29%" placeholder="id"/>
+                <br>
+                <small>{{ _('messages.weather.location.infoowm') }}</small>
+            </p>
+        </div>
+        <p>
+            <label for="city_search">{{ _('messages.weather.citysearch') }}:</label><br>
+            <input type="text" id="city_search" style="width:50%" placeholder="{{ _('messages.weather.searchplaceholder') }}"> <button type="button" onclick="getCitylist()"><i class="fa fa-search" aria-hidden="true"></i></button>
         </p>
         <p>
             {{ _('messages.weather.icons') }}:<br/>
@@ -24,3 +53,30 @@
         </p>
     </form>
 </fieldset>
+<script>
+
+    function select_weather_details(t){
+        if (t=="yahoo"){
+            $("div#yahoosettings").show();
+            $("div#owmsettings").hide();
+        }else{
+            $("div#yahoosettings").hide();
+            $("div#owmsettings").show();
+        }
+    }
+    select_weather_details('{{ settings.get('messages.weather.type', 'yahoo') }}');
+
+    function getCitylist() {
+        if($('#city_search').val()!="") {
+            parent.$('#overlaycontent').html('<p style="text-align:center;padding:200px 0"><img src="/img/loading.gif"></p>');
+            parent.$('.overlay').toggle();
+            $.post("/data/messages?action=findcity", {weathertype: $('#weathertype:checked').val() ,cityname: $('#city_search').val(), type: 'message_weather', area: 'admin'})
+                .done(function (result) {
+                    parent.$('#overlaycontent').html(result);
+                    $('#city_search').val('');
+                    return false;
+                });
+        }
+    }
+
+</script>

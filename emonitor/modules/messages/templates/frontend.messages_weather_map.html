@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="/streets/inc/leaflet.css" />
+<style>
+    .osm_div{width:560px;height:500px;background-color:white;}
+</style>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.js"> </script>
+<script type="text/javascript" language="javascript" src="/streets/inc/leaflet.ext.js"> </script>
+
+{% if data|count %}
+<div id="map" class="osm_div"></div>
+<small>{{ data|count }} {{ _('messages.weather.matches') }}</small>
+
+<script>
+    var wmap = new L.Map('map', {zoom: 10, doubleClickZoom: false});
+    var MyMarker = L.Icon.extend({options: {shadowUrl: '/img/marker-shadow.png', iconAnchor: [12, 41], popupAnchor: [0, -42]}});
+    var redmarker = new MyMarker({iconUrl: '/img/marker_red.png'});
+    var startlat = {{ settings.get('defaultLat') }};
+    var startlng = {{ settings.get('defaultLng') }};
+    var startzoom = 10;
+    var markers = new L.FeatureGroup();
+    markers.addTo(wmap);
+
+    $( function() {
+        var cloudmade = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {minZoom: 5, maxZoom: 14, trackResize: true});
+        wmap.setView(new L.LatLng(startlat, startlng), startzoom).addLayer(cloudmade);
+        setTimeout(function () {
+            wmap.invalidateSize();
+        }, 1000);
+
+        {%- for i in data %}
+        markers.addLayer(new L.Marker(new L.LatLng({{ i.lat }}, {{ i.lon }}), {icon: redmarker, draggable: false, data_id:{{ i.id }}, data_name: "{{ i.name }}", data_country: "{{ i.country }}"})
+            .bindPopup('{{ i.name }}, {{ i.country }}<br>lat/lon: {{ i.lat }}/{{ i.lon }}<br><small><en>id: {{ i.id }}</en></small>')
+            .on('mouseover', function(e){ this.openPopup();})
+            .on('mouseout', function(e){ this.closePopup();})
+            .on('click', markerOnClick));
+        {%- endfor %}
+    });
+
+    function markerOnClick(e){
+    {%-  if area == 'admin' %}
+        $('#{{ weathertype }}_city').val(e.target.options.data_name + ', '+e.target.options.data_country);
+        $('#{{ weathertype }}_cityid').val(e.target.options.data_id);
+    {%- elif area == 'frontend' %}
+        parent.$('#messages_weather_location').val(e.target.options.data_name + ', '+e.target.options.data_country);
+        parent.$('#messages_weather_location_id').val(e.target.options.data_id);
+
+        for(var z =0;z<parent.frames.length; z++){
+            var l = parent.frames[z].$('#messages_weather_location');
+            if(typeof l.val() != "undefined"){
+                l.val(e.target.options.data_name + ', '+e.target.options.data_country);
+            }
+            var lid = parent.frames[z].$('#messages_weather_location_id');
+            if(typeof lid.val() != "undefined"){
+                lid.val(e.target.options.data_id);
+            }
+        }
+    {%-  endif %}
+        parent.$('.overlay').toggle();
+    }
+</script>
+{% else %}
+    <p style="text-align:center;padding:200px 0">{{ _('messages.weather.nomatches.info') }}</p>
+{% endif %}

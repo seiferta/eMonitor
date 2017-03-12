@@ -3,12 +3,12 @@
     <legend>{{ _('messages.text.header') }}</legend>
     <form id="message_text" method="post">
         <label style="width:100%">
-            {{ _('messages.text.content') }}:</br>
+            {{ _('messages.text.content') }}:<br>
             <textarea name="text.content" style="width:100%;height:200px;font-family:monospace">{{ settings.get('messages.text.content') }}</textarea><br/>
             <small>{{ _('messages.text.content.info') }}</small>
         </label>
         
-        {{ _('messages.text.crestposition') }}:<br/>
+        {{ _('messages.text.crestposition') }}:<br>
         <div style="border:1px solid silver;width:100px;padding:5px;margin-top:5px;border-radius:3px;float:left;">
             <label title="{{ _('messages.position.topleft') }}" style="width:30px;">
                 <input type="radio" name="text.crestposition" value="tl"{%- if settings.get('messages.text.crestposition') == 'tl' %} checked="checked"{%- endif %}> <i class="fa fa-share fa-flip-horizontal"></i>
