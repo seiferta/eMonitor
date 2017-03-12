@@ -55,7 +55,7 @@
         <ul>
           {% for post in site.posts %}
             <li>
-              <a href="{{ post.url }}">{{ post.title }} <small><em>({{ post.date |  date_to_string }})</em></small></a>
+              <a href="/eMonitor{{ post.url }}">{{ post.title }} <small><em>({{ post.date |  date_to_string }})</em></small></a>
               <small>{{ post.excerpt }}</small>
 
             </li>
