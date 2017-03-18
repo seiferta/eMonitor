@@ -2,7 +2,7 @@
     <p>
         {{ _('messages.weather.type') }}:
         <br>
-        <label><input type="radio" name="messages.weather.type" id="weathertype" value="owm" onchange="select_weather_details('owm')"{% if message.get('weather.type', settings.get('messages.weather.type', '')) =="owm" %} checked="checked"{% endif %}> {{ _('messages.weather.owm')|truncate(14, True, end="") }}</label>
+        <label><input type="radio" name="messages.weather.type"{% if settings.get('messages.weather.owmkey', '')=="" %} disabled="disabled"{% endif %} id="weathertype" value="owm" onchange="select_weather_details('owm')"{% if message.get('weather.type', settings.get('messages.weather.type', '')) =="owm" %} checked="checked"{% endif %}> {{ _('messages.weather.owm')|truncate(14, True, end="") }}</label>
         <br>
         <label><input type="radio" name="messages.weather.type" id="weathertype" value="yahoo" onchange="select_weather_details('yahoo')"{% if message.get('weather.type', settings.get('messages.weather.type', '')) in ['', 'yahoo'] %} checked="checked"{% endif %}> {{ _('messages.weather.yahoo')|truncate(6, True, end="") }}</label>
     </p>

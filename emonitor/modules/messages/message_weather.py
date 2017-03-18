@@ -73,8 +73,11 @@ class WeatherWidget(MonitorWidget):
 
     def getMonitorContent(self, **params):
         """Deliver monitor content for current message module"""
-        self.addParameters(**params)
-        return self.getHTML('', **params)
+        try:
+            self.addParameters(**params)
+            return self.getHTML('', **params)
+        except IOError:
+            return render_template('widget.message.error.html', templatename="widget.message.weather.html", modulename="message.weather")
 
     def getEditorContent(self, **params):
         """Deliver editor content for current message module"""
@@ -111,7 +114,8 @@ class WeatherWidget(MonitorWidget):
                 d = json.loads(result)
                 d = flatten(d.get('query', {'results': {}}).get('results', {'channel': {}}).get('channel'))
             except urllib2.URLError:
-                d = {}
+                import exceptions
+                raise exceptions.IOError
 
             self.data.set('conditioncode', d.get('item_condition_code', ''))
             self.data.set('conditionicon', getIcon4Code(d.get('item_condition_code', 0), _yahooIcons))
@@ -160,9 +164,9 @@ class WeatherWidget(MonitorWidget):
             icons = Settings.get('messages.weather.icons')
             forecast = Settings.get('messages.weather.forecast')
         _owmIcons = [[], [800, ], [904, ], [905, ], [711, 801], [804, 771, 802, 803],
-                     [313, 520, 521, 522, 701, 602, 300, 301, 321, 500, 531, 901, 210, 211, 212, 221], 
+                     [310, 313, 520, 521, 522, 701, 602, 300, 301, 321, 500, 531, 901, 210, 211, 212, 221],
                      [302, 311, 312, 314, 501, 502, 503, 504], [200, 201, 202, 230, 231, 232],
-                     [], [], [], [600, 601, 621, 622], [310, 511, 611, 612, 615, 616, 620], [906, ], [],
+                     [], [], [], [600, 601, 621, 622], [511, 611, 612, 615, 616, 620], [906, ], [],
                      [903, ], [731, 761, 762, 721, 741], [900, 781, 901, 902, 957]]  # weather code mapping for png icons
 
         url_weather = "http://api.openweathermap.org/data/2.5/weather?id={}&units=metric&lang={}&APPID={}".format(location, current_app.config.get('LANGUAGES').keys()[0], Settings.get('messages.weather.owmkey', ''))
@@ -172,8 +176,8 @@ class WeatherWidget(MonitorWidget):
             d = flatten(json.loads(urllib2.urlopen(url_weather).read()))
             f = flatten(json.loads(urllib2.urlopen(url_forecast).read()))
         except:
-            d = {}
-            f = {}
+            import exceptions
+            raise exceptions.IOError
 
         self.data.set('condition', d.get('weather', [{'description': ''}])[0]['description'])
         self.data.set('conditionicon', getIcon4Code(d.get('weather', [{'id': '01'}])[0].get('id'), _owmIcons))
@@ -183,7 +187,7 @@ class WeatherWidget(MonitorWidget):
         self.data.set('forecast', [])
 
         _ld = ""
-        for fcast in f.get('list'):
+        for fcast in f.get('list', []):
             _day = datetime.datetime(*time.gmtime(fcast.get('dt', 0))[:6])
             if datetime.date.today() == _day.date():
                 continue

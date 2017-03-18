@@ -9,24 +9,19 @@
     {%- else %}
     div.weatherdata{width:{{ layout.monitor.resolutiony }}px;height:{{ layout.monitor.resolutiony }}px;position:relative;}
     {%- endif %}
-    div.weatherdata .temp{font-size:4.0em;height:60%;width:50%;position:absolute;top:0;right:0;white-space: nowrap;}
-    div.weatherdata .temp div{position:absolute;bottom:20px;right:20px;font-size:2.5em;}
-    div.weatherdata .temp div i.icon-t1{font-size:4.5em;}
+    div.weatherdata div.location{position:absolute;bottom:50px;left:5px;font-size:4em;color:#424242;font-weight: bolder;}
 {% else %}  {# portrait mode #}
     {%  if forecast=='0' %}
     div.weatherdata{width:{{ layout.monitor.resolutionx }}px;height:{{ layout.monitor.resolutionx }}px;position:relative;margin-top:{{ (layout.monitor.resolutiony - layout.monitor.resolutionx)/2 }}px;}
     {% else %}
     div.weatherdata{width:{{ layout.monitor.resolutionx }}px;height:{{ layout.monitor.resolutionx }}px;position:relative;}
     {% endif %}
-    div.weatherdata .temp{font-size:3.0em;height:60%;width:50%;position:absolute;top:0;right:0;white-space: nowrap;}
-    div.weatherdata .temp div{position:absolute;bottom:20px;right:20px;font-size:2.5em;}
-    div.weatherdata .temp div i.icon-t1{font-size:3.5em;}
+    div.weatherdata div.location{position:absolute;bottom:-150px;left:5px;font-size:6em;color:#424242;font-weight: bolder;}
 {% endif %}
 
-    div.weatherdata div.location{position:absolute;bottom:0;left:5px;font-size:16em;color:#424242;font-weight: bolder;}
 {%- if icons == 'image' %}
-    div.weatherdata .image{position:relative;width:50%;height:60%;background:no-repeat url('/messages/inc/weather/{{ data.get('conditionicon') }}');background-size:150%;float:left;overflow:visible;}
-    div.weatherdata .image .condition{position:absolute;bottom:50px;left:10px;font-size:3.0em;}
+    div.weatherdata .image{position:relative;width:50%;height:60%;background:no-repeat url('/messages/inc/weather/{{ data.get('conditionicon') }}');background-size:120%;background-position:5% 5%;float:left;overflow:visible;}
+    div.weatherdata .image .condition{position:absolute;bottom:50px;left:10px;font-size:1.5em;}
 {%- else %}
     div.weatherdata .font{position:relative;width:50%;height:60%;float:left;}
     div.weatherdata .font .conditionicon{position:absolute;top:100px;left:100px;}
@@ -34,12 +29,15 @@
     div.weatherdata .font .condition{position:absolute;bottom:50px;left:10px;}
 {%- endif %}
 
-    div.weatherdata div.sunrise{width:50%;height:40%;float:left;text-align:left;position:relative;font-size:2.0em;}
+    div.weatherdata .temp{font-size:2.0em;height:60%;width:50%;position:absolute;top:0;right:0;white-space: nowrap;}
+    div.weatherdata .temp div{position:absolute;bottom:20px;right:20px;font-size:2.5em;}
+    div.weatherdata .temp div i.icon-t1{font-size:2.5em;}
+    div.weatherdata div.sunrise{width:50%;height:40%;float:left;text-align:left;position:relative;}
     div.weatherdata div.sunrise div{position:absolute;left:20px;top:40px;}
     div.weatherdata div.wind{width:50%;height:40%;float:right;text-align:right;position:relative;}
     div.weatherdata div.wind i{margin-top:10%;font-size:2.0em;}
-    div.weatherdata div.wind .windspeed{font-size:2.0em;padding-right:20px;padding-top:20px;}
-    div.weatherdata div.wind .pressure{padding-right:20px;font-size: 2.0em;}
+    div.weatherdata div.wind .windspeed{padding-right:20px;padding-top:20px;}
+    div.weatherdata div.wind .pressure{padding-right:20px;}
 
 {%-  if layout.monitor.orientation == 0 %}  {# landscape mode #}
     {%-  if forecast == '0' %}
@@ -53,10 +51,11 @@
     div.forecastday div.daylabel{background-color:#585858;width:10%;position:absolute;top:0;bottom:0;right:0;color:black;text-align:center;}
     div.forecastday div.daylabel p{-webkit-transform: rotate(90deg);-moz-transform: rotate(90deg);-o-transform: rotate(90deg);font-size:4.0em;}
     div.forecastday div.weathericon{float:left;width:30%;padding-top:20px;min-height:100%;}
-    div.forecastday div.wind{float:right;padding-right:12%;width:20%;font-size:2.0em;padding-top:10%;}
-    div.forecastday div.wind i {font-size:2.5em;}
-    div.forecastday p.temp{font-size:2.5em;padding-top:5%;padding-right:20%;}
-    div.forecastday p.pressure {font-size:2.5em;padding-right:20%;}
+    div.forecastday div.weathericon i{font-size:2.5em;padding-top:20%;}
+    div.forecastday div.wind{float:right;padding-right:12%;width:20%;padding-top:10%;}
+    div.forecastday div.wind i {font-size:1.5em;}
+    div.forecastday p.temp{padding-top:5%;padding-right:20%;}
+    div.forecastday p.pressure {padding-right:20%;}
     {%- endif %}
 
 {% else %}  {# portrait mode #}
@@ -69,12 +68,12 @@
     div.forecastday:first-child{border-left-width:0;}
     div.forecastday:last-child{border-right-width:0;}
     div.forecastday div.daylabel{background-color:#585858;height:10%;position:absolute;top:0;right:0;left:0;color:black;text-align:center;}
-    div.forecastday div.daylabel p{position:absolute;top:-35%;font-size:2.0em;padding-left:15%;}
-    div.forecastday div.weathericon {font-size:0.8em;margin-top:35%;}
-    div.forecastday div.wind {bottom:5%;position:absolute;width:100%;font-size:1.5em;}
-    div.forecastday div.wind i {font-size:2.0em;}
-    div.forecastday p.temp {font-size:1.5em;}
-    div.forecastday p.pressure {font-size:1.5em;padding-top:20%;}
+    div.forecastday div.daylabel p{position:absolute;top:-35%;padding-left:15%;}
+    div.forecastday div.weathericon {margin-top:35%;}
+    div.forecastday div.weathericon i{font-size:2.5em;}
+    div.forecastday div.wind {bottom:20%;position:absolute;width:100%;}
+    div.forecastday div.wind i {font-size:2.5em}
+    div.forecastday p.pressure {padding-top:10%;}
     {%- endif %}
 {% endif %}
 </style>
