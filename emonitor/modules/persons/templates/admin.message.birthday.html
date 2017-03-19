@@ -1,16 +1,15 @@
-
 <fieldset>
     <legend>{{ _('messages.birthday.header') }}</legend>
     <form id="message_birthday" method="post">
         <p>
             <label style="width:100%">
-                {{ _('messages.birthday.number') }}:</br>
+                {{ _('messages.birthday.number') }}:<br>
                 <input type="number" name="birthday.number" value="{{ settings.get('messages.birthday.number') }}" style="width:50px"/>
                 <br/><small>{{ _('messages.birthday.number.info') }}</small>
             </label>
         </p>
         <p>
-            {{ _('messages.birthday.orientation') }}:<br/>
+            {{ _('messages.birthday.orientation') }}:<br>
             <label><input type="radio" name="birthday.orientation" value="v"{% if settings.get('messages.birthday.orientation') in ['v', ''] %} checked="checked"{% endif %}> {{ _('messages.birthday.orientation_v') }}</label>
             <label><input type="radio" name="birthday.orientation" value="h"{% if settings.get('messages.birthday.orientation', '')=='h' %} checked="checked"{% endif %}> {{ _('messages.birthday.orientation_h') }}</label>
         </p>

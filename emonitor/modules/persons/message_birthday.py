@@ -69,8 +69,8 @@ class BirthdayWidget(MonitorWidget):
             orientation = Settings.get('messages.birthday.orientation', 20)
 
         persons = sorted(Person.getPersons(onlyactive=True), key=lambda p: p.birthday)
-        p = [(val.birthday - int(datetime.datetime.now().strftime('%j')), idx, persons[idx].lastname, persons[idx].birthdate) for (idx, val) in enumerate(persons)]
-        idx = min(filter(lambda x: x[0] % 365 >= 0, p))
+        p = [((val.birthday - int(datetime.datetime.now().strftime('%j'))) % 365, idx, persons[idx].lastname, persons[idx].birthdate) for (idx, val) in enumerate(persons)]
+        idx = min(filter(lambda x: x[0] >= 0, p))
 
         person = OrderedDict()
         try:
