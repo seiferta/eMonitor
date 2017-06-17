@@ -1,5 +1,6 @@
 import yaml
 from datetime import datetime
+import calendar
 from emonitor.extensions import db
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.modules.settings.settings import Settings
@@ -52,9 +53,12 @@ class Person(db.Model):
     def birthday(self):
         """
         calculate day of birthdate for sorting
-        caution: use the same year for day calculation (1900)
+        caution: use the same year for day calculation (1903/1904) and respect leap year
         """
-        return int((datetime(1904, *self.birthdate.timetuple()[1:-2])).strftime('%j'))
+        if calendar.isleap(datetime.now().year):
+            return int((datetime(1904, *self.birthdate.timetuple()[1:-2])).strftime('%j'))  # use a leapyear as reference
+        else:
+            return int((datetime(1903, *self.birthdate.timetuple()[1:-2])).strftime('%j'))  # use a non-leapyear as reference
 
     @property
     def options(self):
