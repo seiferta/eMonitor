@@ -1,0 +1,146 @@
+{% extends "admin.html" %}
+
+{% block style %}
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/alarmkeys/inc/jquery.autocomplete.min.js"> </script>
+    <script type="text/javascript" src="/alarms/inc/jquery.form.js"> </script>
+    <script>
+        function questionDel(){
+            return confirm('{{ _('alarmkeys.set.delquestion') }}');
+        }
+
+        function questionDelBase(){
+            return confirm('{{ _('alarmkeys.set.delbasequestion') }}');
+        }
+
+        function createBaseset(id){
+            $.get('/admin/data/alarmkeys', {'action': 'createbaseset', 'setid': id}, function(data){
+                alert(data);
+            });
+            return false;
+        }
+
+        $(document).ready(function(){
+
+            $('#requestForm').ajaxForm({
+                beforeSubmit: function() {
+                    if($.inArray($('#uploadfile').val().split('.').pop(), ['json'])>=0){
+                        $('#filename').val($('#uploadfile').val().split('\\').pop());
+                    }else{
+                        alert('{{ _('alarmkeys.text.wrongfile.msg') }}');
+                        return false;
+                    }
+                },
+                success: function(data){
+                    if (data.state=="ok") {
+                        var newset = '<div class="row">\
+                            <div style="margin-right:70px;margin-left:15px;">\
+                                <div class="rowcell" style="width:30%;">' + data.name + '</div>\
+                                <div class="rowcell" style="width:30%;">' + data.startdate + '</div>\
+                                <div class="rowcell" style="width:20%;">' + data.items + '</div>\
+                                <div class="rowcell" style="width:10%;"> </div>\
+                                <button type="submit" name="action" value="deletebase_'+data.filename+'" title="{{ _('alarmkeys.set.deletebasetitle') }}" onclick="return questionDelBase()"><i class="fa fa-trash-o fa-lg"></i></button>\
+                            </div>\
+                        </div>';
+                        $('#basedefinitions').append(newset);
+                        toastr.success('{{ _('alarmkeys.set.fileuploaddone') }}');
+                    }else{
+                        toastr.error('{{ _('alarmkeys.set.fileuploaderror') }}');
+                    }
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('alarmkeys.set.listtitle') }}</h2>
+    <p><small>{{ _('alarmkeys.set.info') }}</small></p>
+
+    <form method="post" name="setlist" action="">
+        <div class="headrow">
+            <div style="margin-right:70px;margin-left:15px;">
+                <div class="headcell" style="width:30%;">{{ _('alarmkeys.set.name') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('alarmkeys.set.startdate') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('alarmkeys.set.enddate') }}</div>
+                <div class="headcell" style="width:30%;">{{ _('alarmkeys.set.definitionbase') }}</div>
+                <div class="headcell" style="width:10%;">{{ _('alarmkeys.set.items') }}</div>
+            </div>
+            <button class="add" type="submit" name="action" value="createset" title="{{ _('alarmkeys.set.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+
+        {%- if not aksets|count %}
+        <div class="rownoentry">
+            <p style="text-align:center">{{ _('alarmkeys.set.nodata') }}</p>
+        </div>
+        {%- endif %}
+        <div id="sortable">
+            {%- for akset in aksets %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:30%;">{{ akset.name }}</div>
+                    <div class="rowcell" style="width:10%;">{%- if akset.startdate %}{{ akset.startdate|datetime('dd.MM.yyyy') }}{% else %}-{% endif %}</div>
+                    <div class="rowcell" style="width:10%;">{%- if akset.enddate %}{{ akset.enddate|datetime('dd.MM.yyyy') }}{% else %}-{% endif %}</div>
+                    <div class="rowcell" style="width:30%;">{{ akset.base }}</div>
+                    <div class="rowcell" style="width:10%;">{{ akset.getDefinedKeys()|count }}</div>
+                </div>
+                <input type="hidden" name="setid" value="{{ akset.id }}"/>
+                <button type="submit" name="action" value="deleteset_{{ akset.id }}" title="{{ _('alarmkeys.set.deletetitle') }}" onclick="return questionDel()"{% if akset.getDefinedKeys()|count > 0 %} disabled="disabled"{% endif %}><i class="fa fa-trash-o fa-lg"></i></button>
+                <button type="submit" name="action" value="detailset_{{ akset.id }}" title="{{ _('alarmkeys.set.detailtitle') }}"><i class="fa fa-pencil fa-lg"></i></button>
+                <button type="button" name="action" value="baseset_{{ akset.id }}" onclick="return createBaseset({{ akset.id }})" title="{{ _('alarmkeys.set.basetitle') }}" style="margin-right:20px;"><i class="fa fa-refresh fa-lg"></i></button>
+            </div>
+            {%- endfor %}
+        </div>
+
+        <div class="headrow">
+            <small style="float:right;margin-right:50px">{{ _('alarmkeys.set.itemscount', count=aksets|count) }}</small><br/>
+        </div>
+    </form>
+
+    <h2>{{ _('alarmkeys.set.definitions.title') }}</h2>
+    <p><small>{{ _('alarmkeys.set.definition.info') }}</small></p>
+
+    <form method="post" name="definitionbases" action="">
+        <div id="basedefinitions">
+            <div class="headrow">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="headcell" style="width:30%;">{{ _('alarmkeys.set.definition.name') }}</div>
+                    <div class="headcell" style="width:30%;">{{ _('alarmkeys.set.definition.start') }}</div>
+                    <div class="headcell" style="width:20%;">{{ _('alarmkeys.set.definition.items') }}</div>
+                    <div class="headcell" style="width:20%;">{{ _('alarmkeys.set.definition.typeintgrated') }}</div>
+                </div>
+            </div>
+
+            {%- for akbase in akbases %}
+            <div class="row">
+                <div style="margin-right:70px;margin-left:15px;">
+                    <div class="rowcell" style="width:30%;">{{ akbase.name }}</div>
+                    <div class="rowcell" style="width:30%;">{{ akbase.start|datetime('dd.MM.YYYY') }}</div>
+                    <div class="rowcell" style="width:20%;">{{ akbase.items|count }}</div>
+                    <div class="rowcell" style="width:10%;text-align:center">{%- if akbase.settype == 'integrated' %}<i class="fa fa-check" aria-hidden="true"></i>{%- endif %}&nbsp;</div>
+                    {%- if akbase.settype != 'integrated' %}
+                        <button type="submit" name="action" value="deletebase_{{ akbase.id }}" title="{{ _('alarmkeys.set.deletebasetitle') }}" onclick="return questionDelBase()"><i class="fa fa-trash-o fa-lg"></i></button>
+                    {%- endif %}
+                </div>
+            </div>
+            {%- endfor %}
+        </div>
+    </form>
+    <p> </p>
+    <form name="form" id="requestForm" action="/admin/data/alarmkeys?action=uploaddefinition" method="post" enctype="multipart/form-data">
+        <p>
+            {{ _('alarmkeys.upload.definitionfile') }}:<br/>
+            <input id="uploadfile" type="file" size="45" accept=".py" name="uploadfile" class="input" style="display:inline;height:24px">
+            <button type="submit" value="Start"><i class="fa fa-upload"></i> {{ _('alarmkeys.upload.definitionstart') }}</button>
+            <input type="hidden" name="filename" id="filename"/>
+        </p>
+    </form>
+{% endblock %}

@@ -7,15 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-17 16:50+0200\n"
-"PO-Revision-Date: 2016-04-09 09:15+0200\n"
+"POT-Creation-Date: 2016-11-26 18:21+0100\n"
+"PO-Revision-Date: 2016-11-26 19:22+0100\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
+"Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: emonitor/frontend/frontend.py:23
 msgid "emonitor.monitorserver.MonitorServer"
@@ -31,10 +33,22 @@ msgstr ""
 "<b>Verbindung zum Server verloren!</b><br/>Sobald der Server wieder zur "
 "Verfügung steht, wird das Fenster neu geladen."
 
+#: emonitor/frontend/frontend.py:112
+msgid "frontend.initneed_info"
+msgstr ""
+"<h2>Herzlich willkommen bei eMonitor</h2><br><br>Sie starten eMonitor "
+"zum ersten Mal, es sind einige Grundeinstellungen notwendig, die Sie "
+"unter <a href=\"/init\">/init</a> erreichen.<h3>Zugangsdaten für die "
+"Administration</h3> <p>Benutzername: Administrator</p><p>Passwort: "
+"admin</p>\n"
+"<p></p>\n"
+"<p style=\"text-align:center\"><button onclick=\"window.location.href('/"
+"init')\" type=\"button\">Konfiguration starten</button>"
+
 #: emonitor/frontend/web/templates/frontend.area.html:13
 #: emonitor/frontend/web/templates/frontend.default.html:12
 #: emonitor/frontend/web/templates/frontendframe.html:14
-#: emonitor/frontend/web/templates/frontendframe.html:58
+#: emonitor/frontend/web/templates/frontendframe.html:67
 msgid "frontend.titlemain"
 msgstr "eMonitor"
 
@@ -47,8 +61,8 @@ msgid "app.info"
 msgstr ""
 "eMonitor wurde entwickelt, um die Alarmauswertung bei Feuerwehren zu "
 "erleichtern und dadurch die Möglichkeit zu schaffen, eine bessere "
-"Unterstützung bereits bei der Alarmierung zu beginnen. "
-"<br/><br/>Informationen zum aktuellen Stand der Entwicklungen finden Sie "
+"Unterstützung bereits bei der Alarmierung zu beginnen. <br/><br/"
+">Informationen zum aktuellen Stand der Entwicklungen finden Sie "
 "jederzeit aktuell unter <a href=\"http://seiferta.github.io/eMonitor/\" "
 "target=\"_blank\">http://seiferta.github.io/eMonitor/</a>."
 
@@ -74,9 +88,9 @@ msgstr "eMonitor Dienst neu starten"
 msgid "app.restart.info"
 msgstr ""
 "Wenn eMonitor als Windows-Dienst installiert wurde, kann er über diesen "
-"Link neu gestartet werden. Das ist immer dann notwendig, falls das System"
-" 'hängt'. Aktualisieren Sie die Seite, um wieder auf eMonitor zugreifen "
-"zu können."
+"Link neu gestartet werden. Das ist immer dann notwendig, falls das "
+"System 'hängt'. Aktualisieren Sie die Seite, um wieder auf eMonitor "
+"zugreifen zu können."
 
 #: emonitor/frontend/web/templates/frontendframe.html:37
 msgid "layout.resize"
@@ -90,22 +104,18 @@ msgstr "Schließen"
 msgid "layout.closed"
 msgstr "Öffnen"
 
-#: emonitor/frontend/web/templates/frontendframe.html:60
+#: emonitor/frontend/web/templates/frontendframe.html:69
 msgid "frontend.adminlink"
 msgstr "Administrationsoberfläche"
 
-#: emonitor/frontend/web/templates/frontendframe.html:62
+#: emonitor/frontend/web/templates/frontendframe.html:71
 msgid "admin.logout"
 msgstr "Abmelden"
 
-#: emonitor/frontend/web/templates/frontendframe.html:66
+#: emonitor/frontend/web/templates/frontendframe.html:75
 msgid "frontend.login"
 msgstr "Anmelden"
 
-#: emonitor/frontend/web/templates/frontendframe.html:84
+#: emonitor/frontend/web/templates/frontendframe.html:90
 msgid "frontend.show.monitors"
 msgstr "Monitore zeigen"
-
-#~ msgid "frontend.restart_info"
-#~ msgstr ""
-

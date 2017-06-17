@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-24 16:30+0100\n"
+"POT-Creation-Date: 2017-04-16 17:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.4.0\n"
 
 #: emonitor/modules/__init__.py:28
 msgid "module.startpages"
@@ -41,8 +41,16 @@ msgstr ""
 msgid "alarmkeys.upload.states-1"
 msgstr ""
 
+#: emonitor/modules/alarmkeys/__init__.py:50
+msgid "admin.alarmkeys.sets.edit..."
+msgstr ""
+
+#: emonitor/modules/alarmkeys/content_admin.py:319
+msgid "alarmkeys.createbaseset.result"
+msgstr ""
+
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.detail.html:8
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:27
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:30
 msgid "alarmkeys.default"
 msgstr ""
 
@@ -54,97 +62,248 @@ msgstr ""
 msgid "alarmkeys.edittitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:22
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:25
 msgid "alarmkeys.uploadtitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:24
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:27
 msgid "alarmkeys.header.overview"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:25
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:23
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:76
 msgid "alarmkeys.info"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:31
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:70
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:50
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:34
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:81
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:147
 msgid "alarmkeys.cars1"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:32
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:71
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:60
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:35
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:82
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:157
 msgid "alarmkeys.cars2"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:33
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:69
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:36
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:166
 msgid "alarmkeys.material"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:36
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:39
 msgid "alarmkeys.defaultaddtitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:41
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:44
 msgid "alarmkeys.nodefault"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:52
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:55
 msgid "alarmkey.edittitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:59
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:62
 msgid "alarmkeys.defined"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:63
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:65
+msgid "alarmkeys.noset"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:74
 msgid "alarmkeys.searchkey"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:64
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:75
 msgid "alarmkey.searchplaceholder"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:67
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:78
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:101
 msgid "alarmkeys.category"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:68
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:33
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:79
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:106
 msgid "alarmkeys.key"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:69
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:38
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:80
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:121
 msgid "alarmkeys.keyinternal"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:73
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:84
 msgid "alarmkeys.addtitle"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:78
-msgid "alarmkeys.nodata"
-msgstr ""
-
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:84
-msgid "alarmkeys.detailtitle"
-msgstr ""
-
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:95
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:88
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:108
 msgid "alarmkeys.itemscount"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:104
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:97
 msgid "alarmkeys.delquestion"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:108
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:101
 msgid "alarmkeys.delquestion2"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.macro.html:6
+msgid "alarmkeys.nodata"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.macro.html:12
+msgid "alarmkeys.detailtitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:22
+msgid "alarmkeys.set.header.edit"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:23
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:66
+msgid "alarmkeys.set.info"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:26
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:71
+msgid "alarmkeys.set.name"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:31
+msgid "alarmkeys.set.base"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:34
+msgid "alarmkeys.set.otherbase"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:42
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:72
+msgid "alarmkeys.set.startdate"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:45
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:53
+msgid "alarmkeys.set.dateformatinfo"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:50
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:73
+msgid "alarmkeys.set.enddate"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:58
+msgid "alarmkeys.set.remark"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:65
+msgid "alarmkeys.set.orphankeys"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:69
+msgid "alarmkeys.set.save"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:70
+msgid "alarmkeys.set.cancel"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:11
+msgid "alarmkeys.set.delquestion"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:15
+msgid "alarmkeys.set.delbasequestion"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:32
+msgid "alarmkeys.text.wrongfile.msg"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:44
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:130
+msgid "alarmkeys.set.deletebasetitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:48
+msgid "alarmkeys.set.fileuploaddone"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:50
+msgid "alarmkeys.set.fileuploaderror"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:65
+msgid "alarmkeys.set.listtitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:74
+msgid "alarmkeys.set.definitionbase"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:75
+msgid "alarmkeys.set.items"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:77
+msgid "alarmkeys.set.addtitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:82
+msgid "alarmkeys.set.nodata"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:96
+msgid "alarmkeys.set.deletetitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:97
+msgid "alarmkeys.set.detailtitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:98
+msgid "alarmkeys.set.basetitle"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:104
+msgid "alarmkeys.set.itemscount"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:108
+msgid "alarmkeys.set.definitions.title"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:109
+msgid "alarmkeys.set.definition.info"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:115
+msgid "alarmkeys.set.definition.name"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:116
+msgid "alarmkeys.set.definition.start"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:117
+msgid "alarmkeys.set.definition.items"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:118
+msgid "alarmkeys.set.definition.typeintgrated"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:140
+msgid "alarmkeys.upload.definitionfile"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:142
+msgid "alarmkeys.upload.definitionstart"
 msgstr ""
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:22
@@ -178,39 +337,39 @@ msgstr ""
 msgid "alamkeys.upload.filename"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:42
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:43
 msgid "alarmkeys.upload.file"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:55
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:56
 msgid "alarmkeys.upload.tab3header"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:56
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:57
 msgid "alarmkeys.upload.tab3info"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:59
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:60
 msgid "alarmkeys.upload.exportall"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:60
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:61
 msgid "alarmkeys.upload.exportnoown"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:62
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:63
 msgid "alarmkeys.upload.exportbutton"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:65
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:66
 msgid "alarmkeys.upload.noexportdata"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:73
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:74
 msgid "alarmkeys.upload.importinfo"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:93
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:94
 msgid "alarmkeys.upload.wrongfiletype"
 msgstr ""
 
@@ -235,10 +394,10 @@ msgstr ""
 msgid "alarmkeys.upload.category"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:7
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:17
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:27
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:37
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:8
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:18
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:38
 msgid "alarmkeys.upload.choosecol"
 msgstr ""
 
@@ -311,50 +470,75 @@ msgstr ""
 msgid "alarmkeys.upload.uploadoption1"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:65
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
 msgid "alarmkeys.upload.uploadoption2"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:68
 msgid "alarmkeys.upload.uploadoption3"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:68
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:71
+msgid "alarmkeys.upload.uploadoption4"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:73
+msgid "alarmkeys.nokeyset"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:82
 msgid "alarmkeys.upload.missingadd"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:71
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:87
 msgid "alarmkeys.upload.startupdate"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:22
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:75
 msgid "alarmkeys.header.edit"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:43
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:82
+msgid "alarmkeys.keyset"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:85
+msgid "alarmkeys.keysetnone"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:94
+msgid "alarmkeys.keysetitem"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:111
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:134
+msgid "alarmkeys.department"
+msgstr ""
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:126
 msgid "alarmkeys.remark"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:78
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:175
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:96
 msgid "alarmkeys.allcars"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:87
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:184
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:226
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:105
 msgid "alarmkeys.nocars"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:94
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:191
 msgid "alarmkey.savedefault"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:96
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:193
 msgid "alarmkey.save"
 msgstr ""
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:98
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:195
 msgid "alarmkey.cancel"
 msgstr ""
 
@@ -3104,23 +3288,23 @@ msgstr ""
 msgid "messages.errorhandler.2"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:47
-#: emonitor/modules/messages/templates/widget.message.weather.html:106
+#: emonitor/modules/messages/templates/widget.message.weather - Kopie.html:105
+#: emonitor/modules/messages/templates/widget.message.weather.html:109
 msgid "messages.weather.time"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:57
-#: emonitor/modules/messages/templates/widget.message.weather.html:92
+#: emonitor/modules/messages/templates/widget.message.weather - Kopie.html:114
+#: emonitor/modules/messages/templates/widget.message.weather.html:117
 msgid "messages.weather.pressure"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:59
-#: emonitor/modules/messages/templates/widget.message.weather.html:94
+#: emonitor/modules/messages/templates/widget.message.weather - Kopie.html:116
+#: emonitor/modules/messages/templates/widget.message.weather.html:119
 msgid "messages.weather.humidity"
 msgstr ""
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:61
-#: emonitor/modules/messages/templates/widget.message.weather.html:96
+#: emonitor/modules/messages/templates/widget.message.weather - Kopie.html:118
+#: emonitor/modules/messages/templates/widget.message.weather.html:121
 msgid "messages.weather.cloudlevel"
 msgstr ""
 
@@ -3450,7 +3634,7 @@ msgstr ""
 msgid "admin.persons.edit..."
 msgstr ""
 
-#: emonitor/modules/persons/message_birthday.py:11
+#: emonitor/modules/persons/message_birthday.py:12
 msgid "message.birthday"
 msgstr ""
 

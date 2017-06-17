@@ -15,7 +15,7 @@
 {% endblock %}
 
 {%  block subnavigation %}
-    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+    {{ subnavigation(current_mod.getAdminSubNavigation()) }}
 {%  endblock %}
 
 {% block content %}
@@ -33,7 +33,8 @@
             <h3>{{ _('alarmkeys.upload.step1header') }}</h3>
             <form name="form" id="requestForm" action="/admin/data/alarmkeys?action=upload" method="post" enctype="multipart/form-data">
                 <p>
-                    {{ _('alamkeys.upload.filename') }}:<br/>
+                    <label for="uploadfile">{{ _('alamkeys.upload.filename') }}:</label>
+                    <br>
                     <input id="uploadfile" type="file" size="45" name="uploadfile" class="input"/>
                     <input type="hidden" name="filename" id="filename"/>
                 </p>
@@ -41,7 +42,7 @@
                     <input type="hidden" name="department" id="department" value="{{ department }}"/>
                     <button type="submit" value="{{ _('alarmkeys.upload.file') }}"><i class="fa fa-upload"></i> {{ _('alarmkeys.upload.file') }}</button>
                 </p>
-                    <div id="status"> </div>
+                <div id="status"> </div>
             </form>
             <div id="sheets"> </div>
             <div id="cols"> </div>
@@ -104,29 +105,25 @@
         $('#noexportdata').hide();
         $('#loadingimage').show();
         $('#tab3').append($('#overlay_proto').html());
-        $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=download&options="+$('input:radio[name=export_opt]:checked').val()+'&department='+$('#department').val(),
-            success: function(filename){
-                $('#tab3 > .overlayproto').remove();
-                if (filename==''){
-                    $('#noexportdata').show();
-                }else{
-                    window.location.href = '/admin/data/alarmkeys/download/'+filename;
-                }
-                $('#loadingimage').hide();
-                return false;
+
+        $.post("/admin/data/alarmkeys", {'action': 'download', 'options': $('input:radio[name=export_opt]:checked').val(),'department': $('#department').val()}, function(filename){
+            $('#tab3 > .overlayproto').remove();
+            if (filename==''){
+                $('#noexportdata').show();
+            }else{
+                window.location.href = '/admin/data/alarmkeys/download/'+filename;
             }
+            $('#loadingimage').hide();
+            return false;
         });
     }
 
     function changeSheet(obj){
+        $('#cols').html('');
         if($(obj).val()){
-            $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=upload_sheet&sheetname="+$(obj).val()+'&filename='+$('#filename').val(), 
-                success: function(result){
-                    $('#cols').html(result);
-                }
+            $.get("/admin/data/alarmkeys", {'action': 'upload_sheet', 'sheetname': $(obj).val(), 'filename': $('#filename').val()}, function(result){
+                $('#cols').html(result);
             });
-        }else{
-            $('#cols').html('');
         }
     }
     

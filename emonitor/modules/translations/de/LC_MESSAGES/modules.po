@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-24 16:30+0100\n"
-"PO-Revision-Date: 2017-02-24 16:31+0100\n"
+"POT-Creation-Date: 2017-04-16 17:22+0200\n"
+"PO-Revision-Date: 2017-04-16 17:25+0200\n"
 "Last-Translator: Arne Seifert <arne@seifert-online.net>\n"
 "Language: de\n"
 "Language-Team: de <arne@seifert-online.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.4.0\n"
 "X-Generator: Poedit 1.8.6\n"
 
 #: emonitor/modules/__init__.py:28
@@ -43,8 +43,19 @@ msgstr "Definitionen verändert"
 msgid "alarmkeys.upload.states-1"
 msgstr "Definitionen neu"
 
+#: emonitor/modules/alarmkeys/__init__.py:50
+msgid "admin.alarmkeys.sets.edit..."
+msgstr "..."
+
+#: emonitor/modules/alarmkeys/content_admin.py:319
+msgid "alarmkeys.createbaseset.result"
+msgstr ""
+"Bei der automatischen Zuordnung konnten %(num_success)s Datensätze korrekt "
+"zugeordnet werden, bei %(num_error)s war keine Zuordnung möglich oder schlug "
+"fehl."
+
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.detail.html:8
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:27
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:30
 msgid "alarmkeys.default"
 msgstr "Standardausrückereihenfolge"
 
@@ -56,16 +67,16 @@ msgstr "Ausrückeordnung löschen"
 msgid "alarmkeys.edittitle"
 msgstr "Ausrückeordnung bearbeiten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:22
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:25
 msgid "alarmkeys.uploadtitle"
 msgstr "Ausrückeordnung hochladen"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:24
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:27
 msgid "alarmkeys.header.overview"
 msgstr "Ausrückeordnung Übersicht"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:25
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:23
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:76
 msgid "alarmkeys.info"
 msgstr ""
 "In der Ausrückeordnung wird die Reihenfolge der ausrückenden Fahrzeuge je "
@@ -74,85 +85,244 @@ msgstr ""
 "Ausrückereihenfolge vorhanden ist.<br/>Je Einheit kann die Reihenfolge "
 "gesondert, abhängig der verfügbaren Fahrzeuge erstellt werden."
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:31
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:70
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:50
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:34
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:81
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:147
 msgid "alarmkeys.cars1"
 msgstr "Primärfahrzeug(e)"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:32
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:71
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:60
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:35
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:82
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:157
 msgid "alarmkeys.cars2"
 msgstr "Folgefahrzeug(e)"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:33
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:69
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:36
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:166
 msgid "alarmkeys.material"
 msgstr "Sondermittel"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:36
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:39
 msgid "alarmkeys.defaultaddtitle"
 msgstr "Standardausrückeordnung definieren"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:41
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:44
 msgid "alarmkeys.nodefault"
 msgstr "- keine Standardausrückereihenfolge definiert -"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:52
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:55
 msgid "alarmkey.edittitle"
 msgstr "Alarmstichwort bearbeiten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:59
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:62
 msgid "alarmkeys.defined"
 msgstr "Ausrückeordnung nach Alarmstichwort"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:63
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:65
+msgid "alarmkeys.noset"
+msgstr "Keine Definition"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:74
 msgid "alarmkeys.searchkey"
 msgstr "Schlagwort suchen"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:64
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:75
 msgid "alarmkey.searchplaceholder"
 msgstr "Stichwort/Schlagwort..."
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:67
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:78
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:101
 msgid "alarmkeys.category"
 msgstr "Stichwort"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:68
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:33
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:79
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:106
 msgid "alarmkeys.key"
 msgstr "Schlagwort"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:69
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:38
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:80
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:121
 msgid "alarmkeys.keyinternal"
 msgstr "Interne Bezeichnung"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:73
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:84
 msgid "alarmkeys.addtitle"
 msgstr "Alarmstichwort hinzufügen"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:78
-msgid "alarmkeys.nodata"
-msgstr "- keine Ausrückeordnung/Alarmstichwort definiert -"
-
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:84
-msgid "alarmkeys.detailtitle"
-msgstr "Details anzeigen"
-
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:95
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:88
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:108
 msgid "alarmkeys.itemscount"
 msgstr "(%(count)s Alarmstichworte vorhanden)"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:104
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:97
 msgid "alarmkeys.delquestion"
 msgstr "Soll die gewählte Ausrückeordnung wirklich gelöscht werden?"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:108
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.html:101
 msgid "alarmkeys.delquestion2"
 msgstr "Soll die gewählte Ausrückeordnung wirklich gelöscht werden?"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.macro.html:6
+msgid "alarmkeys.nodata"
+msgstr "- keine Ausrückeordnung/Alarmstichwort definiert -"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.macro.html:12
+msgid "alarmkeys.detailtitle"
+msgstr "Details anzeigen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:22
+msgid "alarmkeys.set.header.edit"
+msgstr "Definition bearbeiten"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:23
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:66
+msgid "alarmkeys.set.info"
+msgstr ""
+"Alarmstichworte können zu Definitionen zusammengefasst werden. Die Definitionen "
+"haben in der Regel einen Gültigkeitszeitraum. Die Definition besteht aus "
+"verschiedenen Alarmstich- und Schlagworten."
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:26
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:71
+msgid "alarmkeys.set.name"
+msgstr "Definitions-Name"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:31
+msgid "alarmkeys.set.base"
+msgstr "Basis"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:34
+msgid "alarmkeys.set.otherbase"
+msgstr "- andere Basis -"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:42
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:72
+msgid "alarmkeys.set.startdate"
+msgstr "gültig ab"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:45
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:53
+msgid "alarmkeys.set.dateformatinfo"
+msgstr "(tt.mm.jjjj)"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:50
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:73
+msgid "alarmkeys.set.enddate"
+msgstr "gültig bis"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:58
+msgid "alarmkeys.set.remark"
+msgstr "Bemerkung"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:65
+msgid "alarmkeys.set.orphankeys"
+msgstr "Nicht-zugeordnete Stichworte dieser Definition zuordnen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:69
+msgid "alarmkeys.set.save"
+msgstr "Speichern"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_actions.html:70
+msgid "alarmkeys.set.cancel"
+msgstr "Abbrechen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:11
+msgid "alarmkeys.set.delquestion"
+msgstr "Soll die gewählte Definition wirklich gelöscht werden?"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:15
+msgid "alarmkeys.set.delbasequestion"
+msgstr "Soll diese Vorlage wirklich gelöscht werden?"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:32
+msgid "alarmkeys.text.wrongfile.msg"
+msgstr ""
+"Die hochgeladene Datei hat das falsche Dateiformat und kann nicht als Basis "
+"verwendet werden."
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:44
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:130
+msgid "alarmkeys.set.deletebasetitle"
+msgstr "Vorlage löschen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:48
+msgid "alarmkeys.set.fileuploaddone"
+msgstr "Definitionsdatei wurde erfolgreich gespeichert."
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:50
+msgid "alarmkeys.set.fileuploaderror"
+msgstr "Fehler beim Speichern der Definitionsdatei."
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:65
+msgid "alarmkeys.set.listtitle"
+msgstr "Stichwort-Definitionen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:74
+msgid "alarmkeys.set.definitionbase"
+msgstr "Basis"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:75
+msgid "alarmkeys.set.items"
+msgstr "#"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:77
+msgid "alarmkeys.set.addtitle"
+msgstr "Neue Definition erzeugen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:82
+msgid "alarmkeys.set.nodata"
+msgstr "- keine Definitionen vorhanden -"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:96
+msgid "alarmkeys.set.deletetitle"
+msgstr "Definition löschen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:97
+msgid "alarmkeys.set.detailtitle"
+msgstr "Definition bearbeiten"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:98
+msgid "alarmkeys.set.basetitle"
+msgstr "Automatisch zuordnen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:104
+msgid "alarmkeys.set.itemscount"
+msgstr "(%(count)s Definitionen vorhanden)"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:108
+msgid "alarmkeys.set.definitions.title"
+msgstr "Definitions-Vorlagen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:109
+msgid "alarmkeys.set.definition.info"
+msgstr ""
+"In Definitionsdateien werden sämtliche Stich- und Schlagworte in einem Katalog "
+"definiert. Für diese Definitionen können Ausrückeordnungen für jede Einheit "
+"erstellt werden."
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:115
+msgid "alarmkeys.set.definition.name"
+msgstr "Definitions-Name"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:116
+msgid "alarmkeys.set.definition.start"
+msgstr "gültig ab"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:117
+msgid "alarmkeys.set.definition.items"
+msgstr "Stich-/Schlagworte"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:118
+msgid "alarmkeys.set.definition.typeintgrated"
+msgstr "integriert"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:140
+msgid "alarmkeys.upload.definitionfile"
+msgstr "Definitions-Datei hochladen"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.set_list.html:142
+msgid "alarmkeys.upload.definitionstart"
+msgstr "Hochladen"
 
 #: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:22
 msgid "alarmkeys.upload.headtitle"
@@ -187,41 +357,41 @@ msgstr "Schritt 1: Excel-Datei hochladen"
 msgid "alamkeys.upload.filename"
 msgstr "Dateiname"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:42
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:43
 msgid "alarmkeys.upload.file"
 msgstr "Datei hochladen"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:55
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:56
 msgid "alarmkeys.upload.tab3header"
 msgstr "Ausrückeordnung exportieren"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:56
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:57
 msgid "alarmkeys.upload.tab3info"
 msgstr ""
 "Für die gewählte Einheit kann die Ausrückeordnung als Excel-Datei exportiert "
 "werden."
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:59
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:60
 msgid "alarmkeys.upload.exportall"
 msgstr "Alle Datensätze exportieren"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:60
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:61
 msgid "alarmkeys.upload.exportnoown"
 msgstr "Nur Datensätze ohne eigene Ausrückedefinition"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:62
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:63
 msgid "alarmkeys.upload.exportbutton"
 msgstr "Export starten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:65
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:66
 msgid "alarmkeys.upload.noexportdata"
 msgstr "- keine Stichworte vorhanden -"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:73
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:74
 msgid "alarmkeys.upload.importinfo"
 msgstr "Daten werden verarbeitet und der Import gestartet..."
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:93
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload.html:94
 msgid "alarmkeys.upload.wrongfiletype"
 msgstr ""
 "Falscher Dateityp ausgewählt. Es können nur Excel-Dateien hochgeladen werden."
@@ -247,10 +417,10 @@ msgstr "Schritt 3: Spalten zuordnen"
 msgid "alarmkeys.upload.category"
 msgstr "Stichwort"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:7
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:17
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:27
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:37
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:8
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:18
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:28
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.upload3.html:38
 msgid "alarmkeys.upload.choosecol"
 msgstr "- Spalte wählen -"
 
@@ -324,50 +494,75 @@ msgstr "Importoptionen"
 msgid "alarmkeys.upload.uploadoption1"
 msgstr "Nur selektierte Definitionen bearbeiten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:65
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
 msgid "alarmkeys.upload.uploadoption2"
 msgstr "Neue Definitionen importieren"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:66
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:68
 msgid "alarmkeys.upload.uploadoption3"
 msgstr "Vorhandene Definitionen aktualisieren"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:68
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:71
+msgid "alarmkeys.upload.uploadoption4"
+msgstr "Definitionen zuordnen zu"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:73
+msgid "alarmkeys.nokeyset"
+msgstr "- keine Definition -"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:82
 msgid "alarmkeys.upload.missingadd"
 msgstr "Fehlende Fahrzeuge/Einsatzmittel anlegen"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:71
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys.uploadpreview.html:87
 msgid "alarmkeys.upload.startupdate"
 msgstr "Update/Import starten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:22
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:75
 msgid "alarmkeys.header.edit"
 msgstr "Ausrückeordnung Bearbeiten"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:43
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:82
+msgid "alarmkeys.keyset"
+msgstr "Vorlage"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:85
+msgid "alarmkeys.keysetnone"
+msgstr "Keine Definition"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:94
+msgid "alarmkeys.keysetitem"
+msgstr "Stich-/Schlagwort"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:111
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:134
+msgid "alarmkeys.department"
+msgstr "Einheit"
+
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:126
 msgid "alarmkeys.remark"
 msgstr "Bemerkung"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:78
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:175
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:96
 msgid "alarmkeys.allcars"
 msgstr "Sonstige Fahrzeuge/Material"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:87
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:184
 #: emonitor/modules/alarmobjects/templates/admin.alarmobjects_actions.html:226
 #: emonitor/modules/alarms/templates/admin.alarms.config.html:105
 msgid "alarmkeys.nocars"
 msgstr "- Keine Fahrzeuge/Material vorhanden -"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:94
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:191
 msgid "alarmkey.savedefault"
 msgstr "Speichern"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:96
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:193
 msgid "alarmkey.save"
 msgstr "Speichern"
 
-#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:98
+#: emonitor/modules/alarmkeys/templates/admin.alarmkeys_actions.html:195
 msgid "alarmkey.cancel"
 msgstr "Abbrechen"
 
@@ -1061,7 +1256,7 @@ msgstr "Uhrzeit"
 
 #: emonitor/modules/alarms/alarmfield.py:232
 msgid "list"
-msgstr ""
+msgstr "Liste"
 
 #: emonitor/modules/alarms/alarmutils.py:393
 #: emonitor/modules/alarms/alarmutils.py:395
@@ -3295,23 +3490,23 @@ msgstr "Fehler im Template '<em>%(templatename)s</em>'."
 msgid "messages.errorhandler.2"
 msgstr "Bitte Modul '<em>%(modulename)s</em>' kontrollieren."
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:47
-#: emonitor/modules/messages/templates/widget.message.weather.html:106
+#: - Kopie.html:105 emonitor/modules/messages/templates/widget.message.weather
+#: emonitor/modules/messages/templates/widget.message.weather.html:109
 msgid "messages.weather.time"
 msgstr "Stand"
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:57
-#: emonitor/modules/messages/templates/widget.message.weather.html:92
+#: - Kopie.html:114 emonitor/modules/messages/templates/widget.message.weather
+#: emonitor/modules/messages/templates/widget.message.weather.html:117
 msgid "messages.weather.pressure"
 msgstr "Luftdruck"
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:59
-#: emonitor/modules/messages/templates/widget.message.weather.html:94
+#: - Kopie.html:116 emonitor/modules/messages/templates/widget.message.weather
+#: emonitor/modules/messages/templates/widget.message.weather.html:119
 msgid "messages.weather.humidity"
 msgstr "Luftfeuchte"
 
-#: emonitor/modules/messages/templates/widget.message.weather.html:61
-#: emonitor/modules/messages/templates/widget.message.weather.html:96
+#: - Kopie.html:118 emonitor/modules/messages/templates/widget.message.weather
+#: emonitor/modules/messages/templates/widget.message.weather.html:121
 msgid "messages.weather.cloudlevel"
 msgstr "Bewölkung"
 
@@ -3657,7 +3852,7 @@ msgstr "Geburtstagsliste"
 msgid "admin.persons.edit..."
 msgstr "..."
 
-#: emonitor/modules/persons/message_birthday.py:11
+#: emonitor/modules/persons/message_birthday.py:12
 msgid "message.birthday"
 msgstr "Geburtstag"
 
@@ -5309,3 +5504,6 @@ msgstr "Abbrechen"
 
 #~ msgid "emonitor.modules.textmod.Textmod"
 #~ msgstr "Datei-Korrekturen"
+
+#~ msgid "alarmkeys.set.department"
+#~ msgstr "Einheit"

@@ -6,11 +6,14 @@
         .autocomplete-suggestions{background-color:#fff;border:1px solid black;overflow:auto;}
         .autocomplete-suggestion{cursor:pointer;}
         .autocomplete-suggestion:hover{background-color: #dddddd;}
+        ul.button{list-style-type: none;padding:0;margin:0;}
+        ul.button li{display:inline;min-width:400px; border:1px solid black;padding:5px 10px;cursor:pointer}
+        ul.button li.selected{background-color:silver;}
     </style>
 {% endblock %}
 
 {% block script %}
-     <script type="text/javascript" src="/alarmkeys/inc/jquery.autocomplete.min.js"> </script>
+    <script type="text/javascript" src="/alarmkeys/inc/jquery.autocomplete.min.js"> </script>
 {% endblock %}
 
 {%  block subnavigation %}
@@ -58,6 +61,14 @@
         <p>&nbsp;</p>
         <h4>{{ _('alarmkeys.defined') }}</h4>
 
+        <ul class="button">
+            <li onclick="loadChangeSet(0)" data-id="0">{{ _('alarmkeys.noset') }}</li>
+            {%- for akset in aksets %}
+            <li {% if akset.active %} class="selected"{% endif %} onclick="loadChangeSet({{ akset.id }})" data-id="{{ akset.id }}">{{ akset.name }}</li>
+            {%- endfor %}
+        </ul>
+        <p>&nbsp;</p>
+
         <div class="headrow">
             <div style="margin-right:50px;margin-left:15px;padding-bottom:5px;">
                 {{ _('alarmkeys.searchkey') }}: 
@@ -72,31 +83,13 @@
             </div>
             <button class="add" type="submit" name="action" value="addkey" title="{{ _('alarmkeys.addtitle') }}"><i class="fa fa-plus fa-lg"></i></button>
         </div>
-        
-        {% if sum==0 %}
-        <div class="rownoentry">
-            <p style="text-align:center">{{ _('alarmkeys.nodata') }}</p>
-        </div>
-        {% endif %}
-        <div id="sortable_">
-            {% for c_key in alarmkeys_count %}
-            <div class="row" style="height:26px!important;">
-                <a href="#" class="morelink" title="{{ _('alarmkeys.detailtitle') }}" onclick="return details('{{ c_key[2] }}', {{ depid }}, this)" id="morelink_{{ c_key[2] }}"> </a>
-                <div style="margin-right:5px;margin-left:15px;">
-                    <div class="rowcell" style="width:80%;"><b>{{ c_key[0] }}</b></div>
-                    <div class="rowcell" style="width:20%;text-align:right">{{ c_key[1] }}</div>
-                </div>
-            </div>
-            <div class="details" style="display:none" id="details_{{ c_key[2] }}" loaded="0"> </div>
-            {% endfor %}
-        </div>
-        
+        <div id="keyscontent"></div>
         <div class="headrow">
-            <small style="float:right;margin-right:50px">{{ _('alarmkeys.itemscount', count=sum) }}</small><br/>
+            <small id="sumitems" style="float:right;margin-right:50px">{{ _('alarmkeys.itemscount', count='XXX') }}</small><br/>
         </div>
         <input type="hidden" name="form_id" value="admin.alarmkeys.overview"/>
     </form>
-{%  endblock %}
+{% endblock %}
 
 {% block script_end %}
     {{ super() }}
@@ -107,46 +100,56 @@
     function questionDelCars(){
         return confirm('{{ _('alarmkeys.delquestion2') }}');
     }
-    
-    function details(key, dept, obj){
-        if($('#details_'+key).attr('loaded')=='0'){
-            $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=loaddetails&category="+key+"&department="+dept,
-                 success: function(details) {
-                    $('#details_'+key).html(details);
-                    $('#details_'+key).attr('loaded', '1')
+
+    function loadChangeSet(id){
+        $('div#keyscontent').html('<p style="text-align:center"><img src="/img/loading.gif"></p>');
+        $.get('/admin/data/alarmkeys', {'action': 'changekeyset', 'keysetid': id, 'department': {{ depid }}}, function(data){
+            $('div#keyscontent').html(data);
+            $('small#sumitems').html( '{{ _('alarmkeys.itemscount', count='XXX') }}'.replace('XXX', sum));
+            $.each($('ul.button>li'), function(index, item){
+                if($(item).data('id')==id){
+                    $(item).addClass('selected');
+                }else{
+                    $(item).removeClass('selected');
                 }
+            });
+        });
+        $('div[class^="autocomplete"]').remove();
+
+        $.get("/admin/data/alarmkeys", {'action': 'keyslookup', 'keysetid': id, 'format': 'json'}, function(keys){
+            alarmkeysArray = $.map(keys, function (value, key) { return { value: value, data: key }; }),
+            alarmkeys = $.map(keys, function (value) { return value; });
+
+            $('#searchkey').autocomplete({
+                lookup: alarmkeysArray,
+                onSelect: function(suggestion) {
+                    $.get("/admin/data/alarmkeys", {'action': 'categorylookup', 'keyid': suggestion.data, 'format': 'json'}, function(data){
+                        $('#morelink_'+data.id).click();
+                    });
+                }
+            });
+            $('input[name=edit_keyid]').change(function() { getKeyCars($(this).val());});
+        });
+    }
+    
+    function details(key, obj){
+        if($('#details_'+key).data('loaded')=='0'){
+            $.get('/admin/data/alarmkeys', {'action': 'loaddetails', 'category': key, 'department': {{ depid }}, 'keysetid': $('ul.button > li.selected').data('id')}, function(details){
+                $('#details_'+key).html(details);
+                $('#details_'+key).data('loaded', '1')
             });
         }
         $('#details_'+key).toggle();
-        if ($(obj).hasClass('expanded')){
-            $(obj).removeClass('expanded');
-        }else{
-            $(obj).addClass('expanded');
-        }
+        $('#morelink_'+key).toggleClass('expanded');
         return false;
     }
     
     $(document).ready(function() {
-        // init autocomplete of alarmkeys
-        $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=keyslookup&format=json",
-            success: function(keys) {
-                var alarmkeysArray = $.map(keys, function (value, key) { return { value: value, data: key }; }),
-                alarmkeys = $.map(keys, function (value) { return value; });
-                
-                $('#searchkey').autocomplete({
-                    lookup: alarmkeysArray,
-                    onSelect: function(suggestion) {
-                         
-                        $.ajax({ type : "POST", url : "/admin/data/alarmkeys?action=categorylookup&keyid="+suggestion.data+"&format=json",
-                            success: function(data) {
-                                $('#morelink_'+data.id).click();
-                              }
-                        });
-                    }
-                });
-                
-                $('input[name=edit_keyid]').change(function() { getKeyCars($(this).val());});
-            }
+        loadChangeSet($('.button>li.selected').data('id'));  /* load selected set data*/
+
+        $('ul.button > li').click(function(){
+            $('ul.button >li').removeClass('selected');
+            $(this).toggleClass('selected');
         });
     });
 {% endblock %}

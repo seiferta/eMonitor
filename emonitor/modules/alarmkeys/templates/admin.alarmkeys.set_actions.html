@@ -1,0 +1,75 @@
+{% extends "admin.html" %}
+
+{% block style %}
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/alarmkeys/inc/jquery.autocomplete.min.js"> </script>
+    <script type="text/javascript" src="/js/jquery.maskedinput.min.js"> </script>
+    <script>
+    $(document).ready(function() {
+        $('#set_startdate').mask("99.99.9999");
+        $('#set_enddate').mask("99.99.9999");
+    });
+    </script>
+{% endblock %}
+
+{%  block subnavigation %}
+    {{  subnavigation(current_mod.getAdminSubNavigation()) }}
+{%  endblock %}
+
+{% block content %}
+    <h2>{{ _('alarmkeys.set.header.edit') }}</h2>
+    <p><small>{{ _('alarmkeys.set.info') }}</small></p>
+    <form method="post">
+        <p>
+            <label for="set_name">{{ _('alarmkeys.set.name') }}:</label>
+            <br>
+            <input type="text" name="set_name" id="set_name" value="{{ alarmkeyset.name }}" style="width:99%;"/>
+        </p>
+        <p>
+            <label for="set_base">{{ _('alarmkeys.set.base') }}:</label>
+            <br>
+            <select id="set_base" name="set_base" style="width:99%">{{ alarmkeyset.base }}
+                <option value="other">{{ _('alarmkeys.set.otherbase') }}</option>
+                {%- for base in setbases %}
+                <option value="{{ base.id }}"{% if alarmkeyset.base==base.id %} selected="selected"{% endif %}>{{ base.name }} (start: {{ base.start|datetime('dd.MM.yyyy') }})</option>
+                {%- endfor %}
+            </select>
+        </p>
+        <div style="float:left;width:200px;">
+            <p>
+                <label for="set_startdate">{{ _('alarmkeys.set.startdate') }}:</label>
+                <br>
+                <input type="text" name="set_startdate" id="set_startdate" value="{% if alarmkeyset.startdate %}{{ alarmkeyset.startdate|datetime('dd.MM.yyyy') }}{% endif %}">
+                <small>{{ _('alarmkeys.set.dateformatinfo') }}</small>
+            </p>
+        </div>
+        <div style="float:left;width:200px;">
+            <p>
+                <label for="set_enddate">{{ _('alarmkeys.set.enddate') }}:</label>
+                <br>
+                <input type="input" name="set_enddate" id="set_enddate" value="{% if alarmkeyset.enddate %}{{ alarmkeyset.enddate|datetime('dd.MM.yyyy') }}{% endif %}">
+                <small>{{ _('alarmkeys.set.dateformatinfo') }}</small>
+            </p>
+        </div>
+        <div style="clear:left"></div>
+        <p>
+            <label for="set_remark">{{ _('alarmkeys.set.remark') }}:</label>
+            <br>
+            <textarea name="set_remark" id="set_remark" style="width:99%;height:55px">{{ alarmkeyset.remark }}</textarea>
+        </p>
+        <p></p>
+        <div>
+            <p>
+                <label><input type="checkbox" name="set_assignorphan"{%- if orphankeys|count == 0 %} disabled="disabled"{%- endif %}> {{ _('alarmkeys.set.orphankeys') }} ({{ orphankeys|count }})</label>
+            </p>
+        </div>
+        <p>
+            <button type="submit" name="action" value="savealarmkeyset" class="save"><i class="fa fa-check"></i> {{ _('alarmkeys.set.save') }}</button>
+            <button type="submit" name="action" value="cancel" class="cancel"><i class="fa fa-times"></i> {{ _('alarmkeys.set.cancel') }}</button>
+        </p>
+        <input type="hidden" name="set_id" value="{{ alarmkeyset.id }}"/>
+        <input type="hidden" name="form_id" value="alarmkeys.set.edit"/>
+    </form>
+{% endblock %}

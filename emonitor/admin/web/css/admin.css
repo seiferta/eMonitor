@@ -5,6 +5,10 @@ a, a:visited{color:#B40431;text-decoration:none;}
 a:hover{text-decoration:underline;}
 label{font-weight: normal!important;width:100%}
 
+h1{font-size:18px!important;font-weight:bold;}
+h2{font-size:16px!important;font-weight:bold;}
+h3{font-size:14px!important;font-weight:bold;}
+
 div.maincontainer{margin:0;height:100%;background-color:#ddd;}
 
 div.ui-layout-toggler:hover{background-color:#333;}
@@ -52,8 +56,8 @@ div.headcell{float:left;}
 div.subheadrow{background-color:#F2F2F2;font-weight:bolder;overflow:hidden;padding:4px 4px;border:1px solid silver;border-top-width:0;}
 div.subheadcell{float:left;}
 div.rowadd{position:relative;overflow:hidden;padding:1px 4px;background-color:#fff;border:1px solid silver;border-top:0;}
-div.row{position:relative;overflow:hidden;padding:1px 4px!important;background-color:#fff/;border:1px solid silver;border-top:0;margin:0 !important;}
-div.row:hover{background-color: #dedede /*#fff*/;cursor:default;}
+div.row{position:relative;overflow:hidden;padding:1px 4px!important;background-color:#fff;border:1px solid silver;border-top:0;margin:0 !important;}
+div.row:hover{background-color: #dedede;cursor:default;}
 div.row .morelink{background:url(/img/more.png) no-repeat 3px transparent;border:0;position:absolute;top:3px;width:20px;height:20px;}
 div.row .morelink:hover{background:url(/img/moreover.png) no-repeat 3px transparent;}
 div.row .expanded{background:url(/img/details.png) no-repeat 3px transparent;}

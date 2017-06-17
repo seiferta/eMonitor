@@ -1,5 +1,7 @@
+from sqlalchemy.orm.collections import attribute_mapped_collection
 from emonitor.extensions import db
 from emonitor.modules.alarmkeys.alarmkeycar import AlarmkeyCars
+from emonitor.modules.alarmkeys.alarmkeyset import AlarmkeySet
 
 
 class Alarmkey(db.Model):
@@ -11,13 +13,18 @@ class Alarmkey(db.Model):
     category = db.Column(db.String(40), default='')
     key = db.Column(db.String(40), default='')
     key_internal = db.Column(db.String(40), default='')
+    _keyset = db.Column('keyset', db.ForeignKey('alarmkeysets.id'))
+    keyset = db.relationship("AlarmkeySet", collection_class=attribute_mapped_collection('id'))
+    keysetitem = db.Column(db.INTEGER, default=0)
     remark = db.Column(db.Text)
 
-    def __init__(self, category, key, key_internal, remark):
+    def __init__(self, category, key, key_internal, remark, keyset=None, keysetitem=None):
         self.category = category
         self.key = key
         self.key_internal = key_internal
         self.remark = remark
+        self._keyset = keyset
+        self.keysetitem = keysetitem
 
     def _getCars(self, cartype, department):
         """
@@ -101,17 +108,35 @@ class Alarmkey(db.Model):
         return AlarmkeyCars.getAlarmkeyCars(kid=self.id or 9999, dept=department) is None
 
     @staticmethod
-    def getAlarmkeys(id=''):
+    def getAlarmkeys(id='', keysetid=None):
         """
         Get all alarmkey definitions or single definition with given 'id'
 
         :param id: id of alarmkey
+        :param keysetid: id of :py:class:`emonitor.modules.alarmkeys.AlarmkeySet` oder *None*
         :return: list of defintions or single definition
         """
         if id not in ['', 'None']:
             return Alarmkey.query.filter_by(id=id).first()
+        elif keysetid:
+            if int(keysetid) == 0:  # deliver all un-matched items
+                return Alarmkey.query.filter_by(_keyset=None).order_by('category').all()
+            return Alarmkey.query.filter_by(_keyset=keysetid).order_by('category').all()
         else:
-            return Alarmkey.query.order_by('category').all()
+            keyset = AlarmkeySet.getCurrentKeySet()
+            if keyset is None:
+                return Alarmkey.query.order_by('category').all()
+            else:
+                return Alarmkey.query.filter_by(_keyset=keyset.id).order_by('category').all()
+
+    @staticmethod
+    def getOrphanKeys():
+        """
+        Get list of all orphan alarmkeys
+
+        :return: list of orphan alarmkeys
+        """
+        return Alarmkey.query.filter_by(keyset=None).all()
 
     @staticmethod
     def getAlarmkeysByName(name):
@@ -134,15 +159,21 @@ class Alarmkey(db.Model):
         return Alarmkey.query.filter_by(category=category).all()
 
     @staticmethod
-    def getAlarmkeysByCategoryId(categoryid):
+    def getAlarmkeysByCategoryId(categoryid, keysetid=None):
         """
         Get all alarmkey definitions of given category id
 
-        :param category: category as string
+        :param categoryid: category as string
+        :param keysetid: keysetid as integer, 0 for un-matched, None for all
         :return: :py:class:`emonitor.modules.alarmkeys.alarmkey.Alarmkey` object list
         """
         key = Alarmkey.query.filter_by(id=categoryid).one()
-        return Alarmkey.query.filter_by(category=key.category).all()
+        if keysetid is None:
+            return Alarmkey.query.filter_by(category=key.category).all()
+        elif int(keysetid) == 0:
+            return Alarmkey.query.filter_by(category=key.category, _keyset=None).all()
+        else:
+            return Alarmkey.query.filter(Alarmkey.category == key.category and Alarmkey._keyset == keysetid).all()
 
     @staticmethod
     def getAlarmkeysDict():

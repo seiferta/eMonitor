@@ -47,6 +47,7 @@ class AlarmkeysModule(Module):
         self.adminsubnavigation = []
         for dep in Department.getDepartments():
             self.adminsubnavigation.append(('/admin/alarmkeys/%s' % dep.id, dep.name))
+        self.adminsubnavigation.append(('/admin/alarmkeys/0', babel.gettext('admin.alarmkeys.sets.edit...')))
         
     def getAdminContent(self, **params):
         """
@@ -65,7 +66,7 @@ class AlarmkeysModule(Module):
         """
         return getAdminData(self)
         
-    def getFrontendData(self, params={}):
+    def getFrontendData(self, **params):
         """
         Call *getFrontendData* of alarmkeys class
 

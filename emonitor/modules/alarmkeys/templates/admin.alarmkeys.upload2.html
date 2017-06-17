@@ -3,9 +3,9 @@
     <p>{{ _('alarmkeys.upload.sheets') }}:<br/>
     <select id="sheetname" name="sheetname" onchange="return changeSheet(this)">
         <option value="">{{ _('alarmkeys.upload.choosesheet') }}</option>
-        {% for sheet in sheets %}
+        {%- for sheet in sheets %}
         <option value="{{ loop.index0 }}">{{ sheet }}</option>
-        {% endfor %}
+        {%- endfor %}
     </select>
     </p>
 </div>

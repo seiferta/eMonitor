@@ -1,6 +1,6 @@
 <div>
     <form id="importoptions" action="/admin/data/alarmkeys?action=doimport" method="post" style="position:relative">
-        {% if vals['carsnotfound'].keys()|count>0 %}
+        {%- if vals['carsnotfound'].keys()|count>0 %}
         <div>
             <h3>{{ _('alarmkeys.upload.step4header') }}</h3>
             <ul>
@@ -9,7 +9,7 @@
                 {%- endfor %}
             </ul>
         </div>
-        {% endif %}
+        {%- endif %}
         <h3>{{ _('alarmkeys.upload.step5header') }}</h3>
         <div class="headrow">
             <div style="margin-right:10px;margin-left:40px;">
@@ -23,7 +23,7 @@
         </div>
         
         <div id="sortable" style="max-height:400px; overflow-y:auto;">
-            {% for val in vals['keys'] %}
+            {%- for val in vals['keys'] %}
             <div class="row" id="state_{{ val['state'] }}">
                 <div style="margin-right:10px;margin-left:40px;min-height:20px;">
                     <div class="rowcell" style="width:15%;">{{ val['category']|safe }}</div>
@@ -33,42 +33,59 @@
                     <div class="rowcell" style="width:15%;">{{ val['cars2']|join(', ')|safe }}</div>
                     <div class="rowcell" style="width:15%;">{{ val['material']|join(', ')|safe }}</div>
                     <div style="position:absolute;left:2px;top:4px;">
-                        {% if val['state']=='0' %}
+                        {%- if val['state']=='0' %}
                         <i class="fa fa-check" title="{{ _('alarmkeys.upload.existingtitle') }}"></i>
-                        {% elif val['state']=='1' %}
+                        {%- elif val['state']=='1' %}
                         <i class="fa fa-refresh" title="{{ _('alarmkeys.upload.changestitle') }}"></i>
-                        {% else %}
+                        {%- else %}
                         <i class="fa fa-plus" title="{{ _('alarmkeys.upload.addtitle') }}"></i>
-                        {% endif %}
+                        {%- endif %}
                     </div>
                     <div style="position:absolute;top:2px;left:20px;">
-                        {% if val['state']!='0' %}
+                        {%- if val['state']!='0' %}
                         <input name="importindex" type="checkbox" value="{{ vals['keys'].index(val) }}" checked="checked"/>
-                        {% endif %}
+                        {%- endif %}
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            {%- endfor %}
         </div>
         
         <div class="headrow">
             <small style="float:right;margin-right:50px">{{ _('alarmkeys.upload.itemscount', count=vals['keys']|count) }}</small><br/>
-            {% for state in vals['states'].keys() %}
+            {%- for state in vals['states'].keys() %}
                 {{ vals['states'][state] }} {{ _('alarmkeys.upload.states'+state) }}
                 {%- if not loop.last %}, {%- endif  %}
-            {% endfor %}
+            {%- endfor %}
         </div>
         <p> </p>
         <h3>{{ _('alarmkeys.upload.step6header') }}</h3>
         
-        <input type="checkbox" name="add_selected"/> {{ _('alarmkeys.upload.uploadoption1') }}<br/>
-        <input type="checkbox" name="add_new" checked="checked"/> {{ _('alarmkeys.upload.uploadoption2') }}<br/>
-        <input type="checkbox" name="add_update" checked="checked"/> {{ _('alarmkeys.upload.uploadoption3') }}<br/>
-        {% if vals['carsnotfound'].keys()|count>0 %}
-        <input type="checkbox" name="add_material" value="1" checked="checked"/> {{ _('alarmkeys.upload.missingadd') }}<br/>
-        {% endif %}
+        <label><input type="checkbox" name="add_selected"/> {{ _('alarmkeys.upload.uploadoption1') }}</label>
+        <br>
+        <label><input type="checkbox" name="add_new" checked="checked"/> {{ _('alarmkeys.upload.uploadoption2') }}</label>
+        <br>
+        <label><input type="checkbox" name="add_update" checked="checked"/> {{ _('alarmkeys.upload.uploadoption3') }}</label>
+        <br>
+        <label>
+            <input type="checkbox" name="add_assign"/> {{ _('alarmkeys.upload.uploadoption4') }}
+            <select name="keyset">
+                <option value="">{{ _('alarmkeys.nokeyset') }}</option>
+                {%- for keyset in keysets %}
+                <option value="{{ keyset.id }}">{{ keyset.name }}</option>
+                {%- endfor %}
+            </select>
+        </label>
+        <br>
+        {%- if vals['carsnotfound'].keys()|count>0 %}
+        <label>
+            <input type="checkbox" name="add_material" value="1" checked="checked"/> {{ _('alarmkeys.upload.missingadd') }}
+        </label>
+        <br>
+        {%- endif %}
         <p> </p>
-        <button type="button" onclick="return doImport()" id="evalData2">{{ _('alarmkeys.upload.startupdate') }}</button>
+        <button type="button" onclick="return doImport()" id="evalData2"><i class="fa fa-upload fa-lg"></i> {{ _('alarmkeys.upload.startupdate') }}</button>
+        <button type="button" onclick="return cancelImport()" style="margin-left:20px;"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
     </form>
     
     <script>
@@ -81,10 +98,14 @@
                 data: ($('#definitionForm').formSerialize()+'&'+$('#importoptions').formSerialize()),
                 dataType: "html",
                 success: function(data) {
-                    $('#tab1 > .overlayproto').remove();
+                    location.href('..');
                 }
             });
             return false; 
+        }
+
+        function cancelImport(){
+            location.href('..');
         }
     </script>
 </div>

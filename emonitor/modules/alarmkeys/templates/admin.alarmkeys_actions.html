@@ -17,6 +17,59 @@
     </style>
 {% endblock %}
 
+{% block script %}
+    <script>
+    $(document).ready(function() {
+        $("select[name='keyset']").change(function() {
+            $('#category').val('');
+            $('#key').val('');
+            loadKeysets();
+        });
+        loadKeysets();
+
+        $("select[name='keysetitem']").change(function(){
+            $('#category').val($("select[name='keysetitem'] :selected").attr('data-stichwort'));
+            $('#key').val($("select[name='keysetitem'] :selected").text());
+        });
+
+        $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
+    });
+
+    function loadKeysets(){
+        $.get("/admin/data/alarmkeys", {'action': 'keysetlookup', 'setid': $('#keyset').val(), 'format': 'json'}, function(keys){
+            var ogrpname = "";
+            var ogrp = "";
+            $('#keysetitem').html('<option value=""></option>');
+            $.each(keys, function(index, value){
+                if(ogrpname!=value.stichwort){
+                    if (ogrpname!=""){
+                        $('#keysetitem').append(ogrp+'</optgroup>');
+                        ogrp = "";
+                    }
+                    ogrp = '<optgroup label="'+value.stichwort+'">';
+                    ogrpname = value.stichwort;
+                }
+                if(value.schlagwort == '{{ alarmkey.key }}'){
+                    ogrp += '<option value="' + value.nr + '" data-stichwort="' + value.stichwort + '" selected="selected">' + value.schlagwort + ' ' + value.kategorie + '</option>';
+                }else {
+                    ogrp += '<option value="' + value.nr + '" data-stichwort="' + value.stichwort + '">' + value.schlagwort + ' ' + value.kategorie + '</option>';
+                }
+            });
+            $('#keysetitem').append(ogrp+'</optgroup>');
+        });
+    }
+
+    function getCars(){
+        $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}).join(';'));
+        return true;
+    }
+
+
+    </script>
+{% endblock %}
+
 {% block content %}
 <div style="padding:20px;" class="content">
     <h2>{{ _('alarmkeys.header.edit') }}</h2>
@@ -24,27 +77,71 @@
     <form method="post">
         <input type="hidden" name="keyid" value="{{ alarmkey.id }}"/>
         {%- if type>0 or type==-2 %}
+        <div style="float:left;width:25%;padding-right:10px;">
+            <p>
+                <label for="keyset">{{ _('alarmkeys.keyset') }}:</label>
+                <br>
+                <select name="keyset" id="keyset" style="width:99%;height:22px" autofocus>
+                    <option value="">{{ _('alarmkeys.keysetnone') }}</option>
+                    {%- for akset in aksets %}
+                    <option value="{{ akset.id }}"{%- if akset.id == alarmkey._keyset %} selected="selected"{%- endif %}>{{ akset.name }}</option>
+                    {%- endfor %}
+                </select>
+            </p>
+        </div>
+        <div style="float:left;width:75%;">
+            <p>
+                <label for="keysetitem">{{ _('alarmkeys.keysetitem') }}:</label>
+                <br>
+                <select id="keysetitem" name="keysetitem" style="width:99%;height:22px"></select>
+            </p>
+        </div>
+        <div style="clear:left"></div>
         <p>
-            <label>{{ _('alarmkeys.category') }}:<br/>
-                <input type="text" name="category" value="{{ alarmkey.category }}" style="width:99%;" autofocus required/>
-            </label>
+            <label for="category">{{ _('alarmkeys.category') }}:</label>
+            <br>
+            <input type="text" name="category" id="category" value="{{ alarmkey.category }}" style="width:99%;" required/>
         </p>
         <p>
-            <label>{{ _('alarmkeys.key') }}:<br/>
-                <input type="text" name="key" value="{{ alarmkey.key }}" style="width:99%;" required/>
-            </label>
+            <label for="key">{{ _('alarmkeys.key') }}:</label>
+            <br>
+            <input type="text" name="key" id="key" value="{{ alarmkey.key }}" style="width:99%;" required/>
         </p>
         <p>
-            <label>{{ _('alarmkeys.keyinternal') }}:<br/>
-                <input type="text" name="keyinternal" value="{{ alarmkey.key_internal }}" style="width:99%;"/>
-            </label>
+            <label for="department">{{ _('alarmkeys.department') }}:</label>
+            <br>
+            <select id="department" name="deptid" style="width:99%;height:22px" disabled>
+                {%- for dep in departments %}
+                <option value="{{ dep.id }}"{% if depid|int == dep.id %} selected="selected"{% endif %}>{{ dep.name }}</option>
+                {%- endfor %}
+            </select>
+            <input type="hidden" name="deptid" value="{{ depid }}">
         </p>
         <p>
-            <label>{{ _('alarmkeys.remark') }}:<br/>
-                <textarea name="remark" style="width:99%;">{{ alarmkey.remark or '' }}</textarea>
-            </label>
+            <label for="keyinternal">{{ _('alarmkeys.keyinternal') }}:</label>
+            <br>
+            <input type="text" name="keyinternal" id="keyinternal" value="{{ alarmkey.key_internal }}" style="width:99%;"/>
+        </p>
+        <p>
+            <label for="remark">{{ _('alarmkeys.remark') }}:</label>
+            <br>
+            <textarea name="remark" id="remark" style="width:99%;">{{ alarmkey.remark or '' }}</textarea>
         </p>
         {%- endif %}
+
+        {%- if type in [0, -1] %}
+        <p>
+            <label for="department">{{ _('alarmkeys.department') }}:</label>
+            <br>
+            <select id="department" name="deptid" style="width:99%;height:22px" disabled>
+                {%- for dep in departments %}
+                <option value="{{ dep.id }}"{% if depid|int == dep.id %} selected="selected"{% endif %}>{{ dep.name }}</option>
+                {%- endfor %}
+            </select>
+            <input type="hidden" name="deptid" value="{{ depid }}">
+        </p>
+        {%- endif %}
+
         <div class="lists">
             <div>
                 <small>{{ _('alarmkeys.cars1') }}:</small><br/>
@@ -97,25 +194,10 @@
             {%- endif %}
             <button type="button" class="cancel" onClick="history.go(-1);return true;"><i class="fa fa-times fa-lg"></i> {{ _('alarmkey.cancel') }}</button>
         </p>
-        <input type="hidden" name="deptid" value="{{ depid }}"/>
         <input type="hidden" name="cars1" id="val_cars1"/>
         <input type="hidden" name="cars2" id="val_cars2"/>
         <input type="hidden" name="material" id="val_material"/>
         
     </form>
 </div>
-{% endblock %}
-
-{% block script_end %}
-    {{ super() }}
-        $(document).ready(function() {
-            $('#cars1, #cars2, #material, #unused').sortable({connectWith: '.group'});
-        });
-
-        function getCars(){
-            $('#val_cars1').val($( "#cars1" ).sortable( "toArray", {attribute:'value'}).join(';'));
-            $('#val_cars2').val($( "#cars2" ).sortable( "toArray", {attribute:'value'}).join(';'));
-            $('#val_material').val($( "#material" ).sortable( "toArray", {attribute:'value'}).join(';'));
-            return true;
-        }
 {% endblock %}
