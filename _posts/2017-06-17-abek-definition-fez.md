@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title:  "AbEK-Definition"
 date:   2017-06-17
