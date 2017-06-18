@@ -721,7 +721,12 @@ class Alarm(db.Model):
                 # remark
                 if alarm_fields.get('remark', [u'', 0])[0] != u'':
                     alarm.set('remark', alarm_fields.get('remark')[0])
-                    if alarmtype.translation(u'_bma_main_') in alarm_fields.get('remark', [u'', 0])[0] or alarmtype.translation(u'_bma_main_') in alarm_fields.get('person', [u'', 0])[0]:
+                    _bma = 0
+                    for v in alarmtype.translation(u'_bma_main_').split():
+                        if v in alarm_fields.get('remark', [u'', 0])[0] or v in alarm_fields.get('person', [u'', 0])[0]:
+                            _bma = 1
+                            break
+                    if _bma == 1:
                         alarmkey = Alarmkey.query.filter(Alarmkey.key.like(u"%{}%".format(alarmtype.translation(u'_bma_')))).first()
                         if alarmkey:
                             alarm.set('id.key', alarmkey.id)
