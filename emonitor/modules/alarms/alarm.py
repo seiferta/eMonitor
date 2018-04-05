@@ -166,26 +166,26 @@ class Alarm(db.Model):
         else:
             reference = time.mktime(self.timestamp.timetuple())
 
-        # test autoclose
+        # autoclose
         if self.state == 1 and self.type == 1 and Settings.get('alarms.autoclose', '0') != '0':  # only for open alarms
             closingtime = reference + float(Settings.get('alarms.autoclose', 30)) * 60.0  # minutes -> seconds
             if closingtime > time.time():  # close alarm in future
                 logger.debug("add close schedule in future for alarmid {}".format(self.id))
-                scheduler.add_job(self.changeState, run_date=datetime.datetime.fromtimestamp(closingtime), args=[self.id, 2], name="alarms_close_{}".format(self.id))
+                scheduler.add_job(Alarm.changeState, run_date=datetime.datetime.fromtimestamp(closingtime), args=[self.id, 2], name="alarms_close_{}".format(self.id))
             else:  # close alarm now
                 logger.debug("add close schedule now for alarmid {}".format(self.id))
-                scheduler.add_job(self.changeState, args=[self.id, 2], name="alarms_close_{}".format(self.id))
+                scheduler.add_job(Alarm.changeState, args=[self.id, 2], name="alarms_close_{}".format(self.id))
                 self.state = 2
 
-        # test autoarchive
+        # autoarchive
         if self.state == 2 and Settings.get('alarms.autoarchive', '0') != '0':  # only closed alarms
             archivetime = reference + float(Settings.get('alarms.autoarchive', 12)) * 3600.0  # hours -> seconds
             if archivetime > time.time():  # archive alarm in future
                 logger.debug("add archive schedule in future for alarmid {}".format(self.id))
-                scheduler.add_job(self.changeState, run_date=datetime.datetime.fromtimestamp(archivetime), args=[self.id, 3], name="alarms_archive_{}".format(self.id))
+                scheduler.add_job(Alarm.changeState, run_date=datetime.datetime.fromtimestamp(archivetime), args=[self.id, 3], name="alarms_archive_{}".format(self.id))
             else:  # archive alarm now
                 logger.debug("add archive schedule now for alarmid {}".format(self.id))
-                scheduler.add_job(self.changeState, args=[self.id, 3], name="alarms_archive_{}".format(self.id))
+                scheduler.add_job(Alarm.changeState, args=[self.id, 3], name="alarms_archive_{}".format(self.id))
 
     def getDepartment(self):
         if self.street.city:
