@@ -32,4 +32,4 @@ eMonitor kann über *github* aktualisiert werden
  > git pull origin master
 
 
-[1]: https://www.dropbox.com/s/f2cxcjnl7zo6owz/emonitor.tar.gz?dl=0
+[1]: https://www.dropbox.com/s/zkt2r4i62owzayw/emonitor.tar.gz?dl=0
